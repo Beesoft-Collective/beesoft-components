@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import BeeSoftTransition from '../beesoft-transition/beesoft-transition.component';
+import { bindDocumentClickListener, unbindDocumentClickListener } from '../common-event-handlers';
 import { DomHandler } from '../dom-handler';
-
-interface OverlayBaseStyles {
-
-}
 
 export interface OverlayPanelProps {
   visible: boolean;
@@ -40,6 +37,7 @@ export default function OverlayPanel({
   const [zIndex, setZIndex] = useState(-1);
   const [visibility, setVisibility] = useState(visible);
   const panelRef = useRef<HTMLDivElement>(null);
+  const listenerRef = useRef<(event: MouseEvent) => void>();
 
   useEffect(() => {
     if (target) {
@@ -62,6 +60,40 @@ export default function OverlayPanel({
       : target) as HTMLElement;
   };
 
+  const onEntering = () => {
+    setZIndex(100);
+  };
+
+  const onEntered = () => {
+    if (!panelRef.current) return;
+
+    if (shown) {
+      shown();
+    }
+
+    let otherElements: Array<HTMLElement> | undefined = undefined;
+    if (!shouldTargetCloseOverlay) {
+      otherElements = [target as HTMLElement];
+    }
+
+    const clickListener = (clickedWithin: boolean) => !clickedWithin && setVisibility(false);
+    listenerRef.current = bindDocumentClickListener(panelRef.current, clickListener, otherElements);
+  };
+
+  const onExit = () => {
+    if (listenerRef.current) {
+      unbindDocumentClickListener(listenerRef.current);
+    }
+  };
+
+  const onExited = () => {
+    setZIndex(-1);
+
+    if (hidden) {
+      hidden();
+    }
+  };
+
   const createElement = () => {
     let baseStyles: React.CSSProperties = {
       top: `${top}px`,
@@ -77,7 +109,11 @@ export default function OverlayPanel({
       <BeeSoftTransition start={visibility}
                          timeout={transitionDuration}
                          showTransitionOptions={showTransitionOptions}
-                         hideTransitionOptions={hideTransitionOptions}>
+                         hideTransitionOptions={hideTransitionOptions}
+                         onEntering={onEntering}
+                         onEntered={onEntered}
+                         onExit={onExit}
+                         onExited={onExited}>
         {({ state, defaultStyle, transitionStyles }) => (
           <div
             className="absolute bg-white shadow"
