@@ -1,5 +1,7 @@
+import { addMonths, getMonth, subMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { getMonthMatrix } from './date-time-functions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface DateTimeSelectorProps {
   value: Date;
@@ -9,13 +11,31 @@ export interface DateTimeSelectorProps {
 export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSelectorProps) {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
+  const [currentViewDate, setCurrentViewDate] = useState<Date>();
 
   useEffect(() => {
     if (value) {
       setSelectedDate(value);
+      setCurrentViewDate(value);
       setMonthMatrix(getMonthMatrix(value));
     }
   }, [value]);
+
+  const onMovePreviousMonth = () => {
+    if (currentViewDate) {
+      const previousMonth = subMonths(currentViewDate, 1);
+      setMonthMatrix(getMonthMatrix(previousMonth));
+      setCurrentViewDate(previousMonth);
+    }
+  };
+
+  const onMoveNextMonth = () => {
+    if (currentViewDate) {
+      const nextMonth = addMonths(currentViewDate, 1);
+      setMonthMatrix(getMonthMatrix(nextMonth));
+      setCurrentViewDate(nextMonth);
+    }
+  };
 
   const onDateClicked = (date: Date) => {
     setSelectedDate(date);
@@ -24,8 +44,25 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
     }
   };
 
+  const getCurrentMonth = () => {
+    if (currentViewDate) {
+      return new Intl.DateTimeFormat('en-AU', {
+        month: 'long'
+      }).format(currentViewDate);
+    }
+  };
+
   return (
     <div style={{ minWidth: "20rem" }}>
+      <div className="w-full flex flex-row py-1 px-2">
+        <div className="flex-shrink cursor-pointer" onClick={onMovePreviousMonth}>
+          <FontAwesomeIcon icon={['fas', 'angle-left']} />
+        </div>
+        <div className="flex-grow text-center">{getCurrentMonth()}</div>
+        <div className="flex-shrink cursor-pointer" onClick={onMoveNextMonth}>
+          <FontAwesomeIcon icon={['fas', 'angle-right']} />
+        </div>
+      </div>
       <table className="w-full">
         <thead className="font-bold">
           <th>Su</th>
