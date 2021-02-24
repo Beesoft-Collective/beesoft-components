@@ -1,31 +1,58 @@
-import { ChronoField, LocalDateTime } from '@js-joda/core';
 import React, { useEffect, useState } from 'react';
+import { getMonthMatrix } from './date-time-functions';
 
 export interface DateTimeSelectorProps {
-  value: string;
+  value: Date;
+  dateSelected?: (selectedDate: Date) => void;
 }
 
-export default function DateTimeDaySelector({ value }: DateTimeSelectorProps) {
-  const [selectedDate, setSelectedDate] = useState<LocalDateTime>();
+export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSelectorProps) {
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
 
   useEffect(() => {
     if (value) {
-      const jodaDate = LocalDateTime.parse(value);
-      setSelectedDate(jodaDate);
+      setSelectedDate(value);
+      setMonthMatrix(getMonthMatrix(value));
     }
   }, [value]);
 
+  const onDateClicked = (date: Date) => {
+    setSelectedDate(date);
+    if (dateSelected) {
+      dateSelected(date);
+    }
+  };
+
   return (
     <div style={{ minWidth: "20rem" }}>
-      <div className="w-full flex flex-row font-bold">
-        <div className="flex-auto text-center">Su</div>
-        <div className="flex-auto text-center">Mo</div>
-        <div className="flex-auto text-center">Tu</div>
-        <div className="flex-auto text-center">We</div>
-        <div className="flex-auto text-center">Th</div>
-        <div className="flex-auto text-center">Fr</div>
-        <div className="flex-auto text-center">Sa</div>
-      </div>
+      <table className="w-full">
+        <thead className="font-bold">
+          <th>Su</th>
+          <th>Mo</th>
+          <th>Tu</th>
+          <th>We</th>
+          <th>Th</th>
+          <th>Fr</th>
+          <th>Sa</th>
+        </thead>
+        {monthMatrix?.map(row => (
+          <tr>
+            {row.map(column => (
+              <td
+                className="text-center cursor-pointer"
+                onClick={() => {
+                  if (column) {
+                    onDateClicked(column)
+                  }
+                }}
+              >
+                {column?.getDate().toLocaleString()}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </table>
     </div>
   );
 }
