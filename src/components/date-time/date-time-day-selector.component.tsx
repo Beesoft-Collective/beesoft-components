@@ -44,12 +44,22 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
     }
   };
 
-  const getCurrentMonth = () => {
+  const getCurrentMonthYear = () => {
     if (currentViewDate) {
       return new Intl.DateTimeFormat('en-AU', {
-        month: 'long'
+        month: 'long',
+        year: 'numeric'
       }).format(currentViewDate);
     }
+  };
+
+  const isSelectedDate = (currentDate: Date) => {
+    if (selectedDate) {
+      const comparisonDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+      return comparisonDate.toLocaleDateString() === currentDate.toLocaleDateString();
+    }
+
+    return false;
   };
 
   return (
@@ -58,7 +68,7 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
         <div className="flex-shrink cursor-pointer" onClick={onMovePreviousMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </div>
-        <div className="flex-grow text-center">{getCurrentMonth()}</div>
+        <div className="flex-grow text-center">{getCurrentMonthYear()}</div>
         <div className="flex-shrink cursor-pointer" onClick={onMoveNextMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>
@@ -77,7 +87,7 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
           <tr>
             {row.map(column => (
               <td
-                className="text-center cursor-pointer"
+                className={`text-center cursor-pointer${column && isSelectedDate(column) ? " bg-blue-100" : ""}`}
                 onClick={() => {
                   if (column) {
                     onDateClicked(column)
