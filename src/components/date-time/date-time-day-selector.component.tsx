@@ -1,14 +1,16 @@
-import { addMonths, getMonth, subMonths } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { addMonths, subMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { getMonthMatrix } from './date-time-functions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeSelectorProps {
   value: Date;
+  dispatcher: React.Dispatch<DateTimeReducerAction>;
   dateSelected?: (selectedDate: Date) => void;
 }
 
-export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSelectorProps) {
+export default function DateTimeDaySelector({ value, dispatcher, dateSelected }: DateTimeSelectorProps) {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
   const [currentViewDate, setCurrentViewDate] = useState<Date>();
@@ -44,6 +46,12 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
     }
   };
 
+  const onMonthClicked = () => {
+    dispatcher({
+      type: DateTimeActionType.MonthSelector
+    });
+  };
+
   const getCurrentMonthYear = () => {
     if (currentViewDate) {
       return new Intl.DateTimeFormat('en-AU', {
@@ -68,7 +76,7 @@ export default function DateTimeDaySelector({ value, dateSelected }: DateTimeSel
         <div className="flex-shrink cursor-pointer" onClick={onMovePreviousMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </div>
-        <div className="flex-grow text-center">{getCurrentMonthYear()}</div>
+        <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>{getCurrentMonthYear()}</div>
         <div className="flex-shrink cursor-pointer" onClick={onMoveNextMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>

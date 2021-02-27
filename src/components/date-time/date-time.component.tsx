@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { getElementByClassNameRecursive } from '../common-functions';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
+import DateTimeMonthSelector from './date-time-month-selector.component';
+import reducer, { DateTimeActionType } from './date-time.reducer';
 
 export interface DateTimeProps {
   name: string;
@@ -14,6 +16,10 @@ export default function DateTime({ name, value, label, format }: DateTimeProps) 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
+
+  const [state, dispatcher] = useReducer(reducer, {
+    currentSelector: DateTimeActionType.DaySelector
+  });
 
   useEffect(() => {
     if (value) {
@@ -47,7 +53,11 @@ export default function DateTime({ name, value, label, format }: DateTimeProps) 
         {`${currentDateTime.toLocaleDateString()} ${currentDateTime.toLocaleTimeString()}`}
       </div>
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false} hidden={onDateTimeHidden}>
-        <DateTimeDaySelector value={currentDateTime} dateSelected={(date: Date) => setCurrentDateTime(date)} />
+        {state.currentSelector === DateTimeActionType.DaySelector && <DateTimeDaySelector
+          value={currentDateTime}
+          dispatcher={dispatcher}
+          dateSelected={(date: Date) => setCurrentDateTime(date)} />}
+        {state.currentSelector === DateTimeActionType.MonthSelector && <DateTimeMonthSelector />}
       </OverlayPanel>
     </div>
   );
