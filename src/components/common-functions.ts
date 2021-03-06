@@ -5,3 +5,7 @@ export function getElementByClassNameRecursive(element: Element, className: stri
 
   return element.parentElement ? getElementByClassNameRecursive(element.parentElement, className) : element;
 }
+
+export function getBrowserLanguage() {
+  return window.navigator.languages ? window.navigator.languages[0] : window.navigator.language;
+}

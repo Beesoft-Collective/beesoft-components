@@ -1,49 +1,51 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addMonths, subMonths } from 'date-fns';
-import React, { useEffect, useState } from 'react';
-import { getMonthMatrix } from './date-time-functions';
+import React, { useEffect, useRef, useState } from 'react';
+import { getBrowserLanguage } from '../common-functions';
+import { getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
-export interface DateTimeSelectorProps {
-  value: Date;
+export interface DateTimeDaySelectorProps {
+  selectedDate?: Date;
+  viewDate: Date;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
-  dateSelected?: (selectedDate: Date) => void;
 }
 
-export default function DateTimeDaySelector({ value, dispatcher, dateSelected }: DateTimeSelectorProps) {
-  const [selectedDate, setSelectedDate] = useState<Date>();
+export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher }: DateTimeDaySelectorProps) {
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
-  const [currentViewDate, setCurrentViewDate] = useState<Date>();
+  const weekDaysRef = useRef(getTranslatedDays(getBrowserLanguage()));
 
   useEffect(() => {
-    if (value) {
-      setSelectedDate(value);
-      setCurrentViewDate(value);
-      setMonthMatrix(getMonthMatrix(value));
-    }
-  }, [value]);
+    setMonthMatrix(getMonthMatrix(viewDate));
+  }, [viewDate]);
 
   const onMovePreviousMonth = () => {
-    if (currentViewDate) {
-      const previousMonth = subMonths(currentViewDate, 1);
+    if (viewDate) {
+      const previousMonth = subMonths(viewDate, 1);
       setMonthMatrix(getMonthMatrix(previousMonth));
-      setCurrentViewDate(previousMonth);
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: previousMonth
+      });
     }
   };
 
   const onMoveNextMonth = () => {
-    if (currentViewDate) {
-      const nextMonth = addMonths(currentViewDate, 1);
+    if (viewDate) {
+      const nextMonth = addMonths(viewDate, 1);
       setMonthMatrix(getMonthMatrix(nextMonth));
-      setCurrentViewDate(nextMonth);
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: nextMonth
+      });
     }
   };
 
   const onDateClicked = (date: Date) => {
-    setSelectedDate(date);
-    if (dateSelected) {
-      dateSelected(date);
-    }
+    dispatcher({
+      type: DateTimeActionType.SetSelectedDate,
+      selectedDate: date
+    });
   };
 
   const onMonthClicked = () => {
@@ -53,11 +55,11 @@ export default function DateTimeDaySelector({ value, dispatcher, dateSelected }:
   };
 
   const getCurrentMonthYear = () => {
-    if (currentViewDate) {
-      return new Intl.DateTimeFormat('en-AU', {
+    if (viewDate) {
+      return viewDate.toLocaleDateString(getBrowserLanguage(), {
         month: 'long',
         year: 'numeric'
-      }).format(currentViewDate);
+      });
     }
   };
 
@@ -83,30 +85,31 @@ export default function DateTimeDaySelector({ value, dispatcher, dateSelected }:
       </div>
       <table className="w-full">
         <thead className="font-bold">
-          <th>Su</th>
-          <th>Mo</th>
-          <th>Tu</th>
-          <th>We</th>
-          <th>Th</th>
-          <th>Fr</th>
-          <th>Sa</th>
-        </thead>
-        {monthMatrix?.map(row => (
           <tr>
-            {row.map(column => (
-              <td
-                className={`text-center cursor-pointer${column && isSelectedDate(column) ? " bg-blue-100" : ""}`}
-                onClick={() => {
-                  if (column) {
-                    onDateClicked(column)
-                  }
-                }}
-              >
-                {column?.getDate().toLocaleString()}
-              </td>
+            {weekDaysRef.current.map((day, index) => (
+              <th key={index}>{day}</th>
             ))}
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {monthMatrix?.map((row, rIndex) => (
+            <tr key={rIndex}>
+              {row.map((column, cIndex) => (
+                <td
+                  key={rIndex.toString() + cIndex.toString()}
+                  className={`text-center cursor-pointer${column && isSelectedDate(column) ? " bg-blue-100" : ""}`}
+                  onClick={() => {
+                    if (column) {
+                      onDateClicked(column)
+                    }
+                  }}
+                >
+                  {column?.getDate().toLocaleString()}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

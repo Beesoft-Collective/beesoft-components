@@ -1,4 +1,4 @@
-import { getDaysInMonth, startOfMonth, lastDayOfMonth, getDay, eachDayOfInterval } from 'date-fns';
+import { addDays, addMonths, eachDayOfInterval, getDay, getDaysInMonth, lastDayOfMonth, startOfMonth } from 'date-fns';
 
 export function getMonthMatrix(matrixDate: Date) {
   const daysInMonth = getDaysInMonth(matrixDate);
@@ -46,4 +46,40 @@ function createNullMatrix(needsExtraRow = false): Array<Array<Date | null>> {
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null]
     ];
+}
+
+export function getTranslatedDays(locale: string) {
+  // start on Sunday
+  const startDate = new Date(Date.UTC(2017, 0, 1));
+  const weekDays: Array<string> = [];
+
+  for (let i = 0; i < 7; i++) {
+    weekDays.push(addDays(startDate, i).toLocaleDateString(locale, {weekday: 'short'}));
+  }
+
+  return weekDays;
+}
+
+export function getTranslatedMonthMatrix(locale: string) {
+  const startDate = new Date(Date.UTC(2020, 0, 1));
+  const months: Array<Array<{
+    monthNumber: number,
+    monthName: string
+  }>> = [
+    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }],
+    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }],
+    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }]
+  ];
+
+  let monthCount = 0;
+  for (let row = 0; row < 3; row++) {
+    for (let column = 0; column < 4; column++) {
+      months[row][column] = {
+        monthNumber: monthCount,
+        monthName: addMonths(startDate, monthCount++).toLocaleDateString(locale, {month: 'short'})
+      };
+    }
+  }
+
+  return months;
 }

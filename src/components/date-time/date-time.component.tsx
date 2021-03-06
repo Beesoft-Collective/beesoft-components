@@ -1,9 +1,9 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { getElementByClassNameRecursive } from '../common-functions';
+import React, { useReducer, useState } from 'react';
+import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import DateTimeMonthSelector from './date-time-month-selector.component';
-import reducer, { DateTimeActionType } from './date-time.reducer';
+import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
 export interface DateTimeProps {
   name: string;
@@ -12,24 +12,21 @@ export interface DateTimeProps {
   format?: string;
 }
 
-export default function DateTime({ name, value, label, format }: DateTimeProps) {
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+export default function DateTime({name, value, label, format}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
 
-  const [state, dispatcher] = useReducer(reducer, {
-    currentSelector: DateTimeActionType.DaySelector
-  });
+  const getDateValue = () => {
+    return value ? typeof value === 'string' ? new Date(value) : value : undefined;
+  };
 
-  useEffect(() => {
-    if (value) {
-      if (typeof value === 'string') {
-        setCurrentDateTime(new Date(value));
-      } else {
-        setCurrentDateTime(value);
-      }
-    }
-  }, [value]);
+  const initialState: DateTimeState = {
+    currentSelector: DateTimeActionType.DaySelector,
+    currentViewDate: getDateValue() || new Date(),
+    selectedDate: getDateValue()
+  };
+
+  const [state, dispatcher] = useReducer(reducer, initialState);
 
   const onFocus = (event: React.FocusEvent) => {
     const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
@@ -50,14 +47,15 @@ export default function DateTime({ name, value, label, format }: DateTimeProps) 
         suppressContentEditableWarning={true}
         onFocus={onFocus}
         className="w-full shadow-sm border border-solid border-gray-300 rounded-md p-2 focus:outline-none parent-element">
-        {`${currentDateTime.toLocaleDateString()} ${currentDateTime.toLocaleTimeString()}`}
+        {`${state.selectedDate?.toLocaleDateString(getBrowserLanguage())} ${state.selectedDate?.toLocaleTimeString(getBrowserLanguage())}`}
       </div>
-      <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false} hidden={onDateTimeHidden}>
-        {state.currentSelector === DateTimeActionType.DaySelector && <DateTimeDaySelector
-          value={currentDateTime}
-          dispatcher={dispatcher}
-          dateSelected={(date: Date) => setCurrentDateTime(date)} />}
-        {state.currentSelector === DateTimeActionType.MonthSelector && <DateTimeMonthSelector />}
+      <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
+                    hidden={onDateTimeHidden}>
+        {state.currentSelector === DateTimeActionType.DaySelector &&
+        <DateTimeDaySelector selectedDate={state.selectedDate} viewDate={state.currentViewDate}
+                             dispatcher={dispatcher} />}
+        {state.currentSelector === DateTimeActionType.MonthSelector &&
+        <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
       </OverlayPanel>
     </div>
   );
