@@ -83,3 +83,9 @@ export function getTranslatedMonthMatrix(locale: string) {
 
   return months;
 }
+
+export function getDefaultTime(locale: string) {
+  const tempDate = new Date();
+  tempDate.setHours(0, 0, 0, 0);
+  return tempDate.toLocaleTimeString(locale);
+}
