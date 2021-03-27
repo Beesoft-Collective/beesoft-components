@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { addYears, subYears, setMonth } from 'date-fns';
+import { addYears, setMonth, subYears } from 'date-fns';
 import React, { useRef } from 'react';
 import { getBrowserLanguage } from '../common-functions';
 import { getTranslatedMonthMatrix } from './date-time-functions';
@@ -42,13 +42,19 @@ export default function DateTimeMonthSelector({ viewDate, dispatcher }: DateTime
     });
   };
 
+  const onYearClicked = () => {
+    dispatcher({
+      type: DateTimeActionType.YearSelector
+    });
+  };
+
   return (
     <div style={{ minWidth: "20rem" }}>
       <div className="w-full flex flex-row py-1 px-2">
         <div className="flex-shrink cursor-pointer" onClick={onMovePreviousYear}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </div>
-        <div className="flex-grow text-center cursor-pointer">{getCurrentYear()}</div>
+        <div className="flex-grow text-center cursor-pointer" onClick={onYearClicked}>{getCurrentYear()}</div>
         <div className="flex-shrink cursor-pointer" onClick={onMoveNextYear}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>

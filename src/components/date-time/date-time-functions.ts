@@ -1,4 +1,13 @@
-import { addDays, addMonths, eachDayOfInterval, getDay, getDaysInMonth, lastDayOfMonth, startOfMonth } from 'date-fns';
+import {
+  addDays,
+  addMonths, addYears,
+  eachDayOfInterval,
+  eachYearOfInterval,
+  getDay,
+  getDaysInMonth,
+  lastDayOfMonth,
+  startOfMonth
+} from 'date-fns';
 
 export function getMonthMatrix(matrixDate: Date) {
   const daysInMonth = getDaysInMonth(matrixDate);
@@ -9,12 +18,16 @@ export function getMonthMatrix(matrixDate: Date) {
     start: firstDayInMonth,
     end: lastDayInMonth
   });
-  const monthMatrix = createNullMatrix((daysInMonth + firstDayOfMonthNumber) > 35);
+  const rowCount = (daysInMonth + firstDayOfMonthNumber) > 35 ? 7 : 6;
+  const monthMatrix = createNullMatrix(rowCount, 7);
   let currentDay = 1;
 
   for (let row = 0, length = 6; row < length; row++) {
     for (let col = row > 0 ? 0 : firstDayOfMonthNumber, length = 7; col < length; col++) {
-      monthMatrix[row][col] = monthDates[currentDay - 1];
+      const currentMonthDate = monthDates[currentDay - 1];
+      currentMonthDate.setHours(matrixDate.getHours(), matrixDate.getMinutes(), matrixDate.getSeconds());
+
+      monthMatrix[row][col] = currentMonthDate;
 
       if (++currentDay > daysInMonth) {
         break;
@@ -29,23 +42,17 @@ export function getMonthMatrix(matrixDate: Date) {
   return monthMatrix;
 }
 
-function createNullMatrix(needsExtraRow = false): Array<Array<Date | null>> {
-  return !needsExtraRow ?
-    [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null]
-    ] :
-    [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null]
-    ];
+function createNullMatrix(rows: number, columns: number): Array<Array<any>> {
+  const rowArray = [];
+  for (let row = 0, length = rows; row < length; row++) {
+    const colArray: Array<null> = [];
+    for (let col = 0, colLength = columns; col < colLength; col++) {
+      colArray.push(null);
+    }
+    rowArray.push(colArray);
+  }
+
+  return rowArray;
 }
 
 export function getTranslatedDays(locale: string) {
@@ -82,6 +89,33 @@ export function getTranslatedMonthMatrix(locale: string) {
   }
 
   return months;
+}
+
+export function getTranslatedYearMatrix(matrixDate: Date, locale: string) {
+  const clonedDate = new Date(matrixDate.getTime());
+  const nearestDecadeYear = Math.floor(clonedDate.getFullYear() / 10) * 10;
+  clonedDate.setFullYear(nearestDecadeYear);
+
+  const matrixYears = eachYearOfInterval({
+    start: clonedDate,
+    end: addYears(clonedDate, 9)
+  });
+
+  const years: Array<Array<string>> = createNullMatrix(3, 4);
+  let yearCount = 0;
+  for (let row = 0; row < 3; row++) {
+    for (let column = 0; column < 4; column++) {
+      years[row][column] = matrixYears[yearCount++].toLocaleDateString(locale, {
+        year: 'numeric'
+      });
+
+      if (yearCount === matrixYears.length) {
+        break;
+      }
+    }
+  }
+
+  return years;
 }
 
 export function getDefaultTime(locale: string) {

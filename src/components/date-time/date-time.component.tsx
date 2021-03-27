@@ -1,10 +1,12 @@
 import React, { useReducer, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
+import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
 export interface DateTimeProps {
@@ -19,21 +21,35 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
 
   const getDateValue = () => {
-    return value ? typeof value === 'string' ? new Date(value) : value : undefined;
+    const defaultDate = new Date();
+    defaultDate.setHours(0, 0, 0, 0);
+
+    return value ? typeof value === 'string' ? new Date(value) : value : defaultDate;
   };
 
   const initialState: DateTimeState = {
     currentSelector: DateTimeActionType.DaySelector,
-    currentViewDate: getDateValue() || new Date(),
+    currentViewDate: getDateValue(),
     selectedDate: getDateValue()
   };
 
   const [state, dispatcher] = useReducer(reducer, initialState);
 
   const onFocus = (event: React.FocusEvent) => {
-    const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
-    setDropDownTarget(parentElement);
+    setDropDownElement(event);
     setSelectorOpen(true);
+  }
+
+  const onCalendarClick = (event: React.MouseEvent) => {
+    setDropDownElement(event);
+    setSelectorOpen(!selectorOpen);
+  };
+
+  const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
+    if (!dropDownTarget) {
+      const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
+      setDropDownTarget(parentElement);
+    }
   }
 
   const onDateTimeHidden = () => {
@@ -48,14 +64,17 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
 
   return (
     <div>
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && <label>{label}</label>}
       <div
-        id={name}
-        contentEditable={true}
-        suppressContentEditableWarning={true}
-        onFocus={onFocus}
-        className="w-full shadow-sm border border-solid border-gray-300 rounded-md p-2 focus:outline-none parent-element">
-        {`${state.selectedDate?.toLocaleDateString(getBrowserLanguage())} ${state.selectedDate?.toLocaleTimeString(getBrowserLanguage())}`}
+        className="w-full flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2 parent-element">
+        <div
+          contentEditable={true}
+          suppressContentEditableWarning={true}
+          onFocus={onFocus}
+          className="flex-grow focus:outline-none">{`${state.selectedDate?.toLocaleDateString(getBrowserLanguage())} ${state.selectedDate?.toLocaleTimeString(getBrowserLanguage())}`}</div>
+        <div className="flex-shrink cursor-pointer" onClick={onCalendarClick}>
+          <FontAwesomeIcon icon={['far', 'calendar-alt']} />
+        </div>
       </div>
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
                     hidden={onDateTimeHidden}>
@@ -65,6 +84,8 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
                                dispatcher={dispatcher} />}
           {state.currentSelector === DateTimeActionType.MonthSelector &&
           <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          {state.currentSelector === DateTimeActionType.YearSelector &&
+          <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
           <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
           {state.currentSelector === DateTimeActionType.DaySelector &&

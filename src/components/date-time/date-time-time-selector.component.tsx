@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react';
 import { generateNumberArray, padNumber } from '../common-functions';
-import { DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
@@ -9,41 +9,80 @@ export interface DateTimeTimeSelectorProps {
 }
 
 export default function DateTimeTimeSelector({viewDate, dispatcher}: DateTimeTimeSelectorProps) {
-  const hours = useRef<string[]>(generateNumberArray(1, 12, (value) => padNumber(value, 2, '0')));
+  const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => padNumber(value, 2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
 
-  const getHourArrayIndex = (hour: number) => {
-    const meridianHour = hour < 12 ? hour : hour - 12;
+  const getMeridianHour = (hour: number) => hour > 11 ? hour - 12 : hour;
 
-    if (meridianHour > 0) {
-      return meridianHour - 1;
-    } else {
-      return 11;
-    }
-  };
-
-  const [currentHour, setCurrentHour] = useState(getHourArrayIndex(viewDate.getHours()));
+  const [currentHour, setCurrentHour] = useState(getMeridianHour(viewDate.getHours()));
   const [currentMinute, setCurrentMinute] = useState(viewDate.getMinutes());
   const [currentMeridian, setCurrentMeridian] = useState(viewDate.getHours() <= 12 ? 0 : 1);
 
+  const increaseHour = () => {
+    const nextHour = currentHour < 11 ? currentHour + 1 : 0;
+    setCurrentHour(nextHour);
+    setCurrentDate(nextHour, currentMinute, currentMeridian);
+  };
+
+  const decreaseHour = () => {
+    const nextHour = currentHour > 0 ? currentHour - 1 : 11;
+    setCurrentHour(nextHour);
+    setCurrentDate(nextHour, currentMinute, currentMeridian);
+  };
+
+  const increaseMinute = () => {
+    const nextMinute = currentMinute < 59 ? currentMinute + 1 : 0;
+    setCurrentMinute(nextMinute);
+    setCurrentDate(currentHour, nextMinute, currentMeridian);
+  };
+
+  const decreaseMinute = () => {
+    const nextMinute = currentMinute > 0 ? currentMinute - 1 : 59;
+    setCurrentMinute(nextMinute);
+    setCurrentDate(currentHour, nextMinute, currentMeridian);
+  };
+
+  const changeMeridian = () => {
+    const nextMeridian = currentMeridian === 0 ? 1 : 0;
+    setCurrentMeridian(nextMeridian);
+    setCurrentDate(currentHour, currentMinute, nextMeridian);
+  };
+
+  const setCurrentDate = (hour: number, minute: number, meridian: number) => {
+    const correctHour = meridian === 1 ? hour + 12 : hour;
+    viewDate.setHours(correctHour, minute);
+
+    dispatcher({
+      type: DateTimeActionType.SetSelectedDate,
+      selectedDate: viewDate
+    });
+    dispatcher({
+      type: DateTimeActionType.SetViewDate,
+      viewDate: viewDate
+    });
+  };
+
+  const onBackClicked = () => {
+    dispatcher({
+      type: DateTimeActionType.DaySelector
+    });
+  };
+
   return (
-    <div className="flex flex-row justify-center" style={{minWidth: '20rem'}}>
+    <div className="flex flex-row justify-center p-2" style={{minWidth: '20rem'}}>
       <table className="w-full">
         <tbody>
         <tr>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']}
-                             onClick={() => currentHour < 11 ? setCurrentHour(currentHour + 1) : setCurrentHour(0)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseHour}/>
           </td>
           <td>&nbsp;</td>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']}
-                             onClick={() => currentMinute < 59 ? setCurrentMinute(currentMinute + 1) : setCurrentMinute(0)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseMinute}/>
           </td>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']}
-                             onClick={() => currentMeridian === 0 ? setCurrentMeridian(1) : setCurrentMeridian(0)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={changeMeridian}/>
           </td>
         </tr>
         <tr>
@@ -53,18 +92,23 @@ export default function DateTimeTimeSelector({viewDate, dispatcher}: DateTimeTim
           <td className="text-center">{ampm.current[currentMeridian]}</td>
         </tr>
         <tr>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']}
-                             onClick={() => currentHour > 0 ? setCurrentHour(currentHour - 1) : setCurrentHour(11)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseHour}/>
           </td>
           <td>&nbsp;</td>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']}
-                             onClick={() => currentMinute > 0 ? setCurrentMinute(currentMinute - 1) : setCurrentMinute(59)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseMinute}/>
           </td>
-          <td className="text-center">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']}
-                             onClick={() => currentMeridian === 0 ? setCurrentMeridian(1) : setCurrentMeridian(0)}/>
+          <td className="text-center cursor-pointer">
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={changeMeridian}/>
+          </td>
+        </tr>
+        <tr>
+          <td colSpan={4}>&nbsp;</td>
+        </tr>
+        <tr>
+          <td colSpan={4}>
+            <div className="ml-4 cursor-pointer text-blue-600" onClick={onBackClicked}>&lt;&nbsp;Back</div>
           </td>
         </tr>
         </tbody>

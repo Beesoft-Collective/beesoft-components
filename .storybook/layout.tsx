@@ -1,9 +1,6 @@
 import React from 'react';
 import '../src/index.css';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleRight, faAngleLeft, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faAngleRight, faAngleLeft, faChevronUp, faChevronDown);
+import '../src/components/font-awesome';
 
 // @ts-ignore
 const Layout = ({children}) => {

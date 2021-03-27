@@ -46,6 +46,10 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
       type: DateTimeActionType.SetSelectedDate,
       selectedDate: date
     });
+    dispatcher({
+      type: DateTimeActionType.SetViewDate,
+      viewDate: date
+    });
   };
 
   const onMonthClicked = () => {

@@ -13,7 +13,7 @@ export const Default = Template.bind({});
 Default.args = {
   name: 'date',
   label: 'Date',
-  value: '30/01/2021 10:15:00.000'
+  value: '30/01/2021 10:15:00 AM'
 };
 
 export const CurrentDateTime = Template.bind({});

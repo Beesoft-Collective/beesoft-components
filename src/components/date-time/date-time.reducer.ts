@@ -30,7 +30,8 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
     case DateTimeActionType.MonthSelector:
       return {
         ...state,
-        currentSelector: DateTimeActionType.MonthSelector
+        currentSelector: DateTimeActionType.MonthSelector,
+        currentViewDate: action.viewDate || state.currentViewDate
       };
     case DateTimeActionType.YearSelector:
       return {
