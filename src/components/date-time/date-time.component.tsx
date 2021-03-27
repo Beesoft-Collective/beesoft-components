@@ -1,6 +1,7 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
+import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
@@ -14,11 +15,13 @@ export interface DateTimeProps {
   value?: string | Date;
   label?: string;
   format?: string;
+  onChange?: (value: Date) => void;
 }
 
-export default function DateTime({name, value, label, format}: DateTimeProps) {
+export default function DateTime({name, value, label, format, onChange}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
+  const language = useRef<string>(getBrowserLanguage());
 
   const getDateValue = () => {
     const defaultDate = new Date();
@@ -30,7 +33,9 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
   const initialState: DateTimeState = {
     currentSelector: DateTimeActionType.DaySelector,
     currentViewDate: getDateValue(),
-    selectedDate: getDateValue()
+    selectedDate: getDateValue(),
+    originalSetDate: getDateValue(),
+    selectedDateChanged: false
   };
 
   const [state, dispatcher] = useReducer(reducer, initialState);
@@ -54,6 +59,17 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
 
   const onDateTimeHidden = () => {
     setSelectorOpen(false);
+    dispatcher({
+      type: DateTimeActionType.DaySelector
+    });
+
+    if (onChange && state.selectedDateChanged) {
+      onChange(state.selectedDate);
+      dispatcher({
+        type: DateTimeActionType.ResetSelectedDateChanged,
+        selectedDate: state.selectedDate
+      });
+    }
   };
 
   const onTimeClicked = () => {
@@ -62,20 +78,19 @@ export default function DateTime({name, value, label, format}: DateTimeProps) {
     });
   };
 
+  const getValue = () =>
+    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(language.current)}`;
+
   return (
     <div>
       {label && <label>{label}</label>}
-      <div
-        className="w-full flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2 parent-element">
-        <div
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          onFocus={onFocus}
-          className="flex-grow focus:outline-none">{`${state.selectedDate?.toLocaleDateString(getBrowserLanguage())} ${state.selectedDate?.toLocaleTimeString(getBrowserLanguage())}`}</div>
-        <div className="flex-shrink cursor-pointer" onClick={onCalendarClick}>
-          <FontAwesomeIcon icon={['far', 'calendar-alt']} />
-        </div>
-      </div>
+      <ContentEditableInput
+        value={getValue()}
+        className="parent-element"
+        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']} />}
+        rightElementClassName="cursor-pointer"
+        onRightElementClick={onCalendarClick}
+        onFocus={onFocus} />
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
                     hidden={onDateTimeHidden}>
         <>

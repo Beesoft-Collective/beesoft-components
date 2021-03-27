@@ -4,13 +4,16 @@ export enum DateTimeActionType {
   YearSelector,
   TimeSelector,
   SetViewDate,
-  SetSelectedDate
+  SetSelectedDate,
+  ResetSelectedDateChanged
 }
 
 export interface DateTimeState {
   currentSelector: DateTimeActionType;
   currentViewDate: Date;
-  selectedDate?: Date;
+  selectedDate: Date;
+  originalSetDate: Date;
+  selectedDateChanged: boolean;
 }
 
 export interface DateTimeReducerAction {
@@ -51,7 +54,14 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
     case DateTimeActionType.SetSelectedDate:
       return {
         ...state,
-        selectedDate: action.selectedDate
+        selectedDate: action.selectedDate || state.selectedDate,
+        selectedDateChanged: state.originalSetDate.getTime() !== action.selectedDate?.getTime()
+      };
+    case DateTimeActionType.ResetSelectedDateChanged:
+      return {
+        ...state,
+        originalSetDate: action.selectedDate || state.selectedDate,
+        selectedDateChanged: false
       };
     default:
       return {

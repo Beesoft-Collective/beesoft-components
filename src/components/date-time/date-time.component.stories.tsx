@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import DateTime, { DateTimeProps } from './date-time.component';
@@ -19,5 +20,6 @@ Default.args = {
 export const CurrentDateTime = Template.bind({});
 CurrentDateTime.args = {
   name: 'date',
-  label: 'Date'
+  label: 'Date',
+  onChange: action('onChange')
 };
