@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
@@ -43,7 +43,7 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
   const onFocus = (event: React.FocusEvent) => {
     setDropDownElement(event);
     setSelectorOpen(true);
-  }
+  };
 
   const onCalendarClick = (event: React.MouseEvent) => {
     setDropDownElement(event);
@@ -55,7 +55,7 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
       const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
       setDropDownTarget(parentElement);
     }
-  }
+  };
 
   const onDateTimeHidden = () => {
     setSelectorOpen(false);
@@ -87,28 +87,28 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
       <ContentEditableInput
         value={getValue()}
         className="parent-element"
-        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']} />}
+        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']}/>}
         rightElementClassName="cursor-pointer"
         onRightElementClick={onCalendarClick}
-        onFocus={onFocus} />
+        onFocus={onFocus}/>
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
                     hidden={onDateTimeHidden}>
         <>
           {state.currentSelector === DateTimeActionType.DaySelector &&
           <DateTimeDaySelector selectedDate={state.selectedDate} viewDate={state.currentViewDate}
-                               dispatcher={dispatcher} />}
+                               dispatcher={dispatcher}/>}
           {state.currentSelector === DateTimeActionType.MonthSelector &&
-          <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
           {state.currentSelector === DateTimeActionType.YearSelector &&
-          <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
-          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
           {state.currentSelector === DateTimeActionType.DaySelector &&
           <div className="w-full flex flex-row p-2 justify-center">
             <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
               {
-                state.selectedDate?.toLocaleTimeString(getBrowserLanguage()) ||
-                getDefaultTime(getBrowserLanguage())
+                state.selectedDate?.toLocaleTimeString(language.current) ||
+                getDefaultTime(language.current)
               }
             </div>
           </div>
