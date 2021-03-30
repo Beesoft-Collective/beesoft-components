@@ -45,6 +45,10 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
     setSelectorOpen(true);
   };
 
+  const onInput = (event: React.FormEvent) => {
+    console.log('on input', event);
+  };
+
   const onCalendarClick = (event: React.MouseEvent) => {
     setDropDownElement(event);
     setSelectorOpen(!selectorOpen);
@@ -90,7 +94,8 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
         rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']}/>}
         rightElementClassName="cursor-pointer"
         onRightElementClick={onCalendarClick}
-        onFocus={onFocus}/>
+        onFocus={onFocus}
+        onInput={onInput}/>
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
                     hidden={onDateTimeHidden}>
         <>

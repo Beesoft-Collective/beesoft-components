@@ -1,7 +1,9 @@
 import React from 'react';
+import * as _ from 'underscore';
 
 export interface ContentEditableInputProps {
   value?: string;
+  debounceTime?: number;
   leftElement?: JSX.Element;
   rightElement?: JSX.Element;
   className?: string;
@@ -15,6 +17,7 @@ export interface ContentEditableInputProps {
 
 export default function ContentEditableInput({
   value,
+  debounceTime = 500,
   leftElement,
   rightElement,
   className,
@@ -43,11 +46,11 @@ export default function ContentEditableInput({
     }
   };
 
-  const onInputed = (event: React.FormEvent) => {
+  const onInputed = _.debounce((event: React.FormEvent) => {
     if (onInput) {
       onInput(event);
     }
-  };
+  }, debounceTime);
 
   return (
     <div className={`w-full flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2 ${className}`}>
