@@ -1,5 +1,5 @@
 import React from 'react';
-import * as _ from 'underscore';
+import * as _ from 'lodash';
 
 export interface ContentEditableInputProps {
   value?: string;
