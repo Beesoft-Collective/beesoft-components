@@ -1,14 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react';
 import { generateNumberArray, padNumber } from '../common-functions';
+import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
+  timeConstraints?: TimeConstraints;
 }
 
-export default function DateTimeTimeSelector({viewDate, dispatcher}: DateTimeTimeSelectorProps) {
+export default function DateTimeTimeSelector({viewDate, dispatcher, timeConstraints}: DateTimeTimeSelectorProps) {
   const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => padNumber(value, 2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
@@ -20,25 +22,29 @@ export default function DateTimeTimeSelector({viewDate, dispatcher}: DateTimeTim
   const [currentMeridian, setCurrentMeridian] = useState(viewDate.getHours() <= 12 ? 0 : 1);
 
   const increaseHour = () => {
-    const nextHour = currentHour < 11 ? currentHour + 1 : 0;
+    const incrementAmount = timeConstraints?.hours?.step || 1;
+    const nextHour = currentHour < 11 ? currentHour + incrementAmount : 0;
     setCurrentHour(nextHour);
     setCurrentDate(nextHour, currentMinute, currentMeridian);
   };
 
   const decreaseHour = () => {
-    const nextHour = currentHour > 0 ? currentHour - 1 : 11;
+    const decrementAmount = timeConstraints?.hours?.step || 1;
+    const nextHour = currentHour > 0 ? currentHour - decrementAmount : 11;
     setCurrentHour(nextHour);
     setCurrentDate(nextHour, currentMinute, currentMeridian);
   };
 
   const increaseMinute = () => {
-    const nextMinute = currentMinute < 59 ? currentMinute + 1 : 0;
+    const incrementAmount = timeConstraints?.minutes?.step || 1;
+    const nextMinute = currentMinute + incrementAmount < 59 ? currentMinute + incrementAmount : 0;
     setCurrentMinute(nextMinute);
     setCurrentDate(currentHour, nextMinute, currentMeridian);
   };
 
   const decreaseMinute = () => {
-    const nextMinute = currentMinute > 0 ? currentMinute - 1 : 59;
+    const decrementAmount = timeConstraints?.minutes?.step || 1;
+    const nextMinute = currentMinute - decrementAmount >= 0 ? currentMinute - decrementAmount : 60 - decrementAmount;
     setCurrentMinute(nextMinute);
     setCurrentDate(currentHour, nextMinute, currentMeridian);
   };

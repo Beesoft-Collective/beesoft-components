@@ -23,3 +23,16 @@ CurrentDateTime.args = {
   label: 'Date',
   onChange: action('onChange')
 };
+
+export const MinuteConstraint = Template.bind({});
+MinuteConstraint.args = {
+  name: 'date',
+  label: 'Date',
+  timeConstraints: {
+    minutes: {
+      min: 0,
+      max: 59,
+      step: 10
+    }
+  }
+};

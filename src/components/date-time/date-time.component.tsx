@@ -7,6 +7,7 @@ import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
+import { TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
@@ -15,10 +16,11 @@ export interface DateTimeProps {
   value?: string | Date;
   label?: string;
   format?: string;
+  timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
 }
 
-export default function DateTime({name, value, label, format, onChange}: DateTimeProps) {
+export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(getBrowserLanguage());
@@ -107,7 +109,7 @@ export default function DateTime({name, value, label, format, onChange}: DateTim
           {state.currentSelector === DateTimeActionType.YearSelector &&
           <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
-          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
+          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} timeConstraints={timeConstraints} />}
           {state.currentSelector === DateTimeActionType.DaySelector &&
           <div className="w-full flex flex-row p-2 justify-center">
             <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
