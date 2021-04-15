@@ -7,10 +7,10 @@
       "dom.iterable",
       "esnext"
     ],
-    "rootDir": "src",
-    "allowJs": true,
+    "rootDir": ".",
     "declaration": true,
     "declarationDir": "build",
+    "outDir": "build",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "removeComments": true,
@@ -25,15 +25,15 @@
     "noImplicitAny": false,
     "jsx": "react",
     "isolatedModules": true,
-    "noEmit": true
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",
     "build",
-    "src/**/*.stories.tsx",
-    "src/**/*.stories.ts"
+    "public",
+    "./src/**/*.stories.tsx",
+    "./src/**/*.stories.ts"
   ]
 }

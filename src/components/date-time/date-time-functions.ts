@@ -43,7 +43,7 @@ export function getMonthMatrix(matrixDate: Date) {
 }
 
 function createNullMatrix(rows: number, columns: number): Array<Array<any>> {
-  const rowArray = [];
+  const rowArray: Array<Array<null>> = [];
   for (let row = 0, length = rows; row < length; row++) {
     const colArray: Array<null> = [];
     for (let col = 0, colLength = columns; col < colLength; col++) {

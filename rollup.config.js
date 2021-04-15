@@ -5,22 +5,22 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
-
-const packageJson = require('./package.json');
+import { terser } from "rollup-plugin-terser";
 
 const config = [
   {
     input: 'src/index.ts',
     output: [
       {
-        file: packageJson.main,
-        format: 'cjs',
+        file: 'build/index.es.js',
         sourcemap: true,
       },
       {
-        file: packageJson.module,
-        format: 'esm',
+        file: 'build/index.es.min.js',
         sourcemap: true,
+        plugins: [
+          terser(),
+        ],
       },
     ],
     plugins: [
