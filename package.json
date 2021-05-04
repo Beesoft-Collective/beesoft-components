@@ -1,13 +1,17 @@
 {
   "name": "beesoft-components",
-  "version": "0.1.0",
+  "version": "0.0.4",
   "private": false,
-  "main": "main.js",
-  "module": "index.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/beehive-inc/custom-components/react/beesoft-components"
+  },
+  "main": "build/index.es.min.js",
+  "module": "build/index.es.js",
   "files": [
     "build"
   ],
-  "types": "build/index.d.ts",
+  "types": "build/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
@@ -19,7 +23,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "rimraf build && rollup -c",
+    "build": "rimraf build && NODE_ENV=production rollup -c",
     "build:app": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
