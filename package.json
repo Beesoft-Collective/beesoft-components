@@ -8,9 +8,6 @@
   },
   "main": "build/index.es.min.js",
   "module": "build/index.es.js",
-  "files": [
-    "build"
-  ],
   "types": "build/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
