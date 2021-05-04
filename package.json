@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://gitlab.com/beehive-inc/custom-components/react/beesoft-components"
   },
+  "files": [
+    "build"
+  ],
   "main": "build/index.es.min.js",
   "module": "build/index.es.js",
   "types": "build/src/index.d.ts",
