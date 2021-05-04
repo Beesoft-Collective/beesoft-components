@@ -21,6 +21,7 @@ export interface DateTimeProps {
 }
 
 export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
+  console.log('DateTime test');
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(getBrowserLanguage());
