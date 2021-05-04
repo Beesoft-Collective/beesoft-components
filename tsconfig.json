@@ -23,8 +23,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "noImplicitAny": false,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "isolatedModules": true,
+    "allowJs": true
   },
   "include": [
     "./src/**/*"
