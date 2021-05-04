@@ -19,9 +19,8 @@ export interface DateTimeProps {
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
 }
-
+console.log('outside date time');
 export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
-  console.log('DateTime test');
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(getBrowserLanguage());
