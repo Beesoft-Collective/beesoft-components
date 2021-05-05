@@ -21,6 +21,7 @@ export interface DateTimeProps {
 }
 console.log('outside date time');
 export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
+  console.log('inside date time');
   // const [selectorOpen, setSelectorOpen] = useState(false);
   // const [dropDownTarget, setDropDownTarget] = useState<Element>();
   // const language = useRef<string>(getBrowserLanguage());
@@ -89,7 +90,7 @@ export default function DateTime({name, value, label, format, timeConstraints, o
 
   return (
     <div>
-      {label && <label>{label}</label>}
+      {/*{label && <label>{label}</label>}*/}
       {/*<ContentEditableInput*/}
       {/*  value={getValue()}*/}
       {/*  className="parent-element"*/}
