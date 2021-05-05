@@ -23,7 +23,7 @@ console.log('outside date time');
 export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
-  const language = useRef<string>(getBrowserLanguage());
+  // const language = useRef<string>(getBrowserLanguage());
 
   const getDateValue = () => {
     const defaultDate = new Date();
@@ -85,7 +85,7 @@ export default function DateTime({name, value, label, format, timeConstraints, o
   };
 
   const getValue = () =>
-    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(language.current)}`;
+    `${state.selectedDate.toLocaleDateString(/*language.current*/'en-AU')} ${state.selectedDate.toLocaleTimeString(/*language.current*/'en-AU')}`;
 
   return (
     <div>
@@ -114,8 +114,8 @@ export default function DateTime({name, value, label, format, timeConstraints, o
           <div className="w-full flex flex-row p-2 justify-center">
             <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
               {
-                state.selectedDate?.toLocaleTimeString(language.current) ||
-                getDefaultTime(language.current)
+                state.selectedDate?.toLocaleTimeString(/*language.current*/'en-AU') ||
+                getDefaultTime(/*language.current*/'en-AU')
               }
             </div>
           </div>
