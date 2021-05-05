@@ -9,8 +9,8 @@
   "files": [
     "build"
   ],
+  "license": "MIT",
   "main": "build/index.es.min.js",
-  "module": "build/index.es.js",
   "types": "build/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "rimraf build && NODE_ENV=production rollup -c",
+    "build": "rimraf build && rollup -c --environment NODE_ENV:production",
     "build:app": "craco build",
     "test": "echo \"craco test\"",
     "eject": "react-scripts eject",
