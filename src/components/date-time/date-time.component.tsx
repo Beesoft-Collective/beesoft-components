@@ -19,110 +19,109 @@ export interface DateTimeProps {
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
 }
-console.log('outside date time');
-export default function DateTime(/*{name, value, label, format, timeConstraints, onChange}: DateTimeProps*/) {
-  console.log('inside date time');
-  // const [selectorOpen, setSelectorOpen] = useState(false);
-  // const [dropDownTarget, setDropDownTarget] = useState<Element>();
-  // const language = useRef<string>(getBrowserLanguage());
-  //
-  // const getDateValue = () => {
-  //   const defaultDate = new Date();
-  //   defaultDate.setHours(0, 0, 0, 0);
-  //
-  //   return value ? typeof value === 'string' ? new Date(value) : value : defaultDate;
-  // };
-  //
-  // const initialState: DateTimeState = {
-  //   currentSelector: DateTimeActionType.DaySelector,
-  //   currentViewDate: getDateValue(),
-  //   selectedDate: getDateValue(),
-  //   originalSetDate: getDateValue(),
-  //   selectedDateChanged: false
-  // };
-  //
-  // const [state, dispatcher] = useReducer(reducer, initialState);
 
-  // const onFocus = (event: React.FocusEvent) => {
-  //   setDropDownElement(event);
-  //   setSelectorOpen(true);
-  // };
+export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
+  const [selectorOpen, setSelectorOpen] = useState(false);
+  const [dropDownTarget, setDropDownTarget] = useState<Element>();
+  const language = useRef<string>(getBrowserLanguage());
 
-  // const onInput = (event: React.FormEvent) => {
-  //   console.log('on input', event);
-  // };
+  const getDateValue = () => {
+    const defaultDate = new Date();
+    defaultDate.setHours(0, 0, 0, 0);
 
-  // const onCalendarClick = (event: React.MouseEvent) => {
-  //   setDropDownElement(event);
-  //   setSelectorOpen(!selectorOpen);
-  // };
+    return value ? typeof value === 'string' ? new Date(value) : value : defaultDate;
+  };
 
-  // const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
-  //   if (!dropDownTarget) {
-  //     const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
-  //     setDropDownTarget(parentElement);
-  //   }
-  // };
+  const initialState: DateTimeState = {
+    currentSelector: DateTimeActionType.DaySelector,
+    currentViewDate: getDateValue(),
+    selectedDate: getDateValue(),
+    originalSetDate: getDateValue(),
+    selectedDateChanged: false
+  };
 
-  // const onDateTimeHidden = () => {
-  //   setSelectorOpen(false);
-  //   dispatcher({
-  //     type: DateTimeActionType.DaySelector
-  //   });
-  //
-  //   if (onChange && state.selectedDateChanged) {
-  //     onChange(state.selectedDate);
-  //     dispatcher({
-  //       type: DateTimeActionType.ResetSelectedDateChanged,
-  //       selectedDate: state.selectedDate
-  //     });
-  //   }
-  // };
+  const [state, dispatcher] = useReducer(reducer, initialState);
 
-  // const onTimeClicked = () => {
-  //   dispatcher({
-  //     type: DateTimeActionType.TimeSelector
-  //   });
-  // };
+  const onFocus = (event: React.FocusEvent) => {
+    setDropDownElement(event);
+    setSelectorOpen(true);
+  };
 
-  // const getValue = () =>
-  //   `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(language.current)}`;
+  const onInput = (event: React.FormEvent) => {
+    console.log('on input', event);
+  };
+
+  const onCalendarClick = (event: React.MouseEvent) => {
+    setDropDownElement(event);
+    setSelectorOpen(!selectorOpen);
+  };
+
+  const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
+    if (!dropDownTarget) {
+      const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
+      setDropDownTarget(parentElement);
+    }
+  };
+
+  const onDateTimeHidden = () => {
+    setSelectorOpen(false);
+    dispatcher({
+      type: DateTimeActionType.DaySelector
+    });
+
+    if (onChange && state.selectedDateChanged) {
+      onChange(state.selectedDate);
+      dispatcher({
+        type: DateTimeActionType.ResetSelectedDateChanged,
+        selectedDate: state.selectedDate
+      });
+    }
+  };
+
+  const onTimeClicked = () => {
+    dispatcher({
+      type: DateTimeActionType.TimeSelector
+    });
+  };
+
+  const getValue = () =>
+    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(language.current)}`;
 
   return (
     <div>
-      {/*{label && <label>{label}</label>}*/}
-      {/*<ContentEditableInput*/}
-      {/*  value={getValue()}*/}
-      {/*  className="parent-element"*/}
-      {/*  rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']}/>}*/}
-      {/*  rightElementClassName="cursor-pointer"*/}
-      {/*  onRightElementClick={onCalendarClick}*/}
-      {/*  onFocus={onFocus}*/}
-      {/*  onInput={onInput}/>*/}
-      {/*<OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}*/}
-      {/*              hidden={onDateTimeHidden}>*/}
-      {/*  <>*/}
-      {/*    {state.currentSelector === DateTimeActionType.DaySelector &&*/}
-      {/*    <DateTimeDaySelector selectedDate={state.selectedDate} viewDate={state.currentViewDate}*/}
-      {/*                         dispatcher={dispatcher}/>}*/}
-      {/*    {state.currentSelector === DateTimeActionType.MonthSelector &&*/}
-      {/*    <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}*/}
-      {/*    {state.currentSelector === DateTimeActionType.YearSelector &&*/}
-      {/*    <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}*/}
-      {/*    {state.currentSelector === DateTimeActionType.TimeSelector &&*/}
-      {/*    <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} timeConstraints={timeConstraints} />}*/}
-      {/*    {state.currentSelector === DateTimeActionType.DaySelector &&*/}
-      {/*    <div className="w-full flex flex-row p-2 justify-center">*/}
-      {/*      <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>*/}
-      {/*        {*/}
-      {/*          state.selectedDate?.toLocaleTimeString(language.current) ||*/}
-      {/*          getDefaultTime(language.current)*/}
-      {/*        }*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    }*/}
-      {/*  </>*/}
-      {/*</OverlayPanel>*/}
+      {label && <label>{label}</label>}
+      <ContentEditableInput
+        value={getValue()}
+        className="parent-element"
+        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']}/>}
+        rightElementClassName="cursor-pointer"
+        onRightElementClick={onCalendarClick}
+        onFocus={onFocus}
+        onInput={onInput}/>
+      <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
+                    hidden={onDateTimeHidden}>
+        <>
+          {state.currentSelector === DateTimeActionType.DaySelector &&
+          <DateTimeDaySelector selectedDate={state.selectedDate} viewDate={state.currentViewDate}
+                               dispatcher={dispatcher}/>}
+          {state.currentSelector === DateTimeActionType.MonthSelector &&
+          <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
+          {state.currentSelector === DateTimeActionType.YearSelector &&
+          <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
+          {state.currentSelector === DateTimeActionType.TimeSelector &&
+          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} timeConstraints={timeConstraints} />}
+          {state.currentSelector === DateTimeActionType.DaySelector &&
+          <div className="w-full flex flex-row p-2 justify-center">
+            <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
+              {
+                state.selectedDate?.toLocaleTimeString(language.current) ||
+                getDefaultTime(language.current)
+              }
+            </div>
+          </div>
+          }
+        </>
+      </OverlayPanel>
     </div>
   );
 }
