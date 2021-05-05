@@ -20,7 +20,7 @@ export interface DateTimeProps {
   onChange?: (value: Date) => void;
 }
 console.log('outside date time');
-export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
+export default function DateTime(/*{name, value, label, format, timeConstraints, onChange}: DateTimeProps*/) {
   console.log('inside date time');
   // const [selectorOpen, setSelectorOpen] = useState(false);
   // const [dropDownTarget, setDropDownTarget] = useState<Element>();
