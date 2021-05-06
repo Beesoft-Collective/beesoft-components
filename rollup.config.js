@@ -4,7 +4,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
-import copy from 'rollup-plugin-copy';
 import { terser } from "rollup-plugin-terser";
 
 const config = [
@@ -23,21 +22,23 @@ const config = [
         ],
       },
     ],
+    external: [
+      'react',
+      'react-dom',
+    ],
     plugins: [
       peerDepsExternal(),
+      postcss({
+        config: {
+          path: './postcss.config.js',
+        },
+        extensions: ['.css'],
+        minimize: true,
+        extract: true,
+      }),
       resolve(),
       commonjs(),
       typescript({ useTsconfigDeclarationDir: true }),
-      postcss(),
-      copy({
-        targets: [
-          {
-            src: 'src/index.css',
-            dest: 'build',
-            rename: 'variables.css',
-          },
-        ],
-      }),
     ],
   },
 ];
