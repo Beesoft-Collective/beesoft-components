@@ -62,7 +62,7 @@ export default function ContentEditableInput({
            onInput={onInputed}>
         {value}
       </div>
-      <div className={`flex-shrink ${rightElementClassName}`} onClick={onRightElementClicked}>{rightElement}</div>
+      <div className={`flex-shrink ml-2 ${rightElementClassName}`} onClick={onRightElementClicked}>{rightElement}</div>
     </div>
   );
 }
