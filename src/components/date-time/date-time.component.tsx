@@ -13,7 +13,6 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 import "../../index.css";
 
 export interface DateTimeProps {
-  name: string;
   value?: string | Date;
   label?: string;
   format?: string;
@@ -21,7 +20,7 @@ export interface DateTimeProps {
   onChange?: (value: Date) => void;
 }
 
-export default function DateTime({name, value, label, format, timeConstraints, onChange}: DateTimeProps) {
+export default function DateTime({value, label, format, timeConstraints, onChange}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(getBrowserLanguage());
@@ -98,7 +97,7 @@ export default function DateTime({name, value, label, format, timeConstraints, o
         rightElementClassName="cursor-pointer"
         onRightElementClick={onCalendarClick}
         onFocus={onFocus}
-        onInput={onInput}/>
+        onInput={onInput} />
       <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
                     hidden={onDateTimeHidden}>
         <>
