@@ -4,7 +4,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
-import { terser } from "rollup-plugin-terser";
+import { terser } from 'rollup-plugin-terser';
 
 const config = [
   {
@@ -17,15 +17,10 @@ const config = [
       {
         file: 'build/index.es.min.js',
         sourcemap: true,
-        plugins: [
-          terser(),
-        ],
+        plugins: [terser()],
       },
     ],
-    external: [
-      'react',
-      'react-dom',
-    ],
+    external: ['react', 'react-dom'],
     plugins: [
       peerDepsExternal(),
       postcss({

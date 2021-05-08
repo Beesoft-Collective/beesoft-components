@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import BeeSoftTransition from '../beesoft-transition/beesoft-transition.component';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../common-event-handlers';
 import { DomHandler } from '../dom-handler';
-import "../../index.css";
+import '../../index.css';
 
 export interface OverlayPanelProps {
   visible: boolean;
@@ -20,18 +20,18 @@ export interface OverlayPanelProps {
 }
 
 export default function OverlayPanel({
-                                       visible,
-                                       target,
-                                       shouldTargetCloseOverlay = true,
-                                       shouldMatchTargetWidth = false,
-                                       appendTo = document.body,
-                                       transitionDuration = 400,
-                                       showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
-                                       hideTransitionOptions = 'linear',
-                                       shown,
-                                       hidden,
-                                       children
-                                     }: OverlayPanelProps) {
+  visible,
+  target,
+  shouldTargetCloseOverlay = true,
+  shouldMatchTargetWidth = false,
+  appendTo = document.body,
+  transitionDuration = 400,
+  showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
+  hideTransitionOptions = 'linear',
+  shown,
+  hidden,
+  children,
+}: OverlayPanelProps) {
   const [top, setTop] = useState(0);
   const [left, setLeft] = useState(0);
   const [width, setWidth] = useState(0);
@@ -96,10 +96,10 @@ export default function OverlayPanel({
   };
 
   const createElement = () => {
-    let baseStyles: React.CSSProperties = {
+    const baseStyles: React.CSSProperties = {
       top: `${top}px`,
       left: `${left}px`,
-      zIndex
+      zIndex,
     };
 
     if (shouldMatchTargetWidth) {
@@ -107,14 +107,16 @@ export default function OverlayPanel({
     }
 
     return (
-      <BeeSoftTransition start={visibility}
-                         timeout={transitionDuration}
-                         showTransitionOptions={showTransitionOptions}
-                         hideTransitionOptions={hideTransitionOptions}
-                         onEntering={onEntering}
-                         onEntered={onEntered}
-                         onExit={onExit}
-                         onExited={onExited}>
+      <BeeSoftTransition
+        start={visibility}
+        timeout={transitionDuration}
+        showTransitionOptions={showTransitionOptions}
+        hideTransitionOptions={hideTransitionOptions}
+        onEntering={onEntering}
+        onEntered={onEntered}
+        onExit={onExit}
+        onExited={onExited}
+      >
         {({ state, defaultStyle, transitionStyles }) => (
           <div
             className="absolute bg-white shadow"

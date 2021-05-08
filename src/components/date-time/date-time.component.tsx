@@ -10,7 +10,7 @@ import DateTimeTimeSelector from './date-time-time-selector.component';
 import { TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
-import "../../index.css";
+import '../../index.css';
 
 export interface DateTimeProps {
   value?: string | Date;
@@ -20,7 +20,7 @@ export interface DateTimeProps {
   onChange?: (value: Date) => void;
 }
 
-export default function DateTime({value, label, format, timeConstraints, onChange}: DateTimeProps) {
+export default function DateTime({ value, label, format, timeConstraints, onChange }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(getBrowserLanguage());
@@ -29,7 +29,7 @@ export default function DateTime({value, label, format, timeConstraints, onChang
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
-    return value ? typeof value === 'string' ? new Date(value) : value : defaultDate;
+    return value ? (typeof value === 'string' ? new Date(value) : value) : defaultDate;
   };
 
   const initialState: DateTimeState = {
@@ -37,7 +37,7 @@ export default function DateTime({value, label, format, timeConstraints, onChang
     currentViewDate: getDateValue(),
     selectedDate: getDateValue(),
     originalSetDate: getDateValue(),
-    selectedDateChanged: false
+    selectedDateChanged: false,
   };
 
   const [state, dispatcher] = useReducer(reducer, initialState);
@@ -66,26 +66,28 @@ export default function DateTime({value, label, format, timeConstraints, onChang
   const onDateTimeHidden = () => {
     setSelectorOpen(false);
     dispatcher({
-      type: DateTimeActionType.DaySelector
+      type: DateTimeActionType.DaySelector,
     });
 
     if (onChange && state.selectedDateChanged) {
       onChange(state.selectedDate);
       dispatcher({
         type: DateTimeActionType.ResetSelectedDateChanged,
-        selectedDate: state.selectedDate
+        selectedDate: state.selectedDate,
       });
     }
   };
 
   const onTimeClicked = () => {
     dispatcher({
-      type: DateTimeActionType.TimeSelector
+      type: DateTimeActionType.TimeSelector,
     });
   };
 
   const getValue = () =>
-    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(language.current)}`;
+    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(
+      language.current
+    )}`;
 
   return (
     <div>
@@ -93,33 +95,46 @@ export default function DateTime({value, label, format, timeConstraints, onChang
       <ContentEditableInput
         value={getValue()}
         className="parent-element"
-        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']}/>}
+        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']} />}
         rightElementClassName="cursor-pointer"
         onRightElementClick={onCalendarClick}
         onFocus={onFocus}
-        onInput={onInput} />
-      <OverlayPanel visible={selectorOpen} target={dropDownTarget} shouldTargetCloseOverlay={false}
-                    hidden={onDateTimeHidden}>
+        onInput={onInput}
+      />
+      <OverlayPanel
+        visible={selectorOpen}
+        target={dropDownTarget}
+        shouldTargetCloseOverlay={false}
+        hidden={onDateTimeHidden}
+      >
         <>
-          {state.currentSelector === DateTimeActionType.DaySelector &&
-          <DateTimeDaySelector selectedDate={state.selectedDate} viewDate={state.currentViewDate}
-                               dispatcher={dispatcher}/>}
-          {state.currentSelector === DateTimeActionType.MonthSelector &&
-          <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
-          {state.currentSelector === DateTimeActionType.YearSelector &&
-          <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher}/>}
-          {state.currentSelector === DateTimeActionType.TimeSelector &&
-          <DateTimeTimeSelector viewDate={state.currentViewDate} dispatcher={dispatcher} timeConstraints={timeConstraints} />}
-          {state.currentSelector === DateTimeActionType.DaySelector &&
-          <div className="w-full flex flex-row p-2 justify-center">
-            <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
-              {
-                state.selectedDate?.toLocaleTimeString(language.current) ||
-                getDefaultTime(language.current)
-              }
+          {state.currentSelector === DateTimeActionType.DaySelector && (
+            <DateTimeDaySelector
+              selectedDate={state.selectedDate}
+              viewDate={state.currentViewDate}
+              dispatcher={dispatcher}
+            />
+          )}
+          {state.currentSelector === DateTimeActionType.MonthSelector && (
+            <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
+          )}
+          {state.currentSelector === DateTimeActionType.YearSelector && (
+            <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
+          )}
+          {state.currentSelector === DateTimeActionType.TimeSelector && (
+            <DateTimeTimeSelector
+              viewDate={state.currentViewDate}
+              dispatcher={dispatcher}
+              timeConstraints={timeConstraints}
+            />
+          )}
+          {state.currentSelector === DateTimeActionType.DaySelector && (
+            <div className="w-full flex flex-row p-2 justify-center">
+              <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
+                {state.selectedDate?.toLocaleTimeString(language.current) || getDefaultTime(language.current)}
+              </div>
             </div>
-          </div>
-          }
+          )}
         </>
       </OverlayPanel>
     </div>

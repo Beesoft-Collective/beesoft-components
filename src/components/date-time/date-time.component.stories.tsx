@@ -5,34 +5,31 @@ import DateTime, { DateTimeProps } from './date-time.component';
 
 export default {
   title: 'Date Time',
-  component: DateTime
+  component: DateTime,
 } as Meta;
 
-const Template: Story<DateTimeProps> = args => <DateTime {...args} />;
+const Template: Story<DateTimeProps> = (args) => <DateTime {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  name: 'date',
   label: 'Date',
-  value: '30/01/2021 10:15:00 AM'
+  value: '30/01/2021 10:15:00 AM',
 };
 
 export const CurrentDateTime = Template.bind({});
 CurrentDateTime.args = {
-  name: 'date',
   label: 'Date',
-  onChange: action('onChange')
+  onChange: action('onChange'),
 };
 
 export const MinuteConstraint = Template.bind({});
 MinuteConstraint.args = {
-  name: 'date',
   label: 'Date',
   timeConstraints: {
     minutes: {
       min: 0,
       max: 59,
-      step: 10
-    }
-  }
+      step: 10,
+    },
+  },
 };

@@ -23,21 +23,21 @@ export interface BeeSoftTransitionProps {
 }
 
 export default function BeeSoftTransition({
-                                            start,
-                                            timeout = 400,
-                                            defaultStyle,
-                                            transitionStyles,
-                                            showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
-                                            hideTransitionOptions = 'linear',
-                                            onEntering,
-                                            onEntered,
-                                            onExit,
-                                            onExited,
-                                            children
-                                          }: BeeSoftTransitionProps) {
+  start,
+  timeout = 400,
+  defaultStyle,
+  transitionStyles,
+  showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
+  hideTransitionOptions = 'linear',
+  onEntering,
+  onEntered,
+  onExit,
+  onExited,
+  children,
+}: BeeSoftTransitionProps) {
   const initialStyle = defaultStyle || {
     transition: `opacity ${timeout}ms ${showTransitionOptions}`,
-    opacity: 0
+    opacity: 0,
   };
 
   const transitions = transitionStyles || {
@@ -51,7 +51,7 @@ export default function BeeSoftTransition({
       transition: `opacity ${timeout}ms ${hideTransitionOptions}`,
       opacity: 0,
     },
-    unmounted: {}
+    unmounted: {},
   };
 
   return (
