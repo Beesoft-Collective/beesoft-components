@@ -10,7 +10,6 @@ import DateTimeTimeSelector from './date-time-time-selector.component';
 import { TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
-import '../../index.css';
 
 export interface DateTimeProps {
   value?: string | Date;

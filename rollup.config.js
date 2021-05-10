@@ -21,20 +21,7 @@ const config = [
       },
     ],
     external: ['react', 'react-dom'],
-    plugins: [
-      peerDepsExternal(),
-      postcss({
-        config: {
-          path: './postcss.config.js',
-        },
-        extensions: ['.css'],
-        minimize: true,
-        extract: true,
-      }),
-      resolve(),
-      commonjs(),
-      typescript({ useTsconfigDeclarationDir: true }),
-    ],
+    plugins: [peerDepsExternal(), resolve(), commonjs(), typescript({ useTsconfigDeclarationDir: true }), postcss()],
   },
 ];
 

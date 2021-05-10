@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import BeeSoftTransition from '../beesoft-transition/beesoft-transition.component';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../common-event-handlers';
 import { DomHandler } from '../dom-handler';
-import '../../index.css';
 
 export interface OverlayPanelProps {
   visible: boolean;
