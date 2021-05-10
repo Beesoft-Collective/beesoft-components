@@ -26,7 +26,7 @@ export default function ContentEditableInput({
   onFocus,
   onInput,
   onLeftElementClick,
-  onRightElementClick
+  onRightElementClick,
 }: ContentEditableInputProps) {
   const onLeftElementClicked = (event: React.MouseEvent) => {
     if (onLeftElementClick) {
@@ -54,15 +54,21 @@ export default function ContentEditableInput({
 
   return (
     <div className={`w-full flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2 ${className}`}>
-      <div className={`flex-shrink ${leftElementClassName}`} onClick={onLeftElementClicked}>{leftElement}</div>
-      <div className="flex-grow focus:outline-none"
-           contentEditable={true}
-           suppressContentEditableWarning={true}
-           onFocus={onFocused}
-           onInput={onInputed}>
+      <div className={`flex-shrink ${leftElementClassName}`} onClick={onLeftElementClicked}>
+        {leftElement}
+      </div>
+      <div
+        className="flex-grow focus:outline-none"
+        contentEditable={true}
+        suppressContentEditableWarning={true}
+        onFocus={onFocused}
+        onInput={onInputed}
+      >
         {value}
       </div>
-      <div className={`flex-shrink ml-2 ${rightElementClassName}`} onClick={onRightElementClicked}>{rightElement}</div>
+      <div className={`flex-shrink ml-2 ${rightElementClassName}`} onClick={onRightElementClicked}>
+        {rightElement}
+      </div>
     </div>
   );
 }

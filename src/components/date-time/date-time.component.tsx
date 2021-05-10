@@ -93,7 +93,7 @@ export default function DateTime({ value, label, format, timeConstraints, onChan
       {label && <label>{label}</label>}
       <ContentEditableInput
         value={getValue()}
-        className="parent-element"
+        className="parent-element text-left"
         rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']} />}
         rightElementClassName="cursor-pointer"
         onRightElementClick={onCalendarClick}
