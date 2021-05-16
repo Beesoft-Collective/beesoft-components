@@ -16,7 +16,7 @@ const config = [
       },
       {
         file: 'build/index.es.min.js',
-        sourcemap: true,
+        sourcemap: false,
         plugins: [terser()],
       },
     ],
