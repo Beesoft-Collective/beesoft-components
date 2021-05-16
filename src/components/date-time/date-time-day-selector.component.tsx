@@ -1,6 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { addMonths, subMonths } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import addMonths from 'date-fns/addMonths';
+import subMonths from 'date-fns/subMonths';
 import { getBrowserLanguage } from '../common-functions';
 import { getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
@@ -25,7 +26,7 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
       setMonthMatrix(getMonthMatrix(previousMonth));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
-        viewDate: previousMonth
+        viewDate: previousMonth,
       });
     }
   };
@@ -36,7 +37,7 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
       setMonthMatrix(getMonthMatrix(nextMonth));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
-        viewDate: nextMonth
+        viewDate: nextMonth,
       });
     }
   };
@@ -44,17 +45,17 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
   const onDateClicked = (date: Date) => {
     dispatcher({
       type: DateTimeActionType.SetSelectedDate,
-      selectedDate: date
+      selectedDate: date,
     });
     dispatcher({
       type: DateTimeActionType.SetViewDate,
-      viewDate: date
+      viewDate: date,
     });
   };
 
   const onMonthClicked = () => {
     dispatcher({
-      type: DateTimeActionType.MonthSelector
+      type: DateTimeActionType.MonthSelector,
     });
   };
 
@@ -62,7 +63,7 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
     if (viewDate) {
       return viewDate.toLocaleDateString(getBrowserLanguage(), {
         month: 'long',
-        year: 'numeric'
+        year: 'numeric',
       });
     }
   };
@@ -77,12 +78,14 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
   };
 
   return (
-    <div style={{ minWidth: "20rem" }}>
+    <div style={{ minWidth: '20rem' }}>
       <div className="w-full flex flex-row py-1 px-2">
         <div className="flex-shrink cursor-pointer" onClick={onMovePreviousMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </div>
-        <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>{getCurrentMonthYear()}</div>
+        <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>
+          {getCurrentMonthYear()}
+        </div>
         <div className="flex-shrink cursor-pointer" onClick={onMoveNextMonth}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>
@@ -101,10 +104,10 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
               {row.map((column, cIndex) => (
                 <td
                   key={rIndex.toString() + cIndex.toString()}
-                  className={`text-center cursor-pointer${column && isSelectedDate(column) ? " bg-blue-100" : ""}`}
+                  className={`text-center cursor-pointer${column && isSelectedDate(column) ? ' bg-blue-100' : ''}`}
                   onClick={() => {
                     if (column) {
-                      onDateClicked(column)
+                      onDateClicked(column);
                     }
                   }}
                 >

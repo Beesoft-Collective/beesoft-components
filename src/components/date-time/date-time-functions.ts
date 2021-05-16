@@ -1,13 +1,12 @@
-import {
-  addDays,
-  addMonths, addYears,
-  eachDayOfInterval,
-  eachYearOfInterval,
-  getDay,
-  getDaysInMonth,
-  lastDayOfMonth,
-  startOfMonth
-} from 'date-fns';
+import addDays from 'date-fns/addDays';
+import addMonths from 'date-fns/addMonths';
+import addYears from 'date-fns/addYears';
+import eachDayOfInterval from 'date-fns/eachDayOfInterval';
+import eachYearOfInterval from 'date-fns/eachYearOfInterval';
+import getDay from 'date-fns/getDay';
+import getDaysInMonth from 'date-fns/getDaysInMonth';
+import lastDayOfMonth from 'date-fns/lastDayOfMonth';
+import startOfMonth from 'date-fns/startOfMonth';
 
 export function getMonthMatrix(matrixDate: Date) {
   const daysInMonth = getDaysInMonth(matrixDate);
@@ -16,9 +15,9 @@ export function getMonthMatrix(matrixDate: Date) {
   const firstDayOfMonthNumber = getDay(firstDayInMonth);
   const monthDates = eachDayOfInterval({
     start: firstDayInMonth,
-    end: lastDayInMonth
+    end: lastDayInMonth,
   });
-  const rowCount = (daysInMonth + firstDayOfMonthNumber) > 35 ? 7 : 6;
+  const rowCount = daysInMonth + firstDayOfMonthNumber > 35 ? 7 : 6;
   const monthMatrix = createNullMatrix(rowCount, 7);
   let currentDay = 1;
 
@@ -61,7 +60,7 @@ export function getTranslatedDays(locale: string) {
   const weekDays: Array<string> = [];
 
   for (let i = 0; i < 7; i++) {
-    weekDays.push(addDays(startDate, i).toLocaleDateString(locale, {weekday: 'short'}));
+    weekDays.push(addDays(startDate, i).toLocaleDateString(locale, { weekday: 'short' }));
   }
 
   return weekDays;
@@ -69,13 +68,30 @@ export function getTranslatedDays(locale: string) {
 
 export function getTranslatedMonthMatrix(locale: string) {
   const startDate = new Date(Date.UTC(2020, 0, 1));
-  const months: Array<Array<{
-    monthNumber: number,
-    monthName: string
-  }>> = [
-    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }],
-    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }],
-    [{ monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }, { monthNumber: 0, monthName: '' }]
+  const months: Array<
+    Array<{
+      monthNumber: number;
+      monthName: string;
+    }>
+  > = [
+    [
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+    ],
+    [
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+    ],
+    [
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+      { monthNumber: 0, monthName: '' },
+    ],
   ];
 
   let monthCount = 0;
@@ -83,7 +99,7 @@ export function getTranslatedMonthMatrix(locale: string) {
     for (let column = 0; column < 4; column++) {
       months[row][column] = {
         monthNumber: monthCount,
-        monthName: addMonths(startDate, monthCount++).toLocaleDateString(locale, {month: 'short'})
+        monthName: addMonths(startDate, monthCount++).toLocaleDateString(locale, { month: 'short' }),
       };
     }
   }
@@ -98,7 +114,7 @@ export function getTranslatedYearMatrix(matrixDate: Date, locale: string) {
 
   const matrixYears = eachYearOfInterval({
     start: clonedDate,
-    end: addYears(clonedDate, 9)
+    end: addYears(clonedDate, 9),
   });
 
   const years: Array<Array<string>> = createNullMatrix(3, 4);
@@ -106,7 +122,7 @@ export function getTranslatedYearMatrix(matrixDate: Date, locale: string) {
   for (let row = 0; row < 3; row++) {
     for (let column = 0; column < 4; column++) {
       years[row][column] = matrixYears[yearCount++].toLocaleDateString(locale, {
-        year: 'numeric'
+        year: 'numeric',
       });
 
       if (yearCount === matrixYears.length) {

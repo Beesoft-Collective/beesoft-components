@@ -6,6 +6,7 @@ import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
+import { parseLocaleDate } from './date-time-parser';
 import DateTimeTimeSelector from './date-time-time-selector.component';
 import { TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
@@ -14,21 +15,22 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 export interface DateTimeProps {
   value?: string | Date;
   label?: string;
+  locale?: string;
   format?: string;
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
 }
 
-export default function DateTime({ value, label, format, timeConstraints, onChange }: DateTimeProps) {
+export default function DateTime({ value, label, locale, format, timeConstraints, onChange }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
-  const language = useRef<string>(getBrowserLanguage());
+  const language = useRef<string>(locale || getBrowserLanguage());
 
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
-    return value ? (typeof value === 'string' ? new Date(value) : value) : defaultDate;
+    return value ? (typeof value === 'string' ? parseLocaleDate(value, language.current) : value) : defaultDate;
   };
 
   const initialState: DateTimeState = {
@@ -47,7 +49,15 @@ export default function DateTime({ value, label, format, timeConstraints, onChan
   };
 
   const onInput = (event: React.FormEvent) => {
-    console.log('on input', event);
+    const inputDate = parseLocaleDate((event.target as HTMLElement).innerText, language.current);
+    dispatcher({
+      type: DateTimeActionType.SetViewDate,
+      viewDate: inputDate,
+    });
+    dispatcher({
+      type: DateTimeActionType.SetSelectedDate,
+      selectedDate: inputDate,
+    });
   };
 
   const onCalendarClick = (event: React.MouseEvent) => {

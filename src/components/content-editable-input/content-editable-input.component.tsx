@@ -1,5 +1,5 @@
 import React from 'react';
-import * as _ from 'lodash';
+import debounce from 'lodash/debounce';
 
 export interface ContentEditableInputProps {
   value?: string;
@@ -46,7 +46,7 @@ export default function ContentEditableInput({
     }
   };
 
-  const onInputed = _.debounce((event: React.FormEvent) => {
+  const onInputed = debounce((event: React.FormEvent) => {
     if (onInput) {
       onInput(event);
     }

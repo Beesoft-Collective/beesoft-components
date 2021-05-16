@@ -5,7 +5,7 @@ export enum DateTimeActionType {
   TimeSelector,
   SetViewDate,
   SetSelectedDate,
-  ResetSelectedDateChanged
+  ResetSelectedDateChanged,
 }
 
 export interface DateTimeState {
@@ -28,47 +28,47 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       return {
         ...state,
         currentSelector: DateTimeActionType.DaySelector,
-        currentViewDate: action.viewDate || state.currentViewDate
+        currentViewDate: action.viewDate || state.currentViewDate,
       };
     case DateTimeActionType.MonthSelector:
       return {
         ...state,
         currentSelector: DateTimeActionType.MonthSelector,
-        currentViewDate: action.viewDate || state.currentViewDate
+        currentViewDate: action.viewDate || state.currentViewDate,
       };
     case DateTimeActionType.YearSelector:
       return {
         ...state,
-        currentSelector: DateTimeActionType.YearSelector
+        currentSelector: DateTimeActionType.YearSelector,
       };
     case DateTimeActionType.TimeSelector:
       return {
         ...state,
-        currentSelector: DateTimeActionType.TimeSelector
+        currentSelector: DateTimeActionType.TimeSelector,
       };
     case DateTimeActionType.SetViewDate:
       return {
         ...state,
-        currentViewDate: action.viewDate || new Date()
+        currentViewDate: action.viewDate || new Date(),
       };
     case DateTimeActionType.SetSelectedDate:
       return {
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
-        selectedDateChanged: state.originalSetDate.getTime() !== action.selectedDate?.getTime()
+        selectedDateChanged: state.originalSetDate.getTime() !== action.selectedDate?.getTime(),
       };
     case DateTimeActionType.ResetSelectedDateChanged:
       return {
         ...state,
         originalSetDate: action.selectedDate || state.selectedDate,
-        selectedDateChanged: false
+        selectedDateChanged: false,
       };
     default:
       return {
         ...state,
-        currentSelector: DateTimeActionType.DaySelector
+        currentSelector: DateTimeActionType.DaySelector,
       };
   }
-}
+};
 
 export default reducer;

@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Beesoft Components
+
+Currently, this component library contains a date/time selector, and an overlay component. More component will be added on a somewhat regular basis.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

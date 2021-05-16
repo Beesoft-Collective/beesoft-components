@@ -20,10 +20,14 @@ export function padNumber(value: number, padCount: number, padCharacter: string)
   return padString + value.toString();
 }
 
-export function generateNumberArray<T>(startingNumber: number, endingNumber: number, convertFunction?: (value: number) => T) {
+export function generateNumberArray<T>(
+  startingNumber: number,
+  endingNumber: number,
+  convertFunction?: (value: number) => T
+) {
   const numberArray: Array<T> = [];
   for (let current = startingNumber; current <= endingNumber; current++) {
-    numberArray.push(convertFunction ? convertFunction(current) : current as unknown as T);
+    numberArray.push(convertFunction ? convertFunction(current) : ((current as unknown) as T));
   }
 
   return numberArray;

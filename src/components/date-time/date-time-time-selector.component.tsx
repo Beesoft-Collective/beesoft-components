@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { generateNumberArray, padNumber } from '../common-functions';
 import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
@@ -10,12 +10,12 @@ export interface DateTimeTimeSelectorProps {
   timeConstraints?: TimeConstraints;
 }
 
-export default function DateTimeTimeSelector({viewDate, dispatcher, timeConstraints}: DateTimeTimeSelectorProps) {
+export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstraints }: DateTimeTimeSelectorProps) {
   const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => padNumber(value, 2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
 
-  const getMeridianHour = (hour: number) => hour > 11 ? hour - 12 : hour;
+  const getMeridianHour = (hour: number) => (hour > 11 ? hour - 12 : hour);
 
   const [currentHour, setCurrentHour] = useState(getMeridianHour(viewDate.getHours()));
   const [currentMinute, setCurrentMinute] = useState(viewDate.getMinutes());
@@ -61,62 +61,64 @@ export default function DateTimeTimeSelector({viewDate, dispatcher, timeConstrai
 
     dispatcher({
       type: DateTimeActionType.SetSelectedDate,
-      selectedDate: viewDate
+      selectedDate: viewDate,
     });
     dispatcher({
       type: DateTimeActionType.SetViewDate,
-      viewDate: viewDate
+      viewDate: viewDate,
     });
   };
 
   const onBackClicked = () => {
     dispatcher({
-      type: DateTimeActionType.DaySelector
+      type: DateTimeActionType.DaySelector,
     });
   };
 
   return (
-    <div className="flex flex-row justify-center p-2" style={{minWidth: '20rem'}}>
+    <div className="flex flex-row justify-center p-2" style={{ minWidth: '20rem' }}>
       <table className="w-full">
         <tbody>
-        <tr>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseHour}/>
-          </td>
-          <td>&nbsp;</td>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseMinute}/>
-          </td>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={changeMeridian}/>
-          </td>
-        </tr>
-        <tr>
-          <td className="text-center">{hours.current[currentHour]}</td>
-          <td className="text-center">:</td>
-          <td className="text-center">{minutes.current[currentMinute]}</td>
-          <td className="text-center">{ampm.current[currentMeridian]}</td>
-        </tr>
-        <tr>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseHour}/>
-          </td>
-          <td>&nbsp;</td>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseMinute}/>
-          </td>
-          <td className="text-center cursor-pointer">
-            <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={changeMeridian}/>
-          </td>
-        </tr>
-        <tr>
-          <td colSpan={4}>&nbsp;</td>
-        </tr>
-        <tr>
-          <td colSpan={4}>
-            <div className="ml-4 cursor-pointer text-blue-600" onClick={onBackClicked}>&lt;&nbsp;Back</div>
-          </td>
-        </tr>
+          <tr>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseHour} />
+            </td>
+            <td>&nbsp;</td>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseMinute} />
+            </td>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={changeMeridian} />
+            </td>
+          </tr>
+          <tr>
+            <td className="text-center">{hours.current[currentHour]}</td>
+            <td className="text-center">:</td>
+            <td className="text-center">{minutes.current[currentMinute]}</td>
+            <td className="text-center">{ampm.current[currentMeridian]}</td>
+          </tr>
+          <tr>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseHour} />
+            </td>
+            <td>&nbsp;</td>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseMinute} />
+            </td>
+            <td className="text-center cursor-pointer">
+              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={changeMeridian} />
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={4}>&nbsp;</td>
+          </tr>
+          <tr>
+            <td colSpan={4}>
+              <div className="ml-4 cursor-pointer text-blue-600" onClick={onBackClicked}>
+                &lt;&nbsp;Back
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

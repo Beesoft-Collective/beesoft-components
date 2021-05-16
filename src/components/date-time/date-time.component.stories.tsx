@@ -13,7 +13,7 @@ const Template: Story<DateTimeProps> = (args) => <DateTime {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   label: 'Date',
-  value: '30/01/2021 10:15:00 AM',
+  value: '30/01/2021 4:15:00 PM',
 };
 
 export const CurrentDateTime = Template.bind({});

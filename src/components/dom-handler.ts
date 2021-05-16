@@ -2,7 +2,7 @@ export enum AlignmentPosition {
   TopLeft,
   TopRight,
   BottomLeft,
-  BottomRight
+  BottomRight,
 }
 
 export class DomHandler {
