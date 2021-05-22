@@ -12,7 +12,7 @@ const config = [
     output: [
       {
         file: 'build/index.es.js',
-        sourcemap: true,
+        sourcemap: false,
       },
       {
         file: 'build/index.es.min.js',

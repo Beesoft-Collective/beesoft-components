@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { generateNumberArray, padNumber } from '../common-functions';
+import { generateNumberArray, getBrowserLanguage, padNumber } from '../common-functions';
 import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -20,6 +20,7 @@ export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstra
   const [currentHour, setCurrentHour] = useState(getMeridianHour(viewDate.getHours()));
   const [currentMinute, setCurrentMinute] = useState(viewDate.getMinutes());
   const [currentMeridian, setCurrentMeridian] = useState(viewDate.getHours() <= 12 ? 0 : 1);
+  const dateString = useRef<string>(viewDate.toLocaleDateString(getBrowserLanguage()));
 
   const increaseHour = () => {
     const incrementAmount = timeConstraints?.hours?.step || 1;
@@ -37,14 +38,20 @@ export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstra
 
   const increaseMinute = () => {
     const incrementAmount = timeConstraints?.minutes?.step || 1;
-    const nextMinute = currentMinute + incrementAmount < 59 ? currentMinute + incrementAmount : 0;
+    const nextMinute =
+      currentMinute + incrementAmount < (timeConstraints?.minutes?.max || 59)
+        ? currentMinute + incrementAmount
+        : timeConstraints?.minutes?.min || 0;
     setCurrentMinute(nextMinute);
     setCurrentDate(currentHour, nextMinute, currentMeridian);
   };
 
   const decreaseMinute = () => {
     const decrementAmount = timeConstraints?.minutes?.step || 1;
-    const nextMinute = currentMinute - decrementAmount >= 0 ? currentMinute - decrementAmount : 60 - decrementAmount;
+    const nextMinute =
+      currentMinute - decrementAmount >= (timeConstraints?.minutes?.min || 0)
+        ? currentMinute - decrementAmount
+        : (timeConstraints?.minutes?.max || 60) - decrementAmount;
     setCurrentMinute(nextMinute);
     setCurrentDate(currentHour, nextMinute, currentMeridian);
   };
@@ -80,6 +87,14 @@ export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstra
       <table className="w-full">
         <tbody>
           <tr>
+            <td className="text-center cursor-pointer hover:bg-gray-300" colSpan={4} onClick={onBackClicked}>
+              {dateString.current}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={4}>&nbsp;</td>
+          </tr>
+          <tr>
             <td className="text-center cursor-pointer">
               <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseHour} />
             </td>
@@ -107,16 +122,6 @@ export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstra
             </td>
             <td className="text-center cursor-pointer">
               <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={changeMeridian} />
-            </td>
-          </tr>
-          <tr>
-            <td colSpan={4}>&nbsp;</td>
-          </tr>
-          <tr>
-            <td colSpan={4}>
-              <div className="ml-4 cursor-pointer text-blue-600" onClick={onBackClicked}>
-                &lt;&nbsp;Back
-              </div>
             </td>
           </tr>
         </tbody>

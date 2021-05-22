@@ -17,7 +17,9 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, dispatcher
   const weekDaysRef = useRef(getTranslatedDays(getBrowserLanguage()));
 
   useEffect(() => {
-    setMonthMatrix(getMonthMatrix(viewDate));
+    if (viewDate) {
+      setMonthMatrix(getMonthMatrix(viewDate));
+    }
   }, [viewDate]);
 
   const onMovePreviousMonth = () => {

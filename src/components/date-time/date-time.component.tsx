@@ -1,16 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
-import { parseLocaleDate } from './date-time-parser';
 import DateTimeTimeSelector from './date-time-time-selector.component';
 import { TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
+import parse from 'date-fns/parse';
+import parseISO from 'date-fns/parseISO';
 
 export interface DateTimeProps {
   value?: string | Date;
@@ -25,19 +26,54 @@ export default function DateTime({ value, label, locale, format, timeConstraints
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(locale || getBrowserLanguage());
+  const loadedLocale = useRef<Locale>();
+
+  useEffect(() => {
+    if (language.current) {
+      loadLocale(language.current);
+    }
+  }, [language]);
+
+  useEffect(() => {
+    if (locale) {
+      loadLocale(locale);
+    }
+  }, [locale]);
+
+  const loadLocale = (localeToLoad: string) => {
+    import(`date-fns/locale/${localeToLoad}`).then((locale) => {
+      loadedLocale.current = locale.default;
+      const defaultDate = getDateValue();
+
+      dispatcher({
+        type: DateTimeActionType.InitializeDates,
+        initialDate: defaultDate,
+      });
+    });
+  };
+
+  const parseDate = (dateValue: string) => {
+    const isoDate = parseISO(dateValue);
+    if (isNaN(isoDate.valueOf())) {
+      // TODO Add an option for short, medium or long date format and create a proper format string (below) for each
+      return parse(dateValue, 'Ppp', new Date(), { locale: loadedLocale.current });
+    }
+
+    return isoDate;
+  };
 
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
-    return value ? (typeof value === 'string' ? parseLocaleDate(value, language.current) : value) : defaultDate;
+    return value ? (typeof value === 'string' ? parseDate(value) : value) : defaultDate;
   };
 
   const initialState: DateTimeState = {
     currentSelector: DateTimeActionType.DaySelector,
-    currentViewDate: getDateValue(),
-    selectedDate: getDateValue(),
-    originalSetDate: getDateValue(),
+    currentViewDate: new Date(),
+    selectedDate: new Date(),
+    originalSetDate: new Date(),
     selectedDateChanged: false,
   };
 
@@ -49,7 +85,10 @@ export default function DateTime({ value, label, locale, format, timeConstraints
   };
 
   const onInput = (event: React.FormEvent) => {
-    const inputDate = parseLocaleDate((event.target as HTMLElement).innerText, language.current);
+    // const inputDate = parseLocaleDate((event.target as HTMLElement).innerText, language.current);
+    const inputDate = parse((event.target as HTMLElement).innerText, 'Ppp', new Date(), {
+      locale: loadedLocale.current,
+    });
     dispatcher({
       type: DateTimeActionType.SetViewDate,
       viewDate: inputDate,
@@ -93,10 +132,7 @@ export default function DateTime({ value, label, locale, format, timeConstraints
     });
   };
 
-  const getValue = () =>
-    `${state.selectedDate.toLocaleDateString(language.current)} ${state.selectedDate.toLocaleTimeString(
-      language.current
-    )}`;
+  const getValue = () => `${state.selectedDate.toLocaleString(language.current)}`;
 
   return (
     <div>
