@@ -2,6 +2,10 @@
 
 Currently, this component library contains a date/time selector, and an overlay component. More component will be added on a somewhat regular basis.
 
+## Date/Time Component
+
+This is the main component in the library currently; it has the ability to select not only a date but also time. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

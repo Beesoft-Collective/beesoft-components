@@ -7,11 +7,12 @@
     "url": "https://gitlab.com/beehive-inc/custom-components/react/beesoft-components"
   },
   "files": [
-    "build"
+    "build",
+    "types"
   ],
   "license": "MIT",
   "main": "build/index.es.min.js",
-  "types": "build/src/index.d.ts",
+  "types": "types/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "rimraf build && rollup -c --environment NODE_ENV:production",
+    "build": "rimraf build && rimraf types && rollup -c --environment NODE_ENV:production",
     "build:app": "craco build",
     "test": "echo \"craco test\"",
     "eject": "react-scripts eject",

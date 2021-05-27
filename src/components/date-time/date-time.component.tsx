@@ -7,7 +7,7 @@ import DateTimeDaySelector from './date-time-day-selector.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
-import { TimeConstraints } from './date-time-types';
+import { DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import parse from 'date-fns/parse';
@@ -18,11 +18,20 @@ export interface DateTimeProps {
   label?: string;
   locale?: string;
   format?: string;
+  dateSelection?: DateSelectionType;
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
 }
 
-export default function DateTime({ value, label, locale, format, timeConstraints, onChange }: DateTimeProps) {
+export default function DateTime({
+  value,
+  label,
+  locale,
+  format,
+  dateSelection = DateSelectionType.DateTime,
+  timeConstraints,
+  onChange,
+}: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(locale || getBrowserLanguage());
@@ -41,15 +50,17 @@ export default function DateTime({ value, label, locale, format, timeConstraints
   }, [locale]);
 
   const loadLocale = (localeToLoad: string) => {
-    import(`date-fns/locale/${localeToLoad}`).then((locale) => {
-      loadedLocale.current = locale.default;
-      const defaultDate = getDateValue();
+    import(`date-fns/locale/${localeToLoad}`)
+      .then((locale) => {
+        loadedLocale.current = locale.default;
+        const defaultDate = getDateValue();
 
-      dispatcher({
-        type: DateTimeActionType.InitializeDates,
-        initialDate: defaultDate,
-      });
-    });
+        dispatcher({
+          type: DateTimeActionType.InitializeDates,
+          initialDate: defaultDate,
+        });
+      })
+      .catch((error) => console.error(error));
   };
 
   const parseDate = (dateValue: string) => {
@@ -126,12 +137,6 @@ export default function DateTime({ value, label, locale, format, timeConstraints
     }
   };
 
-  const onTimeClicked = () => {
-    dispatcher({
-      type: DateTimeActionType.TimeSelector,
-    });
-  };
-
   const getValue = () => `${state.selectedDate.toLocaleString(language.current)}`;
 
   return (
@@ -157,6 +162,7 @@ export default function DateTime({ value, label, locale, format, timeConstraints
             <DateTimeDaySelector
               selectedDate={state.selectedDate}
               viewDate={state.currentViewDate}
+              locale={language.current}
               dispatcher={dispatcher}
             />
           )}
@@ -172,13 +178,6 @@ export default function DateTime({ value, label, locale, format, timeConstraints
               dispatcher={dispatcher}
               timeConstraints={timeConstraints}
             />
-          )}
-          {state.currentSelector === DateTimeActionType.DaySelector && (
-            <div className="w-full flex flex-row p-2 justify-center">
-              <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
-                {state.selectedDate?.toLocaleTimeString(language.current) || getDefaultTime(language.current)}
-              </div>
-            </div>
           )}
         </>
       </OverlayPanel>

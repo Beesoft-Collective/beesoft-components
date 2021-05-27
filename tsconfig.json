@@ -9,8 +9,8 @@
     ],
     "rootDir": ".",
     "declaration": true,
-    "declarationDir": "build",
-    "outDir": "build",
+    "declarationDir": "types",
+    "outDir": "types",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "removeComments": true,
@@ -33,6 +33,7 @@
   "exclude": [
     "node_modules",
     "build",
+    "types",
     "public",
     "./src/**/*.stories.tsx",
     "./src/**/*.stories.ts"

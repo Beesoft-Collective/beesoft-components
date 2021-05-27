@@ -9,3 +9,9 @@ export interface TimeConstraints {
   minutes?: IncrementConstraint;
   seconds?: IncrementConstraint;
 }
+
+export enum DateSelectionType {
+  DateTime,
+  DateOnly,
+  TimeOnly,
+}
