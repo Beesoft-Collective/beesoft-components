@@ -1,17 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import parse from 'date-fns/parse';
+import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../common-functions';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../overlay-panel/overlay-panel.component';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { getDefaultTime } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
 import { DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
-import parse from 'date-fns/parse';
-import parseISO from 'date-fns/parseISO';
 
 export interface DateTimeProps {
   value?: string | Date;
@@ -81,7 +80,8 @@ export default function DateTime({
   };
 
   const initialState: DateTimeState = {
-    currentSelector: DateTimeActionType.DaySelector,
+    currentSelector:
+      dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
     currentViewDate: new Date(),
     selectedDate: new Date(),
     originalSetDate: new Date(),
@@ -125,7 +125,8 @@ export default function DateTime({
   const onDateTimeHidden = () => {
     setSelectorOpen(false);
     dispatcher({
-      type: DateTimeActionType.DaySelector,
+      type:
+        dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
     });
 
     if (onChange && state.selectedDateChanged) {
@@ -137,7 +138,24 @@ export default function DateTime({
     }
   };
 
-  const getValue = () => `${state.selectedDate.toLocaleString(language.current)}`;
+  const getValue = () => {
+    switch (dateSelection) {
+      case DateSelectionType.DateTime:
+        return state.selectedDate.toLocaleString(language.current);
+      case DateSelectionType.DateOnly:
+        return state.selectedDate.toLocaleDateString(language.current);
+      case DateSelectionType.TimeOnly:
+        return state.selectedDate.toLocaleTimeString(language.current);
+      default:
+        return state.selectedDate.toLocaleString(language.current);
+    }
+  };
+
+  const canShowDateSelectors = () =>
+    dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly;
+
+  const canShowTimeSelector = () =>
+    dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
 
   return (
     <div>
@@ -158,23 +176,25 @@ export default function DateTime({
         hidden={onDateTimeHidden}
       >
         <>
-          {state.currentSelector === DateTimeActionType.DaySelector && (
+          {state.currentSelector === DateTimeActionType.DaySelector && canShowDateSelectors() && (
             <DateTimeDaySelector
               selectedDate={state.selectedDate}
               viewDate={state.currentViewDate}
               locale={language.current}
+              showTimeSelector={dateSelection === DateSelectionType.DateTime}
               dispatcher={dispatcher}
             />
           )}
-          {state.currentSelector === DateTimeActionType.MonthSelector && (
+          {state.currentSelector === DateTimeActionType.MonthSelector && canShowDateSelectors() && (
             <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
           )}
-          {state.currentSelector === DateTimeActionType.YearSelector && (
+          {state.currentSelector === DateTimeActionType.YearSelector && canShowDateSelectors() && (
             <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
           )}
-          {state.currentSelector === DateTimeActionType.TimeSelector && (
+          {state.currentSelector === DateTimeActionType.TimeSelector && canShowTimeSelector() && (
             <DateTimeTimeSelector
               viewDate={state.currentViewDate}
+              showDateSelector={dateSelection === DateSelectionType.DateTime}
               dispatcher={dispatcher}
               timeConstraints={timeConstraints}
             />

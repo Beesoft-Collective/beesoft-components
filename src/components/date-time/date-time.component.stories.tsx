@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
+import { DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeProps } from './date-time.component';
 
 export default {
@@ -26,6 +27,18 @@ export const IsoDateTime = Template.bind({});
 IsoDateTime.args = {
   label: 'Date',
   value: '2021-04-20T14:20:00+08:00',
+};
+
+export const DateOnly = Template.bind({});
+DateOnly.args = {
+  label: 'Date Only',
+  dateSelection: DateSelectionType.DateOnly,
+};
+
+export const TimeOnly = Template.bind({});
+TimeOnly.args = {
+  label: 'Time Only',
+  dateSelection: DateSelectionType.TimeOnly,
 };
 
 export const MinuteConstraint = Template.bind({});

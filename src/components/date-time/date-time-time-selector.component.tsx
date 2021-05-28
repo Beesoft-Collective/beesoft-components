@@ -6,11 +6,17 @@ import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
+  showDateSelector: boolean;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
   timeConstraints?: TimeConstraints;
 }
 
-export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstraints }: DateTimeTimeSelectorProps) {
+export default function DateTimeTimeSelector({
+  viewDate,
+  showDateSelector,
+  dispatcher,
+  timeConstraints,
+}: DateTimeTimeSelectorProps) {
   const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => padNumber(value, 2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
@@ -86,11 +92,13 @@ export default function DateTimeTimeSelector({ viewDate, dispatcher, timeConstra
     <div className="flex flex-row justify-center p-2" style={{ minWidth: '20rem' }}>
       <table className="w-full">
         <tbody>
-          <tr>
-            <td className="text-center cursor-pointer hover:bg-gray-300" colSpan={4} onClick={onBackClicked}>
-              {dateString.current}
-            </td>
-          </tr>
+          {showDateSelector && (
+            <tr>
+              <td className="text-center cursor-pointer hover:bg-gray-300" colSpan={4} onClick={onBackClicked}>
+                {dateString.current}
+              </td>
+            </tr>
+          )}
           <tr>
             <td colSpan={4}>&nbsp;</td>
           </tr>

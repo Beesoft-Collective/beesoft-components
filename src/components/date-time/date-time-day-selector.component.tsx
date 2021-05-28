@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
-import { getBrowserLanguage } from '../common-functions';
+import React, { useEffect, useRef, useState } from 'react';
 import { getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -10,10 +9,17 @@ export interface DateTimeDaySelectorProps {
   selectedDate?: Date;
   viewDate: Date;
   locale: string;
+  showTimeSelector: boolean;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeDaySelector({ selectedDate, viewDate, locale, dispatcher }: DateTimeDaySelectorProps) {
+export default function DateTimeDaySelector({
+  selectedDate,
+  viewDate,
+  locale,
+  showTimeSelector,
+  dispatcher,
+}: DateTimeDaySelectorProps) {
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
   const weekDaysRef = useRef(getTranslatedDays(locale));
 
@@ -127,11 +133,13 @@ export default function DateTimeDaySelector({ selectedDate, viewDate, locale, di
           ))}
         </tbody>
       </table>
-      <div className="w-full flex flex-row p-2 justify-center">
-        <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
-          {selectedDate?.toLocaleTimeString(locale) || getDefaultTime(locale)}
+      {showTimeSelector && (
+        <div className="w-full flex flex-row p-2 justify-center">
+          <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
+            {selectedDate?.toLocaleTimeString(locale) || getDefaultTime(locale)}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
