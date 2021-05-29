@@ -15,6 +15,7 @@ export interface DateTimeState {
   selectedDate: Date;
   originalSetDate: Date;
   selectedDateChanged: boolean;
+  dateInitialized: boolean;
 }
 
 export interface DateTimeReducerAction {
@@ -71,6 +72,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         originalSetDate: action.initialDate || new Date(),
         selectedDate: action.initialDate || new Date(),
         currentViewDate: action.initialDate || new Date(),
+        dateInitialized: true,
       };
     default:
       return {

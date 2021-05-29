@@ -5,19 +5,25 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
+import gzipPlugin from 'rollup-plugin-gzip';
 
 const config = [
   {
     input: 'src/index.ts',
     output: [
       {
-        file: 'build/index.es.js',
+        file: 'build/index.js',
         sourcemap: false,
       },
       {
-        file: 'build/index.es.min.js',
+        file: 'build/index.min.js',
         sourcemap: false,
-        plugins: [terser()],
+        plugins: [terser(), gzipPlugin()],
+      },
+      {
+        file: 'build/index.cjs.js',
+        sourcemap: false,
+        format: 'cjs',
       },
     ],
     external: ['react', 'react-dom'],

@@ -16,7 +16,6 @@ export interface DateTimeProps {
   value?: string | Date;
   label?: string;
   locale?: string;
-  format?: string;
   dateSelection?: DateSelectionType;
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
@@ -26,7 +25,6 @@ export default function DateTime({
   value,
   label,
   locale,
-  format,
   dateSelection = DateSelectionType.DateTime,
   timeConstraints,
   onChange,
@@ -86,6 +84,7 @@ export default function DateTime({
     selectedDate: new Date(),
     originalSetDate: new Date(),
     selectedDateChanged: false,
+    dateInitialized: false,
   };
 
   const [state, dispatcher] = useReducer(reducer, initialState);
@@ -176,29 +175,34 @@ export default function DateTime({
         hidden={onDateTimeHidden}
       >
         <>
-          {state.currentSelector === DateTimeActionType.DaySelector && canShowDateSelectors() && (
-            <DateTimeDaySelector
-              selectedDate={state.selectedDate}
-              viewDate={state.currentViewDate}
-              locale={language.current}
-              showTimeSelector={dateSelection === DateSelectionType.DateTime}
-              dispatcher={dispatcher}
-            />
-          )}
-          {state.currentSelector === DateTimeActionType.MonthSelector && canShowDateSelectors() && (
-            <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
-          )}
-          {state.currentSelector === DateTimeActionType.YearSelector && canShowDateSelectors() && (
-            <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />
-          )}
-          {state.currentSelector === DateTimeActionType.TimeSelector && canShowTimeSelector() && (
-            <DateTimeTimeSelector
-              viewDate={state.currentViewDate}
-              showDateSelector={dateSelection === DateSelectionType.DateTime}
-              dispatcher={dispatcher}
-              timeConstraints={timeConstraints}
-            />
-          )}
+          {state.currentSelector === DateTimeActionType.DaySelector &&
+            canShowDateSelectors() &&
+            state.dateInitialized && (
+              <DateTimeDaySelector
+                selectedDate={state.selectedDate}
+                viewDate={state.currentViewDate}
+                locale={language.current}
+                showTimeSelector={dateSelection === DateSelectionType.DateTime}
+                dispatcher={dispatcher}
+              />
+            )}
+          {state.currentSelector === DateTimeActionType.MonthSelector &&
+            canShowDateSelectors() &&
+            state.dateInitialized && <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          {state.currentSelector === DateTimeActionType.YearSelector &&
+            canShowDateSelectors() &&
+            state.dateInitialized && <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+          {state.currentSelector === DateTimeActionType.TimeSelector &&
+            canShowTimeSelector() &&
+            state.dateInitialized && (
+              <DateTimeTimeSelector
+                viewDate={state.currentViewDate}
+                showDateSelector={dateSelection === DateSelectionType.DateTime}
+                locale={language.current}
+                dispatcher={dispatcher}
+                timeConstraints={timeConstraints}
+              />
+            )}
         </>
       </OverlayPanel>
     </div>

@@ -11,7 +11,8 @@
     "types"
   ],
   "license": "MIT",
-  "main": "build/index.es.min.js",
+  "main": "build/index.cjs.js",
+  "module": "build/index.min.js",
   "types": "types/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -91,6 +92,7 @@
     "react-scripts": "4.0.1",
     "rollup": "^2.44.0",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",

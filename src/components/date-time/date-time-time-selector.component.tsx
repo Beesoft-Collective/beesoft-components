@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { generateNumberArray, getBrowserLanguage, padNumber } from '../common-functions';
+import React, { useRef, useState } from 'react';
+import { generateNumberArray, padNumber } from '../common-functions';
 import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
   showDateSelector: boolean;
+  locale: string;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
   timeConstraints?: TimeConstraints;
 }
@@ -14,6 +15,7 @@ export interface DateTimeTimeSelectorProps {
 export default function DateTimeTimeSelector({
   viewDate,
   showDateSelector,
+  locale,
   dispatcher,
   timeConstraints,
 }: DateTimeTimeSelectorProps) {
@@ -26,7 +28,7 @@ export default function DateTimeTimeSelector({
   const [currentHour, setCurrentHour] = useState(getMeridianHour(viewDate.getHours()));
   const [currentMinute, setCurrentMinute] = useState(viewDate.getMinutes());
   const [currentMeridian, setCurrentMeridian] = useState(viewDate.getHours() <= 12 ? 0 : 1);
-  const dateString = useRef<string>(viewDate.toLocaleDateString(getBrowserLanguage()));
+  const dateString = useRef<string>(viewDate.toLocaleDateString(locale));
 
   const increaseHour = () => {
     const incrementAmount = timeConstraints?.hours?.step || 1;
