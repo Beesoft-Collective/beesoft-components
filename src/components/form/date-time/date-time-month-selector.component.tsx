@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addYears from 'date-fns/addYears';
 import setMonth from 'date-fns/setMonth';
 import subYears from 'date-fns/subYears';
-import { getBrowserLanguage } from '../common-functions';
+import { getBrowserLanguage } from '../../common-functions';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 

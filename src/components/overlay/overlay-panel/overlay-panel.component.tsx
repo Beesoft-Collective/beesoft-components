@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import BeeSoftTransition from '../beesoft-transition/beesoft-transition.component';
-import { bindDocumentClickListener, unbindDocumentClickListener } from '../common-event-handlers';
-import { DomHandler } from '../dom-handler';
+import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
+import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
+import { DomHandler } from '../../dom-handler';
 
 export interface OverlayPanelProps {
   visible: boolean;

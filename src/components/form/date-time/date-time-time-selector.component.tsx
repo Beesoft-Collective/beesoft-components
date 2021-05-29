@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react';
-import { generateNumberArray, padNumber } from '../common-functions';
+import { generateNumberArray, padNumber } from '../../common-functions';
 import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
