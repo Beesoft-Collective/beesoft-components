@@ -2,9 +2,14 @@
   "name": "beesoft-components",
   "version": "0.1.0",
   "private": false,
+  "author": "Brandon Trabon",
+  "keywords": [
+    "react",
+    "ui components"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/beehive-inc/custom-components/react/beesoft-components"
+    "url": "https://github.com/Beehive-Software-Consultants/beesoft-components"
   },
   "files": [
     "build",
