@@ -34,5 +34,6 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/jsx-one-expression-per-line': 'off',
     'no-use-before-define': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 };

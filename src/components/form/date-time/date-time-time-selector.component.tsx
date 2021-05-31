@@ -106,14 +106,20 @@ export default function DateTimeTimeSelector({
           </tr>
           <tr>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseHour} />
+              <button className="focus:outline-none" onClick={increaseHour}>
+                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+              </button>
             </td>
             <td>&nbsp;</td>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={increaseMinute} />
+              <button className="focus:outline-none" onClick={increaseMinute}>
+                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+              </button>
             </td>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-up']} onClick={changeMeridian} />
+              <button className="focus:outline-none" onClick={changeMeridian}>
+                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+              </button>
             </td>
           </tr>
           <tr>
@@ -124,14 +130,20 @@ export default function DateTimeTimeSelector({
           </tr>
           <tr>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseHour} />
+              <button className="focus:outline-none" onClick={decreaseHour}>
+                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+              </button>
             </td>
             <td>&nbsp;</td>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={decreaseMinute} />
+              <button className="focus:outline-none" onClick={decreaseMinute}>
+                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+              </button>
             </td>
             <td className="text-center cursor-pointer">
-              <FontAwesomeIcon icon={['fas', 'chevron-down']} onClick={changeMeridian} />
+              <button className="focus:outline-none" onClick={changeMeridian}>
+                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+              </button>
             </td>
           </tr>
         </tbody>

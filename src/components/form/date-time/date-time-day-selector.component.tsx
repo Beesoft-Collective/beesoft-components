@@ -95,14 +95,18 @@ export default function DateTimeDaySelector({
   return (
     <div style={{ minWidth: '20rem' }}>
       <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer" onClick={onMovePreviousMonth}>
-          <FontAwesomeIcon icon={['fas', 'angle-left']} />
+        <div className="flex-shrink cursor-pointer">
+          <button className="focus:outline-none" onClick={onMovePreviousMonth}>
+            <FontAwesomeIcon icon={['fas', 'angle-left']} />
+          </button>
         </div>
         <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>
           {getCurrentMonthYear()}
         </div>
-        <div className="flex-shrink cursor-pointer" onClick={onMoveNextMonth}>
-          <FontAwesomeIcon icon={['fas', 'angle-right']} />
+        <div className="flex-shrink cursor-pointer">
+          <button className="focus:outline-none" onClick={onMoveNextMonth}>
+            <FontAwesomeIcon icon={['fas', 'angle-right']} />
+          </button>
         </div>
       </div>
       <table className="w-full">
