@@ -15,6 +15,7 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 export interface DateTimeProps {
   value?: string | Date;
   label?: string;
+  useDefaultDateValue: boolean;
   locale?: string;
   dateSelection?: DateSelectionType;
   timeConstraints?: TimeConstraints;
@@ -24,6 +25,7 @@ export interface DateTimeProps {
 export default function DateTime({
   value,
   label,
+  useDefaultDateValue = false,
   locale,
   dateSelection = DateSelectionType.DateTime,
   timeConstraints,
@@ -52,10 +54,17 @@ export default function DateTime({
         loadedLocale.current = locale.default;
         const defaultDate = getDateValue();
 
-        dispatcher({
-          type: DateTimeActionType.InitializeDates,
-          initialDate: defaultDate,
-        });
+        if (value || useDefaultDateValue) {
+          dispatcher({
+            type: DateTimeActionType.InitializeDates,
+            initialDate: defaultDate,
+          });
+        } else {
+          dispatcher({
+            type: DateTimeActionType.SetViewDate,
+            viewDate: defaultDate,
+          });
+        }
       })
       .catch((error) => console.error(error));
   };
@@ -64,7 +73,20 @@ export default function DateTime({
     const isoDate = parseISO(dateValue);
     if (isNaN(isoDate.valueOf())) {
       // TODO Add an option for short, medium or long date format and create a proper format string (below) for each
-      return parse(dateValue, 'Ppp', new Date(), { locale: loadedLocale.current });
+      // this is an attempt to parse a number of date formats
+      let localDate = parse(dateValue, 'Ppp', new Date(), { locale: loadedLocale.current });
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'P', new Date(), { locale: loadedLocale.current });
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'pp', new Date(), { locale: loadedLocale.current });
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'p', new Date(), { locale: loadedLocale.current });
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      return undefined;
     }
 
     return isoDate;
@@ -81,8 +103,6 @@ export default function DateTime({
     currentSelector:
       dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
     currentViewDate: new Date(),
-    selectedDate: new Date(),
-    originalSetDate: new Date(),
     selectedDateChanged: false,
     dateInitialized: false,
   };
@@ -95,18 +115,17 @@ export default function DateTime({
   };
 
   const onInput = (event: React.FormEvent) => {
-    // const inputDate = parseLocaleDate((event.target as HTMLElement).innerText, language.current);
-    const inputDate = parse((event.target as HTMLElement).innerText, 'Ppp', new Date(), {
-      locale: loadedLocale.current,
-    });
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: inputDate,
-    });
-    dispatcher({
-      type: DateTimeActionType.SetSelectedDate,
-      selectedDate: inputDate,
-    });
+    const inputDate = parseDate((event.target as HTMLElement).innerText);
+    if (inputDate) {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: inputDate,
+      });
+      dispatcher({
+        type: DateTimeActionType.SetSelectedDate,
+        selectedDate: inputDate,
+      });
+    }
   };
 
   const onCalendarClick = (event: React.MouseEvent) => {
@@ -128,7 +147,7 @@ export default function DateTime({
         dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
     });
 
-    if (onChange && state.selectedDateChanged) {
+    if (onChange && state.selectedDate && state.selectedDateChanged) {
       onChange(state.selectedDate);
       dispatcher({
         type: DateTimeActionType.ResetSelectedDateChanged,
@@ -140,13 +159,13 @@ export default function DateTime({
   const getValue = () => {
     switch (dateSelection) {
       case DateSelectionType.DateTime:
-        return state.selectedDate.toLocaleString(language.current);
+        return state.selectedDate ? state.selectedDate.toLocaleString(language.current) : '';
       case DateSelectionType.DateOnly:
-        return state.selectedDate.toLocaleDateString(language.current);
+        return state.selectedDate ? state.selectedDate.toLocaleDateString(language.current) : '';
       case DateSelectionType.TimeOnly:
-        return state.selectedDate.toLocaleTimeString(language.current);
+        return state.selectedDate ? state.selectedDate.toLocaleTimeString(language.current) : '';
       default:
-        return state.selectedDate.toLocaleString(language.current);
+        return state.selectedDate ? state.selectedDate.toLocaleString(language.current) : '';
     }
   };
 
