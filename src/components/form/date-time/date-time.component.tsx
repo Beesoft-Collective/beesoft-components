@@ -5,9 +5,9 @@ import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import DateTimeDaySelector from './date-time-day-selector.component';
-import DateTimeMonthSelector from './date-time-month-selector.component';
-import DateTimeTimeSelector from './date-time-time-selector.component';
+import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
+import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
+import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
 import { DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
@@ -15,11 +15,14 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 export interface DateTimeProps {
   value?: string | Date;
   label?: string;
-  useDefaultDateValue: boolean;
+  useDefaultDateValue?: boolean;
   locale?: string;
   dateSelection?: DateSelectionType;
   timeConstraints?: TimeConstraints;
   onChange?: (value: Date) => void;
+  daySelectorTemplate?: DaySelectorTemplate;
+  monthSelectorTemplate?: MonthSelectorTemplate;
+  timeSelectorTemplate?: TimeSelectorTemplate;
 }
 
 export default function DateTime({
@@ -30,6 +33,9 @@ export default function DateTime({
   dateSelection = DateSelectionType.DateTime,
   timeConstraints,
   onChange,
+  daySelectorTemplate,
+  monthSelectorTemplate,
+  timeSelectorTemplate,
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
@@ -169,10 +175,10 @@ export default function DateTime({
     }
   };
 
-  const canShowDateSelectors = () =>
+  const canShowDateSelectors =
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly;
 
-  const canShowTimeSelector = () =>
+  const canShowTimeSelector =
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
 
   return (
@@ -195,7 +201,7 @@ export default function DateTime({
       >
         <>
           {state.currentSelector === DateTimeActionType.DaySelector &&
-            canShowDateSelectors() &&
+            canShowDateSelectors &&
             state.dateInitialized && (
               <DateTimeDaySelector
                 selectedDate={state.selectedDate}
@@ -203,23 +209,31 @@ export default function DateTime({
                 locale={language.current}
                 showTimeSelector={dateSelection === DateSelectionType.DateTime}
                 dispatcher={dispatcher}
+                viewTemplate={daySelectorTemplate}
               />
             )}
           {state.currentSelector === DateTimeActionType.MonthSelector &&
-            canShowDateSelectors() &&
-            state.dateInitialized && <DateTimeMonthSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+            canShowDateSelectors &&
+            state.dateInitialized && (
+              <DateTimeMonthSelector
+                viewDate={state.currentViewDate}
+                viewTemplate={monthSelectorTemplate}
+                dispatcher={dispatcher}
+              />
+            )}
           {state.currentSelector === DateTimeActionType.YearSelector &&
-            canShowDateSelectors() &&
+            canShowDateSelectors &&
             state.dateInitialized && <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
-            canShowTimeSelector() &&
+            canShowTimeSelector &&
             state.dateInitialized && (
               <DateTimeTimeSelector
                 viewDate={state.currentViewDate}
                 showDateSelector={dateSelection === DateSelectionType.DateTime}
                 locale={language.current}
-                dispatcher={dispatcher}
+                viewTemplate={timeSelectorTemplate}
                 timeConstraints={timeConstraints}
+                dispatcher={dispatcher}
               />
             )}
         </>

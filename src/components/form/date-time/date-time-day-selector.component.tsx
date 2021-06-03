@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
 import React, { useEffect, useRef, useState } from 'react';
+import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -10,14 +11,32 @@ export interface DateTimeDaySelectorProps {
   viewDate: Date;
   locale: string;
   showTimeSelector: boolean;
+  viewTemplate?: DaySelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
+
+export interface DateTimeDaySelectorTemplateProps {
+  selectedDate?: Date;
+  viewDate: Date;
+  locale: string;
+  showTimeSelector: boolean;
+  monthMatrix?: Array<Array<Date | null>>;
+  translatedWeekDays?: Array<string>;
+  movePreviousMonth: () => void;
+  moveNextMonth: () => void;
+  onDateClicked: (date: Date) => void;
+  onMonthClicked: () => void;
+  onTimeClicked: () => void;
+}
+
+export type DaySelectorTemplate = TemplateFunction<DateTimeDaySelectorTemplateProps>;
 
 export default function DateTimeDaySelector({
   selectedDate,
   viewDate,
   locale,
   showTimeSelector,
+  viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
@@ -29,7 +48,7 @@ export default function DateTimeDaySelector({
     }
   }, [viewDate]);
 
-  const onMovePreviousMonth = () => {
+  const movePreviousMonth = () => {
     if (viewDate) {
       const previousMonth = subMonths(viewDate, 1);
       setMonthMatrix(getMonthMatrix(previousMonth));
@@ -40,7 +59,7 @@ export default function DateTimeDaySelector({
     }
   };
 
-  const onMoveNextMonth = () => {
+  const moveNextMonth = () => {
     if (viewDate) {
       const nextMonth = addMonths(viewDate, 1);
       setMonthMatrix(getMonthMatrix(nextMonth));
@@ -92,11 +111,32 @@ export default function DateTimeDaySelector({
     return false;
   };
 
+  const templateProps: DateTimeDaySelectorTemplateProps = {
+    selectedDate,
+    viewDate,
+    locale,
+    showTimeSelector,
+    monthMatrix,
+    translatedWeekDays: weekDaysRef.current,
+    movePreviousMonth,
+    moveNextMonth,
+    onDateClicked,
+    onMonthClicked,
+    onTimeClicked,
+  };
+
+  const defaultTemplate = (
+    props: DateTimeDaySelectorTemplateProps,
+    children?: React.ReactNode | React.ReactNodeArray
+  ) => <div style={{ minWidth: '20rem' }}>{children}</div>;
+
+  const template = viewTemplate || defaultTemplate;
+
   return (
-    <div style={{ minWidth: '20rem' }}>
+    <TemplateOutlet props={templateProps} template={template}>
       <div className="w-full flex flex-row py-1 px-2">
         <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={onMovePreviousMonth}>
+          <button className="focus:outline-none" onClick={movePreviousMonth}>
             <FontAwesomeIcon icon={['fas', 'angle-left']} />
           </button>
         </div>
@@ -104,7 +144,7 @@ export default function DateTimeDaySelector({
           {getCurrentMonthYear()}
         </div>
         <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={onMoveNextMonth}>
+          <button className="focus:outline-none" onClick={moveNextMonth}>
             <FontAwesomeIcon icon={['fas', 'angle-right']} />
           </button>
         </div>
@@ -144,6 +184,6 @@ export default function DateTimeDaySelector({
           </div>
         </div>
       )}
-    </div>
+    </TemplateOutlet>
   );
 }

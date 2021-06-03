@@ -4,18 +4,30 @@ import addYears from 'date-fns/addYears';
 import setMonth from 'date-fns/setMonth';
 import subYears from 'date-fns/subYears';
 import { getBrowserLanguage } from '../../common-functions';
+import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeMonthSelectorProps {
   viewDate: Date;
+  viewTemplate?: MonthSelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeMonthSelector({ viewDate, dispatcher }: DateTimeMonthSelectorProps) {
+export interface DateTimeMonthSelectorTemplateProps {
+  viewDate: Date;
+  movePreviousYear: () => void;
+  moveNextYear: () => void;
+  onMonthClicked: (monthNumber: number) => void;
+  onYearClicked: () => void;
+}
+
+export type MonthSelectorTemplate = TemplateFunction<DateTimeMonthSelectorTemplateProps>;
+
+export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatcher }: DateTimeMonthSelectorProps) {
   const monthMatrix = useRef(getTranslatedMonthMatrix(getBrowserLanguage()));
 
-  const onMovePreviousYear = () => {
+  const movePreviousYear = () => {
     const previousYear = subYears(viewDate, 1);
     dispatcher({
       type: DateTimeActionType.SetViewDate,
@@ -23,7 +35,7 @@ export default function DateTimeMonthSelector({ viewDate, dispatcher }: DateTime
     });
   };
 
-  const onMoveNextYear = () => {
+  const moveNextYear = () => {
     const nextYear = addYears(viewDate, 1);
     dispatcher({
       type: DateTimeActionType.SetViewDate,
@@ -50,16 +62,31 @@ export default function DateTimeMonthSelector({ viewDate, dispatcher }: DateTime
     });
   };
 
+  const templateProps: DateTimeMonthSelectorTemplateProps = {
+    viewDate,
+    movePreviousYear,
+    moveNextYear,
+    onMonthClicked,
+    onYearClicked,
+  };
+
+  const defaultTemplate = (
+    props: DateTimeMonthSelectorTemplateProps,
+    children?: React.ReactNode | React.ReactNodeArray
+  ) => <div style={{ minWidth: '20rem' }}>{children}</div>;
+
+  const template = viewTemplate || defaultTemplate;
+
   return (
-    <div style={{ minWidth: '20rem' }}>
+    <TemplateOutlet props={templateProps} template={template}>
       <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer" onClick={onMovePreviousYear}>
+        <div className="flex-shrink cursor-pointer" onClick={movePreviousYear}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </div>
         <div className="flex-grow text-center cursor-pointer" onClick={onYearClicked}>
           {getCurrentYear()}
         </div>
-        <div className="flex-shrink cursor-pointer" onClick={onMoveNextYear}>
+        <div className="flex-shrink cursor-pointer" onClick={moveNextYear}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>
       </div>
@@ -80,6 +107,6 @@ export default function DateTimeMonthSelector({ viewDate, dispatcher }: DateTime
           ))}
         </tbody>
       </table>
-    </div>
+    </TemplateOutlet>
   );
 }
