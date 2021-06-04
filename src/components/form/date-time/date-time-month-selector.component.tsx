@@ -73,7 +73,11 @@ export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatch
   const defaultTemplate = (
     props: DateTimeMonthSelectorTemplateProps,
     children?: React.ReactNode | React.ReactNodeArray
-  ) => <div style={{ minWidth: '20rem' }}>{children}</div>;
+  ) => (
+    <div className="p-2" style={{ minWidth: '20rem' }}>
+      {children}
+    </div>
+  );
 
   const template = viewTemplate || defaultTemplate;
 
@@ -90,23 +94,19 @@ export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatch
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </div>
       </div>
-      <table className="w-full">
-        <tbody>
-          {monthMatrix.current.map((row, rIndex) => (
-            <tr key={rIndex}>
-              {row.map((column, cIndex) => (
-                <td
-                  key={rIndex.toString() + cIndex.toString()}
-                  className="text-center cursor-pointer"
-                  onClick={() => onMonthClicked(column.monthNumber)}
-                >
-                  {column.monthName}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="w-full grid grid-cols-4 gap-4">
+        {monthMatrix.current.map((row, rIndex) =>
+          row.map((column, cIndex) => (
+            <div
+              key={rIndex.toString() + cIndex.toString()}
+              className="text-center cursor-pointer"
+              onClick={() => onMonthClicked(column.monthNumber)}
+            >
+              {column.monthName}
+            </div>
+          ))
+        )}
+      </div>
     </TemplateOutlet>
   );
 }

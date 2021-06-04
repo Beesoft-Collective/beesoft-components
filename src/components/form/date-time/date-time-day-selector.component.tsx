@@ -128,7 +128,7 @@ export default function DateTimeDaySelector({
   const defaultTemplate = (
     props: DateTimeDaySelectorTemplateProps,
     children?: React.ReactNode | React.ReactNodeArray
-  ) => <div style={{ minWidth: '20rem' }}>{children}</div>;
+  ) => <div className="p-2">{children}</div>;
 
   const template = viewTemplate || defaultTemplate;
 
@@ -149,34 +149,26 @@ export default function DateTimeDaySelector({
           </button>
         </div>
       </div>
-      <table className="w-full">
-        <thead className="font-bold">
-          <tr>
-            {weekDaysRef.current.map((day, index) => (
-              <th key={index}>{day}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {monthMatrix?.map((row, rIndex) => (
-            <tr key={rIndex}>
-              {row.map((column, cIndex) => (
-                <td
-                  key={rIndex.toString() + cIndex.toString()}
-                  className={`text-center cursor-pointer${column && isSelectedDate(column) ? ' bg-blue-100' : ''}`}
-                  onClick={() => {
-                    if (column) {
-                      onDateClicked(column);
-                    }
-                  }}
-                >
-                  {column?.getDate().toLocaleString()}
-                </td>
-              ))}
-            </tr>
+      <div className="w-full">
+        <div className="grid grid-cols-7 gap-3">
+          {weekDaysRef.current.map((day, index) => (
+            <div key={index} className="text-center font-bold">
+              {day}
+            </div>
           ))}
-        </tbody>
-      </table>
+          {monthMatrix?.map((row, rIndex) =>
+            row.map((column, cIndex) => (
+              <div
+                key={rIndex.toString() + cIndex.toString()}
+                className={`text-center cursor-pointer${column && isSelectedDate(column) ? ' bg-blue-100' : ''}`}
+                onClick={() => column && onDateClicked(column)}
+              >
+                {column?.getDate().toLocaleString(locale)}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
       {showTimeSelector && (
         <div className="w-full flex flex-row p-2 justify-center">
           <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>

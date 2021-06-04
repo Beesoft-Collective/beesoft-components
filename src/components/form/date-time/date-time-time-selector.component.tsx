@@ -133,7 +133,7 @@ export default function DateTimeTimeSelector({
     props: DateTimeTimeSelectorTemplateProps,
     children?: React.ReactNode | React.ReactNodeArray
   ) => (
-    <div className="flex flex-row justify-center p-2" style={{ minWidth: '20rem' }}>
+    <div className="flex flex-row justify-center p-2" style={{ minWidth: '15rem' }}>
       {children}
     </div>
   );
@@ -142,62 +142,49 @@ export default function DateTimeTimeSelector({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <table className="w-full">
-        <tbody>
-          {showDateSelector && (
-            <tr>
-              <td className="text-center cursor-pointer hover:bg-gray-300" colSpan={4} onClick={onDateClicked}>
-                {dateString.current}
-              </td>
-            </tr>
-          )}
-          <tr>
-            <td colSpan={4}>&nbsp;</td>
-          </tr>
-          <tr>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={increaseHour}>
-                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
-              </button>
-            </td>
-            <td>&nbsp;</td>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={increaseMinute}>
-                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
-              </button>
-            </td>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={changeMeridian}>
-                <FontAwesomeIcon icon={['fas', 'chevron-up']} />
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="text-center">{hours.current[currentHour]}</td>
-            <td className="text-center">:</td>
-            <td className="text-center">{minutes.current[currentMinute]}</td>
-            <td className="text-center">{ampm.current[currentMeridian]}</td>
-          </tr>
-          <tr>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={decreaseHour}>
-                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
-              </button>
-            </td>
-            <td>&nbsp;</td>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={decreaseMinute}>
-                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
-              </button>
-            </td>
-            <td className="text-center cursor-pointer">
-              <button className="focus:outline-none" onClick={changeMeridian}>
-                <FontAwesomeIcon icon={['fas', 'chevron-down']} />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="w-full grid grid-cols-4 gap-4">
+        {showDateSelector && (
+          <div className="text-center cursor-pointer hover:bg-gray-300 col-span-4" onClick={onDateClicked}>
+            {dateString.current}
+          </div>
+        )}
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={increaseHour}>
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+          </button>
+        </div>
+        <div>&nbsp;</div>
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={increaseMinute}>
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+          </button>
+        </div>
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={changeMeridian}>
+            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+          </button>
+        </div>
+        <div className="text-center">{hours.current[currentHour]}</div>
+        <div className="text-center">:</div>
+        <div className="text-center">{minutes.current[currentMinute]}</div>
+        <div className="text-center">{ampm.current[currentMeridian]}</div>
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={decreaseHour}>
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+          </button>
+        </div>
+        <div>&nbsp;</div>
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={decreaseMinute}>
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+          </button>
+        </div>
+        <div className="text-center cursor-pointer">
+          <button className="focus:outline-none" onClick={changeMeridian}>
+            <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+          </button>
+        </div>
+      </div>
     </TemplateOutlet>
   );
 }
