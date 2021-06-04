@@ -9,7 +9,7 @@ import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-select
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
 import { DateSelectionType, TimeConstraints } from './date-time-types';
-import DateTimeYearSelector from './date-time-year-selector.component';
+import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
 export interface DateTimeProps {
@@ -22,6 +22,7 @@ export interface DateTimeProps {
   onChange?: (value: Date) => void;
   daySelectorTemplate?: DaySelectorTemplate;
   monthSelectorTemplate?: MonthSelectorTemplate;
+  yearSelectorTemplate?: YearSelectorTemplate;
   timeSelectorTemplate?: TimeSelectorTemplate;
 }
 
@@ -35,6 +36,7 @@ export default function DateTime({
   onChange,
   daySelectorTemplate,
   monthSelectorTemplate,
+  yearSelectorTemplate,
   timeSelectorTemplate,
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
@@ -223,7 +225,13 @@ export default function DateTime({
             )}
           {state.currentSelector === DateTimeActionType.YearSelector &&
             canShowDateSelectors &&
-            state.dateInitialized && <DateTimeYearSelector viewDate={state.currentViewDate} dispatcher={dispatcher} />}
+            state.dateInitialized && (
+              <DateTimeYearSelector
+                viewDate={state.currentViewDate}
+                viewTemplate={yearSelectorTemplate}
+                dispatcher={dispatcher}
+              />
+            )}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
             canShowTimeSelector &&
             state.dateInitialized && (
