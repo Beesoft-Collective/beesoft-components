@@ -9,13 +9,17 @@ export default {
   component: DateTime,
 } as Meta;
 
-const Template: Story<DateTimeProps> = (args) => <DateTime {...args} />;
+const Template: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  return <DateTime {...args} />;
+};
 
 const DarkTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = 'dark';
 
   return (
-    <div className="bg-gray-900 p-4" style={{height: '30rem'}}>
+    <div className="bg-gray-900 p-4" style={{ height: '30rem' }}>
       <DateTime {...args} />
     </div>
   );
