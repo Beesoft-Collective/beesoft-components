@@ -57,7 +57,7 @@ export default function ContentEditableInput({
 
   const classNames = cx(
     { 'w-full ': fillContainer },
-    'flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2',
+    'flex flex-row shadow-sm border border-solid border-gray-300 dark:border-white dark:bg-gray-900 dark:text-white rounded-md p-2',
     className
   );
   const leftElementClasses = cx('flex-shrink', { 'mr-2': leftElement }, leftElementClassName);

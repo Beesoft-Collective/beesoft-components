@@ -9,7 +9,21 @@ export default {
   component: DateTime,
 } as Meta;
 
-const Template: Story<DateTimeProps> = (args) => <DateTime {...args} />;
+const Template: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  return <DateTime {...args} />;
+};
+
+const DarkTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = 'dark';
+
+  return (
+    <div className="bg-gray-900 p-4" style={{ height: '30rem' }}>
+      <DateTime {...args} />
+    </div>
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -24,6 +38,13 @@ SetDateValue.args = {
 
 export const CurrentDateTime = Template.bind({});
 CurrentDateTime.args = {
+  label: 'Date',
+  useDefaultDateValue: true,
+  onChange: action('onChange'),
+};
+
+export const DarkMode = DarkTemplate.bind({});
+DarkMode.args = {
   label: 'Date',
   useDefaultDateValue: true,
   onChange: action('onChange'),
