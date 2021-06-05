@@ -160,7 +160,9 @@ export default function DateTimeDaySelector({
             row.map((column, cIndex) => (
               <div
                 key={rIndex.toString() + cIndex.toString()}
-                className={`text-center cursor-pointer${column && isSelectedDate(column) ? ' bg-blue-100' : ''}`}
+                className={`text-center py-1 cursor-pointer${
+                  column && isSelectedDate(column) ? ' bg-blue-100 rounded-full' : ''
+                }`}
                 onClick={() => column && onDateClicked(column)}
               >
                 {column?.getDate().toLocaleString(locale)}
