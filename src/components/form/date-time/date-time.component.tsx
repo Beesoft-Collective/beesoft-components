@@ -185,7 +185,7 @@ export default function DateTime({
 
   return (
     <div>
-      {label && <label>{label}</label>}
+      {label && <label className="dark:text-white">{label}</label>}
       <ContentEditableInput
         value={getValue()}
         className="parent-element text-left"
