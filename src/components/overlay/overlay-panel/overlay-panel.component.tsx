@@ -118,7 +118,7 @@ export default function OverlayPanel({
       >
         {({ state, defaultStyle, transitionStyles }) => (
           <div
-            className="absolute bg-white shadow"
+            className="absolute bg-white dark:bg-gray-900 border border-solid dark:text-white dark:border-white shadow"
             style={{
               ...baseStyles,
               ...defaultStyle,

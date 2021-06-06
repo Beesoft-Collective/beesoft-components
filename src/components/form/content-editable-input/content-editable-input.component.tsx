@@ -1,9 +1,11 @@
+import cx from 'classnames';
 import React from 'react';
 import debounce from 'lodash/debounce';
 
 export interface ContentEditableInputProps {
   value?: string;
   debounceTime?: number;
+  fillContainer?: boolean;
   leftElement?: JSX.Element;
   rightElement?: JSX.Element;
   className?: string;
@@ -18,6 +20,7 @@ export interface ContentEditableInputProps {
 export default function ContentEditableInput({
   value,
   debounceTime = 500,
+  fillContainer = true,
   leftElement,
   rightElement,
   className,
@@ -46,15 +49,23 @@ export default function ContentEditableInput({
     }
   };
 
-  const onInputed = debounce((event: React.FormEvent) => {
+  const onInputChanged = debounce((event: React.FormEvent) => {
     if (onInput) {
       onInput(event);
     }
   }, debounceTime);
 
+  const classNames = cx(
+    { 'w-full ': fillContainer },
+    'flex flex-row shadow-sm border border-solid border-gray-300 dark:border-white dark:bg-gray-900 dark:text-white rounded-md p-2',
+    className
+  );
+  const leftElementClasses = cx('flex-shrink', { 'mr-2': leftElement }, leftElementClassName);
+  const rightElementClasses = cx('flex-shrink', { 'ml-2': rightElement }, rightElementClassName);
+
   return (
-    <div className={`w-full flex flex-row shadow-sm border border-solid border-gray-300 rounded-md p-2 ${className}`}>
-      <div className={`flex-shrink ${leftElementClassName}`} onClick={onLeftElementClicked}>
+    <div className={classNames}>
+      <div className={leftElementClasses} onClick={onLeftElementClicked}>
         {leftElement}
       </div>
       <div
@@ -62,11 +73,11 @@ export default function ContentEditableInput({
         contentEditable={true}
         suppressContentEditableWarning={true}
         onFocus={onFocused}
-        onInput={onInputed}
+        onInput={onInputChanged}
       >
         {value}
       </div>
-      <div className={`flex-shrink ml-2 ${rightElementClassName}`} onClick={onRightElementClicked}>
+      <div className={rightElementClasses} onClick={onRightElementClicked}>
         {rightElement}
       </div>
     </div>

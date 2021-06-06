@@ -160,7 +160,9 @@ export default function DateTimeDaySelector({
             row.map((column, cIndex) => (
               <div
                 key={rIndex.toString() + cIndex.toString()}
-                className={`text-center cursor-pointer${column && isSelectedDate(column) ? ' bg-blue-100' : ''}`}
+                className={`text-center py-1 cursor-pointer${
+                  column && isSelectedDate(column) ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full' : ''
+                }`}
                 onClick={() => column && onDateClicked(column)}
               >
                 {column?.getDate().toLocaleString(locale)}
@@ -171,7 +173,10 @@ export default function DateTimeDaySelector({
       </div>
       {showTimeSelector && (
         <div className="w-full flex flex-row p-2 justify-center">
-          <div className="p-2 cursor-pointer hover:bg-gray-300" onClick={onTimeClicked}>
+          <div
+            className="p-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-white dark:hover:text-black dark:text-white"
+            onClick={onTimeClicked}
+          >
             {selectedDate?.toLocaleTimeString(locale) || getDefaultTime(locale)}
           </div>
         </div>

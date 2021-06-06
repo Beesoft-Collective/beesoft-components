@@ -144,7 +144,10 @@ export default function DateTimeTimeSelector({
     <TemplateOutlet props={templateProps} template={template}>
       <div className="w-full grid grid-cols-4 gap-4">
         {showDateSelector && (
-          <div className="text-center cursor-pointer hover:bg-gray-300 col-span-4" onClick={onDateClicked}>
+          <div
+            className="text-center cursor-pointer hover:bg-gray-300 dark:text-white dark:hover:bg-white dark:hover:text-black col-span-4"
+            onClick={onDateClicked}
+          >
             {dateString.current}
           </div>
         )}

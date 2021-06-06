@@ -25,7 +25,8 @@
     "noImplicitAny": false,
     "jsx": "react-jsx",
     "isolatedModules": true,
-    "allowJs": true
+    "allowJs": true,
+    "newLine": "lf"
   },
   "include": [
     "./src/**/*"

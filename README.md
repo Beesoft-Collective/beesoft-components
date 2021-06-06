@@ -26,3 +26,9 @@ This is the main component in the library currently; it has the ability to selec
 | **monthSelectorTemplate** | `MonthSelectorTemplate` | Allows the month selector UI to be overridden or added to. |
 | **yearSelectorTemplate** | `YearSelectorTemplate` | Allows the year selector UI to be overridden or added to. |
 | **timeSelectorTemplate** | `TimeSelectorTemplate` | Allows the time selector UI to be overridden or added to. |
+
+### Dark Mode
+
+Dark mode is a common feature for many web applications. Beehive components support dark mode, to turn it on add a `dark` class to the body tag. In React you can use to following line:
+
+> document.body.className = 'dark';
