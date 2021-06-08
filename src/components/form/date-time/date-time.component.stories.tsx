@@ -15,6 +15,14 @@ const Template: Story<DateTimeProps> = (args) => {
   return <DateTime {...args} />;
 };
 
+const ScrollTemplate: Story<DateTimeProps> = (args) => {
+  return (
+    <div style={{ paddingTop: '50rem', paddingBottom: '20rem' }}>
+      <DateTime {...args} />
+    </div>
+  );
+};
+
 const DarkTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = 'dark';
 
@@ -78,4 +86,10 @@ MinuteConstraint.args = {
       step: 10,
     },
   },
+};
+
+export const ScrollDateTime = ScrollTemplate.bind({});
+ScrollDateTime.args = {
+  label: 'Date',
+  useDefaultDateValue: true,
 };
