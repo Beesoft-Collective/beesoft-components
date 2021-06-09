@@ -56,6 +56,15 @@ export default function DateTime({
     }
   }, [locale]);
 
+  useEffect(() => {
+    if (value) {
+      dispatcher({
+        type: DateTimeActionType.InitializeDates,
+        initialDate: getDateValue(),
+      });
+    }
+  }, [value]);
+
   const loadLocale = (localeToLoad: string) => {
     import(`date-fns/locale/${localeToLoad}`)
       .then((locale) => {
