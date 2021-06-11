@@ -44,14 +44,14 @@ export default function DateTimeDaySelector({
 
   useEffect(() => {
     if (viewDate) {
-      setMonthMatrix(getMonthMatrix(viewDate));
+      setMonthMatrix(getMonthMatrix(viewDate, locale));
     }
   }, [viewDate]);
 
   const movePreviousMonth = () => {
     if (viewDate) {
       const previousMonth = subMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(previousMonth));
+      setMonthMatrix(getMonthMatrix(previousMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
         viewDate: previousMonth,
@@ -62,7 +62,7 @@ export default function DateTimeDaySelector({
   const moveNextMonth = () => {
     if (viewDate) {
       const nextMonth = addMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(nextMonth));
+      setMonthMatrix(getMonthMatrix(nextMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
         viewDate: nextMonth,

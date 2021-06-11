@@ -1,27 +1,35 @@
-import addDays from 'date-fns/addDays';
-import addMonths from 'date-fns/addMonths';
-import addYears from 'date-fns/addYears';
-import eachDayOfInterval from 'date-fns/eachDayOfInterval';
-import eachYearOfInterval from 'date-fns/eachYearOfInterval';
-import getDay from 'date-fns/getDay';
-import getDaysInMonth from 'date-fns/getDaysInMonth';
-import lastDayOfMonth from 'date-fns/lastDayOfMonth';
-import startOfMonth from 'date-fns/startOfMonth';
+import {
+  addDays,
+  addMonths,
+  addYears,
+  eachDayOfInterval,
+  eachYearOfInterval,
+  getDay,
+  getDaysInMonth,
+  lastDayOfMonth,
+  nextDay,
+  startOfMonth,
+  Locale,
+  subDays,
+} from 'date-fns';
 
-export function getMonthMatrix(matrixDate: Date) {
+export function getMonthMatrix(matrixDate: Date, locale: Locale) {
   const daysInMonth = getDaysInMonth(matrixDate);
   const firstDayInMonth = startOfMonth(matrixDate);
   const lastDayInMonth = lastDayOfMonth(matrixDate);
-  const firstDayOfMonthNumber = getDay(firstDayInMonth);
+  // the first day in month number should be determined by the starting day of the week
+  let firstDayOfMonthNumber = getDay(firstDayInMonth) - (locale.options?.weekStartsOn || 0);
+  firstDayOfMonthNumber = firstDayOfMonthNumber === -1 ? 6 : firstDayOfMonthNumber;
+  const lastDayOfMonthNumber = getDay(lastDayInMonth) - (locale.options?.weekStartsOn || 0);
   const monthDates = eachDayOfInterval({
     start: firstDayInMonth,
     end: lastDayInMonth,
   });
-  const rowCount = daysInMonth + firstDayOfMonthNumber > 35 ? 7 : 6;
+  const rowCount = daysInMonth + firstDayOfMonthNumber > 35 ? 6 : 5;
   const monthMatrix = createNullMatrix(rowCount, 7);
   let currentDay = 1;
 
-  for (let row = 0, length = 6; row < length; row++) {
+  for (let row = 0, length = rowCount; row < length; row++) {
     for (let col = row > 0 ? 0 : firstDayOfMonthNumber, length = 7; col < length; col++) {
       const currentMonthDate = monthDates[currentDay - 1];
       currentMonthDate.setHours(matrixDate.getHours(), matrixDate.getMinutes(), matrixDate.getSeconds());
@@ -35,6 +43,18 @@ export function getMonthMatrix(matrixDate: Date) {
 
     if (currentDay > daysInMonth) {
       break;
+    }
+  }
+
+  if (firstDayOfMonthNumber > 0) {
+    for (let firstDay = 0; firstDay < firstDayOfMonthNumber; firstDay++) {
+      monthMatrix[0][firstDay] = subDays(firstDayInMonth, firstDayOfMonthNumber - firstDay);
+    }
+  }
+
+  if (lastDayOfMonthNumber < 6) {
+    for (let lastDay = 6; lastDay > lastDayOfMonthNumber; lastDay--) {
+      monthMatrix[rowCount - 1][lastDay] = addDays(lastDayInMonth, lastDay - lastDayOfMonthNumber);
     }
   }
 
@@ -66,7 +86,7 @@ export function getTranslatedDays(locale: string) {
   return weekDays;
 }
 
-export function getTranslatedMonthMatrix(locale: string) {
+export function getTranslatedMonthMatrix(locale: Locale) {
   const startDate = new Date(Date.UTC(2020, 0, 1));
   const months: Array<
     Array<{
@@ -99,7 +119,7 @@ export function getTranslatedMonthMatrix(locale: string) {
     for (let column = 0; column < 4; column++) {
       months[row][column] = {
         monthNumber: monthCount,
-        monthName: addMonths(startDate, monthCount++).toLocaleDateString(locale, { month: 'short' }),
+        monthName: addMonths(startDate, monthCount++).toLocaleDateString(locale.code, { month: 'short' }),
       };
     }
   }
@@ -107,7 +127,7 @@ export function getTranslatedMonthMatrix(locale: string) {
   return months;
 }
 
-export function getTranslatedYearMatrix(matrixDate: Date, locale: string) {
+export function getTranslatedYearMatrix(matrixDate: Date, locale: Locale) {
   const clonedDate = new Date(matrixDate.getTime());
   const nearestDecadeYear = Math.floor(clonedDate.getFullYear() / 10) * 10;
   clonedDate.setFullYear(nearestDecadeYear);
@@ -121,7 +141,7 @@ export function getTranslatedYearMatrix(matrixDate: Date, locale: string) {
   let yearCount = 0;
   for (let row = 0; row < 3; row++) {
     for (let column = 0; column < 4; column++) {
-      years[row][column] = matrixYears[yearCount++].toLocaleDateString(locale, {
+      years[row][column] = matrixYears[yearCount++].toLocaleDateString(locale.code, {
         year: 'numeric',
       });
 

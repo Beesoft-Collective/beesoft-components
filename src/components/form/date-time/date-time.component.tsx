@@ -216,29 +216,34 @@ export default function DateTime({
             )}
           {state.currentSelector === DateTimeActionType.MonthSelector &&
             canShowDateSelectors &&
-            state.dateInitialized && (
+            state.dateInitialized &&
+            loadedLocale.current && (
               <DateTimeMonthSelector
                 viewDate={state.currentViewDate}
+                locale={loadedLocale.current}
                 viewTemplate={monthSelectorTemplate}
                 dispatcher={dispatcher}
               />
             )}
           {state.currentSelector === DateTimeActionType.YearSelector &&
             canShowDateSelectors &&
-            state.dateInitialized && (
+            state.dateInitialized &&
+            loadedLocale.current && (
               <DateTimeYearSelector
                 viewDate={state.currentViewDate}
+                locale={loadedLocale.current}
                 viewTemplate={yearSelectorTemplate}
                 dispatcher={dispatcher}
               />
             )}
           {state.currentSelector === DateTimeActionType.TimeSelector &&
             canShowTimeSelector &&
-            state.dateInitialized && (
+            state.dateInitialized &&
+            loadedLocale.current && (
               <DateTimeTimeSelector
                 viewDate={state.currentViewDate}
                 showDateSelector={dateSelection === DateSelectionType.DateTime}
-                locale={language.current}
+                locale={loadedLocale.current}
                 viewTemplate={timeSelectorTemplate}
                 timeConstraints={timeConstraints}
                 dispatcher={dispatcher}
