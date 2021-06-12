@@ -79,3 +79,16 @@ MinuteConstraint.args = {
     },
   },
 };
+
+export const SelectableDate = Template.bind({});
+SelectableDate.args = {
+  label: 'Date',
+  selectableDate: (date: Date) => date.getDay() !== 0,
+};
+
+export const IsValidSelectedDate = Template.bind({});
+IsValidSelectedDate.args = {
+  label: 'Date',
+  isValidDate: (date: Date) => date.getDay() !== 0,
+  onChange: action('onChange'),
+};

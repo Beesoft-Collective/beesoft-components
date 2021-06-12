@@ -19,6 +19,8 @@ export interface DateTimeProps {
   locale?: string;
   dateSelection?: DateSelectionType;
   timeConstraints?: TimeConstraints;
+  selectableDate?: (currentDate: Date) => boolean;
+  isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value: Date) => void;
   daySelectorTemplate?: DaySelectorTemplate;
   monthSelectorTemplate?: MonthSelectorTemplate;
@@ -33,6 +35,8 @@ export default function DateTime({
   locale,
   dateSelection = DateSelectionType.DateTime,
   timeConstraints,
+  selectableDate,
+  isValidDate,
   onChange,
   daySelectorTemplate,
   monthSelectorTemplate,
@@ -211,6 +215,8 @@ export default function DateTime({
                 viewDate={state.currentViewDate}
                 locale={loadedLocale.current}
                 showTimeSelector={dateSelection === DateSelectionType.DateTime}
+                selectableDate={selectableDate}
+                isValidDate={isValidDate}
                 dispatcher={dispatcher}
                 viewTemplate={daySelectorTemplate}
               />

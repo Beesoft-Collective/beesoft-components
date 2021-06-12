@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
@@ -11,6 +12,8 @@ export interface DateTimeDaySelectorProps {
   viewDate: Date;
   locale: Locale;
   showTimeSelector: boolean;
+  selectableDate?: (currentDate: Date) => boolean;
+  isValidDate?: (selectedDate: Date) => boolean;
   viewTemplate?: DaySelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
@@ -36,6 +39,8 @@ export default function DateTimeDaySelector({
   viewDate,
   locale,
   showTimeSelector,
+  selectableDate,
+  isValidDate,
   viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
@@ -157,19 +162,33 @@ export default function DateTimeDaySelector({
             </div>
           ))}
           {monthMatrix?.map((row, rIndex) =>
-            row.map((column, cIndex) => (
-              <div
-                key={rIndex.toString() + cIndex.toString()}
-                className={`text-center py-1 cursor-pointer${!column.isCurrent ? ' text-gray-400' : ''}${
-                  column && column.dayValue && isSelectedDate(column.dayValue)
-                    ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full'
-                    : ''
-                }`}
-                onClick={() => column && column.dayValue && onDateClicked(column.dayValue)}
-              >
-                {column?.dayValue?.getDate().toLocaleString(locale.code)}
-              </div>
-            ))
+            row.map((column, cIndex) => {
+              const isSelectable =
+                column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
+              const dayStyles = cx('text-center py-1', {
+                'text-gray-400': !column.isCurrent,
+                'bg-blue-100 dark:bg-white dark:text-black rounded-full':
+                  column && column.dayValue && isSelectedDate(column.dayValue),
+                'cursor-pointer': isSelectable,
+                'text-red-300 cursor-not-allowed': !isSelectable,
+              });
+
+              return (
+                <div
+                  key={rIndex.toString() + cIndex.toString()}
+                  className={dayStyles}
+                  onClick={() =>
+                    column &&
+                    column.dayValue &&
+                    isSelectable &&
+                    (isValidDate === undefined || isValidDate(column.dayValue)) &&
+                    onDateClicked(column.dayValue)
+                  }
+                >
+                  {column.dayValue?.getDate().toLocaleString(locale.code)}
+                </div>
+              );
+            })
           )}
         </div>
       </div>
