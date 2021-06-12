@@ -181,8 +181,7 @@ export default function DateTimeDaySelector({
                     column &&
                     column.dayValue &&
                     isSelectable &&
-                    isValidDate &&
-                    isValidDate(column.dayValue) &&
+                    (isValidDate === undefined || isValidDate(column.dayValue)) &&
                     onDateClicked(column.dayValue)
                   }
                 >
