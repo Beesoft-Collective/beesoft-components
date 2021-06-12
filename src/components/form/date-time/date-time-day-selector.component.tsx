@@ -9,7 +9,7 @@ import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 export interface DateTimeDaySelectorProps {
   selectedDate?: Date;
   viewDate: Date;
-  locale: string;
+  locale: Locale;
   showTimeSelector: boolean;
   viewTemplate?: DaySelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
@@ -18,7 +18,7 @@ export interface DateTimeDaySelectorProps {
 export interface DateTimeDaySelectorTemplateProps {
   selectedDate?: Date;
   viewDate: Date;
-  locale: string;
+  locale: Locale;
   showTimeSelector: boolean;
   monthMatrix?: Array<Array<Date | null>>;
   translatedWeekDays?: Array<string>;
@@ -95,7 +95,7 @@ export default function DateTimeDaySelector({
 
   const getCurrentMonthYear = () => {
     if (viewDate) {
-      return viewDate.toLocaleDateString(locale, {
+      return viewDate.toLocaleDateString(locale.code, {
         month: 'long',
         year: 'numeric',
       });
@@ -165,7 +165,7 @@ export default function DateTimeDaySelector({
                 }`}
                 onClick={() => column && onDateClicked(column)}
               >
-                {column?.getDate().toLocaleString(locale)}
+                {column?.getDate().toLocaleString(locale.code)}
               </div>
             ))
           )}
@@ -177,7 +177,7 @@ export default function DateTimeDaySelector({
             className="p-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-white dark:hover:text-black dark:text-white"
             onClick={onTimeClicked}
           >
-            {selectedDate?.toLocaleTimeString(locale) || getDefaultTime(locale)}
+            {selectedDate?.toLocaleTimeString(locale.code) || getDefaultTime(locale)}
           </div>
         </div>
       )}

@@ -52,7 +52,7 @@ export function getMonthMatrix(matrixDate: Date, locale: Locale) {
     }
   }
 
-  if (lastDayOfMonthNumber < 6) {
+  if (lastDayOfMonthNumber > -1) {
     for (let lastDay = 6; lastDay > lastDayOfMonthNumber; lastDay--) {
       monthMatrix[rowCount - 1][lastDay] = addDays(lastDayInMonth, lastDay - lastDayOfMonthNumber);
     }
@@ -74,13 +74,12 @@ function createNullMatrix(rows: number, columns: number): Array<Array<any>> {
   return rowArray;
 }
 
-export function getTranslatedDays(locale: string) {
-  // start on Sunday
-  const startDate = new Date(Date.UTC(2017, 0, 1));
+export function getTranslatedDays(locale: Locale) {
+  const startDate = nextDay(new Date(), locale.options?.weekStartsOn || 0);
   const weekDays: Array<string> = [];
 
   for (let i = 0; i < 7; i++) {
-    weekDays.push(addDays(startDate, i).toLocaleDateString(locale, { weekday: 'short' }));
+    weekDays.push(addDays(startDate, i).toLocaleDateString(locale.code, { weekday: 'short' }));
   }
 
   return weekDays;
@@ -154,8 +153,8 @@ export function getTranslatedYearMatrix(matrixDate: Date, locale: Locale) {
   return years;
 }
 
-export function getDefaultTime(locale: string) {
+export function getDefaultTime(locale: Locale) {
   const tempDate = new Date();
   tempDate.setHours(0, 0, 0, 0);
-  return tempDate.toLocaleTimeString(locale);
+  return tempDate.toLocaleTimeString(locale.code);
 }

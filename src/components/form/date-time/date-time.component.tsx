@@ -204,11 +204,12 @@ export default function DateTime({
         <>
           {state.currentSelector === DateTimeActionType.DaySelector &&
             canShowDateSelectors &&
-            state.dateInitialized && (
+            state.dateInitialized &&
+            loadedLocale.current && (
               <DateTimeDaySelector
                 selectedDate={state.selectedDate}
                 viewDate={state.currentViewDate}
-                locale={language.current}
+                locale={loadedLocale.current}
                 showTimeSelector={dateSelection === DateSelectionType.DateTime}
                 dispatcher={dispatcher}
                 viewTemplate={daySelectorTemplate}
