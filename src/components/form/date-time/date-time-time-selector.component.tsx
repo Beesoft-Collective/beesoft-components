@@ -8,7 +8,7 @@ import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
   showDateSelector: boolean;
-  locale: string;
+  locale: Locale;
   viewTemplate?: TimeSelectorTemplate;
   timeConstraints?: TimeConstraints;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
@@ -17,7 +17,7 @@ export interface DateTimeTimeSelectorProps {
 export interface DateTimeTimeSelectorTemplateProps {
   viewDate: Date;
   showDateSelector: boolean;
-  locale: string;
+  locale: Locale;
   timeConstraints?: TimeConstraints;
   currentHour: number;
   currentMinute: number;
@@ -50,7 +50,7 @@ export default function DateTimeTimeSelector({
   const [currentHour, setCurrentHour] = useState(getMeridianHour(viewDate.getHours()));
   const [currentMinute, setCurrentMinute] = useState(viewDate.getMinutes());
   const [currentMeridian, setCurrentMeridian] = useState(viewDate.getHours() <= 12 ? 0 : 1);
-  const dateString = useRef<string>(viewDate.toLocaleDateString(locale));
+  const dateString = useRef<string>(viewDate.toLocaleDateString(locale.code));
 
   const increaseHour = () => {
     const incrementAmount = timeConstraints?.hours?.step || 1;

@@ -3,13 +3,13 @@ import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
 import React, { useEffect, useRef, useState } from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
-import { getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
+import { DayType, getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
   selectedDate?: Date;
   viewDate: Date;
-  locale: string;
+  locale: Locale;
   showTimeSelector: boolean;
   viewTemplate?: DaySelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
@@ -18,9 +18,9 @@ export interface DateTimeDaySelectorProps {
 export interface DateTimeDaySelectorTemplateProps {
   selectedDate?: Date;
   viewDate: Date;
-  locale: string;
+  locale: Locale;
   showTimeSelector: boolean;
-  monthMatrix?: Array<Array<Date | null>>;
+  monthMatrix?: Array<Array<DayType>>;
   translatedWeekDays?: Array<string>;
   movePreviousMonth: () => void;
   moveNextMonth: () => void;
@@ -39,19 +39,19 @@ export default function DateTimeDaySelector({
   viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
-  const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
+  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
   const weekDaysRef = useRef(getTranslatedDays(locale));
 
   useEffect(() => {
     if (viewDate) {
-      setMonthMatrix(getMonthMatrix(viewDate));
+      setMonthMatrix(getMonthMatrix(viewDate, locale));
     }
-  }, [viewDate]);
+  }, [viewDate, locale]);
 
   const movePreviousMonth = () => {
     if (viewDate) {
       const previousMonth = subMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(previousMonth));
+      setMonthMatrix(getMonthMatrix(previousMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
         viewDate: previousMonth,
@@ -62,7 +62,7 @@ export default function DateTimeDaySelector({
   const moveNextMonth = () => {
     if (viewDate) {
       const nextMonth = addMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(nextMonth));
+      setMonthMatrix(getMonthMatrix(nextMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
         viewDate: nextMonth,
@@ -95,7 +95,7 @@ export default function DateTimeDaySelector({
 
   const getCurrentMonthYear = () => {
     if (viewDate) {
-      return viewDate.toLocaleDateString(locale, {
+      return viewDate.toLocaleDateString(locale.code, {
         month: 'long',
         year: 'numeric',
       });
@@ -160,12 +160,14 @@ export default function DateTimeDaySelector({
             row.map((column, cIndex) => (
               <div
                 key={rIndex.toString() + cIndex.toString()}
-                className={`text-center py-1 cursor-pointer${
-                  column && isSelectedDate(column) ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full' : ''
+                className={`text-center py-1 cursor-pointer${!column.isCurrent ? ' text-gray-400' : ''}${
+                  column && column.dayValue && isSelectedDate(column.dayValue)
+                    ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full'
+                    : ''
                 }`}
-                onClick={() => column && onDateClicked(column)}
+                onClick={() => column && column.dayValue && onDateClicked(column.dayValue)}
               >
-                {column?.getDate().toLocaleString(locale)}
+                {column?.dayValue?.getDate().toLocaleString(locale.code)}
               </div>
             ))
           )}
@@ -177,7 +179,7 @@ export default function DateTimeDaySelector({
             className="p-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-white dark:hover:text-black dark:text-white"
             onClick={onTimeClicked}
           >
-            {selectedDate?.toLocaleTimeString(locale) || getDefaultTime(locale)}
+            {selectedDate?.toLocaleTimeString(locale.code) || getDefaultTime(locale)}
           </div>
         </div>
       )}
