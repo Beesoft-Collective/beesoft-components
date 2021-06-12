@@ -13,6 +13,8 @@ import {
   subDays,
 } from 'date-fns';
 
+export type DayType = { dayValue: Date | null; isCurrent: boolean };
+
 export function getMonthMatrix(matrixDate: Date, locale: Locale) {
   const daysInMonth = getDaysInMonth(matrixDate);
   const firstDayInMonth = startOfMonth(matrixDate);
@@ -26,15 +28,17 @@ export function getMonthMatrix(matrixDate: Date, locale: Locale) {
     end: lastDayInMonth,
   });
   const rowCount = daysInMonth + firstDayOfMonthNumber > 35 ? 6 : 5;
-  const monthMatrix = createNullMatrix(rowCount, 7);
+  const monthMatrix = createDefaultMatrix<DayType>(rowCount, 7, {
+    dayValue: null,
+    isCurrent: true,
+  });
   let currentDay = 1;
 
   for (let row = 0, length = rowCount; row < length; row++) {
-    for (let col = row > 0 ? 0 : firstDayOfMonthNumber, length = 7; col < length; col++) {
+    for (let col = row > 0 ? 0 : firstDayOfMonthNumber; col < 7; col++) {
       const currentMonthDate = monthDates[currentDay - 1];
       currentMonthDate.setHours(matrixDate.getHours(), matrixDate.getMinutes(), matrixDate.getSeconds());
-
-      monthMatrix[row][col] = currentMonthDate;
+      monthMatrix[row][col].dayValue = currentMonthDate;
 
       if (++currentDay > daysInMonth) {
         break;
@@ -48,25 +52,30 @@ export function getMonthMatrix(matrixDate: Date, locale: Locale) {
 
   if (firstDayOfMonthNumber > 0) {
     for (let firstDay = 0; firstDay < firstDayOfMonthNumber; firstDay++) {
-      monthMatrix[0][firstDay] = subDays(firstDayInMonth, firstDayOfMonthNumber - firstDay);
+      monthMatrix[0][firstDay].dayValue = subDays(firstDayInMonth, firstDayOfMonthNumber - firstDay);
+      monthMatrix[0][firstDay].isCurrent = false;
     }
   }
 
   if (lastDayOfMonthNumber > -1) {
     for (let lastDay = 6; lastDay > lastDayOfMonthNumber; lastDay--) {
-      monthMatrix[rowCount - 1][lastDay] = addDays(lastDayInMonth, lastDay - lastDayOfMonthNumber);
+      monthMatrix[rowCount - 1][lastDay].dayValue = addDays(lastDayInMonth, lastDay - lastDayOfMonthNumber);
+      monthMatrix[rowCount - 1][lastDay].isCurrent = false;
     }
   }
 
   return monthMatrix;
 }
 
-function createNullMatrix(rows: number, columns: number): Array<Array<any>> {
-  const rowArray: Array<Array<null>> = [];
+function createDefaultMatrix<T>(rows: number, columns: number, defaultValue: T): Array<Array<T>> {
+  const rowArray: Array<Array<T>> = [];
   for (let row = 0, length = rows; row < length; row++) {
-    const colArray: Array<null> = [];
+    const colArray: Array<T> = [];
     for (let col = 0, colLength = columns; col < colLength; col++) {
-      colArray.push(null);
+      const clonedValue = {
+        ...defaultValue,
+      };
+      colArray.push(clonedValue);
     }
     rowArray.push(colArray);
   }
@@ -136,7 +145,7 @@ export function getTranslatedYearMatrix(matrixDate: Date, locale: Locale) {
     end: addYears(clonedDate, 9),
   });
 
-  const years: Array<Array<string>> = createNullMatrix(3, 4);
+  const years: Array<Array<string>> = createDefaultMatrix<string>(3, 4, '');
   let yearCount = 0;
   for (let row = 0; row < 3; row++) {
     for (let column = 0; column < 4; column++) {

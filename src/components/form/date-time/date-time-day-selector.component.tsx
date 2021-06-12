@@ -3,7 +3,7 @@ import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
 import React, { useEffect, useRef, useState } from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
-import { getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
+import { DayType, getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
@@ -20,7 +20,7 @@ export interface DateTimeDaySelectorTemplateProps {
   viewDate: Date;
   locale: Locale;
   showTimeSelector: boolean;
-  monthMatrix?: Array<Array<Date | null>>;
+  monthMatrix?: Array<Array<DayType>>;
   translatedWeekDays?: Array<string>;
   movePreviousMonth: () => void;
   moveNextMonth: () => void;
@@ -39,14 +39,14 @@ export default function DateTimeDaySelector({
   viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
-  const [monthMatrix, setMonthMatrix] = useState<Array<Array<Date | null>>>();
+  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
   const weekDaysRef = useRef(getTranslatedDays(locale));
 
   useEffect(() => {
     if (viewDate) {
       setMonthMatrix(getMonthMatrix(viewDate, locale));
     }
-  }, [viewDate]);
+  }, [viewDate, locale]);
 
   const movePreviousMonth = () => {
     if (viewDate) {
@@ -160,12 +160,14 @@ export default function DateTimeDaySelector({
             row.map((column, cIndex) => (
               <div
                 key={rIndex.toString() + cIndex.toString()}
-                className={`text-center py-1 cursor-pointer${
-                  column && isSelectedDate(column) ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full' : ''
+                className={`text-center py-1 cursor-pointer${!column.isCurrent ? ' text-gray-400' : ''}${
+                  column && column.dayValue && isSelectedDate(column.dayValue)
+                    ? ' bg-blue-100 dark:bg-white dark:text-black rounded-full'
+                    : ''
                 }`}
-                onClick={() => column && onDateClicked(column)}
+                onClick={() => column && column.dayValue && onDateClicked(column.dayValue)}
               >
-                {column?.getDate().toLocaleString(locale.code)}
+                {column?.dayValue?.getDate().toLocaleString(locale.code)}
               </div>
             ))
           )}
