@@ -1,21 +1,22 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addYears from 'date-fns/addYears';
 import setYear from 'date-fns/setYear';
 import subYears from 'date-fns/subYears';
-import { getBrowserLanguage } from '../../common-functions';
+import React from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedYearMatrix } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeYearSelectorProps {
   viewDate: Date;
+  locale: Locale;
   viewTemplate?: YearSelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
 export interface DateTimeYearSelectorTemplateProps {
   viewDate: Date;
+  locale: Locale;
   movePreviousDecade: () => void;
   moveNextDecade: () => void;
   onYearClicked: (year: string) => void;
@@ -24,8 +25,13 @@ export interface DateTimeYearSelectorTemplateProps {
 
 export type YearSelectorTemplate = TemplateFunction<DateTimeYearSelectorTemplateProps>;
 
-export default function DateTimeYearSelector({ viewDate, viewTemplate, dispatcher }: DateTimeYearSelectorProps) {
-  const yearMatrix = getTranslatedYearMatrix(viewDate, getBrowserLanguage());
+export default function DateTimeYearSelector({
+  viewDate,
+  locale,
+  viewTemplate,
+  dispatcher,
+}: DateTimeYearSelectorProps) {
+  const yearMatrix = getTranslatedYearMatrix(viewDate, locale);
 
   const movePreviousDecade = () => {
     const previousDecade = subYears(viewDate, 10);
@@ -55,6 +61,7 @@ export default function DateTimeYearSelector({ viewDate, viewTemplate, dispatche
 
   const templateProps: DateTimeYearSelectorTemplateProps = {
     viewDate,
+    locale,
     movePreviousDecade,
     moveNextDecade,
     onYearClicked,

@@ -1,21 +1,20 @@
+import { addYears, setMonth, subYears } from 'date-fns';
 import React, { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import addYears from 'date-fns/addYears';
-import setMonth from 'date-fns/setMonth';
-import subYears from 'date-fns/subYears';
-import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeMonthSelectorProps {
   viewDate: Date;
+  locale: Locale;
   viewTemplate?: MonthSelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
 export interface DateTimeMonthSelectorTemplateProps {
   viewDate: Date;
+  locale: Locale;
   movePreviousYear: () => void;
   moveNextYear: () => void;
   onMonthClicked: (monthNumber: number) => void;
@@ -24,8 +23,13 @@ export interface DateTimeMonthSelectorTemplateProps {
 
 export type MonthSelectorTemplate = TemplateFunction<DateTimeMonthSelectorTemplateProps>;
 
-export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatcher }: DateTimeMonthSelectorProps) {
-  const monthMatrix = useRef(getTranslatedMonthMatrix(getBrowserLanguage()));
+export default function DateTimeMonthSelector({
+  viewDate,
+  locale,
+  viewTemplate,
+  dispatcher,
+}: DateTimeMonthSelectorProps) {
+  const monthMatrix = useRef(getTranslatedMonthMatrix(locale));
 
   const movePreviousYear = () => {
     const previousYear = subYears(viewDate, 1);
@@ -51,7 +55,7 @@ export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatch
   };
 
   const getCurrentYear = () => {
-    return viewDate.toLocaleDateString(getBrowserLanguage(), {
+    return viewDate.toLocaleDateString(locale.code, {
       year: 'numeric',
     });
   };
@@ -64,6 +68,7 @@ export default function DateTimeMonthSelector({ viewDate, viewTemplate, dispatch
 
   const templateProps: DateTimeMonthSelectorTemplateProps = {
     viewDate,
+    locale,
     movePreviousYear,
     moveNextYear,
     onMonthClicked,
