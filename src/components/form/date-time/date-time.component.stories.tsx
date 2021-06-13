@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import React from 'react';
+import React, { useState } from 'react';
 import { Story, Meta } from '@storybook/react';
 import { DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeProps } from './date-time.component';
@@ -13,6 +13,30 @@ const Template: Story<DateTimeProps> = (args) => {
   document.body.className = '';
 
   return <DateTime {...args} />;
+};
+
+const SetValueTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  const [value, setValue] = useState<string>();
+
+  return (
+    <>
+      <button type="button" onClick={() => setValue('09/03/2021')}>
+        Set Value
+      </button>
+      <br />
+      <DateTime {...args} value={value} />
+    </>
+  );
+};
+
+const ScrollTemplate: Story<DateTimeProps> = (args) => {
+  return (
+    <div style={{ paddingTop: '50rem', paddingBottom: '20rem' }}>
+      <DateTime {...args} />
+    </div>
+  );
 };
 
 const DarkTemplate: Story<DateTimeProps> = (args) => {
@@ -78,6 +102,17 @@ MinuteConstraint.args = {
       step: 10,
     },
   },
+};
+
+export const ScrollDateTime = ScrollTemplate.bind({});
+ScrollDateTime.args = {
+  label: 'Date',
+  useDefaultDateValue: true,
+};
+
+export const DelaySetValue = SetValueTemplate.bind({});
+DelaySetValue.args = {
+  label: 'Date',
 };
 
 export const SelectableDate = Template.bind({});
