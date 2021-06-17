@@ -8,7 +8,7 @@ import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
-import { DateSelectionType, TimeConstraints } from './date-time-types';
+import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
@@ -18,6 +18,7 @@ export interface DateTimeProps {
   useDefaultDateValue?: boolean;
   locale?: string;
   dateSelection?: DateSelectionType;
+  dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
@@ -34,6 +35,7 @@ export default function DateTime({
   useDefaultDateValue = false,
   locale,
   dateSelection = DateSelectionType.DateTime,
+  dateFormat,
   timeConstraints,
   selectableDate,
   isValidDate,
@@ -177,16 +179,56 @@ export default function DateTime({
     }
   };
 
+  const getDateTimeStyle = () => {
+    switch (dateFormat) {
+      case DateFormatType.Short:
+        return 'short';
+      case DateFormatType.Medium:
+        return 'medium';
+      case DateFormatType.Long:
+        return 'long';
+      default:
+        return undefined;
+    }
+  };
+
   const getValue = () => {
+    const dateStyle = getDateTimeStyle();
+
     switch (dateSelection) {
       case DateSelectionType.DateTime:
-        return state.selectedDate ? state.selectedDate.toLocaleString(language.current) : '';
+        return state.selectedDate
+          ? dateStyle
+            ? state.selectedDate.toLocaleString(language.current, {
+                dateStyle: dateStyle,
+                timeStyle: dateStyle,
+              })
+            : state.selectedDate.toLocaleString(language.current)
+          : '';
       case DateSelectionType.DateOnly:
-        return state.selectedDate ? state.selectedDate.toLocaleDateString(language.current) : '';
+        return state.selectedDate
+          ? dateStyle
+            ? state.selectedDate.toLocaleDateString(language.current, {
+                dateStyle: dateStyle,
+                timeStyle: dateStyle,
+              })
+            : state.selectedDate.toLocaleString(language.current)
+          : '';
       case DateSelectionType.TimeOnly:
-        return state.selectedDate ? state.selectedDate.toLocaleTimeString(language.current) : '';
+        return state.selectedDate
+          ? dateStyle
+            ? state.selectedDate.toLocaleTimeString(language.current, {
+                dateStyle: dateStyle,
+                timeStyle: dateStyle,
+              })
+            : state.selectedDate.toLocaleString(language.current)
+          : '';
       default:
-        return state.selectedDate ? state.selectedDate.toLocaleString(language.current) : '';
+        return state.selectedDate
+          ? dateStyle
+            ? state.selectedDate.toLocaleString(language.current, { dateStyle: dateStyle, timeStyle: dateStyle })
+            : state.selectedDate.toLocaleString(language.current)
+          : '';
     }
   };
 
