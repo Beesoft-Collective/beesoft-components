@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { Story, Meta } from '@storybook/react';
-import { DateSelectionType } from './date-time-types';
+import { DateFormatType, DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeProps } from './date-time.component';
 
 export default {
@@ -126,4 +126,25 @@ IsValidSelectedDate.args = {
   label: 'Date',
   isValidDate: (date: Date) => date.getDay() !== 0,
   onChange: action('onChange'),
+};
+
+export const ShortDate = Template.bind({});
+ShortDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Short,
+  useDefaultDateValue: true,
+};
+
+export const MediumDate = Template.bind({});
+MediumDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Medium,
+  useDefaultDateValue: true,
+};
+
+export const LongDate = Template.bind({});
+LongDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Long,
+  useDefaultDateValue: true,
 };

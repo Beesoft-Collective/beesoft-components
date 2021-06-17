@@ -15,3 +15,9 @@ export enum DateSelectionType {
   DateOnly,
   TimeOnly,
 }
+
+export enum DateFormatType {
+  Short,
+  Medium,
+  Long,
+}
