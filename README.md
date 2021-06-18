@@ -20,6 +20,7 @@ This is the main component in the library currently; it has the ability to selec
 | **useDefaultDateValue** | `boolean` | If set to true then the current date will be populated in the selection box. |
 | **locale** | `string` | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used. |
 | **dateSelection** | `DateSelectionType` | Allows the component to be set in 3 modes Date/Time, Date Only and Time Only (`default Date/Time`). |
+| **dateFormat** | `DateFormatType` | Allows for the date to be formatted in short, medium or long formats. |
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
 | **onChange** | `function (value: Date)` | Returns the value selected by the user (even though this optional it is recommended to be set). |
 | **daySelectorTemplate** | `DaySelectorTemplate` | Allows the day selector UI to be overridden or added to. |
