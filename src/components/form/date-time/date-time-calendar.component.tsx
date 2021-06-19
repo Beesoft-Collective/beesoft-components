@@ -1,43 +1,84 @@
 import cx from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
-import { DayType, getMonthMatrix, getTranslatedDays } from './date-time-functions';
+import { getBrowserLanguage } from '../../common-functions';
+import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
   selectedDate?: Date;
-  locale: Locale;
+  locale?: Locale;
+  onDateSelected?: (date: Date) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  dispatcher?: React.Dispatch<DateTimeReducerAction>;
 }
 
 export default function DateTimeCalendar({
   viewDate,
   selectedDate,
   locale,
+  onDateSelected,
   selectableDate,
   isValidDate,
   dispatcher,
 }: DateTimeCalendarProps) {
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
-  const weekDaysRef = useRef(getTranslatedDays(locale));
+  const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
+  const loadedLocale = useRef<Locale>();
+  const weekDaysRef = useRef<Array<string>>();
 
+  const loadLocaleObject = async () => {
+    return locale || (await loadLocale(getBrowserLanguage()));
+  };
+
+  /**
+   * When the component first loads setup the locale either from the passed in property or load it from date-fns.
+   */
   useEffect(() => {
-    if (viewDate) {
-      setMonthMatrix(getMonthMatrix(viewDate, locale));
+    loadLocaleObject()
+      .then((localeObject) => {
+        loadedLocale.current = localeObject;
+        weekDaysRef.current = getTranslatedDays(loadedLocale.current);
+        setIsLocaleLoaded(true);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  /**
+   * Each time the view date changes re-calculate the month matrix.
+   */
+  useEffect(() => {
+    if (viewDate && loadedLocale.current) {
+      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current));
     }
-  }, [viewDate, locale]);
+  }, [viewDate, isLocaleLoaded]);
+
+  /**
+   * If the locale changes then re-calculate the month matrix's language.
+   */
+  useEffect(() => {
+    if (loadedLocale.current && locale) {
+      loadedLocale.current = locale;
+      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current));
+    }
+  }, [locale]);
 
   const onDateClicked = (date: Date) => {
-    dispatcher({
-      type: DateTimeActionType.SetSelectedDate,
-      selectedDate: date,
-    });
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: date,
-    });
+    if (dispatcher) {
+      dispatcher({
+        type: DateTimeActionType.SetSelectedDate,
+        selectedDate: date,
+      });
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: date,
+      });
+    }
+
+    if (onDateSelected) {
+      onDateSelected(date);
+    }
   };
 
   const isSelectedDate = (currentDate: Date) => {
@@ -52,7 +93,7 @@ export default function DateTimeCalendar({
   return (
     <div className="w-full">
       <div className="grid grid-cols-7 gap-3">
-        {weekDaysRef.current.map((day, index) => (
+        {weekDaysRef.current?.map((day, index) => (
           <div key={index} className="text-center font-bold">
             {day}
           </div>
@@ -81,7 +122,7 @@ export default function DateTimeCalendar({
                   onDateClicked(column.dayValue)
                 }
               >
-                {column.dayValue?.getDate().toLocaleString(locale.code)}
+                {column.dayValue?.getDate().toLocaleString(loadedLocale.current?.code)}
               </div>
             );
           })

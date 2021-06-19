@@ -167,3 +167,17 @@ export function getDefaultTime(locale: Locale) {
   tempDate.setHours(0, 0, 0, 0);
   return tempDate.toLocaleTimeString(locale.code);
 }
+
+export function loadLocale(localeToLoad: string): Promise<Locale> {
+  return new Promise<Locale>((resolve, reject) => {
+    import(`date-fns/locale/${localeToLoad}`)
+      .then((locale) => {
+        if (locale && locale.default) {
+          resolve(locale.default);
+        }
+
+        reject('Locale did not load correctly');
+      })
+      .catch((error) => reject(error));
+  });
+}

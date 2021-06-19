@@ -14,6 +14,7 @@ export enum DateSelectionType {
   DateTime,
   DateOnly,
   TimeOnly,
+  DateRange,
 }
 
 export enum DateFormatType {

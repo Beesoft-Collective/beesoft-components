@@ -92,6 +92,12 @@ TimeOnly.args = {
   dateSelection: DateSelectionType.TimeOnly,
 };
 
+export const DateRange = Template.bind({});
+DateRange.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+};
+
 export const MinuteConstraint = Template.bind({});
 MinuteConstraint.args = {
   label: 'Date',

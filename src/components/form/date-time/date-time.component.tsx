@@ -3,10 +3,12 @@ import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
-import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
+import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
+import { loadLocale } from './date-time-functions';
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
+import DateTimeRange from './date-time-range.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
 import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
@@ -52,13 +54,13 @@ export default function DateTime({
 
   useEffect(() => {
     if (language.current) {
-      loadLocale(language.current);
+      loadLocaleObject(language.current);
     }
   }, [language]);
 
   useEffect(() => {
     if (locale) {
-      loadLocale(locale);
+      loadLocaleObject(locale);
     }
   }, [locale]);
 
@@ -71,10 +73,10 @@ export default function DateTime({
     }
   }, [value]);
 
-  const loadLocale = (localeToLoad: string) => {
-    import(`date-fns/locale/${localeToLoad}`)
+  const loadLocaleObject = (localeToLoad: string) => {
+    loadLocale(localeToLoad)
       .then((locale) => {
-        loadedLocale.current = locale.default;
+        loadedLocale.current = locale;
         const defaultDate = getDateValue();
 
         if (value || useDefaultDateValue) {
@@ -307,6 +309,9 @@ export default function DateTime({
                 dispatcher={dispatcher}
               />
             )}
+          {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
+            <DateTimeRange viewDate={state.currentViewDate} locale={loadedLocale.current} dispatcher={dispatcher} />
+          )}
         </>
       </OverlayPanel>
     </div>
