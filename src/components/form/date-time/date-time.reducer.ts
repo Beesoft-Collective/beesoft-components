@@ -5,6 +5,7 @@ export enum DateTimeActionType {
   TimeSelector,
   SetViewDate,
   SetSelectedDate,
+  SetSelectedDateRange,
   ResetSelectedDateChanged,
   InitializeDates,
 }
@@ -13,6 +14,8 @@ export interface DateTimeState {
   currentSelector: DateTimeActionType;
   currentViewDate: Date;
   selectedDate?: Date;
+  selectedStartDate?: Date; // the start and end dates are used for the range selector
+  selectedEndDate?: Date;
   originalSetDate?: Date;
   selectedDateChanged: boolean;
   dateInitialized: boolean;
@@ -22,6 +25,8 @@ export interface DateTimeReducerAction {
   type: DateTimeActionType;
   viewDate?: Date;
   selectedDate?: Date;
+  selectedStartDate?: Date;
+  selectedEndDate?: Date;
   initialDate?: Date;
 }
 
@@ -60,6 +65,12 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
         selectedDateChanged: state.originalSetDate?.getTime() !== action.selectedDate?.getTime(),
+      };
+    case DateTimeActionType.SetSelectedDateRange:
+      return {
+        ...state,
+        selectedStartDate: action.selectedStartDate,
+        selectedEndDate: action.selectedEndDate,
       };
     case DateTimeActionType.ResetSelectedDateChanged:
       return {

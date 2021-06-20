@@ -22,3 +22,8 @@ export enum DateFormatType {
   Medium,
   Long,
 }
+
+export enum CalendarSelectionMode {
+  Normal,
+  Range,
+}

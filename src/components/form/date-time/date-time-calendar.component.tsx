@@ -2,11 +2,15 @@ import cx from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
+import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
   selectedDate?: Date;
+  selectedStartDate?: Date;
+  selectedEndDate?: Date;
+  selectionMode?: CalendarSelectionMode;
   locale?: Locale;
   onDateSelected?: (date: Date) => void;
   selectableDate?: (currentDate: Date) => boolean;
@@ -17,6 +21,9 @@ export interface DateTimeCalendarProps {
 export default function DateTimeCalendar({
   viewDate,
   selectedDate,
+  selectedStartDate,
+  selectedEndDate,
+  selectionMode = CalendarSelectionMode.Normal,
   locale,
   onDateSelected,
   selectableDate,
@@ -50,7 +57,7 @@ export default function DateTimeCalendar({
    */
   useEffect(() => {
     if (viewDate && loadedLocale.current) {
-      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current));
+      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current, selectionMode === CalendarSelectionMode.Normal));
     }
   }, [viewDate, isLocaleLoaded]);
 
@@ -60,23 +67,28 @@ export default function DateTimeCalendar({
   useEffect(() => {
     if (loadedLocale.current && locale) {
       loadedLocale.current = locale;
-      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current));
+      setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current, selectionMode === CalendarSelectionMode.Normal));
     }
   }, [locale]);
 
   const onDateClicked = (date: Date) => {
-    if (dispatcher) {
-      dispatcher({
-        type: DateTimeActionType.SetSelectedDate,
-        selectedDate: date,
-      });
-      dispatcher({
-        type: DateTimeActionType.SetViewDate,
-        viewDate: date,
-      });
-    }
+    if (selectionMode === CalendarSelectionMode.Normal) {
+      if (dispatcher) {
+        dispatcher({
+          type: DateTimeActionType.SetSelectedDate,
+          selectedDate: date,
+        });
+        dispatcher({
+          type: DateTimeActionType.SetViewDate,
+          viewDate: date,
+        });
+      }
 
-    if (onDateSelected) {
+      if (onDateSelected) {
+        onDateSelected(date);
+      }
+    } else {
+      if (!onDateSelected) throw new Error('Range selection mode requires onDateSelected to be set');
       onDateSelected(date);
     }
   };
@@ -85,6 +97,15 @@ export default function DateTimeCalendar({
     if (selectedDate) {
       const comparisonDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
       return comparisonDate.toLocaleDateString() === currentDate.toLocaleDateString();
+    }
+
+    return false;
+  };
+
+  const isInSelectedDateRange = (currentDate: Date) => {
+    if (selectedStartDate && selectedEndDate) {
+      const startComparisonDate = new Date(selectedStartDate.getFullYear(), selectedStartDate.getMonth(), selectedStartDate.getDate());
+      const endComparisonDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), selectedEndDate.getDate(), 23, 59, 59);
     }
 
     return false;

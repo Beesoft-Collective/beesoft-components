@@ -8,7 +8,7 @@ import ContentEditableInput from '../content-editable-input/content-editable-inp
 import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
 import { loadLocale } from './date-time-functions';
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
-import DateTimeRange from './date-time-range.component';
+import DateTimeRangeSelector from './date-time-range-selector.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
 import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
@@ -310,7 +310,13 @@ export default function DateTime({
               />
             )}
           {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
-            <DateTimeRange viewDate={state.currentViewDate} locale={loadedLocale.current} dispatcher={dispatcher} />
+            <DateTimeRangeSelector
+              viewDate={state.currentViewDate}
+              selectedStartDate={state.selectedStartDate}
+              selectedEndDate={state.selectedEndDate}
+              locale={loadedLocale.current}
+              dispatcher={dispatcher}
+            />
           )}
         </>
       </OverlayPanel>
