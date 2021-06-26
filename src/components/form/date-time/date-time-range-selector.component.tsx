@@ -1,6 +1,8 @@
 import { addMonths } from 'date-fns';
+import subMonths from 'date-fns/subMonths';
 import React from 'react';
 import DateTimeCalendar from './date-time-calendar.component';
+import DateTimeScroller from './date-time-scroller.component';
 import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -21,37 +23,74 @@ export default function DateTimeRangeSelector({
 }: DateTimeRangeSelectorProps) {
   const nextMonth = addMonths(viewDate, 1);
 
-  const onDateSelected = (date: Date) => {
-    dispatcher({
-      type: DateTimeActionType.SetSelectedDateRange,
-      selectedStartDate: date,
-      selectedEndDate: date,
-    });
+  const onDateSelected = (date: Date, options?: Record<string, any>) => {
+    if (!options || !options.setEndDate) {
+      dispatcher({
+        type: DateTimeActionType.SetSelectedDateRange,
+        selectedStartDate: date,
+        selectedEndDate: date,
+      });
+    } else {
+      dispatcher({
+        type: DateTimeActionType.SetSelectedDateRange,
+        selectedEndDate: date,
+      });
+    }
+  };
+
+  const getSelectorTitle = () =>
+    `${viewDate.toLocaleDateString(locale.code, { month: 'long' })} - ${nextMonth.toLocaleDateString(locale.code, {
+      month: 'long',
+    })}`;
+
+  const movePreviousMonth = () => {
+    if (viewDate) {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: subMonths(viewDate, 1),
+      });
+    }
+  };
+
+  const moveNextMonth = () => {
+    if (viewDate) {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: addMonths(viewDate, 1),
+      });
+    }
   };
 
   return (
-    <div className="flex flex-row py-1 px-2">
-      <div className="mr-2">
-        <DateTimeCalendar
-          viewDate={viewDate}
-          selectedStartDate={selectedStartDate}
-          selectedEndDate={selectedEndDate}
-          selectionMode={CalendarSelectionMode.Range}
-          onDateSelected={onDateSelected}
-          locale={locale}
-          dispatcher={dispatcher}
-        />
+    <div className="flex flex-col">
+      <div className="flex-shrink">
+        <DateTimeScroller title={getSelectorTitle()} onMovePrevious={movePreviousMonth} onMoveNext={moveNextMonth} />
       </div>
-      <div>
-        <DateTimeCalendar
-          viewDate={nextMonth}
-          selectedStartDate={selectedStartDate}
-          selectedEndDate={selectedEndDate}
-          selectionMode={CalendarSelectionMode.Range}
-          onDateSelected={onDateSelected}
-          locale={locale}
-          dispatcher={dispatcher}
-        />
+      <div className="flex-grow">
+        <div className="flex flex-row py-1 px-2">
+          <div className="border-r border-solid border-gray-400 pr-4">
+            <DateTimeCalendar
+              viewDate={viewDate}
+              selectedStartDate={selectedStartDate}
+              selectedEndDate={selectedEndDate}
+              selectionMode={CalendarSelectionMode.Range}
+              onDateSelected={onDateSelected}
+              locale={locale}
+              dispatcher={dispatcher}
+            />
+          </div>
+          <div className="pl-4">
+            <DateTimeCalendar
+              viewDate={nextMonth}
+              selectedStartDate={selectedStartDate}
+              selectedEndDate={selectedEndDate}
+              selectionMode={CalendarSelectionMode.Range}
+              onDateSelected={onDateSelected}
+              locale={locale}
+              dispatcher={dispatcher}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
-import cx from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import DateTimeCalendar from './date-time-calendar.component';
-import { DayType, getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
+import { getDefaultTime } from './date-time-functions';
+import DateTimeScroller from './date-time-scroller.component';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
@@ -79,6 +78,8 @@ export default function DateTimeDaySelector({
         year: 'numeric',
       });
     }
+
+    return '';
   };
 
   const templateProps: DateTimeDaySelectorTemplateProps = {
@@ -101,21 +102,12 @@ export default function DateTimeDaySelector({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={movePreviousMonth}>
-            <FontAwesomeIcon icon={['fas', 'angle-left']} />
-          </button>
-        </div>
-        <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>
-          {getCurrentMonthYear()}
-        </div>
-        <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={moveNextMonth}>
-            <FontAwesomeIcon icon={['fas', 'angle-right']} />
-          </button>
-        </div>
-      </div>
+      <DateTimeScroller
+        title={getCurrentMonthYear()}
+        onTitleClicked={onMonthClicked}
+        onMovePrevious={movePreviousMonth}
+        onMoveNext={moveNextMonth}
+      />
       <DateTimeCalendar
         viewDate={viewDate}
         selectedDate={selectedDate}

@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
+import { useKeyDown } from '../../common-hooks';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
@@ -12,7 +13,7 @@ export interface DateTimeCalendarProps {
   selectedEndDate?: Date;
   selectionMode?: CalendarSelectionMode;
   locale?: Locale;
-  onDateSelected?: (date: Date) => void;
+  onDateSelected?: (date: Date, options?: Record<string, any>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   dispatcher?: React.Dispatch<DateTimeReducerAction>;
@@ -34,6 +35,11 @@ export default function DateTimeCalendar({
   const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
   const loadedLocale = useRef<Locale>();
   const weekDaysRef = useRef<Array<string>>();
+  const selectedDateRef = useRef<Date>();
+  const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
+  const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
+
+  const isShiftDown = useKeyDown('Shift');
 
   const loadLocaleObject = async () => {
     return locale || (await loadLocale(getBrowserLanguage()));
@@ -60,6 +66,30 @@ export default function DateTimeCalendar({
       setMonthMatrix(getMonthMatrix(viewDate, loadedLocale.current, selectionMode === CalendarSelectionMode.Normal));
     }
   }, [viewDate, isLocaleLoaded]);
+
+  useEffect(() => {
+    if (selectedDate) {
+      selectedDateRef.current = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedStartDate && selectedEndDate) {
+      setSelectedStartComparison(
+        new Date(selectedStartDate.getFullYear(), selectedStartDate.getMonth(), selectedStartDate.getDate()).getTime()
+      );
+      setSelectedEndComparison(
+        new Date(
+          selectedEndDate.getFullYear(),
+          selectedEndDate.getMonth(),
+          selectedEndDate.getDate(),
+          23,
+          59,
+          59
+        ).getTime()
+      );
+    }
+  }, [selectedStartDate, selectedEndDate]);
 
   /**
    * If the locale changes then re-calculate the month matrix's language.
@@ -89,23 +119,22 @@ export default function DateTimeCalendar({
       }
     } else {
       if (!onDateSelected) throw new Error('Range selection mode requires onDateSelected to be set');
-      onDateSelected(date);
+      if (!selectedStartDate || (selectedStartDate && !isShiftDown)) {
+        onDateSelected(date);
+      } else if (selectedStartDate && isShiftDown) {
+        onDateSelected(date, { setEndDate: true });
+      }
     }
   };
 
   const isSelectedDate = (currentDate: Date) => {
-    if (selectedDate) {
-      const comparisonDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-      return comparisonDate.toLocaleDateString() === currentDate.toLocaleDateString();
-    }
-
-    return false;
+    return selectedDateRef.current?.toLocaleDateString() === currentDate.toLocaleDateString();
   };
 
   const isInSelectedDateRange = (currentDate: Date) => {
-    if (selectedStartDate && selectedEndDate) {
-      const startComparisonDate = new Date(selectedStartDate.getFullYear(), selectedStartDate.getMonth(), selectedStartDate.getDate());
-      const endComparisonDate = new Date(selectedEndDate.getFullYear(), selectedEndDate.getMonth(), selectedEndDate.getDate(), 23, 59, 59);
+    if (selectedStartComparison && selectedEndComparison) {
+      const currentDateValue = currentDate.getTime();
+      return currentDateValue >= selectedStartComparison && currentDateValue <= selectedEndComparison;
     }
 
     return false;
@@ -126,7 +155,10 @@ export default function DateTimeCalendar({
             const dayStyles = cx('text-center py-1', {
               'text-gray-400': !column.isCurrent,
               'bg-blue-100 dark:bg-white dark:text-black rounded-full':
-                column && column.dayValue && isSelectedDate(column.dayValue),
+                column &&
+                column.dayValue &&
+                ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
+                  (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
               'cursor-pointer': isSelectable,
               'text-red-300 cursor-not-allowed': !isSelectable,
             });

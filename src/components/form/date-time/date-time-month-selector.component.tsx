@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedMonthMatrix } from './date-time-functions';
+import DateTimeScroller from './date-time-scroller.component';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeMonthSelectorProps {
@@ -88,17 +89,12 @@ export default function DateTimeMonthSelector({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer" onClick={movePreviousYear}>
-          <FontAwesomeIcon icon={['fas', 'angle-left']} />
-        </div>
-        <div className="flex-grow text-center cursor-pointer" onClick={onYearClicked}>
-          {getCurrentYear()}
-        </div>
-        <div className="flex-shrink cursor-pointer" onClick={moveNextYear}>
-          <FontAwesomeIcon icon={['fas', 'angle-right']} />
-        </div>
-      </div>
+      <DateTimeScroller
+        title={getCurrentYear()}
+        onTitleClicked={onYearClicked}
+        onMovePrevious={movePreviousYear}
+        onMoveNext={moveNextYear}
+      />
       <div className="w-full grid grid-cols-4 gap-4">
         {monthMatrix.current.map((row, rIndex) =>
           row.map((column, cIndex) => (

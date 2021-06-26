@@ -201,35 +201,45 @@ export default function DateTime({
       case DateSelectionType.DateTime:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(language.current, {
+            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.DateOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleDateString(language.current, {
+            ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.TimeOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleTimeString(language.current, {
+            ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+          : '';
+      case DateSelectionType.DateRange:
+        return state.selectedStartDate && state.selectedEndDate
+          ? dateStyle
+            ? `${state.selectedStartDate.toLocaleDateString(loadedLocale.current?.code, {
+                dateStyle,
+              })} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code, { dateStyle })}`
+            : `${state.selectedStartDate.toLocaleDateString(
+                loadedLocale.current?.code
+              )} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code)}`
           : '';
       default:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(language.current, { dateStyle: dateStyle, timeStyle: dateStyle })
-            : state.selectedDate.toLocaleString(language.current)
+            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, { dateStyle: dateStyle, timeStyle: dateStyle })
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
     }
   };

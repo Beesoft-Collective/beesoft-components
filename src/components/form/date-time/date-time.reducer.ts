@@ -69,7 +69,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
     case DateTimeActionType.SetSelectedDateRange:
       return {
         ...state,
-        selectedStartDate: action.selectedStartDate,
+        selectedStartDate: action.selectedStartDate || state.selectedStartDate,
         selectedEndDate: action.selectedEndDate,
       };
     case DateTimeActionType.ResetSelectedDateChanged:
