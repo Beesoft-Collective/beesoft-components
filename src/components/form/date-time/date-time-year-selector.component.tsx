@@ -5,6 +5,7 @@ import subYears from 'date-fns/subYears';
 import React from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedYearMatrix } from './date-time-functions';
+import DateTimeScroller from './date-time-scroller.component';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeYearSelectorProps {
@@ -77,15 +78,7 @@ export default function DateTimeYearSelector({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer" onClick={movePreviousDecade}>
-          <FontAwesomeIcon icon={['fas', 'angle-left']} />
-        </div>
-        <div className="flex-grow text-center cursor-pointer">{getCurrentDecade()}</div>
-        <div className="flex-shrink cursor-pointer" onClick={moveNextDecade}>
-          <FontAwesomeIcon icon={['fas', 'angle-right']} />
-        </div>
-      </div>
+      <DateTimeScroller title={getCurrentDecade()} onMovePrevious={movePreviousDecade} onMoveNext={moveNextDecade} />
       <div className="w-full">
         <div className="grid grid-cols-4 gap-4">
           {yearMatrix.map((row, rIndex) =>

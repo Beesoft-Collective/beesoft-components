@@ -15,7 +15,7 @@ import {
 
 export type DayType = { dayValue: Date | null; isCurrent: boolean };
 
-export function getMonthMatrix(matrixDate: Date, locale: Locale) {
+export function getMonthMatrix(matrixDate: Date, locale: Locale, loadOtherMonths = true) {
   const daysInMonth = getDaysInMonth(matrixDate);
   const firstDayInMonth = startOfMonth(matrixDate);
   const lastDayInMonth = lastDayOfMonth(matrixDate);
@@ -50,14 +50,14 @@ export function getMonthMatrix(matrixDate: Date, locale: Locale) {
     }
   }
 
-  if (firstDayOfMonthNumber > 0) {
+  if (firstDayOfMonthNumber > 0 && loadOtherMonths) {
     for (let firstDay = 0; firstDay < firstDayOfMonthNumber; firstDay++) {
       monthMatrix[0][firstDay].dayValue = subDays(firstDayInMonth, firstDayOfMonthNumber - firstDay);
       monthMatrix[0][firstDay].isCurrent = false;
     }
   }
 
-  if (lastDayOfMonthNumber > -1) {
+  if (lastDayOfMonthNumber > -1 && loadOtherMonths) {
     for (let lastDay = 6; lastDay > lastDayOfMonthNumber; lastDay--) {
       monthMatrix[rowCount - 1][lastDay].dayValue = addDays(lastDayInMonth, lastDay - lastDayOfMonthNumber);
       monthMatrix[rowCount - 1][lastDay].isCurrent = false;
@@ -166,4 +166,18 @@ export function getDefaultTime(locale: Locale) {
   const tempDate = new Date();
   tempDate.setHours(0, 0, 0, 0);
   return tempDate.toLocaleTimeString(locale.code);
+}
+
+export function loadLocale(localeToLoad: string): Promise<Locale> {
+  return new Promise<Locale>((resolve, reject) => {
+    import(`date-fns/locale/${localeToLoad}`)
+      .then((locale) => {
+        if (locale && locale.default) {
+          resolve(locale.default);
+        }
+
+        reject('Locale did not load correctly');
+      })
+      .catch((error) => reject(error));
+  });
 }

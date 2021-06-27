@@ -14,10 +14,16 @@ export enum DateSelectionType {
   DateTime,
   DateOnly,
   TimeOnly,
+  DateRange,
 }
 
 export enum DateFormatType {
   Short,
   Medium,
   Long,
+}
+
+export enum CalendarSelectionMode {
+  Normal,
+  Range,
 }

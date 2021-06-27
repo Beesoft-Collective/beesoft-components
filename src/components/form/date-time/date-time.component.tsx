@@ -3,10 +3,12 @@ import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
-import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
+import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
+import { loadLocale } from './date-time-functions';
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
+import DateTimeRangeSelector from './date-time-range-selector.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
 import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
@@ -52,40 +54,49 @@ export default function DateTime({
 
   useEffect(() => {
     if (language.current) {
-      loadLocale(language.current);
+      loadLocaleObject(language.current);
     }
   }, [language]);
 
   useEffect(() => {
     if (locale) {
-      loadLocale(locale);
+      loadLocaleObject(locale);
     }
   }, [locale]);
 
   useEffect(() => {
     if (value) {
+      const dateValue = getDateValue();
       dispatcher({
         type: DateTimeActionType.InitializeDates,
-        initialDate: getDateValue(),
+        initialDate: Array.isArray(dateValue) ? dateValue[0] : dateValue,
       });
-    }
-  }, [value]);
 
-  const loadLocale = (localeToLoad: string) => {
-    import(`date-fns/locale/${localeToLoad}`)
+      if (Array.isArray(dateValue)) {
+        dispatcher({
+          type: DateTimeActionType.SetSelectedDateRange,
+          selectedStartDate: dateValue[0],
+          selectedEndDate: dateValue[1],
+        });
+      }
+    }
+  }, [value, loadedLocale.current]);
+
+  const loadLocaleObject = (localeToLoad: string) => {
+    loadLocale(localeToLoad)
       .then((locale) => {
-        loadedLocale.current = locale.default;
+        loadedLocale.current = locale;
         const defaultDate = getDateValue();
 
         if (value || useDefaultDateValue) {
           dispatcher({
             type: DateTimeActionType.InitializeDates,
-            initialDate: defaultDate,
+            initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         } else {
           dispatcher({
             type: DateTimeActionType.SetViewDate,
-            viewDate: defaultDate,
+            viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         }
       })
@@ -115,11 +126,21 @@ export default function DateTime({
     return isoDate;
   };
 
+  const parseDateRange = (dateRangeValue: string) => {
+    return dateRangeValue.split('-').map((dateString) => parseDate(dateString.trim()));
+  };
+
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
-    return value ? (typeof value === 'string' ? parseDate(value) : value) : defaultDate;
+    return value
+      ? typeof value === 'string'
+        ? dateSelection !== DateSelectionType.DateRange
+          ? parseDate(value)
+          : parseDateRange(value)
+        : value
+      : defaultDate;
   };
 
   const initialState: DateTimeState = {
@@ -199,35 +220,48 @@ export default function DateTime({
       case DateSelectionType.DateTime:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(language.current, {
+            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.DateOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleDateString(language.current, {
+            ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.TimeOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleTimeString(language.current, {
+            ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(language.current)
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+          : '';
+      case DateSelectionType.DateRange:
+        return state.selectedStartDate && state.selectedEndDate
+          ? dateStyle
+            ? `${state.selectedStartDate.toLocaleDateString(loadedLocale.current?.code, {
+                dateStyle,
+              })} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code, { dateStyle })}`
+            : `${state.selectedStartDate.toLocaleDateString(
+                loadedLocale.current?.code
+              )} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code)}`
           : '';
       default:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(language.current, { dateStyle: dateStyle, timeStyle: dateStyle })
-            : state.selectedDate.toLocaleString(language.current)
+            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
+                dateStyle: dateStyle,
+                timeStyle: dateStyle,
+              })
+            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
     }
   };
@@ -307,6 +341,15 @@ export default function DateTime({
                 dispatcher={dispatcher}
               />
             )}
+          {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
+            <DateTimeRangeSelector
+              viewDate={state.currentViewDate}
+              selectedStartDate={state.selectedStartDate}
+              selectedEndDate={state.selectedEndDate}
+              locale={loadedLocale.current}
+              dispatcher={dispatcher}
+            />
+          )}
         </>
       </OverlayPanel>
     </div>

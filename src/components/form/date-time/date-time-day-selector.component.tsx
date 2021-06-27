@@ -1,10 +1,10 @@
-import cx from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
-import { DayType, getDefaultTime, getMonthMatrix, getTranslatedDays } from './date-time-functions';
+import DateTimeCalendar from './date-time-calendar.component';
+import { getDefaultTime } from './date-time-functions';
+import DateTimeScroller from './date-time-scroller.component';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
@@ -23,11 +23,8 @@ export interface DateTimeDaySelectorTemplateProps {
   viewDate: Date;
   locale: Locale;
   showTimeSelector: boolean;
-  monthMatrix?: Array<Array<DayType>>;
-  translatedWeekDays?: Array<string>;
   movePreviousMonth: () => void;
   moveNextMonth: () => void;
-  onDateClicked: (date: Date) => void;
   onMonthClicked: () => void;
   onTimeClicked: () => void;
 }
@@ -44,46 +41,22 @@ export default function DateTimeDaySelector({
   viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
-  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
-  const weekDaysRef = useRef(getTranslatedDays(locale));
-
-  useEffect(() => {
-    if (viewDate) {
-      setMonthMatrix(getMonthMatrix(viewDate, locale));
-    }
-  }, [viewDate, locale]);
-
   const movePreviousMonth = () => {
     if (viewDate) {
-      const previousMonth = subMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(previousMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
-        viewDate: previousMonth,
+        viewDate: subMonths(viewDate, 1),
       });
     }
   };
 
   const moveNextMonth = () => {
     if (viewDate) {
-      const nextMonth = addMonths(viewDate, 1);
-      setMonthMatrix(getMonthMatrix(nextMonth, locale));
       dispatcher({
         type: DateTimeActionType.SetViewDate,
-        viewDate: nextMonth,
+        viewDate: addMonths(viewDate, 1),
       });
     }
-  };
-
-  const onDateClicked = (date: Date) => {
-    dispatcher({
-      type: DateTimeActionType.SetSelectedDate,
-      selectedDate: date,
-    });
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: date,
-    });
   };
 
   const onMonthClicked = () => {
@@ -105,15 +78,8 @@ export default function DateTimeDaySelector({
         year: 'numeric',
       });
     }
-  };
 
-  const isSelectedDate = (currentDate: Date) => {
-    if (selectedDate) {
-      const comparisonDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-      return comparisonDate.toLocaleDateString() === currentDate.toLocaleDateString();
-    }
-
-    return false;
+    return '';
   };
 
   const templateProps: DateTimeDaySelectorTemplateProps = {
@@ -121,11 +87,8 @@ export default function DateTimeDaySelector({
     viewDate,
     locale,
     showTimeSelector,
-    monthMatrix,
-    translatedWeekDays: weekDaysRef.current,
     movePreviousMonth,
     moveNextMonth,
-    onDateClicked,
     onMonthClicked,
     onTimeClicked,
   };
@@ -139,59 +102,20 @@ export default function DateTimeDaySelector({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="w-full flex flex-row py-1 px-2">
-        <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={movePreviousMonth}>
-            <FontAwesomeIcon icon={['fas', 'angle-left']} />
-          </button>
-        </div>
-        <div className="flex-grow text-center cursor-pointer" onClick={onMonthClicked}>
-          {getCurrentMonthYear()}
-        </div>
-        <div className="flex-shrink cursor-pointer">
-          <button className="focus:outline-none" onClick={moveNextMonth}>
-            <FontAwesomeIcon icon={['fas', 'angle-right']} />
-          </button>
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="grid grid-cols-7 gap-3">
-          {weekDaysRef.current.map((day, index) => (
-            <div key={index} className="text-center font-bold">
-              {day}
-            </div>
-          ))}
-          {monthMatrix?.map((row, rIndex) =>
-            row.map((column, cIndex) => {
-              const isSelectable =
-                column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
-              const dayStyles = cx('text-center py-1', {
-                'text-gray-400': !column.isCurrent,
-                'bg-blue-100 dark:bg-white dark:text-black rounded-full':
-                  column && column.dayValue && isSelectedDate(column.dayValue),
-                'cursor-pointer': isSelectable,
-                'text-red-300 cursor-not-allowed': !isSelectable,
-              });
-
-              return (
-                <div
-                  key={rIndex.toString() + cIndex.toString()}
-                  className={dayStyles}
-                  onClick={() =>
-                    column &&
-                    column.dayValue &&
-                    isSelectable &&
-                    (isValidDate === undefined || isValidDate(column.dayValue)) &&
-                    onDateClicked(column.dayValue)
-                  }
-                >
-                  {column.dayValue?.getDate().toLocaleString(locale.code)}
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
+      <DateTimeScroller
+        title={getCurrentMonthYear()}
+        onTitleClicked={onMonthClicked}
+        onMovePrevious={movePreviousMonth}
+        onMoveNext={moveNextMonth}
+      />
+      <DateTimeCalendar
+        viewDate={viewDate}
+        selectedDate={selectedDate}
+        locale={locale}
+        selectableDate={selectableDate}
+        isValidDate={isValidDate}
+        dispatcher={dispatcher}
+      />
       {showTimeSelector && (
         <div className="w-full flex flex-row p-2 justify-center">
           <div
