@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { Story, Meta } from '@storybook/react';
-import { DateSelectionType } from './date-time-types';
+import { DateFormatType, DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeProps } from './date-time.component';
 
 export default {
@@ -92,6 +92,26 @@ TimeOnly.args = {
   dateSelection: DateSelectionType.TimeOnly,
 };
 
+export const DateRange = Template.bind({});
+DateRange.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+};
+
+export const DateRangeSetValue = Template.bind({});
+DateRangeSetValue.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+  value: '30/03/2021 - 14/04/2021',
+};
+
+export const DateRangeDefaultValue = Template.bind({});
+DateRangeDefaultValue.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+  useDefaultDateValue: true,
+};
+
 export const MinuteConstraint = Template.bind({});
 MinuteConstraint.args = {
   label: 'Date',
@@ -126,4 +146,25 @@ IsValidSelectedDate.args = {
   label: 'Date',
   isValidDate: (date: Date) => date.getDay() !== 0,
   onChange: action('onChange'),
+};
+
+export const ShortDate = Template.bind({});
+ShortDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Short,
+  useDefaultDateValue: true,
+};
+
+export const MediumDate = Template.bind({});
+MediumDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Medium,
+  useDefaultDateValue: true,
+};
+
+export const LongDate = Template.bind({});
+LongDate.args = {
+  label: 'Date',
+  dateFormat: DateFormatType.Long,
+  useDefaultDateValue: true,
 };

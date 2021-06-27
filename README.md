@@ -19,7 +19,8 @@ This is the main component in the library currently; it has the ability to selec
 | **label** | `string` | Sets the label for the component. |
 | **useDefaultDateValue** | `boolean` | If set to true then the current date will be populated in the selection box. |
 | **locale** | `string` | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used. |
-| **dateSelection** | `DateSelectionType` | Allows the component to be set in 3 modes Date/Time, Date Only and Time Only (`default Date/Time`). |
+| **dateSelection** | `DateSelectionType` | Allows the component to be set in 3 modes Date/Time, Date Only, Time Only and Date Range (`default Date/Time`). |
+| **dateFormat** | `DateFormatType` | Allows for the date to be formatted in short, medium or long formats. |
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
 | **onChange** | `function (value: Date)` | Returns the value selected by the user (even though this optional it is recommended to be set). |
 | **daySelectorTemplate** | `DaySelectorTemplate` | Allows the day selector UI to be overridden or added to. |
@@ -32,3 +33,7 @@ This is the main component in the library currently; it has the ability to selec
 Dark mode is a common feature for many web applications. Beehive components support dark mode, to turn it on add a `dark` class to the body tag. In React you can use to following line:
 
 > document.body.className = 'dark';
+
+### Date Range
+
+The component now has a date range mode; this can be used by setting the `dateSelection` property to `DateRange`. To select a range start by making an initial selection then hold `shift` and click the next date to select the whole range. Once a selection is made clicking `shift` and selecting another date will change the range selection.
