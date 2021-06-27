@@ -98,6 +98,20 @@ DateRange.args = {
   dateSelection: DateSelectionType.DateRange,
 };
 
+export const DateRangeSetValue = Template.bind({});
+DateRangeSetValue.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+  value: '30/03/2021 - 14/04/2021',
+};
+
+export const DateRangeDefaultValue = Template.bind({});
+DateRangeDefaultValue.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+  useDefaultDateValue: true,
+};
+
 export const MinuteConstraint = Template.bind({});
 MinuteConstraint.args = {
   label: 'Date',

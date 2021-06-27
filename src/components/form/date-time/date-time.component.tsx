@@ -66,12 +66,21 @@ export default function DateTime({
 
   useEffect(() => {
     if (value) {
+      const dateValue = getDateValue();
       dispatcher({
         type: DateTimeActionType.InitializeDates,
-        initialDate: getDateValue(),
+        initialDate: Array.isArray(dateValue) ? dateValue[0] : dateValue,
       });
+
+      if (Array.isArray(dateValue)) {
+        dispatcher({
+          type: DateTimeActionType.SetSelectedDateRange,
+          selectedStartDate: dateValue[0],
+          selectedEndDate: dateValue[1],
+        });
+      }
     }
-  }, [value]);
+  }, [value, loadedLocale.current]);
 
   const loadLocaleObject = (localeToLoad: string) => {
     loadLocale(localeToLoad)
@@ -82,12 +91,12 @@ export default function DateTime({
         if (value || useDefaultDateValue) {
           dispatcher({
             type: DateTimeActionType.InitializeDates,
-            initialDate: defaultDate,
+            initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         } else {
           dispatcher({
             type: DateTimeActionType.SetViewDate,
-            viewDate: defaultDate,
+            viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         }
       })
@@ -117,11 +126,21 @@ export default function DateTime({
     return isoDate;
   };
 
+  const parseDateRange = (dateRangeValue: string) => {
+    return dateRangeValue.split('-').map((dateString) => parseDate(dateString.trim()));
+  };
+
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
-    return value ? (typeof value === 'string' ? parseDate(value) : value) : defaultDate;
+    return value
+      ? typeof value === 'string'
+        ? dateSelection !== DateSelectionType.DateRange
+          ? parseDate(value)
+          : parseDateRange(value)
+        : value
+      : defaultDate;
   };
 
   const initialState: DateTimeState = {
@@ -238,7 +257,10 @@ export default function DateTime({
       default:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, { dateStyle: dateStyle, timeStyle: dateStyle })
+            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
+                dateStyle: dateStyle,
+                timeStyle: dateStyle,
+              })
             : state.selectedDate.toLocaleString(loadedLocale.current?.code)
           : '';
     }
