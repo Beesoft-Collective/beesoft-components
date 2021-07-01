@@ -7,6 +7,7 @@ export enum DateTimeActionType {
   SetSelectedDate,
   SetSelectedDateRange,
   ResetSelectedDateChanged,
+  ResetSelectedDateRangeChanged,
   InitializeDates,
 }
 
@@ -17,6 +18,8 @@ export interface DateTimeState {
   selectedStartDate?: Date; // the start and end dates are used for the range selector
   selectedEndDate?: Date;
   originalSetDate?: Date;
+  originalSetStartDate?: Date;
+  originalSetEndDate?: Date;
   selectedDateChanged: boolean;
   dateInitialized: boolean;
 }
@@ -27,7 +30,7 @@ export interface DateTimeReducerAction {
   selectedDate?: Date;
   selectedStartDate?: Date;
   selectedEndDate?: Date;
-  initialDate?: Date;
+  initialDate?: Date | Array<Date>;
 }
 
 const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeState => {
@@ -70,7 +73,10 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       return {
         ...state,
         selectedStartDate: action.selectedStartDate || state.selectedStartDate,
-        selectedEndDate: action.selectedEndDate,
+        selectedEndDate: action.selectedEndDate || state.selectedEndDate,
+        selectedDateChanged:
+          state.originalSetStartDate?.getTime() !== action.selectedStartDate?.getTime() ||
+          state.originalSetEndDate?.getTime() !== action.selectedEndDate?.getTime(),
       };
     case DateTimeActionType.ResetSelectedDateChanged:
       return {
@@ -78,14 +84,35 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         originalSetDate: action.selectedDate || state.selectedDate,
         selectedDateChanged: false,
       };
-    case DateTimeActionType.InitializeDates:
+    case DateTimeActionType.ResetSelectedDateRangeChanged:
       return {
         ...state,
-        originalSetDate: action.initialDate || new Date(),
-        selectedDate: action.initialDate || new Date(),
-        currentViewDate: action.initialDate || new Date(),
+        originalSetStartDate: action.selectedStartDate || state.selectedStartDate,
+        originalSetEndDate: action.selectedEndDate || state.selectedEndDate,
+        selectedDateChanged: false,
+      };
+    case DateTimeActionType.InitializeDates:
+      const baseState = {
+        ...state,
+        currentViewDate: getInitialDate(action.initialDate),
         dateInitialized: true,
       };
+
+      if (!Array.isArray(action.initialDate)) {
+        return {
+          ...baseState,
+          originalSetDate: action.initialDate,
+          selectedDate: action.initialDate,
+        };
+      } else {
+        return {
+          ...baseState,
+          originalSetStartDate: action.initialDate[0],
+          originalSetEndDate: action.initialDate[1],
+          selectedStartDate: action.initialDate[0],
+          selectedEndDate: action.initialDate[1],
+        };
+      }
     default:
       return {
         ...state,
@@ -93,5 +120,9 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       };
   }
 };
+
+function getInitialDate(initialDate: Date | Array<Date> | undefined) {
+  return initialDate ? (!Array.isArray(initialDate) ? initialDate : initialDate[0]) : new Date();
+}
 
 export default reducer;
