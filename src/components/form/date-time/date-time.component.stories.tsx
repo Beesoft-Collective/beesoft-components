@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { Story, Meta } from '@storybook/react';
-import { DateFormatType, DateSelectionType } from './date-time-types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeProps } from './date-time.component';
 
 export default {
@@ -67,6 +67,13 @@ CurrentDateTime.args = {
   onChange: action('onChange'),
 };
 
+export const IconOnLeft = Template.bind({});
+IconOnLeft.args = {
+  label: 'Left Icon',
+  useDefaultDateValue: true,
+  iconPosition: CalendarIconPosition.Left,
+};
+
 export const DarkMode = DarkTemplate.bind({});
 DarkMode.args = {
   label: 'Date',
@@ -103,6 +110,7 @@ DateRangeSetValue.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   value: '30/03/2021 - 14/04/2021',
+  onChange: (date: Date | Array<Date>) => console.log('date range', date),
 };
 
 export const DateRangeDefaultValue = Template.bind({});
@@ -110,6 +118,14 @@ DateRangeDefaultValue.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   useDefaultDateValue: true,
+};
+
+export const DateRangeOnChange = Template.bind({});
+DateRangeOnChange.args = {
+  label: 'Date Range',
+  dateSelection: DateSelectionType.DateRange,
+  useDefaultDateValue: true,
+  onChange: (date: Date | Array<Date>) => console.log('date range', date),
 };
 
 export const MinuteConstraint = Template.bind({});

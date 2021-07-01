@@ -10,21 +10,22 @@ import { loadLocale } from './date-time-functions';
 import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
-import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
 import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
 export interface DateTimeProps {
-  value?: string | Date;
+  value?: string | Date | Array<Date>;
   label?: string;
   useDefaultDateValue?: boolean;
   locale?: string;
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
+  iconPosition?: CalendarIconPosition;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  onChange?: (value: Date) => void;
+  onChange?: (value: Date | Array<Date>) => void;
   daySelectorTemplate?: DaySelectorTemplate;
   monthSelectorTemplate?: MonthSelectorTemplate;
   yearSelectorTemplate?: YearSelectorTemplate;
@@ -39,6 +40,7 @@ export default function DateTime({
   dateSelection = DateSelectionType.DateTime,
   dateFormat,
   timeConstraints,
+  iconPosition = CalendarIconPosition.Right,
   selectableDate,
   isValidDate,
   onChange,
@@ -69,16 +71,8 @@ export default function DateTime({
       const dateValue = getDateValue();
       dispatcher({
         type: DateTimeActionType.InitializeDates,
-        initialDate: Array.isArray(dateValue) ? dateValue[0] : dateValue,
+        initialDate: dateValue,
       });
-
-      if (Array.isArray(dateValue)) {
-        dispatcher({
-          type: DateTimeActionType.SetSelectedDateRange,
-          selectedStartDate: dateValue[0],
-          selectedEndDate: dateValue[1],
-        });
-      }
     }
   }, [value, loadedLocale.current]);
 
@@ -106,7 +100,6 @@ export default function DateTime({
   const parseDate = (dateValue: string) => {
     const isoDate = parseISO(dateValue);
     if (isNaN(isoDate.valueOf())) {
-      // TODO Add an option for short, medium or long date format and create a proper format string (below) for each
       // this is an attempt to parse a number of date formats
       let localDate = parse(dateValue, 'Ppp', new Date(), { locale: loadedLocale.current });
       if (!isNaN(localDate.valueOf())) return localDate;
@@ -127,7 +120,16 @@ export default function DateTime({
   };
 
   const parseDateRange = (dateRangeValue: string) => {
-    return dateRangeValue.split('-').map((dateString) => parseDate(dateString.trim()));
+    const datesToParse = dateRangeValue.split('-');
+    if (datesToParse.length !== 2) return undefined;
+
+    const dateValue1 = parseDate(datesToParse[0].trim());
+    if (!dateValue1) return undefined;
+
+    const dateValue2 = parseDate(datesToParse[1].trim());
+    if (!dateValue2) return undefined;
+
+    return [dateValue1, dateValue2];
   };
 
   const getDateValue = () => {
@@ -191,11 +193,18 @@ export default function DateTime({
         dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
     });
 
-    if (onChange && state.selectedDate && state.selectedDateChanged) {
+    if (onChange && dateSelection !== DateSelectionType.DateRange && state.selectedDate && state.selectedDateChanged) {
       onChange(state.selectedDate);
       dispatcher({
         type: DateTimeActionType.ResetSelectedDateChanged,
         selectedDate: state.selectedDate,
+      });
+    } else if (onChange && state.selectedStartDate && state.selectedEndDate && state.selectedDateChanged) {
+      onChange([state.selectedStartDate, state.selectedEndDate]);
+      dispatcher({
+        type: DateTimeActionType.ResetSelectedDateRangeChanged,
+        selectedStartDate: state.selectedStartDate,
+        selectedEndDate: state.selectedEndDate,
       });
     }
   };
@@ -272,17 +281,28 @@ export default function DateTime({
   const canShowTimeSelector =
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
 
+  const inputProps =
+    iconPosition === CalendarIconPosition.Right
+      ? {
+          rightElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
+          rightElementClassName: 'cursor-pointer',
+          onRightElementClick: onCalendarClick,
+        }
+      : {
+          leftElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
+          leftElementClassName: 'cursor-pointer',
+          onLeftElementClick: onCalendarClick,
+        };
+
   return (
     <div>
       {label && <label className="dark:text-white">{label}</label>}
       <ContentEditableInput
         value={getValue()}
         className="parent-element text-left"
-        rightElement={<FontAwesomeIcon icon={['far', 'calendar-alt']} />}
-        rightElementClassName="cursor-pointer"
-        onRightElementClick={onCalendarClick}
         onFocus={onFocus}
         onInput={onInput}
+        {...inputProps}
       />
       <OverlayPanel
         visible={selectorOpen}
