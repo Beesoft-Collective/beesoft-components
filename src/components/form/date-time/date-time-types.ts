@@ -27,3 +27,8 @@ export enum CalendarSelectionMode {
   Normal,
   Range,
 }
+
+export enum CalendarIconPosition {
+  Right,
+  Left,
+}

@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import addYears from 'date-fns/addYears';
 import setYear from 'date-fns/setYear';
 import subYears from 'date-fns/subYears';

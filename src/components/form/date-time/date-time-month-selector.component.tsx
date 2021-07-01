@@ -1,6 +1,5 @@
 import { addYears, setMonth, subYears } from 'date-fns';
 import React, { useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
