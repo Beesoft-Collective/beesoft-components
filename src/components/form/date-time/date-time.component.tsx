@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
+import ResizeObserverService from '../../../services/resize-observer.service';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
+import ResizeObserverProvider from '../../common/resize-observer/resize-observer.provider';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
@@ -51,6 +53,7 @@ export default function DateTime({
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
+  const resizeObserver = useRef<ResizeObserverService>();
   const language = useRef<string>(locale || getBrowserLanguage());
   const loadedLocale = useRef<Locale>();
 
@@ -275,6 +278,13 @@ export default function DateTime({
     }
   };
 
+  const onMarkupCreated = (element: Element) => {
+    console.log('markup created', element);
+    resizeObserver.current = new ResizeObserverService(element);
+    resizeObserver.current?.observe();
+    resizeObserver.current?.getEntries().subscribe((rect) => console.log('rectangle', rect));
+  };
+
   const canShowDateSelectors =
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly;
 
@@ -309,6 +319,7 @@ export default function DateTime({
         target={dropDownTarget}
         shouldTargetCloseOverlay={false}
         hidden={onDateTimeHidden}
+        markupCreated={onMarkupCreated}
       >
         <>
           {state.currentSelector === DateTimeActionType.DaySelector &&

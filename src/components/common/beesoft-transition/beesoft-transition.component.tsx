@@ -5,14 +5,14 @@ import { TransitionStatus } from 'react-transition-group/Transition';
 export interface BeeSoftChildrenTransitionProps {
   state: TransitionStatus;
   defaultStyle: React.CSSProperties;
-  transitionStyles: { [key: string]: React.CSSProperties };
+  transitionStyles: Record<string, React.CSSProperties>;
 }
 
 export interface BeeSoftTransitionProps {
   start: boolean;
   timeout?: number;
   defaultStyle?: React.CSSProperties;
-  transitionStyles?: { [key: string]: React.CSSProperties };
+  transitionStyles?: Record<string, React.CSSProperties>;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
   onEntering?: (node: HTMLElement, isAppearing: boolean) => void;

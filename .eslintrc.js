@@ -23,7 +23,7 @@ module.exports = {
     // eslint specific rule changes.
     'prettier/prettier': 'warn',
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'react/jsx-filename-extension': [
       1,
       {
