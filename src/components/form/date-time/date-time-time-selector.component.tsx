@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react';
 import { generateNumberArray, padNumber } from '../../common-functions';
-import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { TimeConstraints } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -9,35 +8,14 @@ export interface DateTimeTimeSelectorProps {
   viewDate: Date;
   showDateSelector: boolean;
   locale: Locale;
-  viewTemplate?: TimeSelectorTemplate;
   timeConstraints?: TimeConstraints;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
-
-export interface DateTimeTimeSelectorTemplateProps {
-  viewDate: Date;
-  showDateSelector: boolean;
-  locale: Locale;
-  timeConstraints?: TimeConstraints;
-  currentHour: number;
-  currentMinute: number;
-  currentMeridian: number;
-  dateString: string;
-  increaseHour: () => void;
-  decreaseHour: () => void;
-  increaseMinute: () => void;
-  decreaseMinute: () => void;
-  changeMeridian: () => void;
-  onDateClicked: () => void;
-}
-
-export type TimeSelectorTemplate = TemplateFunction<DateTimeTimeSelectorTemplateProps>;
 
 export default function DateTimeTimeSelector({
   viewDate,
   showDateSelector,
   locale,
-  viewTemplate,
   timeConstraints,
   dispatcher,
 }: DateTimeTimeSelectorProps) {
@@ -112,82 +90,54 @@ export default function DateTimeTimeSelector({
     });
   };
 
-  const templateProps: DateTimeTimeSelectorTemplateProps = {
-    viewDate,
-    showDateSelector,
-    locale,
-    timeConstraints,
-    currentHour,
-    currentMinute,
-    currentMeridian,
-    dateString: dateString.current,
-    increaseHour,
-    decreaseHour,
-    increaseMinute,
-    decreaseMinute,
-    changeMeridian,
-    onDateClicked,
-  };
-
-  const defaultTemplate = (
-    props: DateTimeTimeSelectorTemplateProps,
-    children?: React.ReactNode | React.ReactNodeArray
-  ) => (
-    <div className="flex flex-row justify-center p-2" style={{ minWidth: '15rem' }}>
-      {children}
-    </div>
-  );
-
-  const template = viewTemplate || defaultTemplate;
-
   return (
-    <TemplateOutlet props={templateProps} template={template}>
-      <div className="w-full grid grid-cols-4 gap-4">
+    <div className="flex flex-row justify-center p-2 bc-dt-time-selector" style={{ minWidth: '15rem' }}>
+      <div className="w-full grid grid-cols-4 gap-4 bc-dt-time-grid">
         {showDateSelector && (
           <div
-            className="text-center cursor-pointer hover:bg-gray-300 dark:text-white dark:hover:bg-white dark:hover:text-black col-span-4"
+            className="text-center cursor-pointer hover:bg-gray-300 dark:text-white dark:hover:bg-white dark:hover:text-black col-span-4 bc-dt-time-date-value"
             onClick={onDateClicked}
           >
             {dateString.current}
           </div>
         )}
-        <div className="text-center cursor-pointer">
+        <div className="text-center cursor-pointer bc-dt-time-hour-increase">
           <button className="focus:outline-none" onClick={increaseHour}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
         <div>&nbsp;</div>
-        <div className="text-center cursor-pointer">
+        <div className="text-center cursor-pointer bc-dt-time-minute-increase">
           <button className="focus:outline-none" onClick={increaseMinute}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
-        <div className="text-center cursor-pointer">
+        <div className="text-center cursor-pointer bc-dt-time-meridian-increase">
           <button className="focus:outline-none" onClick={changeMeridian}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
-        <div className="text-center">{hours.current[currentHour]}</div>
-        <div className="text-center">:</div>
-        <div className="text-center">{minutes.current[currentMinute]}</div>
-        <div className="text-center">{ampm.current[currentMeridian]}</div>
-        <div className="text-center cursor-pointer">
+        <div className="text-center bc-dt-time-hour-value">{hours.current[currentHour]}</div>
+        <div className="text-center bc-dt-time-separator">:</div>
+        <div className="text-center bc-dt-time-minute-value">{minutes.current[currentMinute]}</div>
+        <div className="text-center bc-dt-time-meridian-value">{ampm.current[currentMeridian]}</div>
+        <div className="text-center cursor-pointer bc-dt-time-hour-decrease">
           <button className="focus:outline-none" onClick={decreaseHour}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>
         <div>&nbsp;</div>
-        <div className="text-center cursor-pointer">
+        <div className="text-center cursor-pointer bc-dt-time-minute-decrease">
           <button className="focus:outline-none" onClick={decreaseMinute}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>
-        <div className="text-center cursor-pointer">
+        <div className="text-center cursor-pointer bc-dt-time-meridian-decrease">
           <button className="focus:outline-none" onClick={changeMeridian}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>
       </div>
-    </TemplateOutlet>
+    </div>
   );
 }

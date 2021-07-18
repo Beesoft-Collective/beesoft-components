@@ -1,10 +1,10 @@
 import addMonths from 'date-fns/addMonths';
 import subMonths from 'date-fns/subMonths';
 import React from 'react';
-import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
+import { DateScrollerType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
@@ -14,22 +14,8 @@ export interface DateTimeDaySelectorProps {
   showTimeSelector: boolean;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  viewTemplate?: DaySelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
-
-export interface DateTimeDaySelectorTemplateProps {
-  selectedDate?: Date;
-  viewDate: Date;
-  locale: Locale;
-  showTimeSelector: boolean;
-  movePreviousMonth: () => void;
-  moveNextMonth: () => void;
-  onMonthClicked: () => void;
-  onTimeClicked: () => void;
-}
-
-export type DaySelectorTemplate = TemplateFunction<DateTimeDaySelectorTemplateProps>;
 
 export default function DateTimeDaySelector({
   selectedDate,
@@ -38,7 +24,6 @@ export default function DateTimeDaySelector({
   showTimeSelector,
   selectableDate,
   isValidDate,
-  viewTemplate,
   dispatcher,
 }: DateTimeDaySelectorProps) {
   const movePreviousMonth = () => {
@@ -82,28 +67,11 @@ export default function DateTimeDaySelector({
     return '';
   };
 
-  const templateProps: DateTimeDaySelectorTemplateProps = {
-    selectedDate,
-    viewDate,
-    locale,
-    showTimeSelector,
-    movePreviousMonth,
-    moveNextMonth,
-    onMonthClicked,
-    onTimeClicked,
-  };
-
-  const defaultTemplate = (
-    props: DateTimeDaySelectorTemplateProps,
-    children?: React.ReactNode | React.ReactNodeArray
-  ) => <div className="p-2">{children}</div>;
-
-  const template = viewTemplate || defaultTemplate;
-
   return (
-    <TemplateOutlet props={templateProps} template={template}>
+    <div className="p-2 bc-dt-day-selector">
       <DateTimeScroller
         title={getCurrentMonthYear()}
+        scrollerType={DateScrollerType.Day}
         onTitleClicked={onMonthClicked}
         onMovePrevious={movePreviousMonth}
         onMoveNext={moveNextMonth}
@@ -117,15 +85,15 @@ export default function DateTimeDaySelector({
         dispatcher={dispatcher}
       />
       {showTimeSelector && (
-        <div className="w-full flex flex-row p-2 justify-center">
+        <div className="w-full flex flex-row p-2 justify-center bc-dt-time-value-wrapper">
           <div
-            className="p-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-white dark:hover:text-black dark:text-white"
+            className="p-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-white dark:hover:text-black dark:text-white bc-dt-time-value"
             onClick={onTimeClicked}
           >
             {selectedDate?.toLocaleTimeString(locale.code) || getDefaultTime(locale)}
           </div>
         </div>
       )}
-    </TemplateOutlet>
+    </div>
   );
 }
