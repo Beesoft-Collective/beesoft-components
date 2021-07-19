@@ -28,6 +28,8 @@ export interface DateTimeCalendarTemplateProps {
   selectedEndDate?: Date;
   selectionMode?: CalendarSelectionMode;
   locale?: Locale;
+  weekDays?: Array<string>;
+  monthMatrix?: Array<Array<DayType>>;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onDateClicked: (date: Date) => void;
@@ -168,6 +170,8 @@ export default function DateTimeCalendar({
     selectedEndDate,
     selectionMode,
     locale,
+    weekDays: weekDaysRef.current,
+    monthMatrix,
     selectableDate,
     isValidDate,
     onDateClicked,
