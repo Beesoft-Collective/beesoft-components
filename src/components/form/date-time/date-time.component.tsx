@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
-import React, { createContext, useEffect, useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
+import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { loadLocale } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
@@ -31,13 +32,6 @@ export interface DateTimeProps {
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
 }
-
-interface DateTimeContextProps {
-  calendarTemplate?: DateTimeCalendarTemplate;
-  dateScrollerTemplate?: DateTimeScrollerTemplate;
-}
-
-export const DateTimeContext = createContext<DateTimeContextProps>(undefined!);
 
 export default function DateTime({
   value,
