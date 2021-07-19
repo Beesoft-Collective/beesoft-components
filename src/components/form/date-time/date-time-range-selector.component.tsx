@@ -3,7 +3,7 @@ import subMonths from 'date-fns/subMonths';
 import React from 'react';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
-import { CalendarSelectionMode } from './date-time-types';
+import { CalendarSelectionMode, DateScrollerType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeRangeSelectorProps {
@@ -62,13 +62,18 @@ export default function DateTimeRangeSelector({
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex-shrink">
-        <DateTimeScroller title={getSelectorTitle()} onMovePrevious={movePreviousMonth} onMoveNext={moveNextMonth} />
+    <div className="flex flex-col bc-dt-range-selector">
+      <div className="flex-shrink bc-dt-range-scroller-wrapper">
+        <DateTimeScroller
+          title={getSelectorTitle()}
+          scrollerType={DateScrollerType.Range}
+          onMovePrevious={movePreviousMonth}
+          onMoveNext={moveNextMonth}
+        />
       </div>
       <div className="flex-grow">
-        <div className="flex flex-row py-1 px-2">
-          <div className="border-r border-solid border-gray-400 pr-4">
+        <div className="flex flex-row py-1 px-2 bc-dt-range-wrapper">
+          <div className="border-r border-solid border-gray-400 pr-4 bc-dt-range-calendar-1">
             <DateTimeCalendar
               viewDate={viewDate}
               selectedStartDate={selectedStartDate}
@@ -79,7 +84,7 @@ export default function DateTimeRangeSelector({
               dispatcher={dispatcher}
             />
           </div>
-          <div className="pl-4">
+          <div className="pl-4 bc-dt-range-calendar-2">
             <DateTimeCalendar
               viewDate={nextMonth}
               selectedStartDate={selectedStartDate}

@@ -1,34 +1,17 @@
 import { addYears, setMonth, subYears } from 'date-fns';
 import React, { useRef } from 'react';
-import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
+import { DateScrollerType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeMonthSelectorProps {
   viewDate: Date;
   locale: Locale;
-  viewTemplate?: MonthSelectorTemplate;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export interface DateTimeMonthSelectorTemplateProps {
-  viewDate: Date;
-  locale: Locale;
-  movePreviousYear: () => void;
-  moveNextYear: () => void;
-  onMonthClicked: (monthNumber: number) => void;
-  onYearClicked: () => void;
-}
-
-export type MonthSelectorTemplate = TemplateFunction<DateTimeMonthSelectorTemplateProps>;
-
-export default function DateTimeMonthSelector({
-  viewDate,
-  locale,
-  viewTemplate,
-  dispatcher,
-}: DateTimeMonthSelectorProps) {
+export default function DateTimeMonthSelector({ viewDate, locale, dispatcher }: DateTimeMonthSelectorProps) {
   const monthMatrix = useRef(getTranslatedMonthMatrix(locale));
 
   const movePreviousYear = () => {
@@ -66,40 +49,21 @@ export default function DateTimeMonthSelector({
     });
   };
 
-  const templateProps: DateTimeMonthSelectorTemplateProps = {
-    viewDate,
-    locale,
-    movePreviousYear,
-    moveNextYear,
-    onMonthClicked,
-    onYearClicked,
-  };
-
-  const defaultTemplate = (
-    props: DateTimeMonthSelectorTemplateProps,
-    children?: React.ReactNode | React.ReactNodeArray
-  ) => (
-    <div className="p-2" style={{ minWidth: '20rem' }}>
-      {children}
-    </div>
-  );
-
-  const template = viewTemplate || defaultTemplate;
-
   return (
-    <TemplateOutlet props={templateProps} template={template}>
+    <div className="p-2 bc-dt-month-selector" style={{ minWidth: '20rem' }}>
       <DateTimeScroller
         title={getCurrentYear()}
+        scrollerType={DateScrollerType.Month}
         onTitleClicked={onYearClicked}
         onMovePrevious={movePreviousYear}
         onMoveNext={moveNextYear}
       />
-      <div className="w-full grid grid-cols-4 gap-4">
+      <div className="w-full grid grid-cols-4 gap-4 bc-dt-month-grid">
         {monthMatrix.current.map((row, rIndex) =>
           row.map((column, cIndex) => (
             <div
               key={rIndex.toString() + cIndex.toString()}
-              className="text-center cursor-pointer"
+              className="text-center cursor-pointer bc-dt-month-cell"
               onClick={() => onMonthClicked(column.monthNumber)}
             >
               {column.monthName}
@@ -107,6 +71,6 @@ export default function DateTimeMonthSelector({
           ))
         )}
       </div>
-    </TemplateOutlet>
+    </div>
   );
 }

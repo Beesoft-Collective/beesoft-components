@@ -1,9 +1,11 @@
 import cx from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { useKeyDown } from '../../common-hooks';
+import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
+import { DateTimeContext } from './date-time.component';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeCalendarProps {
@@ -18,6 +20,24 @@ export interface DateTimeCalendarProps {
   isValidDate?: (selectedDate: Date) => boolean;
   dispatcher?: React.Dispatch<DateTimeReducerAction>;
 }
+
+export interface DateTimeCalendarTemplateProps {
+  viewDate: Date;
+  selectedDate?: Date;
+  selectedStartDate?: Date;
+  selectedEndDate?: Date;
+  selectionMode?: CalendarSelectionMode;
+  locale?: Locale;
+  weekDays?: Array<string>;
+  monthMatrix?: Array<Array<DayType>>;
+  selectableDate?: (currentDate: Date) => boolean;
+  isValidDate?: (selectedDate: Date) => boolean;
+  onDateClicked: (date: Date) => void;
+  isSelectedDate: (currentDate: Date) => boolean;
+  isInSelectedDateRange: (currentDate: Date) => boolean;
+}
+
+export type DateTimeCalendarTemplate = TemplateFunction<DateTimeCalendarTemplateProps>;
 
 export default function DateTimeCalendar({
   viewDate,
@@ -40,6 +60,9 @@ export default function DateTimeCalendar({
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
 
   const isShiftDown = useKeyDown('Shift');
+
+  const context = useContext(DateTimeContext);
+  const viewTemplate = context.calendarTemplate;
 
   const loadLocaleObject = async () => {
     return locale || (await loadLocale(getBrowserLanguage()));
@@ -140,11 +163,33 @@ export default function DateTimeCalendar({
     return false;
   };
 
+  const templateProps: DateTimeCalendarTemplateProps = {
+    viewDate,
+    selectedDate,
+    selectedStartDate,
+    selectedEndDate,
+    selectionMode,
+    locale,
+    weekDays: weekDaysRef.current,
+    monthMatrix,
+    selectableDate,
+    isValidDate,
+    onDateClicked,
+    isSelectedDate,
+    isInSelectedDateRange,
+  };
+
+  const defaultTemplate = (props: DateTimeCalendarTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+    <div className="w-full bc-dt-calendar">{children}</div>
+  );
+
+  const template = viewTemplate || defaultTemplate;
+
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-7 gap-3">
+    <TemplateOutlet props={templateProps} template={template}>
+      <div className="grid grid-cols-7 gap-3 bc-dt-day-row">
         {weekDaysRef.current?.map((day, index) => (
-          <div key={index} className="text-center font-bold">
+          <div key={index} className="text-center font-bold bc-dt-day-cell">
             {day}
           </div>
         ))}
@@ -152,16 +197,20 @@ export default function DateTimeCalendar({
           row.map((column, cIndex) => {
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
-            const dayStyles = cx('text-center py-1', {
-              'text-gray-400': !column.isCurrent,
-              'bg-blue-100 dark:bg-white dark:text-black rounded-full':
-                column &&
-                column.dayValue &&
-                ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
-                  (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
-              'cursor-pointer': isSelectable,
-              'text-red-300 cursor-not-allowed': !isSelectable,
-            });
+            const dayStyles = cx(
+              'text-center py-1',
+              {
+                'text-gray-400': !column.isCurrent,
+                'bg-blue-100 dark:bg-white dark:text-black rounded-full':
+                  column &&
+                  column.dayValue &&
+                  ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
+                    (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
+                'cursor-pointer': isSelectable,
+                'text-red-300 cursor-not-allowed': !isSelectable,
+              },
+              'bc-dt-date-cell'
+            );
 
             return (
               <div
@@ -181,6 +230,6 @@ export default function DateTimeCalendar({
           })
         )}
       </div>
-    </div>
+    </TemplateOutlet>
   );
 }

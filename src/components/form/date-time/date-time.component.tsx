@@ -1,17 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { createContext, useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
-import DateTimeDaySelector, { DaySelectorTemplate } from './date-time-day-selector.component';
+import { DateTimeCalendarTemplate } from './date-time-calendar.component';
+import DateTimeDaySelector from './date-time-day-selector.component';
 import { loadLocale } from './date-time-functions';
-import DateTimeMonthSelector, { MonthSelectorTemplate } from './date-time-month-selector.component';
+import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
-import DateTimeTimeSelector, { TimeSelectorTemplate } from './date-time-time-selector.component';
+import { DateTimeScrollerTemplate } from './date-time-scroller.component';
+import DateTimeTimeSelector from './date-time-time-selector.component';
 import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
-import DateTimeYearSelector, { YearSelectorTemplate } from './date-time-year-selector.component';
+import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
 export interface DateTimeProps {
@@ -26,11 +28,16 @@ export interface DateTimeProps {
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value: Date | Array<Date>) => void;
-  daySelectorTemplate?: DaySelectorTemplate;
-  monthSelectorTemplate?: MonthSelectorTemplate;
-  yearSelectorTemplate?: YearSelectorTemplate;
-  timeSelectorTemplate?: TimeSelectorTemplate;
+  calendarTemplate?: DateTimeCalendarTemplate;
+  dateScrollerTemplate?: DateTimeScrollerTemplate;
 }
+
+interface DateTimeContextProps {
+  calendarTemplate?: DateTimeCalendarTemplate;
+  dateScrollerTemplate?: DateTimeScrollerTemplate;
+}
+
+export const DateTimeContext = createContext<DateTimeContextProps>(undefined!);
 
 export default function DateTime({
   value,
@@ -44,15 +51,18 @@ export default function DateTime({
   selectableDate,
   isValidDate,
   onChange,
-  daySelectorTemplate,
-  monthSelectorTemplate,
-  yearSelectorTemplate,
-  timeSelectorTemplate,
+  calendarTemplate,
+  dateScrollerTemplate,
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(locale || getBrowserLanguage());
   const loadedLocale = useRef<Locale>();
+
+  const contextProps: DateTimeContextProps = {
+    calendarTemplate,
+    dateScrollerTemplate,
+  };
 
   useEffect(() => {
     if (language.current) {
@@ -295,83 +305,81 @@ export default function DateTime({
         };
 
   return (
-    <div>
-      {label && <label className="dark:text-white">{label}</label>}
-      <ContentEditableInput
-        value={getValue()}
-        className="parent-element text-left"
-        onFocus={onFocus}
-        onInput={onInput}
-        {...inputProps}
-      />
-      <OverlayPanel
-        visible={selectorOpen}
-        target={dropDownTarget}
-        shouldTargetCloseOverlay={false}
-        hidden={onDateTimeHidden}
-      >
-        <>
-          {state.currentSelector === DateTimeActionType.DaySelector &&
-            canShowDateSelectors &&
-            state.dateInitialized &&
-            loadedLocale.current && (
-              <DateTimeDaySelector
-                selectedDate={state.selectedDate}
+    <DateTimeContext.Provider value={contextProps}>
+      <div className="bc-date-time">
+        {label && <label className="dark:text-white bc-dt-label">{label}</label>}
+        <ContentEditableInput
+          value={getValue()}
+          className="parent-element text-left bc-dt-input"
+          onFocus={onFocus}
+          onInput={onInput}
+          {...inputProps}
+        />
+        <OverlayPanel
+          visible={selectorOpen}
+          target={dropDownTarget}
+          shouldTargetCloseOverlay={false}
+          hidden={onDateTimeHidden}
+        >
+          <>
+            {state.currentSelector === DateTimeActionType.DaySelector &&
+              canShowDateSelectors &&
+              state.dateInitialized &&
+              loadedLocale.current && (
+                <DateTimeDaySelector
+                  selectedDate={state.selectedDate}
+                  viewDate={state.currentViewDate}
+                  locale={loadedLocale.current}
+                  showTimeSelector={dateSelection === DateSelectionType.DateTime}
+                  selectableDate={selectableDate}
+                  isValidDate={isValidDate}
+                  dispatcher={dispatcher}
+                />
+              )}
+            {state.currentSelector === DateTimeActionType.MonthSelector &&
+              canShowDateSelectors &&
+              state.dateInitialized &&
+              loadedLocale.current && (
+                <DateTimeMonthSelector
+                  viewDate={state.currentViewDate}
+                  locale={loadedLocale.current}
+                  dispatcher={dispatcher}
+                />
+              )}
+            {state.currentSelector === DateTimeActionType.YearSelector &&
+              canShowDateSelectors &&
+              state.dateInitialized &&
+              loadedLocale.current && (
+                <DateTimeYearSelector
+                  viewDate={state.currentViewDate}
+                  locale={loadedLocale.current}
+                  dispatcher={dispatcher}
+                />
+              )}
+            {state.currentSelector === DateTimeActionType.TimeSelector &&
+              canShowTimeSelector &&
+              state.dateInitialized &&
+              loadedLocale.current && (
+                <DateTimeTimeSelector
+                  viewDate={state.currentViewDate}
+                  showDateSelector={dateSelection === DateSelectionType.DateTime}
+                  locale={loadedLocale.current}
+                  timeConstraints={timeConstraints}
+                  dispatcher={dispatcher}
+                />
+              )}
+            {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
+              <DateTimeRangeSelector
                 viewDate={state.currentViewDate}
+                selectedStartDate={state.selectedStartDate}
+                selectedEndDate={state.selectedEndDate}
                 locale={loadedLocale.current}
-                showTimeSelector={dateSelection === DateSelectionType.DateTime}
-                selectableDate={selectableDate}
-                isValidDate={isValidDate}
                 dispatcher={dispatcher}
-                viewTemplate={daySelectorTemplate}
               />
             )}
-          {state.currentSelector === DateTimeActionType.MonthSelector &&
-            canShowDateSelectors &&
-            state.dateInitialized &&
-            loadedLocale.current && (
-              <DateTimeMonthSelector
-                viewDate={state.currentViewDate}
-                locale={loadedLocale.current}
-                viewTemplate={monthSelectorTemplate}
-                dispatcher={dispatcher}
-              />
-            )}
-          {state.currentSelector === DateTimeActionType.YearSelector &&
-            canShowDateSelectors &&
-            state.dateInitialized &&
-            loadedLocale.current && (
-              <DateTimeYearSelector
-                viewDate={state.currentViewDate}
-                locale={loadedLocale.current}
-                viewTemplate={yearSelectorTemplate}
-                dispatcher={dispatcher}
-              />
-            )}
-          {state.currentSelector === DateTimeActionType.TimeSelector &&
-            canShowTimeSelector &&
-            state.dateInitialized &&
-            loadedLocale.current && (
-              <DateTimeTimeSelector
-                viewDate={state.currentViewDate}
-                showDateSelector={dateSelection === DateSelectionType.DateTime}
-                locale={loadedLocale.current}
-                viewTemplate={timeSelectorTemplate}
-                timeConstraints={timeConstraints}
-                dispatcher={dispatcher}
-              />
-            )}
-          {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
-            <DateTimeRangeSelector
-              viewDate={state.currentViewDate}
-              selectedStartDate={state.selectedStartDate}
-              selectedEndDate={state.selectedEndDate}
-              locale={loadedLocale.current}
-              dispatcher={dispatcher}
-            />
-          )}
-        </>
-      </OverlayPanel>
-    </div>
+          </>
+        </OverlayPanel>
+      </div>
+    </DateTimeContext.Provider>
   );
 }
