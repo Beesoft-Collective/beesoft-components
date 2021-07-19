@@ -5,7 +5,7 @@ import { useKeyDown } from '../../common-hooks';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
-import { DateTimeContext } from './date-time.component';
+import { DateTimeContext } from './date-time-context';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeCalendarProps {

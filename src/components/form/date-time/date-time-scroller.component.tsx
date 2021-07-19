@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DateScrollerType } from './date-time-types';
-import { DateTimeContext } from './date-time.component';
+import { DateTimeContext } from './date-time-context';
 
 export interface DateTimeScrollerProps {
   title: string;
