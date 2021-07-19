@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { DomHandler } from '../../dom-handler';
@@ -29,14 +30,15 @@ export default function OverlayPanel({
   hideTransitionOptions = 'linear',
   shown,
   hidden,
+  markupCreated,
   children,
-}: OverlayPanelProps) {
+}: OverlayPanelProps & MarkupEvents) {
   const [top, setTop] = useState(0);
   const [left, setLeft] = useState(0);
   const [width, setWidth] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
   const [visibility, setVisibility] = useState(visible);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLElement>();
   const listenerRef = useRef<(event: MouseEvent) => void>();
 
   useEffect(() => {
@@ -94,6 +96,11 @@ export default function OverlayPanel({
     }
   };
 
+  const onMarkupCreated = (element: HTMLElement) => {
+    panelRef.current = element;
+    markupCreated && markupCreated(element);
+  };
+
   const createElement = () => {
     const baseStyles: React.CSSProperties = {
       top: `${top}px`,
@@ -124,7 +131,7 @@ export default function OverlayPanel({
               ...defaultStyle,
               ...transitionStyles[state],
             }}
-            ref={panelRef}
+            ref={(element) => element && onMarkupCreated(element as HTMLElement)}
           >
             {children}
           </div>
