@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 
 export interface ContentEditableInputProps {
   value?: string;
+  readOnly?: boolean;
   debounceTime?: number;
   fillContainer?: boolean;
   leftElement?: JSX.Element;
@@ -19,6 +20,7 @@ export interface ContentEditableInputProps {
 
 export default function ContentEditableInput({
   value,
+  readOnly = false,
   debounceTime = 500,
   fillContainer = true,
   leftElement,
@@ -70,7 +72,7 @@ export default function ContentEditableInput({
       </div>
       <div
         className="flex-grow focus:outline-none"
-        contentEditable={true}
+        contentEditable={!readOnly}
         suppressContentEditableWarning={true}
         onFocus={onFocused}
         onInput={onInputChanged}
