@@ -184,3 +184,10 @@ LongDate.args = {
   dateFormat: DateFormatType.Long,
   useDefaultDateValue: true,
 };
+
+export const ReadOnlyDate = Template.bind({});
+ReadOnlyDate.args = {
+  label: 'Read Only Date',
+  value: '31/10/1977, 8:30:00 AM',
+  readOnly: true,
+};

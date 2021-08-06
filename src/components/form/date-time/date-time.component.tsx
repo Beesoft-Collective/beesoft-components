@@ -19,6 +19,7 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 
 export interface DateTimeProps {
   value?: string | Date | Array<Date>;
+  readOnly?: boolean;
   label?: string;
   useDefaultDateValue?: boolean;
   locale?: string;
@@ -35,6 +36,7 @@ export interface DateTimeProps {
 
 export default function DateTime({
   value,
+  readOnly = false,
   label,
   useDefaultDateValue = false,
   locale,
@@ -289,13 +291,13 @@ export default function DateTime({
     iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          rightElementClassName: 'cursor-pointer',
-          onRightElementClick: onCalendarClick,
+          rightElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          onRightElementClick: !readOnly ? onCalendarClick : undefined,
         }
       : {
           leftElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          leftElementClassName: 'cursor-pointer',
-          onLeftElementClick: onCalendarClick,
+          leftElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          onLeftElementClick: !readOnly ? onCalendarClick : undefined,
         };
 
   return (
@@ -304,7 +306,8 @@ export default function DateTime({
         {label && <label className="dark:text-white bc-dt-label">{label}</label>}
         <ContentEditableInput
           value={getValue()}
-          className="parent-element text-left bc-dt-input"
+          readOnly={readOnly}
+          className={`parent-element text-left${readOnly ? ' bg-gray-200' : ''} bc-dt-input`}
           onFocus={onFocus}
           onInput={onInput}
           {...inputProps}
