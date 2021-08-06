@@ -19,6 +19,7 @@ This is the main component in the library currently; it has the ability to selec
 | Name        | Type       | Description |
 | ----------- | ---------- | ----------- |
 | **value** | `string, Date or Date[]` | Sets the value of the component can either be a date object or a string in a local or ISO format. |
+| **readOnly** | `boolean` | Allows the component to have a value set but not allow it to be modified. |
 | **label** | `string` | Sets the label for the component. |
 | **useDefaultDateValue** | `boolean` | If set to true then the current date will be populated in the selection box. |
 | **locale** | `string` | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used. |
