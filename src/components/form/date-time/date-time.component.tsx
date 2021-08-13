@@ -307,7 +307,7 @@ export default function DateTime({
         <ContentEditableInput
           value={getValue()}
           readOnly={readOnly}
-          className={`parent-element text-left${readOnly ? ' bg-gray-200' : ''} bc-dt-input`}
+          className={`parent-element text-left${readOnly ? ' bg-gray-200' : ' bg-white'} dark:bg-black bc-dt-input`}
           onFocus={onFocus}
           onInput={onInput}
           {...inputProps}
