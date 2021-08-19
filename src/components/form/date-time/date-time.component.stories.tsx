@@ -1,8 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { Story, Meta } from '@storybook/react';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
-import DateTime, { DateTimeProps } from './date-time.component';
+import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
   title: 'Date Time',
@@ -72,6 +73,27 @@ IconOnLeft.args = {
   label: 'Left Icon',
   useDefaultDateValue: true,
   iconPosition: CalendarIconPosition.Left,
+};
+
+export const ChangeIcon = Template.bind({});
+ChangeIcon.args = {
+  label: 'Different Icon',
+  icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
+};
+
+const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+  <>
+    {props.label && <label>{props.label}</label>}
+    <div>
+      <input className="border border-solid border-black parent-element" onFocus={props.onFocus} value={props.getValue()} />
+    </div>
+  </>
+);
+
+export const InputTemplate = Template.bind({});
+InputTemplate.args = {
+  label: 'Custom Input Template',
+  inputTemplate,
 };
 
 export const DarkMode = DarkTemplate.bind({});
