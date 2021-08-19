@@ -26,12 +26,59 @@ This is the main component in the library currently; it has the ability to selec
 | **dateSelection** | `DateSelectionType` | Allows the component to be set in 4 modes DateTime, Date Only, Time Only and Date Range (`default Date/Time`). |
 | **dateFormat** | `DateFormatType` | Allows for the date to be formatted in short, medium or long formats. |
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
+| **icon** | `JSX.Element` | This can be used to change the calendar icon. |
 | **iconPosition** | `CalendarIconPosition` | Determines if the calendar icon appears on the right or the left. |
 | **selectableDate** | `function (currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
 | **isValidDate** | `function (selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
 | **onChange** | `function (value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |
 | **calendarTemplate** | `DateTimeCalendarTemplate` | Allows the calendar UI to be overridden or added to. |
 | **dateScrollerTemplate** | `DateTimeScrollerTemplate` | Allows the scroller UI to be overridden or added to. |
+| **inputTemplate** | `DateTimeInputTemplate` | Allows for a different input and label to be used for the component. |
+
+### Templating
+
+Templating allows for certain pieces of the component to be replaced with your own markup; currently the calendar, the scroller and the input/label can be replaced with your own markup. Below is an example of how to create a template function that can be passed into one of the template properties.
+
+```javascript
+const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+    <div className="custom-css-classes">{children}</div>
+);
+```
+
+The `children` parameter is passed in the case where you want to wrap the current markup with your own additions. If not you can just provide your own custom markup using the properties from the `props` parameter. If you provide your own markup you will need to set the class `parent-element` on the input element you are using, so the calendar will know where to show and when to hide itself. This requirement will be removed in a later release.
+
+#### Calendar Template Properties
+
+These are the properties passed to the calendar template.
+
+| Name        | Required | Type       | Description |
+| ----------- | -------- | ---------- | ----------- |
+| **viewDate** | **true** | `Date` | The current date being viewed in the calendar; this is not the selected date it is the date that is being used to render the current calendar month(s). |
+| **selectedDate** | **false** | `Date` | The current date selected by the user or the initial value passed to the component. |
+| **selectedStartDate** | **false** | `Date` | The current start date of a date range selection this is only set when the component is in date range mode. |
+| **selectedEndDate** | **false** | `Date` | The current end date of a date range selection this is only set when the component is in date range mode. |
+| **selectionMode** | **false** | `CalendarSelectionMode` | Contains the values `Normal` and `Range`; selected range puts the calendar into range selection mode. |
+| **locale** | **false** | `Locale` | The Locale object comes from the date-fns library and contains information about the users locale date settings. |
+| **onDateSelected** | **false** | `function(date: Date, options?: Record<string, any>) => void` | Used to tell the component when a date has been selected. |
+| **selectableDate** | **false** | `function(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
+| **isValidDate** | **false** | `function(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
+| **dispatcher** | **false** | `React.Dispatch<DateTimeReducerAction>` | Used to set values within the component like the selected and current view date. |
+
+#### Input Template Properties
+
+These are the properties passed to the input template.
+
+| Name        | Required | Type       | Description |
+| ----------- | -------- | ---------- | ----------- |
+| **label** | **false** | `string` | The label to display for the input; if undefined then no label is set. |
+| **readOnly** | **true** | `boolean` | Determines if the input should be read only or not. |
+| **getValue** | **true** | `function() => string` | Returns the currently selected value(s) as a string to be displayed. |
+| **onFocus** | **true** | `function(event: React.FocusEvent) => void` | Should be assigned to the input component so it will be called when it's focused. |
+| **onInput** | **true** | `function(event: React.FormEvent) => void` | Should be assigned to the input component so it will be called when the user types into the input. |
+| **iconPosition** | **true** | `CalendarIconPosition` | Determines if the icon is supposed to be on the right or left. |
+| **iconElement** | **false** | `JSX.Element` | The icon that is supposed to be clicked to show the calendar. |
+| **iconElementClassName** | **false** | `string` | The classes to use for the icon element wrapper. |
+| **onElementClick** | **false** | `function(event: React.MouseEvent) => void` | The function to call when the icon element is clicked. |
 
 ### Dark Mode
 

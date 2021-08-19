@@ -3,6 +3,7 @@ import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
+import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
@@ -26,13 +27,29 @@ export interface DateTimeProps {
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
+  icon?: JSX.Element;
   iconPosition?: CalendarIconPosition;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value: Date | Array<Date>) => void;
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
+  inputTemplate?: DateTimeInputTemplate;
 }
+
+export interface DateTimeInputTemplateProps {
+  label?: string;
+  readOnly: boolean;
+  getValue: () => string;
+  onFocus: (event: React.FocusEvent) => void;
+  onInput: (event: React.FormEvent) => void;
+  iconPosition: CalendarIconPosition;
+  iconElement: JSX.Element;
+  iconElementClassName?: string;
+  onElementClick?: (event: React.MouseEvent) => void;
+}
+
+export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
 
 export default function DateTime({
   value,
@@ -43,12 +60,14 @@ export default function DateTime({
   dateSelection = DateSelectionType.DateTime,
   dateFormat,
   timeConstraints,
+  icon,
   iconPosition = CalendarIconPosition.Right,
   selectableDate,
   isValidDate,
   onChange,
   calendarTemplate,
   dateScrollerTemplate,
+  inputTemplate,
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
@@ -228,7 +247,7 @@ export default function DateTime({
     }
   };
 
-  const getValue = () => {
+  const getValue = (): string => {
     const dateStyle = getDateTimeStyle();
 
     switch (dateSelection) {
@@ -290,28 +309,48 @@ export default function DateTime({
   const inputProps =
     iconPosition === CalendarIconPosition.Right
       ? {
-          rightElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
+          rightElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
           rightElementClassName: !readOnly ? 'cursor-pointer' : undefined,
           onRightElementClick: !readOnly ? onCalendarClick : undefined,
         }
       : {
-          leftElement: <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
+          leftElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
           leftElementClassName: !readOnly ? 'cursor-pointer' : undefined,
           onLeftElementClick: !readOnly ? onCalendarClick : undefined,
         };
 
+  const inputTemplateProps: DateTimeInputTemplateProps = {
+    label,
+    readOnly,
+    getValue,
+    onFocus,
+    onInput,
+    iconPosition,
+    iconElement: inputProps.rightElement || inputProps.leftElement,
+    iconElementClassName: inputProps.rightElementClassName || inputProps.leftElementClassName,
+    onElementClick: inputProps.onRightElementClick || inputProps.onLeftElementClick,
+  };
+
+  const defaultTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+    <>{children}</>
+  );
+
+  const template = inputTemplate || defaultTemplate;
+
   return (
     <DateTimeContext.Provider value={contextProps}>
       <div className="bc-date-time">
-        {label && <label className="dark:text-white bc-dt-label">{label}</label>}
-        <ContentEditableInput
-          value={getValue()}
-          readOnly={readOnly}
-          className={`parent-element text-left${readOnly ? ' bg-gray-200' : ' bg-white'} dark:bg-black bc-dt-input`}
-          onFocus={onFocus}
-          onInput={onInput}
-          {...inputProps}
-        />
+        <TemplateOutlet props={inputTemplateProps} template={template}>
+          {label && <label className="dark:text-white bc-dt-label">{label}</label>}
+          <ContentEditableInput
+            value={getValue()}
+            readOnly={readOnly}
+            className={`parent-element text-left${readOnly ? ' bg-gray-200' : ' bg-white'} dark:bg-black bc-dt-input`}
+            onFocus={onFocus}
+            onInput={onInput}
+            {...inputProps}
+          />
+        </TemplateOutlet>
         <OverlayPanel
           visible={selectorOpen}
           target={dropDownTarget}
