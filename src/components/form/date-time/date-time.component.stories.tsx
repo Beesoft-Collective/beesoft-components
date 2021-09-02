@@ -33,9 +33,21 @@ const SetValueTemplate: Story<DateTimeProps> = (args) => {
 };
 
 const ScrollTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
   return (
-    <div style={{ paddingTop: '50rem', paddingBottom: '20rem' }}>
-      <DateTime {...args} />
+    <div className="w-full flex flex-col">
+      <div className="w-full pb-8 flex-shrink">Test Header</div>
+      <div className="w-full flex-grow flex flex-row">
+        <div className="border-r border-solid border-gray-500">
+          <div className="overflow-scroll" style={{ height: '25rem' }}>
+            <div style={{ height: '50rem', paddingTop: '10rem' }}>
+              <DateTime {...args} />
+            </div>
+          </div>
+        </div>
+        <div className="flex-grow">Non Scrollable Content</div>
+      </div>
     </div>
   );
 };
@@ -85,7 +97,11 @@ const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactN
   <>
     {props.label && <label>{props.label}</label>}
     <div>
-      <input className="border border-solid border-black parent-element" onFocus={props.onFocus} value={props.getValue()} />
+      <input
+        className="border border-solid border-black parent-element"
+        onFocus={props.onFocus}
+        value={props.getValue()}
+      />
     </div>
   </>
 );

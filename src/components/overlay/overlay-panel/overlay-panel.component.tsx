@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { bindDocumentClickListener } from '../../common-event-handlers';
+import { getElementByCssStylesRecursive, isEventWithinTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
-import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { DomHandler } from '../../dom-handler';
 
 export interface OverlayPanelProps {
@@ -10,6 +11,7 @@ export interface OverlayPanelProps {
   target?: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element | null;
   shouldTargetCloseOverlay?: boolean;
   shouldMatchTargetWidth?: boolean;
+  shouldScrollCloseOverlay?: boolean;
   appendTo?: HTMLElement;
   transitionDuration?: number;
   showTransitionOptions?: string;
@@ -24,6 +26,7 @@ export default function OverlayPanel({
   target,
   shouldTargetCloseOverlay = true,
   shouldMatchTargetWidth = false,
+  shouldScrollCloseOverlay = false,
   appendTo = document.body,
   transitionDuration = 400,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
@@ -39,12 +42,22 @@ export default function OverlayPanel({
   const [zIndex, setZIndex] = useState(-1);
   const [visibility, setVisibility] = useState(visible);
   const panelRef = useRef<HTMLElement>();
+  const scrollerPanelRef = useRef<HTMLElement>();
   const listenerRef = useRef<(event: MouseEvent) => void>();
+  const scrollListenerRef = useRef<(event: Event) => void>();
 
   useEffect(() => {
     if (target) {
       const finalTarget = getTargetElement(target);
       const position = DomHandler.positionToTarget(finalTarget);
+
+      if (shouldScrollCloseOverlay) {
+        scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget, {
+          overflow: 'scroll, auto',
+          overflowX: 'scroll, auto',
+          overflowY: 'scroll, auto',
+        });
+      }
 
       setWidth(finalTarget.offsetWidth);
       setTop(position.top);
@@ -54,7 +67,7 @@ export default function OverlayPanel({
     if (visible !== undefined) {
       setVisibility(visible);
     }
-  }, [target, visible, shouldMatchTargetWidth]);
+  }, [target, visible, shouldMatchTargetWidth, shouldScrollCloseOverlay]);
 
   const getTargetElement = (target: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element) => {
     return ((target as React.MouseEvent<Element, MouseEvent>).target
@@ -80,11 +93,20 @@ export default function OverlayPanel({
 
     const clickListener = (clickedWithin: boolean) => !clickedWithin && setVisibility(false);
     listenerRef.current = bindDocumentClickListener(panelRef.current, clickListener, otherElements);
+
+    if (shouldScrollCloseOverlay) {
+      scrollListenerRef.current = (event: Event) =>
+        panelRef.current && !isEventWithinTarget(event, panelRef.current) && setVisibility(false);
+      if (scrollerPanelRef.current) {
+        scrollerPanelRef.current?.addEventListener('scroll', scrollListenerRef.current);
+      }
+    }
   };
 
   const onExit = () => {
-    if (listenerRef.current) {
-      unbindDocumentClickListener(listenerRef.current);
+    if (listenerRef.current && scrollListenerRef.current) {
+      scrollerPanelRef.current?.removeEventListener('scroll', scrollListenerRef.current);
+      scrollListenerRef.current = undefined;
     }
   };
 
