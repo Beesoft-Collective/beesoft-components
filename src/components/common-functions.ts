@@ -32,3 +32,68 @@ export function generateNumberArray<T>(
 
   return numberArray;
 }
+
+export function isEventWithinTarget(event: Event, target: HTMLElement) {
+  const testElement = event.target as HTMLElement;
+  return testElement ? isElementWithinTarget(testElement, target) : false;
+}
+
+export function isElementWithinTarget(element: HTMLElement, target: HTMLElement) {
+  return element.isSameNode(target) || element.contains(target);
+}
+
+export function elementHasAllStyles(element: HTMLElement, styles: Record<string, string | number>) {
+  const styleEntries = Object.entries(styles);
+  const elementStyles = getComputedStyle(element);
+  for (let i = 0, length = styleEntries.length; i < length; i++) {
+    const [style, value] = styleEntries[i];
+
+    if (typeof value === 'string' && value.indexOf(',') > -1) {
+      const values = value.split(',').map((item) => item.trim());
+      if (!values.includes(elementStyles[style])) {
+        return false;
+      }
+    } else {
+      if (elementStyles[style] !== value) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+export function elementHasAnyStyle(element: HTMLElement, styles: Record<string, string | number>) {
+  const styleEntries = Object.entries(styles);
+  const elementStyles = getComputedStyle(element);
+  for (let i = 0, length = styleEntries.length; i < length; i++) {
+    const [style, value] = styleEntries[i];
+
+    if (typeof value === 'string' && value.indexOf(',') > -1) {
+      const values = value.split(',').map((item) => item.trim());
+      if (values.includes(elementStyles[style])) {
+        return true;
+      }
+    } else {
+      if (elementStyles[style] === value) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+export function getElementByCssStylesRecursive(
+  element: HTMLElement,
+  styles: Record<string, string | number>,
+  matchAllStyles = false
+) {
+  if (matchAllStyles && elementHasAllStyles(element, styles)) {
+    return element;
+  } else if (!matchAllStyles && elementHasAnyStyle(element, styles)) {
+    return element;
+  }
+
+  return element.parentElement ? getElementByCssStylesRecursive(element.parentElement, styles) : element;
+}

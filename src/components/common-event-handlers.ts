@@ -1,3 +1,5 @@
+import { isElementWithinTarget } from './common-functions';
+
 export function bindDocumentClickListener(
   element: HTMLElement,
   callback: (isClickedWithin: boolean) => void,
@@ -10,7 +12,7 @@ export function bindDocumentClickListener(
     if (
       element &&
       isVisible &&
-      !(element.isSameNode(targetElement) || element.contains(targetElement)) &&
+      !isElementWithinTarget(element, targetElement) &&
       !isClickedInOtherElements(otherElements, targetElement)
     ) {
       callback(false);
@@ -40,4 +42,17 @@ export function bindDocumentClickListener(
 
 export function unbindDocumentClickListener(clickListener: (event: MouseEvent) => void) {
   document.removeEventListener('mousedown', clickListener);
+}
+
+export function bindDocumentEventListener<E extends keyof DocumentEventMap>(event: E, listener: (evt: Event) => void) {
+  document.addEventListener(event, listener);
+  // this is being done in case the listener is an anonymous function
+  return listener;
+}
+
+export function unbindDocumentEventListener<E extends keyof DocumentEventMap>(
+  event: E,
+  listener: (evt: Event) => void
+) {
+  document.removeEventListener(event, listener);
 }

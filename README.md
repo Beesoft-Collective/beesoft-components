@@ -28,9 +28,9 @@ This is the main component in the library currently; it has the ability to selec
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
 | **icon** | `JSX.Element` | This can be used to change the calendar icon. |
 | **iconPosition** | `CalendarIconPosition` | Determines if the calendar icon appears on the right or the left. |
-| **selectableDate** | `function (currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
-| **isValidDate** | `function (selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
-| **onChange** | `function (value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |
+| **selectableDate** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
+| **isValidDate** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
+| **onChange** | `(value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |
 | **calendarTemplate** | `DateTimeCalendarTemplate` | Allows the calendar UI to be overridden or added to. |
 | **dateScrollerTemplate** | `DateTimeScrollerTemplate` | Allows the scroller UI to be overridden or added to. |
 | **inputTemplate** | `DateTimeInputTemplate` | Allows for a different input and label to be used for the component. |
