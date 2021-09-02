@@ -355,6 +355,7 @@ export default function DateTime({
           visible={selectorOpen}
           target={dropDownTarget}
           shouldTargetCloseOverlay={false}
+          shouldScrollCloseOverlay={true}
           hidden={onDateTimeHidden}
         >
           <>
