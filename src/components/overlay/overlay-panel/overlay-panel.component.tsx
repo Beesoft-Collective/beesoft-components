@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { bindDocumentClickListener } from '../../common-event-handlers';
+import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getElementByCssStylesRecursive, isEventWithinTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
@@ -98,15 +98,19 @@ export default function OverlayPanel({
       scrollListenerRef.current = (event: Event) =>
         panelRef.current && !isEventWithinTarget(event, panelRef.current) && setVisibility(false);
       if (scrollerPanelRef.current) {
-        scrollerPanelRef.current?.addEventListener('scroll', scrollListenerRef.current);
+        scrollerPanelRef.current.addEventListener('scroll', scrollListenerRef.current);
       }
     }
   };
 
   const onExit = () => {
-    if (listenerRef.current && scrollListenerRef.current) {
-      scrollerPanelRef.current?.removeEventListener('scroll', scrollListenerRef.current);
+    if (scrollerPanelRef.current && scrollListenerRef.current) {
+      scrollerPanelRef.current.removeEventListener('scroll', scrollListenerRef.current);
       scrollListenerRef.current = undefined;
+    }
+
+    if (listenerRef.current) {
+      unbindDocumentClickListener(listenerRef.current);
     }
   };
 
