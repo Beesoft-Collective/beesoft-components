@@ -32,6 +32,16 @@ const SetValueTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
+const BodyScrollTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  return (
+    <div className="w-full" style={{ height: '60rem' }}>
+      <DateTime {...args} />
+    </div>
+  );
+};
+
 const ScrollTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = '';
 
@@ -180,6 +190,12 @@ MinuteConstraint.args = {
 
 export const ScrollDateTime = ScrollTemplate.bind({});
 ScrollDateTime.args = {
+  label: 'Date',
+  useDefaultDateValue: true,
+};
+
+export const BodyScrollDateTime = BodyScrollTemplate.bind({});
+BodyScrollDateTime.args = {
   label: 'Date',
   useDefaultDateValue: true,
 };
