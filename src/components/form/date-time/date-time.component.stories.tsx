@@ -6,7 +6,7 @@ import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
-  title: 'Date Time',
+  title: 'Form/Date Time',
   component: DateTime,
 } as Meta;
 
