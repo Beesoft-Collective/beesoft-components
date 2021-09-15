@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 
-export function useKeyDown(keyCode: string) {
+export function useKeyDown(keyCode: string | Array<string>) {
   const [keyDown, setKeyDown] = useState(false);
+  const keyCodes = typeof keyCode === 'string' ? [keyCode] : keyCode;
 
   const downHandler = ({ key }) => {
-    if (key === keyCode) {
+    if (keyCodes.includes(key)) {
       setKeyDown(true);
     }
   };
   const upHandler = ({ key }) => {
-    if (key === keyCode) {
+    if (keyCodes.includes(key)) {
       setKeyDown(false);
     }
   };
