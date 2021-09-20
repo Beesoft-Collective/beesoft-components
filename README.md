@@ -28,6 +28,7 @@ This is the main component in the library currently; it has the ability to selec
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
 | **icon** | `JSX.Element` | This can be used to change the calendar icon. |
 | **iconPosition** | `CalendarIconPosition` | Determines if the calendar icon appears on the right or the left. |
+| **inputElement** | `HTMLElement` | When a custom input template is used this gives the component the HTMLElement to use for calendar positioning. |
 | **selectableDate** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
 | **isValidDate** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
 | **onChange** | `(value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |
@@ -45,7 +46,7 @@ const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactN
 );
 ```
 
-The `children` parameter is passed in the case where you want to wrap the current markup with your own additions. If not you can just provide your own custom markup using the properties from the `props` parameter. If you provide your own markup you will need to set the class `parent-element` on the input element you are using, so the calendar will know where to show and when to hide itself. This requirement will be removed in a later release.
+The `children` parameter is passed in the case where you want to wrap the current markup with your own additions. If not you can just provide your own custom markup using the properties from the `props` parameter. If you provide your own markup you will need to pass in the html element you are using to the `inputElement` property, so the calendar will know where to show and when to hide itself. This requirement will be removed in a later release.
 
 #### Calendar Template Properties
 

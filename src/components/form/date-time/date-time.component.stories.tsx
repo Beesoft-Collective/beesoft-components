@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Story, Meta } from '@storybook/react';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
-import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
+import DateTime, { DateTimeInputTemplate, DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
   title: 'Form/Date Time',
@@ -72,6 +72,29 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
+const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
+  // TODO: Change this to use state and have the ref call a function to set the input element
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  /* eslint-disable react/prop-types */
+  const inputTemplate = (props: DateTimeInputTemplateProps) => (
+    <>
+      {props.label && <label>{props.label}</label>}
+      <div>
+        <input
+          ref={inputRef}
+          className="border border-solid border-black parent-element"
+          onFocus={props.onFocus}
+          value={props.getValue()}
+        />
+      </div>
+    </>
+  );
+  /* eslint-enable react/prop-types */
+
+  return <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef.current as HTMLElement} />;
+};
+
 export const Default = Template.bind({});
 Default.args = {
   label: 'Date',
@@ -103,23 +126,9 @@ ChangeIcon.args = {
   icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
 };
 
-const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
-  <>
-    {props.label && <label>{props.label}</label>}
-    <div>
-      <input
-        className="border border-solid border-black parent-element"
-        onFocus={props.onFocus}
-        value={props.getValue()}
-      />
-    </div>
-  </>
-);
-
-export const InputTemplate = Template.bind({});
+export const InputTemplate = OverrideInputTemplate.bind({});
 InputTemplate.args = {
   label: 'Custom Input Template',
-  inputTemplate,
 };
 
 export const DarkMode = DarkTemplate.bind({});

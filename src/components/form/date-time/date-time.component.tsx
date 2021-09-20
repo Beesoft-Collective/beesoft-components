@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
-import { getBrowserLanguage, getElementByClassNameRecursive } from '../../common-functions';
+import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import ContentEditableInput from '../content-editable-input/content-editable-input.component';
@@ -29,6 +29,7 @@ export interface DateTimeProps {
   timeConstraints?: TimeConstraints;
   icon?: JSX.Element;
   iconPosition?: CalendarIconPosition;
+  inputElement?: HTMLElement;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value: Date | Array<Date>) => void;
@@ -62,6 +63,7 @@ export default function DateTime({
   timeConstraints,
   icon,
   iconPosition = CalendarIconPosition.Right,
+  inputElement,
   selectableDate,
   isValidDate,
   onChange,
@@ -73,6 +75,7 @@ export default function DateTime({
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
   const language = useRef<string>(locale || getBrowserLanguage());
   const loadedLocale = useRef<Locale>();
+  const inputElementRef = useRef<HTMLElement>();
 
   const contextProps: DateTimeContextProps = {
     calendarTemplate,
@@ -100,6 +103,12 @@ export default function DateTime({
       });
     }
   }, [value, loadedLocale.current]);
+
+  useEffect(() => {
+    if (inputElement) {
+      inputElementRef.current = inputElement;
+    }
+  }, [inputElement]);
 
   const loadLocaleObject = (localeToLoad: string) => {
     loadLocale(localeToLoad)
@@ -204,10 +213,15 @@ export default function DateTime({
     setSelectorOpen(!selectorOpen);
   };
 
+  const onInputElementCreated = (element: HTMLElement) => {
+    if (!inputElementRef.current) {
+      inputElementRef.current = element;
+    }
+  };
+
   const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
-    if (!dropDownTarget) {
-      const parentElement = getElementByClassNameRecursive(event.target as HTMLElement, 'parent-element');
-      setDropDownTarget(parentElement);
+    if (!dropDownTarget && inputElementRef.current) {
+      setDropDownTarget(inputElementRef.current);
     }
   };
 
@@ -348,6 +362,7 @@ export default function DateTime({
             className={`parent-element text-left${readOnly ? ' bg-gray-200' : ' bg-white'} dark:bg-black bc-dt-input`}
             onFocus={onFocus}
             onInput={onInput}
+            onElementCreate={onInputElementCreated}
             {...inputProps}
           />
         </TemplateOutlet>
