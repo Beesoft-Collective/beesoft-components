@@ -46,7 +46,7 @@ const inputTemplate = (props: DateTimeInputTemplateProps, children: React.ReactN
 );
 ```
 
-The `children` parameter is passed in the case where you want to wrap the current markup with your own additions. If not you can just provide your own custom markup using the properties from the `props` parameter. If you provide your own markup you will need to pass in the html element you are using to the `inputElement` property, so the calendar will know where to show and when to hide itself. This requirement will be removed in a later release.
+The `children` parameter is passed in the case where you want to wrap the current markup with your own additions. If not you can just provide your own custom markup using the properties from the `props` parameter. If you provide your own markup you will need to pass in the html element you are using to the `inputElement` property, so the calendar will know where to show and when to hide itself.
 
 #### Calendar Template Properties
 

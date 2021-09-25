@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
-import React, { useRef, useState } from 'react';
-import { Story, Meta } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
+import React, { useState } from 'react';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
-import DateTime, { DateTimeInputTemplate, DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
+import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
   title: 'Form/Date Time',
@@ -74,7 +74,7 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
 
 const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
   // TODO: Change this to use state and have the ref call a function to set the input element
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputRef, setInputRef] = useState<HTMLInputElement>();
 
   /* eslint-disable react/prop-types */
   const inputTemplate = (props: DateTimeInputTemplateProps) => (
@@ -82,8 +82,8 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
       {props.label && <label>{props.label}</label>}
       <div>
         <input
-          ref={inputRef}
-          className="border border-solid border-black parent-element"
+          ref={(element) => element && setInputRef(element)}
+          className="border border-solid border-black"
           onFocus={props.onFocus}
           value={props.getValue()}
         />
@@ -92,7 +92,7 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
   );
   /* eslint-enable react/prop-types */
 
-  return <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef.current as HTMLElement} />;
+  return <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef as HTMLElement} />;
 };
 
 export const Default = Template.bind({});
@@ -129,6 +129,7 @@ ChangeIcon.args = {
 export const InputTemplate = OverrideInputTemplate.bind({});
 InputTemplate.args = {
   label: 'Custom Input Template',
+  onChange: action('onChange'),
 };
 
 export const DarkMode = DarkTemplate.bind({});
