@@ -59,7 +59,7 @@ export default function DateTimeCalendar({
   const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
 
-  const isShiftDown = useKeyDown('Shift');
+  const isShiftDown = useKeyDown(['Meta', 'Control']);
 
   const context = useContext(DateTimeContext);
   const viewTemplate = context.calendarTemplate;
