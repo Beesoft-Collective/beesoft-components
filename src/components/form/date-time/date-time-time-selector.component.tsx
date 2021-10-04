@@ -91,49 +91,49 @@ export default function DateTimeTimeSelector({
   };
 
   return (
-    <div className="flex flex-row justify-center p-2 bc-dt-time-selector" style={{ minWidth: '15rem' }}>
-      <div className="w-full grid grid-cols-4 gap-4 bc-dt-time-grid">
+    <div className="bsc-flex bsc-flex-row bsc-justify-center bsc-p-2 bc-dt-time-selector" style={{ minWidth: '15rem' }}>
+      <div className="bsc-w-full bsc-grid bsc-grid-cols-4 bsc-gap-4 bc-dt-time-grid">
         {showDateSelector && (
           <div
-            className="text-center cursor-pointer hover:bg-gray-300 dark:text-white dark:hover:bg-white dark:hover:text-black col-span-4 bc-dt-time-date-value"
+            className="bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-300 dark:bsc-text-white dark:hover:bsc-bg-white dark:hover:bsc-text-black bsc-col-span-4 bc-dt-time-date-value"
             onClick={onDateClicked}
           >
             {dateString.current}
           </div>
         )}
-        <div className="text-center cursor-pointer bc-dt-time-hour-increase">
-          <button className="focus:outline-none" onClick={increaseHour}>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-increase">
+          <button className="focus:bsc-outline-none" onClick={increaseHour}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
         <div>&nbsp;</div>
-        <div className="text-center cursor-pointer bc-dt-time-minute-increase">
-          <button className="focus:outline-none" onClick={increaseMinute}>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-increase">
+          <button className="focus:bsc-outline-none" onClick={increaseMinute}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
-        <div className="text-center cursor-pointer bc-dt-time-meridian-increase">
-          <button className="focus:outline-none" onClick={changeMeridian}>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-increase">
+          <button className="focus:bsc-outline-none" onClick={changeMeridian}>
             <FontAwesomeIcon icon={['fas', 'chevron-up']} />
           </button>
         </div>
-        <div className="text-center bc-dt-time-hour-value">{hours.current[currentHour]}</div>
-        <div className="text-center bc-dt-time-separator">:</div>
-        <div className="text-center bc-dt-time-minute-value">{minutes.current[currentMinute]}</div>
-        <div className="text-center bc-dt-time-meridian-value">{ampm.current[currentMeridian]}</div>
-        <div className="text-center cursor-pointer bc-dt-time-hour-decrease">
-          <button className="focus:outline-none" onClick={decreaseHour}>
+        <div className="bsc-text-center bc-dt-time-hour-value">{hours.current[currentHour]}</div>
+        <div className="bsc-text-center bc-dt-time-separator">:</div>
+        <div className="bsc-text-center bc-dt-time-minute-value">{minutes.current[currentMinute]}</div>
+        <div className="bsc-text-center bc-dt-time-meridian-value">{ampm.current[currentMeridian]}</div>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-decrease">
+          <button className="focus:bsc-outline-none" onClick={decreaseHour}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>
         <div>&nbsp;</div>
-        <div className="text-center cursor-pointer bc-dt-time-minute-decrease">
-          <button className="focus:outline-none" onClick={decreaseMinute}>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-decrease">
+          <button className="focus:bsc-outline-none" onClick={decreaseMinute}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>
-        <div className="text-center cursor-pointer bc-dt-time-meridian-decrease">
-          <button className="focus:outline-none" onClick={changeMeridian}>
+        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-decrease">
+          <button className="focus:bsc-outline-none" onClick={changeMeridian}>
             <FontAwesomeIcon icon={['fas', 'chevron-down']} />
           </button>
         </div>

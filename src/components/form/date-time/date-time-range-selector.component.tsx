@@ -62,8 +62,8 @@ export default function DateTimeRangeSelector({
   };
 
   return (
-    <div className="flex flex-col bc-dt-range-selector">
-      <div className="flex-shrink bc-dt-range-scroller-wrapper">
+    <div className="bsc-flex bsc-flex-col bc-dt-range-selector">
+      <div className="bsc-flex-shrink bc-dt-range-scroller-wrapper">
         <DateTimeScroller
           title={getSelectorTitle()}
           scrollerType={DateScrollerType.Range}
@@ -71,9 +71,9 @@ export default function DateTimeRangeSelector({
           onMoveNext={moveNextMonth}
         />
       </div>
-      <div className="flex-grow">
-        <div className="flex flex-row py-1 px-2 bc-dt-range-wrapper">
-          <div className="border-r border-solid border-gray-400 pr-4 bc-dt-range-calendar-1">
+      <div className="bsc-flex-grow">
+        <div className="bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-range-wrapper">
+          <div className="bsc-border-r bsc-border-solid bsc-border-gray-400 bsc-pr-4 bc-dt-range-calendar-1">
             <DateTimeCalendar
               viewDate={viewDate}
               selectedStartDate={selectedStartDate}
@@ -84,7 +84,7 @@ export default function DateTimeRangeSelector({
               dispatcher={dispatcher}
             />
           </div>
-          <div className="pl-4 bc-dt-range-calendar-2">
+          <div className="bsc-pl-4 bc-dt-range-calendar-2">
             <DateTimeCalendar
               viewDate={nextMonth}
               selectedStartDate={selectedStartDate}

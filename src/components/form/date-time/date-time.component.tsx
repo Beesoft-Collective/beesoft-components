@@ -324,12 +324,12 @@ export default function DateTime({
     iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          rightElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          rightElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
           onRightElementClick: !readOnly ? onCalendarClick : undefined,
         }
       : {
           leftElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          leftElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          leftElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
           onLeftElementClick: !readOnly ? onCalendarClick : undefined,
         };
 
@@ -355,11 +355,11 @@ export default function DateTime({
     <DateTimeContext.Provider value={contextProps}>
       <div className="bc-date-time">
         <TemplateOutlet props={inputTemplateProps} template={template}>
-          {label && <label className="dark:text-white bc-dt-label">{label}</label>}
+          {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
           <ContentEditableInput
             value={getValue()}
             readOnly={readOnly}
-            className={`parent-element text-left${readOnly ? ' bg-gray-200' : ' bg-white'} dark:bg-black bc-dt-input`}
+            className={`bsc-text-left${readOnly ? ' bsc-bg-gray-200' : ' bsc-bg-white'} dark:bsc-bg-black bc-dt-input`}
             onFocus={onFocus}
             onInput={onInput}
             onElementCreate={onInputElementCreated}

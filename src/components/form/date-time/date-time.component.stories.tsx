@@ -36,7 +36,7 @@ const BodyScrollTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = '';
 
   return (
-    <div className="w-full" style={{ height: '60rem' }}>
+    <div className="bsc-w-full" style={{ height: '60rem' }}>
       <DateTime {...args} />
     </div>
   );
@@ -46,17 +46,17 @@ const ScrollTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = '';
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="w-full pb-8 flex-shrink">Test Header</div>
-      <div className="w-full flex-grow flex flex-row">
-        <div className="border-r border-solid border-gray-500">
-          <div className="overflow-scroll" style={{ height: '25rem' }}>
+    <div className="bsc-w-full bsc-flex bsc-flex-col">
+      <div className="bsc-w-full bsc-pb-8 bsc-flex-shrink">Test Header</div>
+      <div className="bsc-w-full bsc-flex-grow bsc-flex bsc-flex-row">
+        <div className="bsc-border-r bsc-border-solid bsc-border-gray-500">
+          <div className="bsc-overflow-scroll" style={{ height: '25rem' }}>
             <div style={{ height: '50rem', paddingTop: '10rem' }}>
               <DateTime {...args} />
             </div>
           </div>
         </div>
-        <div className="flex-grow">Non Scrollable Content</div>
+        <div className="bsc-flex-grow">Non Scrollable Content</div>
       </div>
     </div>
   );
@@ -66,7 +66,7 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = 'dark';
 
   return (
-    <div className="bg-gray-900 p-4" style={{ height: '30rem' }}>
+    <div className="bsc-bg-gray-900 bsc-p-4" style={{ height: '30rem' }}>
       <DateTime {...args} />
     </div>
   );
@@ -83,7 +83,7 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
       <div>
         <input
           ref={(element) => element && setInputRef(element)}
-          className="border border-solid border-black"
+          className="bsc-border bsc-border-solid bsc-border-black"
           onFocus={props.onFocus}
           value={props.getValue()}
         />

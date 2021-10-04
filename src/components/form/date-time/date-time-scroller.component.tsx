@@ -41,23 +41,23 @@ export default function DateTimeScroller({
   };
 
   const defaultTemplate = (props: DateTimeScrollerTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
-    <div className="w-full flex flex-row py-1 px-2 bc-dt-scroller">{children}</div>
+    <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="flex-shrink cursor-pointer bc-dt-scroller-left">
-        <button className="focus:outline-none" onClick={onMovePrevious}>
+      <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-left">
+        <button className="focus:bsc-outline-none" onClick={onMovePrevious}>
           <FontAwesomeIcon icon={['fas', 'angle-left']} />
         </button>
       </div>
-      <div className="flex-grow text-center cursor-pointer bc-dt-scroller-title" onClick={onTitleClicked}>
+      <div className="bsc-flex-grow bsc-text-center bsc-cursor-pointer bc-dt-scroller-title" onClick={onTitleClicked}>
         {title}
       </div>
-      <div className="flex-shrink cursor-pointer bc-dt-scroller-right">
-        <button className="focus:outline-none" onClick={onMoveNext}>
+      <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-right">
+        <button className="focus:bsc-outline-none" onClick={onMoveNext}>
           <FontAwesomeIcon icon={['fas', 'angle-right']} />
         </button>
       </div>
