@@ -73,7 +73,8 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
 };
 
 const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
-  // TODO: Change this to use state and have the ref call a function to set the input element
+  document.body.className = '';
+
   const [inputRef, setInputRef] = useState<HTMLInputElement>();
 
   /* eslint-disable react/prop-types */
@@ -118,6 +119,12 @@ IconOnLeft.args = {
   label: 'Left Icon',
   useDefaultDateValue: true,
   iconPosition: CalendarIconPosition.Left,
+};
+
+export const NoIcon = Template.bind({});
+NoIcon.args = {
+  label: 'No Icon',
+  iconPosition: CalendarIconPosition.None,
 };
 
 export const ChangeIcon = Template.bind({});
@@ -254,4 +261,14 @@ ReadOnlyDate.args = {
   label: 'Read Only Date',
   value: '31/10/1977, 8:30:00 AM',
   readOnly: true,
+};
+
+export const ModifiedColors = Template.bind({});
+ModifiedColors.args = {
+  label: 'Modified Colors',
+  colors: {
+    inputBorderColor: 'border-none',
+    inputBgColor: 'bg-blue-200',
+    todayDateColor: 'bg-red-500',
+  },
 };
