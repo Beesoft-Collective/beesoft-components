@@ -288,18 +288,16 @@ export default function DateTime({
           ? dateStyle
             ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
-                timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleDateString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.TimeOnly:
         return state.selectedDate
           ? dateStyle
             ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
-                dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleTimeString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.DateRange:
         return state.selectedStartDate && state.selectedEndDate
