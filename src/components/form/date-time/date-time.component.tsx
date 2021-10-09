@@ -9,12 +9,18 @@ import ContentEditableInput from '../content-editable-input/content-editable-inp
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { loadLocale } from './date-time-functions';
+import { createDefaultColors, loadLocale } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
-import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types';
+import {
+  CalendarIconPosition,
+  DateFormatType,
+  DateSelectionType,
+  DateTimeColors,
+  TimeConstraints,
+} from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
@@ -30,6 +36,7 @@ export interface DateTimeProps {
   icon?: JSX.Element;
   iconPosition?: CalendarIconPosition;
   inputElement?: HTMLElement;
+  colors?: DateTimeColors;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value: Date | Array<Date>) => void;
@@ -45,7 +52,7 @@ export interface DateTimeInputTemplateProps {
   onFocus: (event: React.FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
-  iconElement: JSX.Element;
+  iconElement?: JSX.Element;
   iconElementClassName?: string;
   onElementClick?: (event: React.MouseEvent) => void;
 }
@@ -64,6 +71,7 @@ export default function DateTime({
   icon,
   iconPosition = CalendarIconPosition.Right,
   inputElement,
+  colors = createDefaultColors(),
   selectableDate,
   isValidDate,
   onChange,
@@ -80,6 +88,7 @@ export default function DateTime({
   const contextProps: DateTimeContextProps = {
     calendarTemplate,
     dateScrollerTemplate,
+    colors,
   };
 
   useEffect(() => {
@@ -279,18 +288,16 @@ export default function DateTime({
           ? dateStyle
             ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
                 dateStyle: dateStyle,
-                timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleDateString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.TimeOnly:
         return state.selectedDate
           ? dateStyle
             ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
-                dateStyle: dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleTimeString(loadedLocale.current?.code)
           : '';
       case DateSelectionType.DateRange:
         return state.selectedStartDate && state.selectedEndDate
@@ -321,7 +328,9 @@ export default function DateTime({
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
 
   const inputProps =
-    iconPosition === CalendarIconPosition.Right
+    iconPosition === CalendarIconPosition.None
+      ? {}
+      : iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
           rightElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
@@ -359,7 +368,9 @@ export default function DateTime({
           <ContentEditableInput
             value={getValue()}
             readOnly={readOnly}
-            className={`bsc-text-left${readOnly ? ' bsc-bg-gray-200' : ' bsc-bg-white'} dark:bsc-bg-black bc-dt-input`}
+            className={`bsc-text-left ${
+              readOnly ? colors?.readOnlyInputBgColor || 'bsc-bg-gray-200' : colors?.inputBgColor || 'bsc-bg-white'
+            } dark:bsc-bg-black ${colors?.inputBorderColor} bc-dt-input`}
             onFocus={onFocus}
             onInput={onInput}
             onElementCreate={onInputElementCreated}

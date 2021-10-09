@@ -1,6 +1,6 @@
 # BeeSoft Components
 
-A library of components for the React framework styled using tailwind css. This library is currently a beta so please report any issues found or make suggestions.
+A library of components for the React framework. This library is currently a beta so please report any issues found or make suggestions.
 
 #### `Install`
 > npm install beesoft-components
@@ -29,6 +29,7 @@ This is the main component in the library currently; it has the ability to selec
 | **icon** | `JSX.Element` | This can be used to change the calendar icon. |
 | **iconPosition** | `CalendarIconPosition` | Determines if the calendar icon appears on the right or the left. |
 | **inputElement** | `HTMLElement` | When a custom input template is used this gives the component the HTMLElement to use for calendar positioning. |
+| **colors** | `DateTimeColors` | A group of settings that can be used to change particular color settings. |
 | **selectableDate** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
 | **isValidDate** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
 | **onChange** | `(value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |

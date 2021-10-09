@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { isToday } from 'date-fns';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { useKeyDown } from '../../common-hooks';
@@ -201,13 +202,15 @@ export default function DateTimeCalendar({
               'bsc-text-center bsc-py-1',
               {
                 'bsc-text-gray-400': !column.isCurrent,
-                'bsc-bg-blue-100 dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full':
+                [`${context.colors.selectedDateColor || 'bsc-bg-blue-100'} dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
                   column &&
                   column.dayValue &&
                   ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
                 'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
+                [`${context.colors.todayDateColor || 'bsc-bg-green-100'} dark:bsc-text-black bsc-rounded-full`]:
+                  column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
               },
               'bc-dt-date-cell'
             );

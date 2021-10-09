@@ -12,6 +12,7 @@ import {
   Locale,
   subDays,
 } from 'date-fns';
+import { DateTimeColors } from './date-time-types';
 
 export type DayType = { dayValue: Date | null; isCurrent: boolean };
 
@@ -180,4 +181,13 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
       })
       .catch((error) => reject(error));
   });
+}
+
+export function createDefaultColors(): DateTimeColors {
+  return {
+    inputBgColor: 'bg-white',
+    readOnlyInputBgColor: 'bg-gray-200',
+    selectedDateColor: 'bg-blue-100',
+    todayDateColor: 'bg-green-100',
+  };
 }

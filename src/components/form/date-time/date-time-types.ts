@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 export interface IncrementConstraint {
   min: number;
   max: number;
@@ -8,6 +10,14 @@ export interface TimeConstraints {
   hours?: IncrementConstraint;
   minutes?: IncrementConstraint;
   seconds?: IncrementConstraint;
+}
+
+export interface DateTimeColors {
+  inputBgColor?: string | CSSProperties;
+  inputBorderColor?: string | CSSProperties;
+  readOnlyInputBgColor?: string | CSSProperties;
+  selectedDateColor?: string | CSSProperties;
+  todayDateColor?: string | CSSProperties;
 }
 
 export enum DateSelectionType {
@@ -38,4 +48,5 @@ export enum CalendarSelectionMode {
 export enum CalendarIconPosition {
   Right,
   Left,
+  None,
 }

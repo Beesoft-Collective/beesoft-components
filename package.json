@@ -1,6 +1,6 @@
 {
   "name": "beesoft-components",
-  "version": "0.2.0",
+  "version": "0.2.9",
   "private": false,
   "author": "Brandon Trabon",
   "keywords": [
@@ -26,7 +26,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.3.1",
-    "date-fns": "^2.17.0",
+    "date-fns": "^2.25.0",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.1"
   },
