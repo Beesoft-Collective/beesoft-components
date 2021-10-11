@@ -50,13 +50,13 @@ export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: D
         onMovePrevious={movePreviousDecade}
         onMoveNext={moveNextDecade}
       />
-      <div className="w-full bc-dt-year-wrapper">
-        <div className="grid grid-cols-4 gap-4 bc-dt-year-grid">
+      <div className="bsc-w-full bc-dt-year-wrapper">
+        <div className="bsc-grid bsc-grid-cols-4 bsc-gap-4 bc-dt-year-grid">
           {yearMatrix.map((row, rIndex) =>
             row.map((column, cIndex) => (
               <div
                 key={rIndex.toString() + cIndex.toString()}
-                className="text-center cursor-pointer bc-dt-year-cell"
+                className="bsc-text-center bsc-cursor-pointer bc-dt-year-cell"
                 onClick={() => onYearClicked(column)}
               >
                 {column}

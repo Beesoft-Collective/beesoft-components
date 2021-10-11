@@ -50,7 +50,7 @@ export default function DateTimeMonthSelector({ viewDate, locale, dispatcher }: 
   };
 
   return (
-    <div className="p-2 bc-dt-month-selector" style={{ minWidth: '20rem' }}>
+    <div className="bsc-p-2 bc-dt-month-selector" style={{ minWidth: '20rem' }}>
       <DateTimeScroller
         title={getCurrentYear()}
         scrollerType={DateScrollerType.Month}
@@ -58,12 +58,12 @@ export default function DateTimeMonthSelector({ viewDate, locale, dispatcher }: 
         onMovePrevious={movePreviousYear}
         onMoveNext={moveNextYear}
       />
-      <div className="w-full grid grid-cols-4 gap-4 bc-dt-month-grid">
+      <div className="bsc-w-full bsc-grid bsc-grid-cols-4 bsc-gap-4 bc-dt-month-grid">
         {monthMatrix.current.map((row, rIndex) =>
           row.map((column, cIndex) => (
             <div
               key={rIndex.toString() + cIndex.toString()}
-              className="text-center cursor-pointer bc-dt-month-cell"
+              className="bsc-text-center bsc-cursor-pointer bc-dt-month-cell"
               onClick={() => onMonthClicked(column.monthNumber)}
             >
               {column.monthName}

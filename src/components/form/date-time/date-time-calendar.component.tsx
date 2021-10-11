@@ -181,16 +181,16 @@ export default function DateTimeCalendar({
   };
 
   const defaultTemplate = (props: DateTimeCalendarTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
-    <div className="w-full bc-dt-calendar">{children}</div>
+    <div className="bsc-w-full bc-dt-calendar">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="grid grid-cols-7 gap-3 bc-dt-day-row">
+      <div className="bsc-grid bsc-grid-cols-7 bsc-gap-3 bc-dt-day-row">
         {weekDaysRef.current?.map((day, index) => (
-          <div key={index} className="text-center font-bold bc-dt-day-cell">
+          <div key={index} className="bsc-text-center bsc-font-bold bc-dt-day-cell">
             {day}
           </div>
         ))}
@@ -199,17 +199,19 @@ export default function DateTimeCalendar({
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
             const dayStyles = cx(
-              'text-center py-1',
+              'bsc-text-center bsc-py-1',
               {
-                'text-gray-400': !column.isCurrent,
-                [`${context.colors.selectedDateColor || 'bg-blue-100'} dark:bg-white dark:text-black rounded-full`]:
+                'bsc-text-gray-400': !column.isCurrent,
+                [`${
+                  context.colors.selectedDateColor || 'bsc-bg-blue-100'
+                } dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
                   column &&
                   column.dayValue &&
                   ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
-                'cursor-pointer': isSelectable,
-                'text-red-300 cursor-not-allowed': !isSelectable,
-                [`${context.colors.todayDateColor || 'bg-green-100'} dark:text-black rounded-full`]:
+                'bsc-cursor-pointer': isSelectable,
+                'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
+                [`${context.colors.todayDateColor || 'bsc-bg-green-100'} dark:bsc-text-black bsc-rounded-full`]:
                   column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
               },
               'bc-dt-date-cell'

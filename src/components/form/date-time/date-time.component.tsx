@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import parse from 'date-fns/parse';
-import parseISO from 'date-fns/parseISO';
+import { parse, parseISO } from 'date-fns';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
@@ -333,12 +332,12 @@ export default function DateTime({
       : iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          rightElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          rightElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
           onRightElementClick: !readOnly ? onCalendarClick : undefined,
         }
       : {
           leftElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          leftElementClassName: !readOnly ? 'cursor-pointer' : undefined,
+          leftElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
           onLeftElementClick: !readOnly ? onCalendarClick : undefined,
         };
 
@@ -364,13 +363,13 @@ export default function DateTime({
     <DateTimeContext.Provider value={contextProps}>
       <div className="bc-date-time">
         <TemplateOutlet props={inputTemplateProps} template={template}>
-          {label && <label className="dark:text-white bc-dt-label">{label}</label>}
+          {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
           <ContentEditableInput
             value={getValue()}
             readOnly={readOnly}
-            className={`text-left ${
-              readOnly ? colors?.readOnlyInputBgColor || 'bg-gray-200' : colors?.inputBgColor || 'bg-white'
-            } dark:bg-black ${colors?.inputBorderColor} bc-dt-input`}
+            className={`bsc-text-left ${
+              readOnly ? colors?.readOnlyInputBgColor || 'bsc-bg-gray-200' : colors?.inputBgColor || 'bsc-bg-white'
+            } dark:bsc-bg-black ${colors?.inputBorderColor} bc-dt-input`}
             onFocus={onFocus}
             onInput={onInput}
             onElementCreate={onInputElementCreated}
