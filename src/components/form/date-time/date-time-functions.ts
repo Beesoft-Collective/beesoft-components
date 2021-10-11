@@ -185,9 +185,9 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
 
 export function createDefaultColors(): DateTimeColors {
   return {
-    inputBgColor: 'bg-white',
-    readOnlyInputBgColor: 'bg-gray-200',
-    selectedDateColor: 'bg-blue-100',
-    todayDateColor: 'bg-green-100',
+    inputBgColor: 'bsc-bg-white',
+    readOnlyInputBgColor: 'bsc-bg-gray-200',
+    selectedDateColor: 'bsc-bg-blue-100',
+    todayDateColor: 'bsc-bg-green-100',
   };
 }

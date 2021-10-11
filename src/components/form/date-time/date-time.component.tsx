@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import parse from 'date-fns/parse';
-import parseISO from 'date-fns/parseISO';
+import { parse, parseISO } from 'date-fns';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';

@@ -61,9 +61,9 @@ These are the properties passed to the calendar template.
 | **selectedEndDate** | **false** | `Date` | The current end date of a date range selection this is only set when the component is in date range mode. |
 | **selectionMode** | **false** | `CalendarSelectionMode` | Contains the values `Normal` and `Range`; selected range puts the calendar into range selection mode. |
 | **locale** | **false** | `Locale` | The Locale object comes from the date-fns library and contains information about the users locale date settings. |
-| **onDateSelected** | **false** | `function(date: Date, options?: Record<string, any>) => void` | Used to tell the component when a date has been selected. |
-| **selectableDate** | **false** | `function(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
-| **isValidDate** | **false** | `function(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
+| **onDateSelected** | **false** | `(date: Date, options?: Record<string, any>) => void` | Used to tell the component when a date has been selected. |
+| **selectableDate** | **false** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
+| **isValidDate** | **false** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
 | **dispatcher** | **false** | `React.Dispatch<DateTimeReducerAction>` | Used to set values within the component like the selected and current view date. |
 
 #### Input Template Properties
@@ -74,19 +74,19 @@ These are the properties passed to the input template.
 | ----------- | -------- | ---------- | ----------- |
 | **label** | **false** | `string` | The label to display for the input; if undefined then no label is set. |
 | **readOnly** | **true** | `boolean` | Determines if the input should be read only or not. |
-| **getValue** | **true** | `function() => string` | Returns the currently selected value(s) as a string to be displayed. |
-| **onFocus** | **true** | `function(event: React.FocusEvent) => void` | Should be assigned to the input component so it will be called when it's focused. |
-| **onInput** | **true** | `function(event: React.FormEvent) => void` | Should be assigned to the input component so it will be called when the user types into the input. |
+| **getValue** | **true** | `() => string` | Returns the currently selected value(s) as a string to be displayed. |
+| **onFocus** | **true** | `(event: FocusEvent) => void` | Should be assigned to the input component so it will be called when it's focused. |
+| **onInput** | **true** | `(event: FormEvent) => void` | Should be assigned to the input component so it will be called when the user types into the input. |
 | **iconPosition** | **true** | `CalendarIconPosition` | Determines if the icon is supposed to be on the right or left. |
 | **iconElement** | **false** | `JSX.Element` | The icon that is supposed to be clicked to show the calendar. |
 | **iconElementClassName** | **false** | `string` | The classes to use for the icon element wrapper. |
-| **onElementClick** | **false** | `function(event: React.MouseEvent) => void` | The function to call when the icon element is clicked. |
+| **onElementClick** | **false** | `(event: MouseEvent) => void` | The function to call when the icon element is clicked. |
 
 ### Dark Mode
 
 Dark mode is a common feature for many web applications. Beehive components support dark mode, to turn it on add a `dark` class to the body tag. In React you can use to following line:
 
-> document.body.className = 'dark';
+> document.body.className = 'bsc-dark';
 
 ### Date Range
 

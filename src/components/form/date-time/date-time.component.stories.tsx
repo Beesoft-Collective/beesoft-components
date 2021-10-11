@@ -63,7 +63,7 @@ const ScrollTemplate: Story<DateTimeProps> = (args) => {
 };
 
 const DarkTemplate: Story<DateTimeProps> = (args) => {
-  document.body.className = 'dark';
+  document.body.className = 'bsc-dark';
 
   return (
     <div className="bsc-bg-gray-900 bsc-p-4" style={{ height: '30rem' }}>
@@ -267,8 +267,8 @@ export const ModifiedColors = Template.bind({});
 ModifiedColors.args = {
   label: 'Modified Colors',
   colors: {
-    inputBorderColor: 'border-none',
-    inputBgColor: 'bg-blue-200',
-    todayDateColor: 'bg-red-500',
+    inputBorderColor: 'bsc-border-none',
+    inputBgColor: 'bsc-bg-blue-200',
+    todayDateColor: 'bsc-bg-red-500',
   },
 };

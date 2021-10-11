@@ -202,7 +202,9 @@ export default function DateTimeCalendar({
               'bsc-text-center bsc-py-1',
               {
                 'bsc-text-gray-400': !column.isCurrent,
-                [`${context.colors.selectedDateColor || 'bsc-bg-blue-100'} dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
+                [`${
+                  context.colors.selectedDateColor || 'bsc-bg-blue-100'
+                } dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
                   column &&
                   column.dayValue &&
                   ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
