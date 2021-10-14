@@ -193,6 +193,13 @@ DateRangeOnChange.args = {
   onChange: (date: Date | Array<Date>) => console.log('date range', date),
 };
 
+export const CssClassNameChange = Template.bind({});
+CssClassNameChange.args = {
+  label: 'Css Class Change',
+  useDefaultDateValue: true,
+  className: 'bsc-border-none bsc-text-sm bsc-border-transparent',
+};
+
 export const MinuteConstraint = Template.bind({});
 MinuteConstraint.args = {
   label: 'Date',

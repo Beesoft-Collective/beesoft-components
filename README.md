@@ -23,6 +23,7 @@ This is the main component in the library currently; it has the ability to selec
 | **label** | `string` | Sets the label for the component. |
 | **useDefaultDateValue** | `boolean` | If set to true then the current date will be populated in the selection box. |
 | **locale** | `string` | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used. |
+| **className** | `string` | Allows css modifications to be made to the default input box of the component. |
 | **dateSelection** | `DateSelectionType` | Allows the component to be set in 4 modes DateTime, Date Only, Time Only and Date Range (`default Date/Time`). |
 | **dateFormat** | `DateFormatType` | Allows for the date to be formatted in short, medium or long formats. |
 | **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
