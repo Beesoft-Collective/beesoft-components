@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import cx from 'classnames';
 import { parse, parseISO } from 'date-fns';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
@@ -29,6 +30,7 @@ export interface DateTimeProps {
   label?: string;
   useDefaultDateValue?: boolean;
   locale?: string;
+  className?: string;
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
@@ -64,6 +66,7 @@ export default function DateTime({
   label,
   useDefaultDateValue = false,
   locale,
+  className,
   dateSelection = DateSelectionType.DateTime,
   dateFormat,
   timeConstraints,
@@ -359,6 +362,16 @@ export default function DateTime({
 
   const template = inputTemplate || defaultTemplate;
 
+  const inputStyles = cx(
+    'bsc-text-left',
+    {
+      [`${colors?.readOnlyInputBgColor || 'bsc-bg-gray-200'}`]: readOnly,
+      [`${colors?.inputBgColor || 'bsc-bg-white'}`]: !readOnly,
+    },
+    `dark:bsc-bg-black ${colors?.inputBorderColor} bc-dt-input`,
+    className
+  );
+
   return (
     <DateTimeContext.Provider value={contextProps}>
       <div className="bc-date-time">
@@ -367,9 +380,7 @@ export default function DateTime({
           <ContentEditableInput
             value={getValue()}
             readOnly={readOnly}
-            className={`bsc-text-left ${
-              readOnly ? colors?.readOnlyInputBgColor || 'bsc-bg-gray-200' : colors?.inputBgColor || 'bsc-bg-white'
-            } dark:bsc-bg-black ${colors?.inputBorderColor} bc-dt-input`}
+            className={inputStyles}
             onFocus={onFocus}
             onInput={onInput}
             onElementCreate={onInputElementCreated}
