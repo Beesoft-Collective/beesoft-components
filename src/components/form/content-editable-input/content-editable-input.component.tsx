@@ -12,6 +12,8 @@ export interface ContentEditableInputProps {
   className?: string;
   leftElementClassName?: string;
   rightElementClassName?: string;
+  isSingleLine?: boolean;
+  allowSingleLineScroll?: boolean;
   onFocus?: (event: React.FocusEvent) => void;
   onInput?: (event: React.FormEvent) => void;
   onElementCreate?: (element: HTMLElement) => void;
@@ -34,6 +36,8 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
     className,
     leftElementClassName,
     rightElementClassName,
+    isSingleLine = false,
+    allowSingleLineScroll = false,
     onFocus,
     onInput,
     onElementCreate,
@@ -67,9 +71,21 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
     }
   }, debounceTime);
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   const onElementCreated = (element: HTMLElement) => {
-    if (element && onElementCreate) {
-      onElementCreate(element);
+    if (element) {
+      if (onElementCreate) {
+        onElementCreate(element);
+      }
+
+      if (element.offsetWidth < element.scrollWidth && value) {
+        element.setAttribute('title', value);
+      }
     }
   };
 
@@ -81,9 +97,19 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
     focus,
   }));
 
+  const dynamicProps = {};
+
+  if (isSingleLine) {
+    dynamicProps['onKeyDown'] = onKeyDown;
+  }
+
   const classNames = cx(
     { 'bsc-w-full ': fillContainer },
     'bsc-flex bsc-flex-row bsc-shadow-sm bsc-border bsc-border-solid bsc-border-gray-300 dark:bsc-border-white dark:bsc-bg-gray-900 dark:bsc-text-white bsc-rounded-md bsc-p-2',
+    {
+      'bsc-overflow-x-auto bsc-overflow-y-hidden bsc-whitespace-pre': isSingleLine && allowSingleLineScroll,
+      'bsc-overflow-hidden bsc-whitespace-pre': isSingleLine && !allowSingleLineScroll,
+    },
     className
   );
   const leftElementClasses = cx('bsc-flex-shrink', { 'bsc-mr-2': leftElement }, leftElementClassName);

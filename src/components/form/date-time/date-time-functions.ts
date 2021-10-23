@@ -169,6 +169,10 @@ export function getDefaultTime(locale: Locale) {
   return tempDate.toLocaleTimeString(locale.code);
 }
 
+export function isDateBetween(checkDate: Date, startComparisonDate: Date, endComparisonDate: Date) {
+  return checkDate.getTime() >= startComparisonDate.getTime() && checkDate.getTime() <= endComparisonDate.getTime();
+}
+
 export function loadLocale(localeToLoad: string): Promise<Locale> {
   return new Promise<Locale>((resolve, reject) => {
     import(`date-fns/locale/${localeToLoad}`)

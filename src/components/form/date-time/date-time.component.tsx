@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
-import { parse, parseISO } from 'date-fns';
+import { addMonths, endOfMonth, parse, parseISO, startOfMonth } from 'date-fns';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
@@ -9,7 +9,7 @@ import ContentEditableInput from '../content-editable-input/content-editable-inp
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { createDefaultColors, loadLocale } from './date-time-functions';
+import { createDefaultColors, isDateBetween, loadLocale } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -206,15 +206,43 @@ export default function DateTime({
   };
 
   const onInput = (event: React.FormEvent) => {
-    const inputDate = parseDate((event.target as HTMLElement).innerText);
+    const dateString = (event.target as HTMLElement).innerText;
+    const inputDate =
+      dateSelection !== DateSelectionType.DateRange ? parseDate(dateString) : parseDateRange(dateString);
+
     if (inputDate) {
+      if (!Array.isArray(inputDate)) {
+        dispatcher({
+          type: DateTimeActionType.SetViewDate,
+          viewDate: inputDate,
+        });
+        dispatcher({
+          type: DateTimeActionType.SetSelectedDate,
+          selectedDate: inputDate,
+        });
+      } else {
+        if (
+          !isDateBetween(
+            inputDate[0],
+            startOfMonth(state.currentViewDate),
+            endOfMonth(addMonths(state.currentViewDate, 1))
+          )
+        ) {
+          dispatcher({
+            type: DateTimeActionType.SetViewDate,
+            viewDate: inputDate[0],
+          });
+        }
+
+        dispatcher({
+          type: DateTimeActionType.SetSelectedDateRange,
+          selectedStartDate: inputDate[0],
+          selectedEndDate: inputDate[1],
+        });
+      }
+    } else if (dateString === '') {
       dispatcher({
-        type: DateTimeActionType.SetViewDate,
-        viewDate: inputDate,
-      });
-      dispatcher({
-        type: DateTimeActionType.SetSelectedDate,
-        selectedDate: inputDate,
+        type: DateTimeActionType.ClearDates,
       });
     }
   };
