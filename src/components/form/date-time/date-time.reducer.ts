@@ -8,6 +8,7 @@ export enum DateTimeActionType {
   SetSelectedDateRange,
   ResetSelectedDateChanged,
   ResetSelectedDateRangeChanged,
+  ClearDates,
   InitializeDates,
 }
 
@@ -90,6 +91,13 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         originalSetStartDate: action.selectedStartDate || state.selectedStartDate,
         originalSetEndDate: action.selectedEndDate || state.selectedEndDate,
         selectedDateChanged: false,
+      };
+    case DateTimeActionType.ClearDates:
+      return {
+        currentSelector: state.currentSelector,
+        currentViewDate: state.currentViewDate,
+        selectedDateChanged: false,
+        dateInitialized: true,
       };
     case DateTimeActionType.InitializeDates:
       const baseState = {

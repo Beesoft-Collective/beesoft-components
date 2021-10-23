@@ -56,7 +56,7 @@ export default function DateTimeCalendar({
   const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
   const loadedLocale = useRef<Locale>();
   const weekDaysRef = useRef<Array<string>>();
-  const selectedDateRef = useRef<Date>();
+  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
   const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
 
@@ -93,7 +93,9 @@ export default function DateTimeCalendar({
 
   useEffect(() => {
     if (selectedDate) {
-      selectedDateRef.current = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+      setCurrentSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()));
+    } else {
+      setCurrentSelectedDate(undefined);
     }
   }, [selectedDate]);
 
@@ -112,6 +114,9 @@ export default function DateTimeCalendar({
           59
         ).getTime()
       );
+    } else {
+      setSelectedStartComparison(undefined);
+      setSelectedEndComparison(undefined);
     }
   }, [selectedStartDate, selectedEndDate]);
 
@@ -152,7 +157,7 @@ export default function DateTimeCalendar({
   };
 
   const isSelectedDate = (currentDate: Date) => {
-    return selectedDateRef.current?.toLocaleDateString() === currentDate.toLocaleDateString();
+    return currentSelectedDate?.toLocaleDateString() === currentDate.toLocaleDateString();
   };
 
   const isInSelectedDateRange = (currentDate: Date) => {
@@ -207,7 +212,7 @@ export default function DateTimeCalendar({
                 } dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
                   column &&
                   column.dayValue &&
-                  ((selectedDateRef.current && isSelectedDate(column.dayValue)) ||
+                  ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
                 'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
