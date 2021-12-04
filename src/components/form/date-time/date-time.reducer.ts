@@ -3,9 +3,12 @@ export enum DateTimeActionType {
   MonthSelector,
   YearSelector,
   TimeSelector,
+  DateRangeSelector,
   SetViewDate,
   SetSelectedDate,
   SetSelectedDateRange,
+  SetSelectedStartDate,
+  SetSelectedEndDate,
   ResetSelectedDateChanged,
   ResetSelectedDateRangeChanged,
   ClearDates,
@@ -58,6 +61,12 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         ...state,
         currentSelector: DateTimeActionType.TimeSelector,
       };
+    case DateTimeActionType.DateRangeSelector:
+      return {
+        ...state,
+        currentSelector: DateTimeActionType.DateRangeSelector,
+        currentViewDate: action.viewDate || state.currentViewDate,
+      };
     case DateTimeActionType.SetViewDate:
       return {
         ...state,
@@ -68,7 +77,9 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       return {
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
-        selectedDateChanged: state.originalSetDate?.getTime() !== action.selectedDate?.getTime(),
+        selectedDateChanged: !state.selectedDateChanged
+          ? state.originalSetDate?.getTime() !== action.selectedDate?.getTime()
+          : true,
       };
     case DateTimeActionType.SetSelectedDateRange:
       return {
@@ -78,6 +89,23 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         selectedDateChanged:
           state.originalSetStartDate?.getTime() !== action.selectedStartDate?.getTime() ||
           state.originalSetEndDate?.getTime() !== action.selectedEndDate?.getTime(),
+      };
+    case DateTimeActionType.SetSelectedStartDate:
+      return {
+        ...state,
+        selectedStartDate: action.selectedStartDate,
+        selectedEndDate: undefined,
+        selectedDateChanged: !state.selectedDateChanged
+          ? state.originalSetStartDate?.getTime() !== action.selectedStartDate?.getTime()
+          : true,
+      };
+    case DateTimeActionType.SetSelectedEndDate:
+      return {
+        ...state,
+        selectedEndDate: action.selectedEndDate,
+        selectedDateChanged: !state.selectedDateChanged
+          ? state.originalSetEndDate?.getTime() !== action.selectedEndDate?.getTime()
+          : true,
       };
     case DateTimeActionType.ResetSelectedDateChanged:
       return {
