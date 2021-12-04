@@ -26,13 +26,12 @@ export default function DateTimeRangeSelector({
   const onDateSelected = (date: Date, options?: Record<string, any>) => {
     if (!options || !options.setEndDate) {
       dispatcher({
-        type: DateTimeActionType.SetSelectedDateRange,
+        type: DateTimeActionType.SetSelectedStartDate,
         selectedStartDate: date,
-        selectedEndDate: date,
       });
     } else {
       dispatcher({
-        type: DateTimeActionType.SetSelectedDateRange,
+        type: DateTimeActionType.SetSelectedEndDate,
         selectedEndDate: date,
       });
     }

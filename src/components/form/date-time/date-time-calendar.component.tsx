@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { isToday } from 'date-fns';
+import { isBefore, isSameDay, isToday } from 'date-fns';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { useKeyDown } from '../../common-hooks';
@@ -100,10 +100,22 @@ export default function DateTimeCalendar({
   }, [selectedDate]);
 
   useEffect(() => {
-    if (selectedStartDate && selectedEndDate) {
+    if (selectedStartDate) {
       setSelectedStartComparison(
-        new Date(selectedStartDate.getFullYear(), selectedStartDate.getMonth(), selectedStartDate.getDate()).getTime()
+        new Date(
+          selectedStartDate.getFullYear(),
+          selectedStartDate.getMonth(),
+          selectedStartDate.getDate(),
+          0,
+          0,
+          0
+        ).getTime()
       );
+    } else {
+      setSelectedStartComparison(undefined);
+    }
+
+    if (selectedEndDate) {
       setSelectedEndComparison(
         new Date(
           selectedEndDate.getFullYear(),
@@ -115,7 +127,6 @@ export default function DateTimeCalendar({
         ).getTime()
       );
     } else {
-      setSelectedStartComparison(undefined);
       setSelectedEndComparison(undefined);
     }
   }, [selectedStartDate, selectedEndDate]);
@@ -148,10 +159,12 @@ export default function DateTimeCalendar({
       }
     } else {
       if (!onDateSelected) throw new Error('Range selection mode requires onDateSelected to be set');
-      if (!selectedStartDate || (selectedStartDate && !isShiftDown)) {
+      if (!selectedStartDate || isBefore(date, selectedStartDate)) {
         onDateSelected(date);
-      } else if (selectedStartDate && isShiftDown) {
+      } else if (selectedStartDate && !selectedEndDate) {
         onDateSelected(date, { setEndDate: true });
+      } else if (selectedStartDate && selectedEndDate) {
+        onDateSelected(date);
       }
     }
   };
@@ -213,6 +226,9 @@ export default function DateTimeCalendar({
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
+                    (selectedStartComparison &&
+                      !selectedEndComparison &&
+                      isSameDay(selectedStartComparison, column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
                 'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
