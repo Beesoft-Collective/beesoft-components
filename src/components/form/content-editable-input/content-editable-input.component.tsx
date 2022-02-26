@@ -15,6 +15,7 @@ export interface ContentEditableInputProps {
   isSingleLine?: boolean;
   allowSingleLineScroll?: boolean;
   onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
   onInput?: (event: React.FormEvent) => void;
   onElementCreate?: (element: HTMLElement) => void;
   onLeftElementClick?: (event: React.MouseEvent) => void;
@@ -39,6 +40,7 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
     isSingleLine = false,
     allowSingleLineScroll = false,
     onFocus,
+    onBlur,
     onInput,
     onElementCreate,
     onLeftElementClick,
@@ -126,6 +128,7 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
         contentEditable={!readOnly}
         suppressContentEditableWarning={true}
         onFocus={onFocused}
+        onBlur={onBlur}
         onInput={onInputChanged}
       >
         {value}
