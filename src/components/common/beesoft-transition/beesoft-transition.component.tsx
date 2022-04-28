@@ -15,6 +15,7 @@ export interface BeeSoftTransitionProps {
   transitionStyles?: Record<string, React.CSSProperties>;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
+  unmountOnExit?: boolean;
   onEntering?: (node: HTMLElement, isAppearing: boolean) => void;
   onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
   onExit?: (node: HTMLElement) => void;
@@ -29,6 +30,7 @@ export default function BeeSoftTransition({
   transitionStyles,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
   hideTransitionOptions = 'linear',
+  unmountOnExit = false,
   onEntering,
   onEntered,
   onExit,
@@ -62,6 +64,7 @@ export default function BeeSoftTransition({
       onEntered={onEntered}
       onExit={onExit}
       onExited={onExited}
+      unmountOnExit={unmountOnExit}
     >
       {(state) => children({ state, defaultStyle: initialStyle, transitionStyles: transitions })}
     </Transition>
