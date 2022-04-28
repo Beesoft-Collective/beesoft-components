@@ -97,3 +97,19 @@ export function getElementByCssStylesRecursive(
 
   return element.parentElement ? getElementByCssStylesRecursive(element.parentElement, styles) : element;
 }
+
+export function getAllElementStyleValuesRecursive(
+  element: HTMLElement,
+  style: string,
+  action: (styleValue: string) => boolean,
+  currentValues: Array<string> = []
+): Array<string> {
+  const elementStyles = getComputedStyle(element);
+  if (elementStyles[style] && action(elementStyles[style])) {
+    currentValues.push(elementStyles[style]);
+  }
+
+  return element.parentElement
+    ? getAllElementStyleValuesRecursive(element.parentElement, style, action, currentValues)
+    : currentValues;
+}

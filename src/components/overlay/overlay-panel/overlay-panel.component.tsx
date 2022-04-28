@@ -1,7 +1,12 @@
+import { throttle } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
-import { getElementByCssStylesRecursive, isEventWithinTarget } from '../../common-functions';
+import {
+  getAllElementStyleValuesRecursive,
+  getElementByCssStylesRecursive,
+  isEventWithinTarget,
+} from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomHandler } from '../../dom-handler';
@@ -12,6 +17,8 @@ export interface OverlayPanelProps {
   shouldTargetCloseOverlay?: boolean;
   shouldMatchTargetWidth?: boolean;
   shouldScrollCloseOverlay?: boolean;
+  shouldCheckZIndex?: boolean;
+  unmountWhenHidden?: boolean;
   appendTo?: HTMLElement;
   transitionDuration?: number;
   showTransitionOptions?: string;
@@ -27,6 +34,8 @@ export default function OverlayPanel({
   shouldTargetCloseOverlay = true,
   shouldMatchTargetWidth = false,
   shouldScrollCloseOverlay = false,
+  shouldCheckZIndex = false,
+  unmountWhenHidden = false,
   appendTo = document.body,
   transitionDuration = 400,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
@@ -40,6 +49,7 @@ export default function OverlayPanel({
   const [left, setLeft] = useState(0);
   const [width, setWidth] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
+  const displayZIndex = useRef(100);
   const [visibility, setVisibility] = useState(visible);
   const panelRef = useRef<HTMLElement>();
   const scrollerPanelRef = useRef<HTMLElement>();
@@ -59,6 +69,17 @@ export default function OverlayPanel({
         });
       }
 
+      if (shouldCheckZIndex) {
+        const parentZIndex = getAllElementStyleValuesRecursive(finalTarget, 'zIndex', (styleValue) => {
+          const elementZIndex = parseInt(styleValue);
+
+          return elementZIndex >= 100;
+        }).map((item) => parseInt(item));
+        if (parentZIndex.length > 0) {
+          displayZIndex.current = Math.max(...parentZIndex) + 1;
+        }
+      }
+
       setWidth(finalTarget.offsetWidth);
       setTop(position.top);
       setLeft(position.left);
@@ -67,7 +88,7 @@ export default function OverlayPanel({
     if (visible !== undefined) {
       setVisibility(visible);
     }
-  }, [target, visible, shouldMatchTargetWidth, shouldScrollCloseOverlay]);
+  }, [target, visible, shouldMatchTargetWidth, shouldScrollCloseOverlay, shouldCheckZIndex]);
 
   const getTargetElement = (target: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element) => {
     return ((target as React.MouseEvent<Element, MouseEvent>).target
@@ -76,7 +97,7 @@ export default function OverlayPanel({
   };
 
   const onEntering = () => {
-    setZIndex(100);
+    setZIndex(displayZIndex.current);
   };
 
   const onEntered = () => {
@@ -95,8 +116,10 @@ export default function OverlayPanel({
     listenerRef.current = bindDocumentClickListener(panelRef.current, clickListener, otherElements);
 
     if (shouldScrollCloseOverlay) {
-      scrollListenerRef.current = (event: Event) =>
-        panelRef.current && !isEventWithinTarget(event, panelRef.current) && setVisibility(false);
+      scrollListenerRef.current = throttle(
+        (event: Event) => panelRef.current && !isEventWithinTarget(event, panelRef.current) && setVisibility(false),
+        100
+      );
       if (scrollerPanelRef.current) {
         scrollerPanelRef.current.addEventListener('scroll', scrollListenerRef.current);
       }
@@ -148,10 +171,11 @@ export default function OverlayPanel({
         onEntered={onEntered}
         onExit={onExit}
         onExited={onExited}
+        unmountOnExit={unmountWhenHidden}
       >
         {({ state, defaultStyle, transitionStyles }) => (
           <div
-            className="bsc-absolute bsc-bg-white dark:bsc-bg-gray-900 bsc-border bsc-border-solid dark:bsc-text-white dark:bsc-border-white bsc-shadow"
+            className="bsc-fixed bsc-bg-white dark:bsc-bg-gray-900 bsc-border bsc-border-solid dark:bsc-text-white dark:bsc-border-white bsc-shadow"
             style={{
               ...baseStyles,
               ...defaultStyle,
