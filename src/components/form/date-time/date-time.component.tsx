@@ -51,7 +51,6 @@ export interface DateTimeInputTemplateProps {
   readOnly: boolean;
   getValue: () => string;
   onFocus: (event: React.FocusEvent) => void;
-  onBlur: (event: React.FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
   iconElement?: JSX.Element;
@@ -204,10 +203,6 @@ export default function DateTime({
   const onFocus = (event: React.FocusEvent) => {
     setDropDownElement(event);
     setSelectorOpen(true);
-  };
-
-  const onBlur = (event: React.FocusEvent) => {
-    setSelectorOpen(false);
   };
 
   const onInput = (event: React.FormEvent) => {
@@ -382,7 +377,6 @@ export default function DateTime({
     readOnly,
     getValue,
     onFocus,
-    onBlur,
     onInput,
     iconPosition,
     iconElement: inputProps.rightElement || inputProps.leftElement,
@@ -416,7 +410,6 @@ export default function DateTime({
             readOnly={readOnly}
             className={inputStyles}
             onFocus={onFocus}
-            onBlur={onBlur}
             onInput={onInput}
             onElementCreate={onInputElementCreated}
             {...inputProps}
@@ -428,6 +421,7 @@ export default function DateTime({
           shouldTargetCloseOverlay={false}
           shouldScrollCloseOverlay={true}
           hidden={onDateTimeHidden}
+          unmountWhenHidden={true}
         >
           <>
             {state.currentSelector === DateTimeActionType.DaySelector &&
