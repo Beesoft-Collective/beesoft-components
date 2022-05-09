@@ -2,11 +2,7 @@ import { throttle } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
-import {
-  getAllElementStyleValuesRecursive,
-  getElementByCssStylesRecursive,
-  isEventWithinTarget,
-} from '../../common-functions';
+import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventWithinTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomHandler } from '../../dom-handler';
@@ -70,7 +66,7 @@ export default function OverlayPanel({
       }
 
       if (shouldCheckZIndex) {
-        const parentZIndex = getAllElementStyleValuesRecursive(finalTarget, 'zIndex', (styleValue) => {
+        const parentZIndex = getAllElementStyleValues('zIndex', (styleValue) => {
           const elementZIndex = parseInt(styleValue);
 
           return elementZIndex >= 100;

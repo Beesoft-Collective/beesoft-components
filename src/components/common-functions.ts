@@ -113,3 +113,17 @@ export function getAllElementStyleValuesRecursive(
     ? getAllElementStyleValuesRecursive(element.parentElement, style, action, currentValues)
     : currentValues;
 }
+
+export function getAllElementStyleValues(style: string, action: (styleValue: string) => boolean) {
+  const allElements = Array.from(document.querySelectorAll('body *'));
+  const foundStyles: Array<string> = [];
+
+  for (let i = 0, length = allElements.length; i < length; i++) {
+    const elementStyles = getComputedStyle(allElements[i]);
+    if (elementStyles[style] && action(elementStyles[style])) {
+      foundStyles.push(elementStyles[style]);
+    }
+  }
+
+  return foundStyles;
+}
