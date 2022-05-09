@@ -420,6 +420,7 @@ export default function DateTime({
           target={dropDownTarget}
           shouldTargetCloseOverlay={false}
           shouldScrollCloseOverlay={true}
+          shouldCheckZIndex={true}
           hidden={onDateTimeHidden}
           unmountWhenHidden={true}
         >
