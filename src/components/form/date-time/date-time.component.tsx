@@ -192,7 +192,11 @@ export default function DateTime({
 
   const initialState: DateTimeState = {
     currentSelector:
-      dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
+      dateSelection === DateSelectionType.TimeOnly
+        ? DateTimeActionType.TimeSelector
+        : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
+        ? DateTimeActionType.DaySelector
+        : DateTimeActionType.DateRangeSelector,
     currentViewDate: new Date(),
     selectedDateChanged: false,
     dateInitialized: false,
@@ -268,7 +272,11 @@ export default function DateTime({
     setSelectorOpen(false);
     dispatcher({
       type:
-        dateSelection === DateSelectionType.TimeOnly ? DateTimeActionType.TimeSelector : DateTimeActionType.DaySelector,
+        dateSelection === DateSelectionType.TimeOnly
+          ? DateTimeActionType.TimeSelector
+          : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
+          ? DateTimeActionType.DaySelector
+          : DateTimeActionType.DateRangeSelector,
     });
 
     if (onChange && dateSelection !== DateSelectionType.DateRange && state.selectedDate && state.selectedDateChanged) {
@@ -352,7 +360,9 @@ export default function DateTime({
   };
 
   const canShowDateSelectors =
-    dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly;
+    dateSelection === DateSelectionType.DateTime ||
+    dateSelection === DateSelectionType.DateOnly ||
+    dateSelection === DateSelectionType.DateRange;
 
   const canShowTimeSelector =
     dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
@@ -446,6 +456,7 @@ export default function DateTime({
                 <DateTimeMonthSelector
                   viewDate={state.currentViewDate}
                   locale={loadedLocale.current}
+                  dateSelection={dateSelection}
                   dispatcher={dispatcher}
                 />
               )}
@@ -471,15 +482,18 @@ export default function DateTime({
                   dispatcher={dispatcher}
                 />
               )}
-            {dateSelection === DateSelectionType.DateRange && state.dateInitialized && loadedLocale.current && (
-              <DateTimeRangeSelector
-                viewDate={state.currentViewDate}
-                selectedStartDate={state.selectedStartDate}
-                selectedEndDate={state.selectedEndDate}
-                locale={loadedLocale.current}
-                dispatcher={dispatcher}
-              />
-            )}
+            {state.currentSelector === DateTimeActionType.DateRangeSelector &&
+              canShowDateSelectors &&
+              state.dateInitialized &&
+              loadedLocale.current && (
+                <DateTimeRangeSelector
+                  viewDate={state.currentViewDate}
+                  selectedStartDate={state.selectedStartDate}
+                  selectedEndDate={state.selectedEndDate}
+                  locale={loadedLocale.current}
+                  dispatcher={dispatcher}
+                />
+              )}
           </>
         </OverlayPanel>
       </div>
