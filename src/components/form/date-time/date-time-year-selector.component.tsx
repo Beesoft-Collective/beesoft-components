@@ -53,15 +53,19 @@ export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: D
       <div className="bsc-w-full bc-dt-year-wrapper">
         <div className="bsc-grid bsc-grid-cols-4 bsc-gap-4 bc-dt-year-grid">
           {yearMatrix.map((row, rIndex) =>
-            row.map((column, cIndex) => (
-              <div
-                key={rIndex.toString() + cIndex.toString()}
-                className="bsc-text-center bsc-cursor-pointer bc-dt-year-cell"
-                onClick={() => onYearClicked(column)}
-              >
-                {column}
-              </div>
-            ))
+            row.map((column, cIndex) => {
+              return column.length > 0 ? (
+                <div
+                  key={rIndex.toString() + cIndex.toString()}
+                  className="bsc-text-center bsc-cursor-pointer bc-dt-year-cell"
+                  onClick={() => onYearClicked(column)}
+                >
+                  {column}
+                </div>
+              ) : (
+                <div key={rIndex.toString() + cIndex.toString()}></div>
+              );
+            })
           )}
         </div>
       </div>

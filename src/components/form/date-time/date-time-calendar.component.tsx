@@ -2,7 +2,6 @@ import cx from 'classnames';
 import { isBefore, isSameDay, isToday } from 'date-fns';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
-import { useKeyDown } from '../../common-hooks';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
@@ -59,8 +58,6 @@ export default function DateTimeCalendar({
   const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
   const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
-
-  const isShiftDown = useKeyDown(['Meta', 'Control']);
 
   const context = useContext(DateTimeContext);
   const viewTemplate = context.calendarTemplate;
