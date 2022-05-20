@@ -37,10 +37,18 @@ export default function DateTimeRangeSelector({
     }
   };
 
+  const onMonthsClicked = () => {
+    dispatcher({
+      type: DateTimeActionType.MonthSelector,
+    });
+  };
+
   const getSelectorTitle = () =>
-    `${viewDate.toLocaleDateString(locale.code, { month: 'long' })} - ${nextMonth.toLocaleDateString(locale.code, {
+    `${viewDate.toLocaleDateString(locale.code, { month: 'long' })} ${viewDate.toLocaleDateString(locale.code, {
+      year: 'numeric',
+    })} - ${nextMonth.toLocaleDateString(locale.code, {
       month: 'long',
-    })}`;
+    })} ${nextMonth.toLocaleDateString(locale.code, { year: 'numeric' })}`;
 
   const movePreviousMonth = () => {
     if (viewDate) {
@@ -66,6 +74,7 @@ export default function DateTimeRangeSelector({
         <DateTimeScroller
           title={getSelectorTitle()}
           scrollerType={DateScrollerType.Range}
+          onTitleClicked={onMonthsClicked}
           onMovePrevious={movePreviousMonth}
           onMoveNext={moveNextMonth}
         />

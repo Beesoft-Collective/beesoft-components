@@ -73,15 +73,28 @@ function createDefaultMatrix<T>(rows: number, columns: number, defaultValue: T):
   for (let row = 0, length = rows; row < length; row++) {
     const colArray: Array<T> = [];
     for (let col = 0, colLength = columns; col < colLength; col++) {
-      const clonedValue = {
-        ...defaultValue,
-      };
+      const clonedValue = valueIsPrimitive(defaultValue)
+        ? defaultValue
+        : {
+            ...defaultValue,
+          };
       colArray.push(clonedValue);
     }
     rowArray.push(colArray);
   }
 
   return rowArray;
+}
+
+/**
+ * Used to determine if a value is of a primitive type; in our case here I am considering Date a primitive in that we
+ * would want to assign it directly instead of cloning the value.
+ * @param value
+ * @returns {boolean}
+ */
+function valueIsPrimitive(value: any) {
+  const valueType = typeof value;
+  return valueType === 'string' || valueType === 'number' || valueType === 'boolean' || value instanceof Date;
 }
 
 export function getTranslatedDays(locale: Locale) {
