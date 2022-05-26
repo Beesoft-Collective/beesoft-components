@@ -11,6 +11,8 @@ import {
   startOfMonth,
   Locale,
   subDays,
+  parseISO,
+  parse,
 } from 'date-fns';
 import { DateTimeColors } from './date-time-types';
 
@@ -207,4 +209,39 @@ export function createDefaultColors(): DateTimeColors {
     selectedDateColor: 'bsc-bg-blue-100',
     todayDateColor: 'bsc-bg-green-100',
   };
+}
+
+export function parseDate(dateValue: string, locale?: Locale) {
+  const isoDate = parseISO(dateValue);
+  if (isNaN(isoDate.valueOf())) {
+    // this is an attempt to parse a number of date formats
+    let localDate = parse(dateValue, 'Ppp', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'pp', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'p', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    return undefined;
+  }
+
+  return isoDate;
+}
+
+export function parseDateRange(dateRangeValue: string, locale?: Locale) {
+  const datesToParse = dateRangeValue.split('-');
+  if (datesToParse.length !== 2) return undefined;
+
+  const dateValue1 = parseDate(datesToParse[0].trim(), locale);
+  if (!dateValue1) return undefined;
+
+  const dateValue2 = parseDate(datesToParse[1].trim(), locale);
+  if (!dateValue2) return undefined;
+
+  return [dateValue1, dateValue2];
 }

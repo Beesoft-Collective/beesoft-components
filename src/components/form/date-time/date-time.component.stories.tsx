@@ -101,6 +101,13 @@ Default.args = {
   label: 'Date',
 };
 
+export const AllowClear = Template.bind({});
+AllowClear.args = {
+  label: 'Date',
+  allowClear: true,
+  onChange: (value) => console.log('calendar value', value),
+};
+
 export const SetDateValue = Template.bind({});
 SetDateValue.args = {
   label: 'Date',
@@ -175,7 +182,7 @@ DateRangeSetValue.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   value: '30/03/2021 - 14/04/2021',
-  onChange: (date: Date | Array<Date>) => console.log('date range', date),
+  onChange: (date?: Date | Array<Date>) => console.log('date range', date),
 };
 
 export const DateRangeDefaultValue = Template.bind({});
@@ -190,7 +197,7 @@ DateRangeOnChange.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   useDefaultDateValue: true,
-  onChange: (date: Date | Array<Date>) => console.log('date range', date),
+  onChange: (date?: Date | Array<Date>) => console.log('date range', date),
 };
 
 export const CssClassNameChange = Template.bind({});
