@@ -89,19 +89,11 @@ export default function DateTime({
   const loadedLocale = useRef<Locale>();
   const inputElementRef = useRef<HTMLElement>();
 
-  const [contextProps, setContextProps] = useState<DateTimeContextProps>({
+  const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
     dateScrollerTemplate,
     colors,
   });
-
-  useEffect(() => {
-    setContextProps({
-      calendarTemplate,
-      dateScrollerTemplate,
-      colors,
-    });
-  }, [calendarTemplate, dateScrollerTemplate, colors]);
 
   useEffect(() => {
     if (language.current) {
@@ -436,7 +428,7 @@ export default function DateTime({
   );
 
   return (
-    <DateTimeContext.Provider value={contextProps}>
+    <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
         <TemplateOutlet props={inputTemplateProps} template={template}>
           {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
