@@ -119,9 +119,11 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
 
   return (
     <div className={classNames} ref={(element) => onElementCreated(element as HTMLElement)}>
-      <div className={leftElementClasses} onClick={onLeftElementClicked}>
-        {leftElement}
-      </div>
+      {leftElement && (
+        <div className={leftElementClasses} onClick={onLeftElementClicked}>
+          {leftElement}
+        </div>
+      )}
       <div
         ref={inputRef}
         className="bsc-flex-grow focus:bsc-outline-none"
@@ -133,9 +135,11 @@ function ContentEditableInput(props: ContentEditableInputProps, ref: Ref<Content
       >
         {value}
       </div>
-      <div className={rightElementClasses} onClick={onRightElementClicked}>
-        {rightElement}
-      </div>
+      {rightElement && (
+        <div className={rightElementClasses} onClick={onRightElementClicked}>
+          {rightElement}
+        </div>
+      )}
     </div>
   );
 }
