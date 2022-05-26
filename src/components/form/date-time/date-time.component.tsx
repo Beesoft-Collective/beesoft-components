@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
-import { addMonths, endOfMonth, parse, parseISO, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
@@ -9,7 +9,7 @@ import ContentEditableInput from '../content-editable-input/content-editable-inp
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { createDefaultColors, isDateBetween, loadLocale } from './date-time-functions';
+import { createDefaultColors, isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -29,6 +29,7 @@ export interface DateTimeProps {
   readOnly?: boolean;
   label?: string;
   useDefaultDateValue?: boolean;
+  allowClear?: boolean;
   locale?: string;
   className?: string;
   dateSelection?: DateSelectionType;
@@ -40,7 +41,7 @@ export interface DateTimeProps {
   colors?: DateTimeColors;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  onChange?: (value: Date | Array<Date>) => void;
+  onChange?: (value?: Date | Array<Date>) => void;
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
   inputTemplate?: DateTimeInputTemplate;
@@ -49,13 +50,12 @@ export interface DateTimeProps {
 export interface DateTimeInputTemplateProps {
   label?: string;
   readOnly: boolean;
+  allowClear: boolean;
   getValue: () => string;
   onFocus: (event: React.FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
   iconElement?: JSX.Element;
-  iconElementClassName?: string;
-  onElementClick?: (event: React.MouseEvent) => void;
 }
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
@@ -65,6 +65,7 @@ export default function DateTime({
   readOnly = false,
   label,
   useDefaultDateValue = false,
+  allowClear = false,
   locale,
   className,
   dateSelection = DateSelectionType.DateTime,
@@ -83,15 +84,24 @@ export default function DateTime({
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
+
   const language = useRef<string>(locale || getBrowserLanguage());
   const loadedLocale = useRef<Locale>();
   const inputElementRef = useRef<HTMLElement>();
 
-  const contextProps: DateTimeContextProps = {
+  const [contextProps, setContextProps] = useState<DateTimeContextProps>({
     calendarTemplate,
     dateScrollerTemplate,
     colors,
-  };
+  });
+
+  useEffect(() => {
+    setContextProps({
+      calendarTemplate,
+      dateScrollerTemplate,
+      colors,
+    });
+  }, [calendarTemplate, dateScrollerTemplate, colors]);
 
   useEffect(() => {
     if (language.current) {
@@ -142,41 +152,6 @@ export default function DateTime({
       .catch((error) => console.error(error));
   };
 
-  const parseDate = (dateValue: string) => {
-    const isoDate = parseISO(dateValue);
-    if (isNaN(isoDate.valueOf())) {
-      // this is an attempt to parse a number of date formats
-      let localDate = parse(dateValue, 'Ppp', new Date(), { locale: loadedLocale.current });
-      if (!isNaN(localDate.valueOf())) return localDate;
-
-      localDate = parse(dateValue, 'P', new Date(), { locale: loadedLocale.current });
-      if (!isNaN(localDate.valueOf())) return localDate;
-
-      localDate = parse(dateValue, 'pp', new Date(), { locale: loadedLocale.current });
-      if (!isNaN(localDate.valueOf())) return localDate;
-
-      localDate = parse(dateValue, 'p', new Date(), { locale: loadedLocale.current });
-      if (!isNaN(localDate.valueOf())) return localDate;
-
-      return undefined;
-    }
-
-    return isoDate;
-  };
-
-  const parseDateRange = (dateRangeValue: string) => {
-    const datesToParse = dateRangeValue.split('-');
-    if (datesToParse.length !== 2) return undefined;
-
-    const dateValue1 = parseDate(datesToParse[0].trim());
-    if (!dateValue1) return undefined;
-
-    const dateValue2 = parseDate(datesToParse[1].trim());
-    if (!dateValue2) return undefined;
-
-    return [dateValue1, dateValue2];
-  };
-
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
@@ -184,8 +159,8 @@ export default function DateTime({
     return value
       ? typeof value === 'string'
         ? dateSelection !== DateSelectionType.DateRange
-          ? parseDate(value)
-          : parseDateRange(value)
+          ? parseDate(value, loadedLocale.current)
+          : parseDateRange(value, loadedLocale.current)
         : value
       : defaultDate;
   };
@@ -212,7 +187,9 @@ export default function DateTime({
   const onInput = (event: React.FormEvent) => {
     const dateString = (event.target as HTMLElement).innerText;
     const inputDate =
-      dateSelection !== DateSelectionType.DateRange ? parseDate(dateString) : parseDateRange(dateString);
+      dateSelection !== DateSelectionType.DateRange
+        ? parseDate(dateString, loadedLocale.current)
+        : parseDateRange(dateString, loadedLocale.current);
 
     if (inputDate) {
       if (!Array.isArray(inputDate)) {
@@ -254,6 +231,15 @@ export default function DateTime({
   const onCalendarClick = (event: React.MouseEvent) => {
     setDropDownElement(event);
     setSelectorOpen(!selectorOpen);
+  };
+
+  const onClearClick = () => {
+    dispatcher({
+      type: DateTimeActionType.ClearDates,
+    });
+    setSelectorOpen(false);
+
+    onChange && onChange();
   };
 
   const onInputElementCreated = (element: HTMLElement) => {
@@ -316,7 +302,7 @@ export default function DateTime({
         return state.selectedDate
           ? dateStyle
             ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
-                dateStyle: dateStyle,
+                dateStyle,
                 timeStyle: dateStyle,
               })
             : state.selectedDate.toLocaleString(loadedLocale.current?.code)
@@ -325,7 +311,7 @@ export default function DateTime({
         return state.selectedDate
           ? dateStyle
             ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
-                dateStyle: dateStyle,
+                dateStyle,
               })
             : state.selectedDate.toLocaleDateString(loadedLocale.current?.code)
           : '';
@@ -351,7 +337,7 @@ export default function DateTime({
         return state.selectedDate
           ? dateStyle
             ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
-                dateStyle: dateStyle,
+                dateStyle,
                 timeStyle: dateStyle,
               })
             : state.selectedDate.toLocaleString(loadedLocale.current?.code)
@@ -372,26 +358,65 @@ export default function DateTime({
       ? {}
       : iconPosition === CalendarIconPosition.Right
       ? {
-          rightElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          rightElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
-          onRightElementClick: !readOnly ? onCalendarClick : undefined,
+          rightElement: (
+            <div className="bsc-flex">
+              {allowClear && !readOnly && (
+                <div>
+                  <FontAwesomeIcon
+                    className="bsc-cursor-pointer bsc-text-sm"
+                    icon={['fas', 'times']}
+                    size="sm"
+                    onClick={onClearClick}
+                  />
+                </div>
+              )}
+              <div className="bsc-ml-2">
+                {icon || (
+                  <FontAwesomeIcon
+                    className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                    icon={['far', 'calendar-alt']}
+                    onClick={!readOnly ? onCalendarClick : undefined}
+                  />
+                )}
+              </div>
+            </div>
+          ),
         }
       : {
-          leftElement: icon || <FontAwesomeIcon icon={['far', 'calendar-alt']} />,
-          leftElementClassName: !readOnly ? 'bsc-cursor-pointer' : undefined,
-          onLeftElementClick: !readOnly ? onCalendarClick : undefined,
+          leftElement: (
+            <div className="bsc-flex">
+              <div className="bsc-mr-2">
+                {icon || (
+                  <FontAwesomeIcon
+                    className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                    icon={['far', 'calendar-alt']}
+                    onClick={!readOnly ? onCalendarClick : undefined}
+                  />
+                )}
+              </div>
+              {allowClear && !readOnly && (
+                <div>
+                  <FontAwesomeIcon
+                    className="bsc-cursor-pointer bsc-text-sm"
+                    icon={['fas', 'times']}
+                    size="sm"
+                    onClick={onClearClick}
+                  />
+                </div>
+              )}
+            </div>
+          ),
         };
 
   const inputTemplateProps: DateTimeInputTemplateProps = {
     label,
     readOnly,
+    allowClear,
     getValue,
     onFocus,
     onInput,
     iconPosition,
     iconElement: inputProps.rightElement || inputProps.leftElement,
-    iconElementClassName: inputProps.rightElementClassName || inputProps.leftElementClassName,
-    onElementClick: inputProps.onRightElementClick || inputProps.onLeftElementClick,
   };
 
   const defaultTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
