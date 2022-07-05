@@ -33,6 +33,16 @@ export function generateNumberArray<T>(
   return numberArray;
 }
 
+export function isEventOutsideTarget(event: Event, target: HTMLElement) {
+  const eventElement = event.target as HTMLElement;
+
+  if (eventElement) {
+    return !target.isSameNode(eventElement) && !target.contains(eventElement);
+  }
+
+  return false;
+}
+
 export function isEventWithinTarget(event: Event, target: HTMLElement) {
   const testElement = event.target as HTMLElement;
   return testElement ? isElementWithinTarget(testElement, target) : false;
