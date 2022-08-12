@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { cloneDeep } from 'lodash';
 import React, { useRef, useState } from 'react';
 import { generateNumberArray, padNumber } from '../../common-functions';
 import { TimeConstraints } from './date-time-types';
@@ -22,6 +23,7 @@ export default function DateTimeTimeSelector({
   const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => padNumber(value, 2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
+  const savedViewDate = useRef(cloneDeep(viewDate));
 
   const getMeridianHour = (hour: number) => (hour > 11 ? hour - 12 : hour);
 
@@ -72,15 +74,12 @@ export default function DateTimeTimeSelector({
 
   const setCurrentTime = (hour: number, minute: number, meridian: number) => {
     const correctHour = meridian === 1 ? hour + 12 : hour;
-    viewDate.setHours(correctHour, minute);
+    savedViewDate.current.setHours(correctHour, minute);
 
     dispatcher({
       type: DateTimeActionType.SetSelectedDate,
-      selectedDate: viewDate,
-    });
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: viewDate,
+      selectedDate: savedViewDate.current,
+      viewDate: savedViewDate.current,
     });
   };
 

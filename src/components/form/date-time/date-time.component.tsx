@@ -186,12 +186,9 @@ export default function DateTime({
     if (inputDate) {
       if (!Array.isArray(inputDate)) {
         dispatcher({
-          type: DateTimeActionType.SetViewDate,
-          viewDate: inputDate,
-        });
-        dispatcher({
           type: DateTimeActionType.SetSelectedDate,
           selectedDate: inputDate,
+          viewDate: inputDate,
         });
       } else {
         if (

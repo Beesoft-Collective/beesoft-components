@@ -77,6 +77,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       return {
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
+        currentViewDate: action.viewDate || state.currentViewDate,
         selectedDateChanged: !state.selectedDateChanged
           ? state.originalSetDate?.getTime() !== action.selectedDate?.getTime()
           : true,
