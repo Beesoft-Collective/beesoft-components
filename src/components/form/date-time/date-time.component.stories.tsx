@@ -99,19 +99,21 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   label: 'Date',
+  onChange: action('onChange'),
 };
 
 export const AllowClear = Template.bind({});
 AllowClear.args = {
   label: 'Date',
   allowClear: true,
-  onChange: (value) => console.log('calendar value', value),
+  onChange: action('onChange'),
 };
 
 export const SetDateValue = Template.bind({});
 SetDateValue.args = {
   label: 'Date',
   value: '30/03/2021, 4:15:00 PM',
+  onChange: action('onChange'),
 };
 
 export const CurrentDateTime = Template.bind({});
@@ -126,18 +128,21 @@ IconOnLeft.args = {
   label: 'Left Icon',
   useDefaultDateValue: true,
   iconPosition: CalendarIconPosition.Left,
+  onChange: action('onChange'),
 };
 
 export const NoIcon = Template.bind({});
 NoIcon.args = {
   label: 'No Icon',
   iconPosition: CalendarIconPosition.None,
+  onChange: action('onChange'),
 };
 
 export const ChangeIcon = Template.bind({});
 ChangeIcon.args = {
   label: 'Different Icon',
   icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
+  onChange: action('onChange'),
 };
 
 export const InputTemplate = OverrideInputTemplate.bind({});
@@ -157,24 +162,28 @@ export const IsoDateTime = Template.bind({});
 IsoDateTime.args = {
   label: 'Date',
   value: '2021-04-20T14:20:00+08:00',
+  onChange: action('onChange'),
 };
 
 export const DateOnly = Template.bind({});
 DateOnly.args = {
   label: 'Date Only',
   dateSelection: DateSelectionType.DateOnly,
+  onChange: action('onChange'),
 };
 
 export const TimeOnly = Template.bind({});
 TimeOnly.args = {
   label: 'Time Only',
   dateSelection: DateSelectionType.TimeOnly,
+  onChange: action('onChange'),
 };
 
 export const DateRange = Template.bind({});
 DateRange.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
+  onChange: action('onChange'),
 };
 
 export const DateRangeSetValue = Template.bind({});
@@ -182,7 +191,7 @@ DateRangeSetValue.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   value: '30/03/2021 - 14/04/2021',
-  onChange: (date?: Date | Array<Date>) => console.log('date range', date),
+  onChange: action('onChange'),
 };
 
 export const DateRangeDefaultValue = Template.bind({});
@@ -190,6 +199,7 @@ DateRangeDefaultValue.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const DateRangeOnChange = Template.bind({});
@@ -197,7 +207,7 @@ DateRangeOnChange.args = {
   label: 'Date Range',
   dateSelection: DateSelectionType.DateRange,
   useDefaultDateValue: true,
-  onChange: (date?: Date | Array<Date>) => console.log('date range', date),
+  onChange: action('onChange'),
 };
 
 export const CssClassNameChange = Template.bind({});
@@ -205,6 +215,7 @@ CssClassNameChange.args = {
   label: 'Css Class Change',
   useDefaultDateValue: true,
   className: 'bsc-border-none bsc-text-sm bsc-border-transparent',
+  onChange: action('onChange'),
 };
 
 export const MinuteConstraint = Template.bind({});
@@ -217,29 +228,34 @@ MinuteConstraint.args = {
       step: 10,
     },
   },
+  onChange: action('onChange'),
 };
 
 export const ScrollDateTime = ScrollTemplate.bind({});
 ScrollDateTime.args = {
   label: 'Date',
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const BodyScrollDateTime = BodyScrollTemplate.bind({});
 BodyScrollDateTime.args = {
   label: 'Date',
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const DelaySetValue = SetValueTemplate.bind({});
 DelaySetValue.args = {
   label: 'Date',
+  onChange: action('onChange'),
 };
 
 export const SelectableDate = Template.bind({});
 SelectableDate.args = {
   label: 'Date',
   selectableDate: (date: Date) => date.getDay() !== 0,
+  onChange: action('onChange'),
 };
 
 export const IsValidSelectedDate = Template.bind({});
@@ -254,6 +270,7 @@ ShortDate.args = {
   label: 'Date',
   dateFormat: DateFormatType.Short,
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const MediumDate = Template.bind({});
@@ -261,6 +278,7 @@ MediumDate.args = {
   label: 'Date',
   dateFormat: DateFormatType.Medium,
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const LongDate = Template.bind({});
@@ -268,6 +286,7 @@ LongDate.args = {
   label: 'Date',
   dateFormat: DateFormatType.Long,
   useDefaultDateValue: true,
+  onChange: action('onChange'),
 };
 
 export const ReadOnlyDate = Template.bind({});
@@ -275,6 +294,7 @@ ReadOnlyDate.args = {
   label: 'Read Only Date',
   value: '31/10/1977, 8:30:00 AM',
   readOnly: true,
+  onChange: action('onChange'),
 };
 
 export const ModifiedColors = Template.bind({});
@@ -285,4 +305,5 @@ ModifiedColors.args = {
     inputBgColor: 'bsc-bg-blue-200',
     todayDateColor: 'bsc-bg-red-500',
   },
+  onChange: action('onChange'),
 };

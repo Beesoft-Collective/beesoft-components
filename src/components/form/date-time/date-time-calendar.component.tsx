@@ -144,9 +144,6 @@ export default function DateTimeCalendar({
         dispatcher({
           type: DateTimeActionType.SetSelectedDate,
           selectedDate: date,
-        });
-        dispatcher({
-          type: DateTimeActionType.SetViewDate,
           viewDate: date,
         });
       }
