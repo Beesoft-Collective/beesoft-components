@@ -10,6 +10,7 @@ export interface DateTimeTimeSelectorProps {
   showDateSelector: boolean;
   locale: Locale;
   timeConstraints?: TimeConstraints;
+  onChange?: (value?: Date | Array<Date>) => void;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
@@ -18,6 +19,7 @@ export default function DateTimeTimeSelector({
   showDateSelector,
   locale,
   timeConstraints,
+  onChange,
   dispatcher,
 }: DateTimeTimeSelectorProps) {
   const hours = useRef<string[]>(['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
@@ -81,6 +83,7 @@ export default function DateTimeTimeSelector({
       selectedDate: savedViewDate.current,
       viewDate: savedViewDate.current,
     });
+    onChange?.(savedViewDate.current);
   };
 
   const onDateClicked = () => {

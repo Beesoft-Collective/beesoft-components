@@ -9,8 +9,6 @@ export enum DateTimeActionType {
   SetSelectedDateRange,
   SetSelectedStartDate,
   SetSelectedEndDate,
-  ResetSelectedDateChanged,
-  ResetSelectedDateRangeChanged,
   ClearDates,
   InitializeDates,
 }
@@ -21,10 +19,6 @@ export interface DateTimeState {
   selectedDate?: Date;
   selectedStartDate?: Date; // the start and end dates are used for the range selector
   selectedEndDate?: Date;
-  originalSetDate?: Date;
-  originalSetStartDate?: Date;
-  originalSetEndDate?: Date;
-  selectedDateChanged: boolean;
   dateInitialized: boolean;
 }
 
@@ -78,54 +72,28 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
         currentViewDate: action.viewDate || state.currentViewDate,
-        selectedDateChanged: !state.selectedDateChanged
-          ? state.originalSetDate?.getTime() !== action.selectedDate?.getTime()
-          : true,
       };
     case DateTimeActionType.SetSelectedDateRange:
       return {
         ...state,
         selectedStartDate: action.selectedStartDate || state.selectedStartDate,
         selectedEndDate: action.selectedEndDate || state.selectedEndDate,
-        selectedDateChanged:
-          state.originalSetStartDate?.getTime() !== action.selectedStartDate?.getTime() ||
-          state.originalSetEndDate?.getTime() !== action.selectedEndDate?.getTime(),
       };
     case DateTimeActionType.SetSelectedStartDate:
       return {
         ...state,
         selectedStartDate: action.selectedStartDate,
         selectedEndDate: undefined,
-        selectedDateChanged: !state.selectedDateChanged
-          ? state.originalSetStartDate?.getTime() !== action.selectedStartDate?.getTime()
-          : true,
       };
     case DateTimeActionType.SetSelectedEndDate:
       return {
         ...state,
         selectedEndDate: action.selectedEndDate,
-        selectedDateChanged: !state.selectedDateChanged
-          ? state.originalSetEndDate?.getTime() !== action.selectedEndDate?.getTime()
-          : true,
-      };
-    case DateTimeActionType.ResetSelectedDateChanged:
-      return {
-        ...state,
-        originalSetDate: action.selectedDate || state.selectedDate,
-        selectedDateChanged: false,
-      };
-    case DateTimeActionType.ResetSelectedDateRangeChanged:
-      return {
-        ...state,
-        originalSetStartDate: action.selectedStartDate || state.selectedStartDate,
-        originalSetEndDate: action.selectedEndDate || state.selectedEndDate,
-        selectedDateChanged: false,
       };
     case DateTimeActionType.ClearDates:
       return {
         currentSelector: state.currentSelector,
         currentViewDate: state.currentViewDate,
-        selectedDateChanged: false,
         dateInitialized: true,
       };
     case DateTimeActionType.InitializeDates:
@@ -138,14 +106,11 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       if (!Array.isArray(action.initialDate)) {
         return {
           ...baseState,
-          originalSetDate: action.initialDate,
           selectedDate: action.initialDate,
         };
       } else {
         return {
           ...baseState,
-          originalSetStartDate: action.initialDate[0],
-          originalSetEndDate: action.initialDate[1],
           selectedStartDate: action.initialDate[0],
           selectedEndDate: action.initialDate[1],
         };

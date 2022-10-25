@@ -140,17 +140,13 @@ export default function DateTimeCalendar({
 
   const onDateClicked = (date: Date) => {
     if (selectionMode === CalendarSelectionMode.Normal) {
-      if (dispatcher) {
-        dispatcher({
-          type: DateTimeActionType.SetSelectedDate,
-          selectedDate: date,
-          viewDate: date,
-        });
-      }
+      dispatcher?.({
+        type: DateTimeActionType.SetSelectedDate,
+        selectedDate: date,
+        viewDate: date,
+      });
 
-      if (onDateSelected) {
-        onDateSelected(date);
-      }
+      onDateSelected?.(date);
     } else {
       if (!onDateSelected) throw new Error('Range selection mode requires onDateSelected to be set');
       if (!selectedStartDate || isBefore(date, selectedStartDate)) {

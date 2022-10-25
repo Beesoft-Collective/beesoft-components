@@ -165,7 +165,6 @@ export default function DateTime({
         ? DateTimeActionType.DaySelector
         : DateTimeActionType.DateRangeSelector,
     currentViewDate: new Date(),
-    selectedDateChanged: false,
     dateInitialized: false,
   };
 
@@ -228,7 +227,7 @@ export default function DateTime({
     });
     setSelectorOpen(false);
 
-    onChange && onChange();
+    onChange?.();
   };
 
   const onInputElementCreated = (element: HTMLElement) => {
@@ -253,21 +252,6 @@ export default function DateTime({
           ? DateTimeActionType.DaySelector
           : DateTimeActionType.DateRangeSelector,
     });
-
-    if (onChange && dateSelection !== DateSelectionType.DateRange && state.selectedDate && state.selectedDateChanged) {
-      onChange(state.selectedDate);
-      dispatcher({
-        type: DateTimeActionType.ResetSelectedDateChanged,
-        selectedDate: state.selectedDate,
-      });
-    } else if (onChange && state.selectedStartDate && state.selectedEndDate && state.selectedDateChanged) {
-      onChange([state.selectedStartDate, state.selectedEndDate]);
-      dispatcher({
-        type: DateTimeActionType.ResetSelectedDateRangeChanged,
-        selectedStartDate: state.selectedStartDate,
-        selectedEndDate: state.selectedEndDate,
-      });
-    }
   };
 
   const getDateTimeStyle = () => {
@@ -461,6 +445,7 @@ export default function DateTime({
                   selectableDate={selectableDate}
                   isValidDate={isValidDate}
                   dispatcher={dispatcher}
+                  onChange={onChange}
                 />
               )}
             {state.currentSelector === DateTimeActionType.MonthSelector &&
@@ -493,6 +478,7 @@ export default function DateTime({
                   showDateSelector={dateSelection === DateSelectionType.DateTime}
                   locale={loadedLocale.current}
                   timeConstraints={timeConstraints}
+                  onChange={onChange}
                   dispatcher={dispatcher}
                 />
               )}
@@ -505,6 +491,7 @@ export default function DateTime({
                   selectedStartDate={state.selectedStartDate}
                   selectedEndDate={state.selectedEndDate}
                   locale={loadedLocale.current}
+                  onChange={onChange}
                   dispatcher={dispatcher}
                 />
               )}

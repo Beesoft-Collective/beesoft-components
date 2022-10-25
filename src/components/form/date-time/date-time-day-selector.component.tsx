@@ -14,6 +14,7 @@ export interface DateTimeDaySelectorProps {
   showTimeSelector: boolean;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
+  onChange?: (value?: Date | Array<Date>) => void;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
@@ -24,6 +25,7 @@ export default function DateTimeDaySelector({
   showTimeSelector,
   selectableDate,
   isValidDate,
+  onChange,
   dispatcher,
 }: DateTimeDaySelectorProps) {
   const movePreviousMonth = () => {
@@ -82,6 +84,7 @@ export default function DateTimeDaySelector({
         locale={locale}
         selectableDate={selectableDate}
         isValidDate={isValidDate}
+        onDateSelected={onChange}
         dispatcher={dispatcher}
       />
       {showTimeSelector && (
