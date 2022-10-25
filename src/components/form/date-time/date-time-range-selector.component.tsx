@@ -11,6 +11,7 @@ export interface DateTimeRangeSelectorProps {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   locale: Locale;
+  onChange?: (value?: Date | Array<Date>) => void;
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
@@ -19,6 +20,7 @@ export default function DateTimeRangeSelector({
   selectedStartDate,
   selectedEndDate,
   locale,
+  onChange,
   dispatcher,
 }: DateTimeRangeSelectorProps) {
   const nextMonth = addMonths(viewDate, 1);
@@ -34,6 +36,7 @@ export default function DateTimeRangeSelector({
         type: DateTimeActionType.SetSelectedEndDate,
         selectedEndDate: date,
       });
+      selectedStartDate && onChange?.([selectedStartDate, date]);
     }
   };
 
