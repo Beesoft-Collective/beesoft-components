@@ -213,6 +213,8 @@ export default function DateTime({
       dispatcher({
         type: DateTimeActionType.ClearDates,
       });
+
+      onChange?.();
     }
   };
 
