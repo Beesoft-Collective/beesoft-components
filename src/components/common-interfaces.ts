@@ -4,3 +4,7 @@
 export interface MarkupEvents {
   markupCreated?: (element: Element) => void;
 }
+
+export interface IToString {
+  toString(): string;
+}

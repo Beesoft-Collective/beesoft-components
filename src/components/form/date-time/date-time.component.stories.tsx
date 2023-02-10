@@ -85,7 +85,7 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
         <input
           ref={(element) => element && setInputRef(element)}
           className="bsc-border bsc-border-solid bsc-border-black"
-          onFocus={props.onFocus}
+          onFocus={(event) => props.onFocus((event as unknown) as FocusEvent)}
           value={props.getValue()}
         />
       </div>

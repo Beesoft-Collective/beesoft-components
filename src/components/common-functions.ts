@@ -1,3 +1,5 @@
+import { IToString } from './common-interfaces';
+
 export function getElementByClassNameRecursive(element: Element, className: string): Element {
   if (typeof element.className === 'string' && element.className.includes(className)) {
     return element;
@@ -136,4 +138,23 @@ export function getAllElementStyleValues(style: string, action: (styleValue: str
   }
 
   return foundStyles;
+}
+
+export function isObject(object: unknown): object is Record<string, never> {
+  return typeof object === 'object' && object !== null;
+}
+
+export function isPrimitive(item: unknown): item is string | number | Date | boolean | bigint {
+  return (
+    typeof item !== 'undefined' &&
+    (typeof item === 'string' ||
+      typeof item === 'number' ||
+      typeof item === 'boolean' ||
+      typeof item === 'bigint' ||
+      item instanceof Date)
+  );
+}
+
+export function containsToString(object: unknown): object is IToString {
+  return (isObject(object) || isPrimitive(object)) && object.hasOwnProperty('toString');
 }

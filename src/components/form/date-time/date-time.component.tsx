@@ -5,7 +5,8 @@ import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import ContentEditableInput from '../content-editable-input/content-editable-input.component';
+import { FormInputControl } from '../form-control.interface';
+import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
@@ -24,14 +25,10 @@ import {
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
-export interface DateTimeProps {
-  value?: string | Date | Array<Date>;
-  readOnly?: boolean;
-  label?: string;
+export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
   useDefaultDateValue?: boolean;
   allowClear?: boolean;
   locale?: string;
-  className?: string;
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
@@ -41,7 +38,6 @@ export interface DateTimeProps {
   colors?: DateTimeColors;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  onChange?: (value?: Date | Array<Date>) => void;
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
   inputTemplate?: DateTimeInputTemplate;
@@ -52,7 +48,7 @@ export interface DateTimeInputTemplateProps {
   readOnly: boolean;
   allowClear: boolean;
   getValue: () => string;
-  onFocus: (event: React.FocusEvent) => void;
+  onFocus: (event: FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
   iconElement?: JSX.Element;
@@ -170,8 +166,8 @@ export default function DateTime({
 
   const [state, dispatcher] = useReducer(reducer, initialState);
 
-  const onFocus = (event: React.FocusEvent) => {
-    setDropDownElement(event);
+  const onFocus = () => {
+    setDropDownElement();
     setSelectorOpen(true);
   };
 
@@ -216,8 +212,8 @@ export default function DateTime({
     }
   };
 
-  const onCalendarClick = (event: React.MouseEvent) => {
-    setDropDownElement(event);
+  const onCalendarClick = () => {
+    setDropDownElement();
     setSelectorOpen(!selectorOpen);
   };
 
@@ -236,7 +232,7 @@ export default function DateTime({
     }
   };
 
-  const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
+  const setDropDownElement = () => {
     if (!dropDownTarget && inputElementRef.current) {
       setDropDownTarget(inputElementRef.current);
     }
