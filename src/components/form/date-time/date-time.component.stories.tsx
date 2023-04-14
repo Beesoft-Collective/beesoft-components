@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
@@ -94,6 +95,39 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
   /* eslint-enable react/prop-types */
 
   return <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef as HTMLElement} />;
+};
+
+const OffScreenRightTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  return (
+    <div className="bsc-w-full bsc-flex bsc-pr-2">
+      <div className="bsc-flex-grow">&nbsp;</div>
+      <div className="bsc-flex-shrink" style={{ minWidth: '150px' }}>
+        <DateTime {...args} />
+      </div>
+    </div>
+  );
+};
+
+const OffScreenRightBottomTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  return (
+    <div className="bsc-w-full bsc-h-screen bsc-flex bsc-pr-2 bsc-pb-2">
+      <div className="bsc-w-full bsc-h-full bsc-flex-col">
+        <div className="bsc-h-3/4">&nbsp;</div>
+        <div className="bsc-flex-shrink">
+          <div className="bsc-w-full bsc-flex">
+            <div className="bsc-flex-grow">&nbsp;</div>
+            <div className="bsc-flex-shrink" style={{ minWidth: '150px' }}>
+              <DateTime {...args} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const Default = Template.bind({});
@@ -305,5 +339,17 @@ ModifiedColors.args = {
     inputBgColor: 'bsc-bg-blue-200',
     todayDateColor: 'bsc-bg-red-500',
   },
+  onChange: action('onChange'),
+};
+
+export const OffScreenRight = OffScreenRightTemplate.bind({});
+OffScreenRight.args = {
+  label: 'Off Screen Right',
+  onChange: action('onChange'),
+};
+
+export const OffScreenRightBottom = OffScreenRightBottomTemplate.bind({});
+OffScreenRightBottom.args = {
+  label: 'Off Screen Right Bottom',
   onChange: action('onChange'),
 };

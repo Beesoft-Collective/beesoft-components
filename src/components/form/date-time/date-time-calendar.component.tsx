@@ -196,7 +196,7 @@ export default function DateTimeCalendar({
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="bsc-grid bsc-grid-cols-7 bsc-gap-3 bc-dt-day-row">
+      <div className="bsc-grid bsc-grid-cols-7 bsc-gap-3 bc-dt-day-row bsc-min-w-[329px]">
         {weekDaysRef.current?.map((day, index) => (
           <div key={index} className="bsc-text-center bsc-font-bold bc-dt-day-cell">
             {day}

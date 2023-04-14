@@ -1,39 +1,51 @@
 import { throttle } from 'lodash';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import debounce from 'lodash/debounce';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
-import {
-  getAllElementStyleValues,
-  getElementByCssStylesRecursive,
-  isEventOutsideTarget,
-  isEventWithinTarget,
-} from '../../common-functions';
+import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
-import { DomHandler } from '../../dom-handler';
+import { DomElementAlignment, DomHandler, DomTargetPosition } from '../../dom-handler';
+
+interface OverlayPanelDimensions {
+  left: number;
+  top: number;
+  width: number;
+}
 
 export interface OverlayPanelProps {
   visible: boolean;
   target?: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element | null;
+  targetPosition?: DomTargetPosition;
+  elementAlignment?: DomElementAlignment;
   shouldTargetCloseOverlay?: boolean;
   shouldMatchTargetWidth?: boolean;
   shouldScrollCloseOverlay?: boolean;
   shouldCheckZIndex?: boolean;
+  /**
+   * When set to true this will cause the overlay panel to adjust itself, relative to its target, to remain on the
+   * screen.
+   */
+  shouldRemainOnScreen?: boolean;
   unmountWhenHidden?: boolean;
   transitionDuration?: number;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
   shown?: () => void;
   hidden?: () => void;
-  children: React.ReactNode;
+  children: ReactNode | Array<ReactNode>;
 }
 
 export default function OverlayPanel({
   visible,
   target,
+  targetPosition = DomTargetPosition.BottomLeft,
+  elementAlignment = DomElementAlignment.TopLeft,
   shouldTargetCloseOverlay = true,
   shouldMatchTargetWidth = false,
   shouldScrollCloseOverlay = false,
   shouldCheckZIndex = false,
+  shouldRemainOnScreen = false,
   unmountWhenHidden = false,
   transitionDuration = 400,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
@@ -43,48 +55,64 @@ export default function OverlayPanel({
   markupCreated,
   children,
 }: OverlayPanelProps & MarkupEvents) {
-  const [top, setTop] = useState(0);
-  const [left, setLeft] = useState(0);
-  const [width, setWidth] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
-  const displayZIndex = useRef(100);
   const [visibility, setVisibility] = useState(visible);
+  const [dimensionsChangedFlag, setDimensionsChangedFlag] = useState(false);
+
+  const dimensionsChangedRef = useRef(false);
+  const displayZIndex = useRef(100);
+  const panelDimensions = useRef<OverlayPanelDimensions>({
+    left: 0,
+    top: 0,
+    width: 0,
+  });
+  const finalTarget = useRef<HTMLElement>();
   const panelRef = useRef<HTMLElement>();
   const scrollerPanelRef = useRef<HTMLElement | Document>();
   const listenerRef = useRef<(event: MouseEvent) => void>();
   const scrollListenerRef = useRef<(event: Event) => void>();
 
+  const resizeObserver = useRef<ResizeObserver>();
+
   useEffect(() => {
-    if (target) {
-      const finalTarget = getTargetElement(target);
-      const position = DomHandler.positionToTarget(finalTarget);
+    if (shouldRemainOnScreen === true) {
+      resizeObserver.current = new ResizeObserver(resizeCallback);
+    }
 
-      if (shouldScrollCloseOverlay) {
-        scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget, {
-          overflow: 'scroll, auto',
-          overflowX: 'scroll, auto',
-          overflowY: 'scroll, auto',
-        });
-
-        if ((scrollerPanelRef.current as HTMLElement).tagName.toLowerCase() === 'html') {
-          scrollerPanelRef.current = document;
+    return () => {
+      if (shouldRemainOnScreen === true) {
+        if (panelRef.current) {
+          resizeObserver.current?.unobserve(panelRef.current);
         }
+
+        resizeObserver.current?.disconnect();
       }
+    };
+  }, []);
 
-      if (shouldCheckZIndex) {
-        const parentZIndex = getAllElementStyleValues('zIndex', (styleValue) => {
-          const elementZIndex = parseInt(styleValue);
+  useEffect(() => {
+    if (target && shouldScrollCloseOverlay) {
+      finalTarget.current = getTargetElement(target);
+      scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget.current, {
+        overflow: 'scroll, auto',
+        overflowX: 'scroll, auto',
+        overflowY: 'scroll, auto',
+      });
 
-          return elementZIndex >= 100;
-        }).map((item) => parseInt(item));
-        if (parentZIndex.length > 0) {
-          displayZIndex.current = Math.max(...parentZIndex) + 1;
-        }
+      if ((scrollerPanelRef.current as HTMLElement).tagName.toLowerCase() === 'html') {
+        scrollerPanelRef.current = document;
       }
+    }
 
-      setWidth(finalTarget.offsetWidth);
-      setTop(position.top);
-      setLeft(position.left);
+    if (shouldCheckZIndex) {
+      const parentZIndex = getAllElementStyleValues('zIndex', (styleValue) => {
+        const elementZIndex = parseInt(styleValue);
+
+        return elementZIndex >= 100;
+      }).map((item) => parseInt(item));
+      if (parentZIndex.length > 0) {
+        displayZIndex.current = Math.max(...parentZIndex) + 1;
+      }
     }
 
     if (visible !== undefined) {
@@ -93,10 +121,56 @@ export default function OverlayPanel({
   }, [target, visible, shouldScrollCloseOverlay, shouldCheckZIndex]);
 
   const getTargetElement = (target: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element) => {
-    return ((target as React.MouseEvent<Element, MouseEvent>).target
-      ? (target as React.MouseEvent<Element, MouseEvent>).target
-      : target) as HTMLElement;
+    return (
+      (target as React.MouseEvent<Element, MouseEvent>).target
+        ? (target as React.MouseEvent<Element, MouseEvent>).target
+        : target
+    ) as HTMLElement;
   };
+
+  const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
+    if (panelRef.current) {
+      const windowSize = DomHandler.getScreenDimensions();
+      const overlayRectangle = entries[entries.length - 1].target.getBoundingClientRect();
+      const offScreenLocation = DomHandler.determineOffScreenLocation(overlayRectangle);
+
+      if (offScreenLocation) {
+        if (finalTarget.current) {
+          const newDimensions = DomHandler.positionElementToTargetOnScreen(
+            panelRef.current,
+            finalTarget.current,
+            elementAlignment,
+            targetPosition
+          );
+
+          panelDimensions.current = {
+            ...panelDimensions.current,
+            ...newDimensions,
+          };
+        } else {
+          // this section simply keeps the overlay panel on the screen
+          if (offScreenLocation.right) {
+            panelDimensions.current.left = windowSize.width - overlayRectangle.width;
+          } else if (offScreenLocation.left) {
+            panelDimensions.current.left = 0;
+          }
+
+          if (offScreenLocation.bottom) {
+            panelDimensions.current.top = windowSize.height - overlayRectangle.height;
+          } else if (offScreenLocation.top) {
+            panelDimensions.current.top = 0;
+          }
+        }
+
+        onDimensionsChanged();
+      }
+    }
+  };
+
+  const onDimensionsChanged = debounce(() => {
+    dimensionsChangedRef.current = !dimensionsChangedRef.current;
+    setDimensionsChangedFlag(dimensionsChangedRef.current);
+  }, 20);
 
   const onEntering = () => {
     setZIndex(displayZIndex.current);
@@ -110,8 +184,8 @@ export default function OverlayPanel({
     }
 
     let otherElements: Array<HTMLElement> | undefined = undefined;
-    if (!shouldTargetCloseOverlay) {
-      otherElements = [target as HTMLElement];
+    if (!shouldTargetCloseOverlay && finalTarget.current) {
+      otherElements = [finalTarget.current];
     }
 
     const clickListener = (clickedWithin: boolean) => !clickedWithin && setVisibility(false);
@@ -151,21 +225,40 @@ export default function OverlayPanel({
   const onMarkupCreated = (element: HTMLElement) => {
     panelRef.current = element;
     markupCreated && markupCreated(element);
+
+    if (finalTarget.current) {
+      const position = DomHandler.positionElementToTarget(
+        panelRef.current,
+        finalTarget.current,
+        elementAlignment,
+        targetPosition
+      );
+
+      panelDimensions.current = {
+        ...position,
+        width: finalTarget.current.offsetWidth,
+      };
+    }
+
+    if (shouldRemainOnScreen === true) {
+      resizeObserver.current?.unobserve(panelRef.current);
+      resizeObserver.current?.observe(panelRef.current);
+    }
   };
 
   const baseStyles: React.CSSProperties = useMemo(() => {
     const styles: React.CSSProperties = {
-      top: `${top}px`,
-      left: `${left}px`,
+      top: `${panelDimensions.current.top}px`,
+      left: `${panelDimensions.current.left}px`,
       zIndex,
     };
 
     if (shouldMatchTargetWidth) {
-      styles['width'] = `${width}px`;
+      styles['width'] = `${panelDimensions.current.width}px`;
     }
 
     return styles;
-  }, [top, left, zIndex, width, shouldMatchTargetWidth]);
+  }, [dimensionsChangedFlag, zIndex, shouldMatchTargetWidth]);
 
   return (
     <BeeSoftTransition

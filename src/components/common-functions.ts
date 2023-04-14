@@ -29,7 +29,7 @@ export function generateNumberArray<T>(
 ) {
   const numberArray: Array<T> = [];
   for (let current = startingNumber; current <= endingNumber; current++) {
-    numberArray.push(convertFunction ? convertFunction(current) : ((current as unknown) as T));
+    numberArray.push(convertFunction ? convertFunction(current) : (current as unknown as T));
   }
 
   return numberArray;
