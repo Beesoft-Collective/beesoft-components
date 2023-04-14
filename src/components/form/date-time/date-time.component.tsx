@@ -431,6 +431,7 @@ export default function DateTime({
           shouldTargetCloseOverlay={false}
           shouldScrollCloseOverlay={true}
           shouldCheckZIndex={true}
+          shouldRemainOnScreen={true}
           hidden={onDateTimeHidden}
           unmountWhenHidden={true}
         >

@@ -4,11 +4,8 @@ const path = require('path');
 module.exports = {
   style: {
     postcss: {
-      plugins: [
-        require('tailwindcss')('./tailwind.config.js'),
-        require('autoprefixer')
-      ]
-    }
+      plugins: [require('tailwindcss')('./tailwind.config.js'), require('autoprefixer')],
+    },
   },
   entry: './src/index.ts',
   output: {
@@ -36,4 +33,4 @@ module.exports = {
     react: 'react',
     'react-dom': 'react-dom',
   },
-}
+};
