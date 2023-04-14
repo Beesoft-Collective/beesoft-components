@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactNodeArray } from 'react';
+import React, { ReactNode } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group/Transition';
 
@@ -20,7 +20,7 @@ export interface BeeSoftTransitionProps {
   onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
   onExit?: (node: HTMLElement) => void;
   onExited?: (node: HTMLElement) => void;
-  children: (childProps: BeeSoftChildrenTransitionProps) => ReactNode | ReactNodeArray;
+  children: (childProps: BeeSoftChildrenTransitionProps) => ReactNode | Array<ReactNode>;
 }
 
 export default function BeeSoftTransition({
