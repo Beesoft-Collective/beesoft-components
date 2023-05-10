@@ -1,4 +1,6 @@
 import { Meta, Story } from '@storybook/react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import React from 'react';
 import ContentEditableInput, { ContentEditableInputProps } from './content-editable-input.component';
 

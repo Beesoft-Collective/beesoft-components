@@ -7,14 +7,14 @@ export interface FormatPart {
   /**
    * The number of characters available for this part of the format.
    */
-  characterCount?: number;
+  characterCount: number;
   /**
    * In a separator this will be the character displayed between format sections; in a format section this is displayed
    * when no text has been entered in the input.
    */
   placeholder?: string;
   /**
-   * The text displayed when the input is focused and no text has been entered.
+   * The text displayed when the input is focused and no text has been entered at that spot.
    */
   inputText?: string;
   /**
@@ -22,8 +22,8 @@ export interface FormatPart {
    */
   isSeparator: boolean;
   /**
-   * If characterCount is set this will determine if the character count should be met. An example of false would be a
-   * month or day of a date field; an example of true would be the area code of a phone number.
+   * This will determine if the character count should be met. An example of false would be a month or day of a date
+   * field; an example of true would be the area code of a phone number.
    */
   allCharactersRequired?: boolean;
   /**
@@ -43,6 +43,14 @@ export interface FormatPart {
    */
   maximumValue?: number;
   /**
+   * If the maximum value is exceeded this will cause the input to show an error.
+   */
+  exceedingMaximumValueCausesError?: boolean;
+  /**
+   * If the maximum value is exceeded this will cause the input to tab to the next section.
+   */
+  exceedingMaximumValueCausesTab?: boolean;
+  /**
    * If all places in a numeric format part are not completed then this will fill the remaining space with zeros.
    */
   padWithZeros?: boolean;
@@ -53,7 +61,7 @@ export interface InputFormat {
    * When true deleting a character earlier in the input text will shift the other characters into other format parts
    * (default false). This would probably be used in a credit card or phone number format.
    */
-  deleteShiftsFormatPart: boolean;
+  deleteShiftsFormatPart?: boolean;
   /**
    * Determines if format parts can be tabbed between.
    */

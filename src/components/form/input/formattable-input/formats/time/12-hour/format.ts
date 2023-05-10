@@ -1,4 +1,4 @@
-import { FormatValueType, InputFormat } from '../../../formatted-input.interfaces';
+import { FormatValueType, InputFormat } from '../../input-format.interfaces';
 
 const format: InputFormat = {
   formatParts: [
@@ -11,8 +11,11 @@ const format: InputFormat = {
       valueType: FormatValueType.Numeric,
       minimumValue: 1,
       maximumValue: 12,
+      exceedingMaximumValueCausesTab: true,
+      padWithZeros: true,
     },
     {
+      characterCount: 1,
       placeholder: ':',
       inputText: ':',
       isSeparator: true,
@@ -24,10 +27,13 @@ const format: InputFormat = {
       isSeparator: false,
       allCharactersRequired: false,
       valueType: FormatValueType.Numeric,
-      minimumValue: 1,
+      minimumValue: 0,
       maximumValue: 59,
+      exceedingMaximumValueCausesError: true,
+      padWithZeros: true,
     },
     {
+      characterCount: 1,
       placeholder: ' ',
       inputText: ' ',
       isSeparator: true,
@@ -35,10 +41,10 @@ const format: InputFormat = {
     {
       characterCount: 2,
       isSeparator: false,
-      allCharactersRequired: false,
       possibleValues: ['AM', 'PM'],
     },
   ],
+  canTabBetweenParts: true,
 };
 
 export default format;

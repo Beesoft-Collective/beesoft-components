@@ -3,25 +3,32 @@ import ContentEditableInput, {
   ContentEditableInputProps,
   ContentEditableInputRef,
 } from '../content-editable-input/content-editable-input.component';
-import { DefaultFormats } from './formatted-input.enums';
-import { InputFormat } from './formatted-input.interfaces';
-import { FormatParser } from './parser/format-parser';
+import { DefaultFormats } from './formats/input-format.enums';
+import { InputFormat } from './formats/input-format.interfaces';
+import { FormatParser } from './parser-old/format-parser';
 import {
   DayMonthYearFormat,
   MonthDayYearFormat,
   YearMonthDayFormat,
+  DayMonthYearRangeFormat,
+  MonthDayYearRangeFormat,
+  YearMonthDayRangeFormat,
   TwelveHourFormat,
   TwentyFourHourFormat,
 } from './formats';
 
-export interface FormattedInputProps extends ContentEditableInputProps {
+export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
   defaultFormat: DefaultFormats;
 }
 
-const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditableInputRef, 'inputElement'>>) => {
+export interface FormattedInputRef {
+  focus: () => void;
+}
+
+const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>) => {
   const {
-    value,
+    value = '',
     format,
     defaultFormat = DefaultFormats.Custom,
     readOnly = false,
@@ -34,7 +41,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
     rightElementClassName,
     isSingleLine = false,
     allowSingleLineScroll = false,
-    placeholder,
     onFocus,
     onBlur,
     onInput,
@@ -45,11 +51,8 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
     onRightElementClick,
   } = props;
 
-  const currentValue = useRef('');
   const inputRef = useRef<ContentEditableInputRef>();
   const inputElementRef = useRef<HTMLElement>();
-  const inputSelection = useRef<Selection | null>();
-  const inputRange = useRef<Range>();
   const formatParser = useRef<FormatParser>();
 
   useEffect(() => {
@@ -59,15 +62,19 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
         throw new Error('The selected format does not exist');
       }
 
-      formatParser.current = new FormatParser(formatSetting);
+      formatParser.current = new FormatParser(formatSetting, value);
     } else {
       if (!format) {
         throw new Error('The format property is required when the default format is custom');
       }
 
-      formatParser.current = new FormatParser(format);
+      formatParser.current = new FormatParser(format, value);
     }
-  }, [defaultFormat]);
+
+    if (inputElementRef.current) {
+      formatParser.current?.inputElementCreated(inputElementRef.current);
+    }
+  }, [defaultFormat, format]);
 
   const getPreDefinedFormat = useCallback((format: DefaultFormats) => {
     switch (format) {
@@ -77,6 +84,12 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
         return MonthDayYearFormat;
       case DefaultFormats.DateYearMonthDay:
         return YearMonthDayFormat;
+      case DefaultFormats.DateRangeDayMonthYear:
+        return DayMonthYearRangeFormat;
+      case DefaultFormats.DateRangeMonthDayYear:
+        return MonthDayYearRangeFormat;
+      case DefaultFormats.DateRangeYearMonthDay:
+        return YearMonthDayRangeFormat;
       case DefaultFormats.Time12Hour:
         return TwelveHourFormat;
       case DefaultFormats.Time24Hour:
@@ -84,59 +97,30 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
     }
   }, []);
 
-  const onFocusHandler = useCallback((event: FocusEvent) => {
-    if (inputElementRef.current) {
-      inputSelection.current = window.getSelection();
-      inputRange.current = document.createRange();
-      inputSelection.current?.removeAllRanges();
-      inputRange.current?.selectNodeContents(inputElementRef.current);
-      inputRange.current?.collapse(false);
-      inputSelection.current?.removeAllRanges();
-      inputSelection.current?.addRange(inputRange.current);
-      inputElementRef.current?.focus();
-    }
+  const onFocusHandler = useCallback(
+    (event: FocusEvent) => {
+      formatParser.current?.inputFocused();
+      onFocus?.(event);
+    },
+    [onFocus]
+  );
 
-    onFocus?.(event);
+  const onMouseUp = useCallback((event: MouseEvent) => {
+    formatParser.current?.mouseClicked(event);
   }, []);
 
   const onKeyDownHandler = useCallback((event: KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const { key } = event;
-    const number = parseInt(key);
-    if (!isNaN(number) && inputElementRef.current && inputRange.current) {
-      currentValue.current += key;
-      inputElementRef.current.innerText = currentValue.current;
-      if (inputElementRef.current?.firstChild) {
-        inputRange.current.setStart(inputElementRef.current.firstChild, currentValue.current.length);
-        inputRange.current.setEnd(inputElementRef.current.firstChild, currentValue.current.length);
-        console.log('position', inputRange.current?.endOffset);
-      }
-    } else if (key === 'ArrowLeft') {
-      if (inputRange.current && inputElementRef.current && inputElementRef.current.firstChild) {
-        inputRange.current.setStart(inputElementRef.current.firstChild, currentValue.current.length - 1);
-        inputRange.current.setEnd(inputElementRef.current.firstChild, currentValue.current.length - 1);
-      }
-    }
+    formatParser.current?.keyDownHandler(event);
   }, []);
 
   const onInputRefCreated = useCallback((ref: ContentEditableInputRef) => {
-    if (inputRef.current?.inputElement) {
-      inputRef.current.inputElement.removeEventListener('keydown', onKeyDownHandler);
-    }
+    inputRef.current?.inputElement?.removeEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.removeEventListener('mouseup', onMouseUp);
 
     inputRef.current = ref;
     inputRef.current?.inputElement?.addEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.addEventListener('mouseup', onMouseUp);
     inputElementRef.current = inputRef.current?.inputElement;
-  }, []);
-
-  const setInnerText = useCallback((innerText: string) => {
-    inputRef.current?.setInnerText(innerText);
-  }, []);
-
-  const setInnerHTML = useCallback((innerHTML: string) => {
-    inputRef.current?.setInnerHTML(innerHTML);
   }, []);
 
   const focus = useCallback(() => {
@@ -144,8 +128,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
   }, []);
 
   useImperativeHandle(ref, () => ({
-    setInnerText,
-    setInnerHTML,
     focus,
   }));
 
@@ -163,7 +145,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<Omit<ContentEditabl
       rightElementClassName={rightElementClassName}
       isSingleLine={isSingleLine}
       allowSingleLineScroll={allowSingleLineScroll}
-      placeholder={placeholder}
       onFocus={onFocusHandler}
       onBlur={onBlur}
       onInput={onInput}

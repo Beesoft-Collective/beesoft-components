@@ -13,3 +13,7 @@ export interface WindowSize {
 export interface IToString {
   toString(): string;
 }
+
+export interface IDisposable {
+  dispose: () => void;
+}

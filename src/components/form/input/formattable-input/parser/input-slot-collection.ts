@@ -1,0 +1,62 @@
+import { InputFormat } from '../formats/input-format.interfaces';
+import { InputSlotCreator } from './input-slot-creator';
+import { FormatPartSlot } from './parser.interfaces';
+import { PartEntryCreator } from './part-entry-creator';
+
+export class InputSlotCollection {
+  private static instance: InputSlotCollection;
+  private readonly inputSlots: FormatPartSlot[];
+
+  private constructor(format: InputFormat) {
+    this.inputSlots = InputSlotCreator.create(PartEntryCreator.create(format));
+  }
+
+  public static getInstance(format: InputFormat): InputSlotCollection {
+    if (!this.instance) {
+      this.instance = new InputSlotCollection(format);
+    }
+
+    return this.instance;
+  }
+
+  /**
+   * Returns a slot by its part index.
+   * @param {number} partIndex - The part index of the slot to retrieve.
+   * @returns {FormatPartSlot} - The slot with the given part index.
+   */
+  public getSlot(partIndex: number) {
+    return this.inputSlots.find((slot) => slot.partIndex === partIndex);
+  }
+
+  /**
+   * Returns the next slot based on the current format part index.
+   * @param {number} currentPartIndex - The current part index.
+   * @returns {FormatPartSlot} The next slot or undefined if there is no next slot.
+   */
+  public getNextSlot(currentPartIndex: number) {
+    const currentIndex = this.inputSlots.findIndex((slot) => slot.partIndex === currentPartIndex);
+    if (currentIndex > -1 && currentIndex + 1 < this.inputSlots.length) {
+      return this.inputSlots[currentIndex + 1];
+    }
+  }
+
+  /**
+   * Returns the previous slot based on the current format part index.
+   * @param {number} currentPartIndex - The current part index.
+   * @returns {FormatPartSlot} The previous slot or undefined if there is no previous slot.
+   */
+  public getPreviousSlot(currentPartIndex: number) {
+    const currentIndex = this.inputSlots.findIndex((slot) => slot.partIndex === currentPartIndex);
+    if (currentIndex > -1 && currentIndex - 1 >= 0) {
+      return this.inputSlots[currentIndex - 1];
+    }
+  }
+
+  /**
+   * Returns the next slot that is not completed.
+   * @returns {FormatPartSlot | undefined} The next slot that is not completed or undefined if all are completed.
+   */
+  public getIncompleteSlot() {
+    return this.inputSlots.find((slot) => !slot.isComplete);
+  }
+}

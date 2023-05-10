@@ -56,11 +56,13 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
 
   const focusListener = useCallback(
     (event: FocusEvent) => {
-      const value = (event.target as HTMLElement).innerHTML;
+      const element = event.target as HTMLElement;
+      const value = element.innerHTML;
+
+      element.className = `${textStyles.current}`;
+
       if (placeholder && value === placeholder) {
-        const element = event.target as HTMLElement;
         element.innerHTML = '';
-        element.className = `${textStyles.current}`;
       }
 
       onFocus?.(event);
@@ -84,24 +86,18 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
 
   const onInputElementCreated = useCallback(
     (element: HTMLElement) => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener('focus', focusListener);
-        inputRef.current.removeEventListener('blur', blurListener);
-      }
+      inputRef.current?.removeEventListener('focus', focusListener);
+      inputRef.current?.removeEventListener('blur', blurListener);
 
-      inputRef.current = element;
-      if (
-        placeholder &&
-        inputRef.current &&
-        inputRef.current !== document.activeElement &&
-        inputRef.current.innerHTML === ''
-      ) {
+      if (placeholder && element && element !== document.activeElement && element.innerHTML === '') {
         element.innerHTML = placeholder;
         element.className = `${textStyles.current} ${placeHolderStyles.current}`;
       }
 
-      inputRef.current?.addEventListener('focus', focusListener);
-      inputRef.current?.addEventListener('blur', blurListener);
+      element.addEventListener('focus', focusListener);
+      element.addEventListener('blur', blurListener);
+
+      inputRef.current = element;
     },
     [placeholder]
   );
