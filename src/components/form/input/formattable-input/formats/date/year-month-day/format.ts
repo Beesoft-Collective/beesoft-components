@@ -47,7 +47,6 @@ const format: InputFormat = {
       padWithZeros: true,
     },
   ],
-  canTabBetweenParts: true,
 };
 
 export default format;

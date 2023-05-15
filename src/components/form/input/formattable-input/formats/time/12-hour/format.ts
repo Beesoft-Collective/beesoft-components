@@ -44,7 +44,6 @@ const format: InputFormat = {
       possibleValues: ['AM', 'PM'],
     },
   ],
-  canTabBetweenParts: true,
 };
 
 export default format;

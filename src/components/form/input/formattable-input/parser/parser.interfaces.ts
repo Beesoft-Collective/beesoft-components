@@ -24,5 +24,5 @@ export interface EditingKeyboardEvent extends Omit<KeyboardEvent, 'key'> {
 }
 
 export interface MovementKeyboardEvent extends Omit<KeyboardEvent, 'key'> {
-  key: 'ArrowLeft' | 'ArrowRight' | 'Home' | 'End' | 'Tab';
+  key: 'ArrowLeft' | 'ArrowRight' | 'Home' | 'End';
 }

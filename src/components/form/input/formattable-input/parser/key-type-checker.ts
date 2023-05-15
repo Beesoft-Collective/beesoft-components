@@ -2,7 +2,7 @@ import { EditingKeyboardEvent, MovementKeyboardEvent } from './parser.interfaces
 
 export class KeyTypeChecker {
   private numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  private movementKeys = ['Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+  private movementKeys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
   private editingKeys = ['Backspace', 'Delete'];
   private ignoreKeys = ['Shift', 'Alt', 'Control', 'Fn', 'Meta'];
 

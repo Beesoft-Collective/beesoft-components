@@ -5,7 +5,7 @@ import ContentEditableInput, {
 } from '../content-editable-input/content-editable-input.component';
 import { DefaultFormats } from './formats/input-format.enums';
 import { InputFormat } from './formats/input-format.interfaces';
-import { FormatParser } from './parser-old/format-parser';
+import { FormatParser } from './parser/format-parser';
 import {
   DayMonthYearFormat,
   MonthDayYearFormat,
@@ -106,7 +106,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   );
 
   const onMouseUp = useCallback((event: MouseEvent) => {
-    formatParser.current?.mouseClicked(event);
+    // formatParser.current?.mouseClicked(event);
   }, []);
 
   const onKeyDownHandler = useCallback((event: KeyboardEvent) => {

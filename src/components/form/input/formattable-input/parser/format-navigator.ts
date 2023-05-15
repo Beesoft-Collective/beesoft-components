@@ -12,12 +12,12 @@ export class FormatNavigator {
   private currentPartIndex = 0;
   private currentCursorPosition = 0;
 
-  private inputElement?: HTMLInputElement;
+  private inputElement?: HTMLElement;
   private inputSelection: Selection | null = null;
   private inputRange?: Range;
   private textNode?: Node;
 
-  private constructor(private format: InputFormat) {
+  private constructor(format: InputFormat) {
     this.formatPartList = PartEntryCreator.create(format);
     this.inputSlotCollection = InputSlotCollection.getInstance(format);
   }
@@ -38,7 +38,7 @@ export class FormatNavigator {
     return this.currentPartIndex;
   }
 
-  public setInputElement(element: HTMLInputElement) {
+  public setInputElement(element: HTMLElement) {
     this.inputElement = element;
   }
 
@@ -60,15 +60,20 @@ export class FormatNavigator {
     }
   }
 
+  public isAtLastPart(): boolean {
+    return this.currentPartIndex === this.formatPartList.length - 1;
+  }
+
   public moveHome(): void {
-    this.setCursorSelection(0);
+    // instead of moving the cursor to the beginning of the input element, we move the cursor to the start position of
+    // the first input slot. this is useful in cases where the first format part is a separator.
+    const firstSlot = this.inputSlotCollection.getFirstSlot();
+    this.setCursorSelection(firstSlot.startPosition);
   }
 
   public moveEnd(): void {
-    const incompleteSlot = this.inputSlotCollection.getIncompleteSlot();
-    const lastCursorPosition = incompleteSlot
-      ? incompleteSlot.startPosition + incompleteSlot.partText.length
-      : this.formatPartList[this.formatPartList.length - 1].endPosition;
+    const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
+    const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
     this.setCursorSelection(lastCursorPosition);
   }
 
@@ -97,10 +102,8 @@ export class FormatNavigator {
   }
 
   public moveCursorRight() {
-    const incompleteSlot = this.inputSlotCollection.getIncompleteSlot();
-    const lastCursorPosition = incompleteSlot
-      ? incompleteSlot.startPosition + incompleteSlot.partText.length
-      : this.formatPartList[this.formatPartList.length - 1].endPosition;
+    const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
+    const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
     if (this.currentCursorPosition < lastCursorPosition) {
       const newCursorPosition = this.currentCursorPosition + 1;
       let currentPartEntry = this.formatPartList[this.currentPartIndex];
@@ -124,7 +127,7 @@ export class FormatNavigator {
     }
   }
 
-  public tabForward() {
+  public moveToNextInputPart() {
     if (this.currentPartIndex < this.formatPartList.length - 1) {
       const partEntry = this.findNextEditablePart();
       if (partEntry) {
@@ -134,12 +137,12 @@ export class FormatNavigator {
     }
   }
 
-  public tabBackward() {
+  public moveToPreviousInputPart() {
     if (this.currentPartIndex > 0) {
       const partEntry = this.findPreviousEditablePart();
       if (partEntry) {
         this.currentPartIndex = partEntry.partIndex;
-        this.setCursorSelection(partEntry.startPosition);
+        this.setCursorSelection(partEntry.endPosition);
       }
     }
   }

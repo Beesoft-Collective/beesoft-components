@@ -63,10 +63,6 @@ export interface InputFormat {
    */
   deleteShiftsFormatPart?: boolean;
   /**
-   * Determines if format parts can be tabbed between.
-   */
-  canTabBetweenParts: boolean;
-  /**
    * Contains all format parts that will combine to create a single format string.
    */
   formatParts: Array<FormatPart>;

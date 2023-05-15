@@ -29,6 +29,14 @@ export class InputSlotCollection {
   }
 
   /**
+   * Returns the first input slot in the collection.
+   * @returns {FormatPartSlot} The first slot in the collection.
+   */
+  public getFirstSlot() {
+    return this.inputSlots[0];
+  }
+
+  /**
    * Returns the next slot based on the current format part index.
    * @param {number} currentPartIndex - The current part index.
    * @returns {FormatPartSlot} The next slot or undefined if there is no next slot.
@@ -56,7 +64,24 @@ export class InputSlotCollection {
    * Returns the next slot that is not completed.
    * @returns {FormatPartSlot | undefined} The next slot that is not completed or undefined if all are completed.
    */
-  public getIncompleteSlot() {
-    return this.inputSlots.find((slot) => !slot.isComplete);
+  public getLastSlotWithData() {
+    const incompleteSlotIndex = this.inputSlots.findIndex((slot) => !slot.isComplete);
+    let finalSlotIndex = incompleteSlotIndex;
+    for (let i = incompleteSlotIndex + 1, length = this.inputSlots.length; i < length; i++) {
+      const slot = this.inputSlots[i];
+      if (slot.partText.length > 0) {
+        finalSlotIndex = i;
+      }
+    }
+
+    return this.inputSlots[finalSlotIndex];
+  }
+
+  /**
+   * Determines if all slots are completed.
+   * @returns {boolean} True if all slots are completed.
+   */
+  public allSlotsCompleted() {
+    return this.inputSlots.every((slot) => slot.isComplete);
   }
 }

@@ -47,7 +47,6 @@ const format: InputFormat = {
       valueType: FormatValueType.Numeric,
     },
   ],
-  canTabBetweenParts: true,
 };
 
 export default format;
