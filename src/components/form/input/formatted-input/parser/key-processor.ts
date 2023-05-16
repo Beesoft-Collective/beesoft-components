@@ -51,16 +51,22 @@ export class KeyProcessor {
     }
   }
 
-  public processKeyPress(event: KeyboardEvent): void {
+  /**
+   * Processes the keypress event and returns true if the key pressed results in a format change.
+   * @param {KeyboardEvent} event - The key event to process.
+   * @returns {boolean} True if the key pressed results in a format change.
+   */
+  public processKeyPress(event: KeyboardEvent) {
     if (this.keyTypeChecker.isIgnoreKey(event)) {
-      return;
+      return false;
     }
 
     if (this.keyTypeChecker.isMovementKey(event)) {
       this.processMovementKey(event);
-      return;
+      return false;
     }
 
     this.ruleProcessor.processKeyPress(event);
+    return true;
   }
 }

@@ -7,6 +7,8 @@ import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/t
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
 import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
+import { DefaultFormats } from '../input/formatted-input/formats/input-format.enums';
+import FormattedInput from '../input/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
@@ -27,6 +29,7 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 
 export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
   useDefaultDateValue?: boolean;
+  useFormattedInput?: boolean;
   allowClear?: boolean;
   locale?: string;
   dateSelection?: DateSelectionType;
@@ -61,6 +64,7 @@ export default function DateTime({
   readOnly = false,
   label,
   useDefaultDateValue = false,
+  useFormattedInput = false,
   allowClear = false,
   locale,
   className,
@@ -173,6 +177,16 @@ export default function DateTime({
 
   const onInput = (event: React.FormEvent) => {
     const dateString = (event.target as HTMLElement).innerText;
+    onDateStringChange(dateString);
+  };
+
+  const onFormatStringChange = (formattedText?: string) => {
+    if (formattedText) {
+      onDateStringChange(formattedText);
+    }
+  };
+
+  const onDateStringChange = (dateString: string) => {
     const inputDate =
       dateSelection !== DateSelectionType.DateRange
         ? parseDate(dateString, loadedLocale.current)
@@ -409,18 +423,31 @@ export default function DateTime({
   return (
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
-        <TemplateOutlet props={inputTemplateProps} template={template}>
-          {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
-          <ContentEditableInput
+        {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
+        {useFormattedInput === false ? (
+          <TemplateOutlet props={inputTemplateProps} template={template}>
+            <ContentEditableInput
+              value={getValue()}
+              readOnly={readOnly}
+              className={inputStyles}
+              onFocus={onFocus}
+              onInput={onInput}
+              onElementCreate={onInputElementCreated}
+              {...inputProps}
+            />
+          </TemplateOutlet>
+        ) : (
+          <FormattedInput
             value={getValue()}
             readOnly={readOnly}
             className={inputStyles}
             onFocus={onFocus}
-            onInput={onInput}
+            onChange={onFormatStringChange}
             onElementCreate={onInputElementCreated}
+            defaultFormat={DefaultFormats.DateDayMonthYear}
             {...inputProps}
           />
-        </TemplateOutlet>
+        )}
         <OverlayPanel
           visible={selectorOpen}
           target={dropDownTarget}

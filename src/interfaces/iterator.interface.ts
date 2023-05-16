@@ -3,10 +3,20 @@
  */
 export interface IIterator<T> {
   /**
+   * Returns the index of the current item in the list.
+   */
+  currentIndex: number;
+  /**
    * Gets the next item in the list of items.
    * @returns {T} The next item in the list.
    */
-  next(): T;
+  next(): T | undefined;
+
+  /**
+   * Looks at the next item in the list without moving the location pointer.
+   * @returns {T} The next item in the list.
+   */
+  peek(): T | undefined;
 
   /**
    * Resets the index of the list to allow it to start from the beginning.

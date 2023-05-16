@@ -19,6 +19,12 @@ export class InputSlotCollection {
     return this.instance;
   }
 
+  public clearAllSlots(): void {
+    for (let i = 0, length = this.inputSlots.length; i < length; i++) {
+      this.inputSlots[i].partText = '';
+    }
+  }
+
   /**
    * Returns a slot by its part index.
    * @param {number} partIndex - The part index of the slot to retrieve.

@@ -54,6 +54,11 @@ export interface FormatPart {
    * If all places in a numeric format part are not completed then this will fill the remaining space with zeros.
    */
   padWithZeros?: boolean;
+  /**
+   * If the part is a separator then this will determine if this separator will be displayed in the final output
+   * (default true).
+   */
+  addInOutputValue?: boolean;
 }
 
 export interface InputFormat {

@@ -16,3 +16,9 @@ export const SimpleFormat = Template.bind({});
 SimpleFormat.args = {
   defaultFormat: DefaultFormats.DateDayMonthYear,
 };
+
+export const PassedValue = Template.bind({});
+PassedValue.args = {
+  value: '3/2/2023',
+  defaultFormat: DefaultFormats.DateDayMonthYear,
+};

@@ -4,18 +4,21 @@ import { FormatRenderer } from './format-renderer';
 import { InputSlotCollection } from './input-slot-collection';
 import { KeyTypeChecker } from './key-type-checker';
 import { EditingKeyboardEvent, FormatPartSlot } from './parser.interfaces';
+import { PartEntryIterator } from './part-entry-iterator';
 
 export class InputRuleProcessor {
   private readonly inputSlotCollection: InputSlotCollection;
   private readonly formatNavigator: FormatNavigator;
   private readonly keyTypeChecker: KeyTypeChecker;
   private readonly formatRenderer: FormatRenderer;
+  private readonly formatPartList: PartEntryIterator;
 
   constructor(private format: InputFormat) {
     this.inputSlotCollection = InputSlotCollection.getInstance(format);
     this.formatNavigator = FormatNavigator.getInstance(format);
     this.keyTypeChecker = new KeyTypeChecker();
     this.formatRenderer = new FormatRenderer(format);
+    this.formatPartList = new PartEntryIterator(format);
   }
 
   public setInputElement(element: HTMLElement): void {
@@ -29,6 +32,39 @@ export class InputRuleProcessor {
     }
 
     this.processInputRules(event);
+  }
+
+  public processInputValue(value: string): void {
+    this.inputSlotCollection.clearAllSlots();
+    this.formatPartList.reset();
+
+    let valueIndex = 0;
+    while (this.formatPartList.hasNext()) {
+      const partEntry = this.formatPartList.next();
+      if (partEntry && !partEntry.isSeparator) {
+        if (this.formatPartList.peek()?.isSeparator === true) {
+          const formatPartIndex = this.formatPartList.currentIndex;
+          const separator = this.formatPartList.next();
+          if (separator && separator.inputText) {
+            const separatorIndex = value.indexOf(separator.inputText, valueIndex);
+            const slot = this.inputSlotCollection.getSlot(formatPartIndex);
+            if (slot && separatorIndex > -1) {
+              slot.partText = value.substring(valueIndex, separatorIndex);
+              this.processSlotRules(slot);
+              valueIndex = separatorIndex + separator.characterCount;
+            }
+          }
+        } else {
+          // this should be the end of the format since there is no corresponding separator
+          const slot = this.inputSlotCollection.getSlot(this.formatPartList.currentIndex);
+          if (slot) {
+            slot.partText = value.substring(valueIndex);
+            this.formatNavigator.setCursorPosition(slot.startPosition + slot.partText.length);
+            this.processSlotRules(slot);
+          }
+        }
+      }
+    }
   }
 
   private processEditRules(event: EditingKeyboardEvent): void {
@@ -57,10 +93,10 @@ export class InputRuleProcessor {
           this.formatRenderer.render();
           this.formatNavigator.moveCursorLeft();
 
-          this.setInputSlotIsComplete(inputSlot);
+          this.processSlotRules(inputSlot, true);
         } else {
           // as a safety precaution we need to check if the current input slot is complete
-          this.setInputSlotIsComplete(inputSlot);
+          this.processSlotRules(inputSlot, true);
 
           // here we are at the beginning of the input slot, so we need to remove the item from the end of the previous
           // slot
@@ -75,7 +111,7 @@ export class InputRuleProcessor {
             this.formatRenderer.render();
             this.formatNavigator.setCursorPosition(previousSlot.startPosition + previousSlot.partText.length);
 
-            this.setInputSlotIsComplete(previousSlot);
+            this.processSlotRules(previousSlot, true);
           }
         }
 
@@ -93,7 +129,7 @@ export class InputRuleProcessor {
         this.formatRenderer.render();
         this.formatNavigator.setCursorToCurrentPosition();
 
-        this.setInputSlotIsComplete(inputSlot);
+        this.processSlotRules(inputSlot, true);
 
         break;
     }
@@ -187,6 +223,11 @@ export class InputRuleProcessor {
     }
   }
 
+  /**
+   * Makes sure that the key being entered into the input slot is at the correct position.
+   * @param {string} key - The key to be added to the input slot.
+   * @private
+   */
   private addToInputSlot(key: string) {
     const inputSlot = this.inputSlotCollection.getSlot(this.formatNavigator.getCurrentPartIndex());
     if (!inputSlot) {
@@ -205,7 +246,7 @@ export class InputRuleProcessor {
     }
   }
 
-  private setInputSlotIsComplete(inputSlot: FormatPartSlot): void {
+  private processSlotRules(inputSlot: FormatPartSlot, isEditing = false): void {
     const characterCount = inputSlot.characterCount;
     const allCharactersRequired = inputSlot.allCharactersRequired || false;
 
@@ -216,8 +257,13 @@ export class InputRuleProcessor {
       if (allCharactersRequired) {
         inputSlot.isComplete = inputSlot.partText.length === characterCount;
       } else if (minimumValue !== undefined && maximumValue !== undefined) {
+        const padWithZeros = inputSlot.padWithZeros || false;
         const currentValue = parseInt(inputSlot.partText);
         inputSlot.isComplete = currentValue >= minimumValue && currentValue <= maximumValue;
+
+        if (inputSlot.isComplete && padWithZeros && !isEditing) {
+          inputSlot.partText = inputSlot.partText.padStart(characterCount, '0');
+        }
       } else {
         // all the characters are not required and there is no minimum or maximum value so any value is valid
         inputSlot.isComplete = inputSlot.partText.length > 0;

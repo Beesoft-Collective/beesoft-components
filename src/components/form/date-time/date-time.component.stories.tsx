@@ -136,6 +136,14 @@ Default.args = {
   onChange: action('onChange'),
 };
 
+export const FormattedInput = Template.bind({});
+FormattedInput.args = {
+  label: 'Date',
+  dateSelection: DateSelectionType.DateOnly,
+  useFormattedInput: true,
+  onChange: action('onChange'),
+};
+
 export const AllowClear = Template.bind({});
 AllowClear.args = {
   label: 'Date',

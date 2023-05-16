@@ -41,11 +41,9 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     rightElementClassName,
     isSingleLine = false,
     allowSingleLineScroll = false,
+    onChange,
     onFocus,
     onBlur,
-    onInput,
-    onInnerTextChange,
-    onInnerHTMLChange,
     onElementCreate,
     onLeftElementClick,
     onRightElementClick,
@@ -54,6 +52,12 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const inputRef = useRef<ContentEditableInputRef>();
   const inputElementRef = useRef<HTMLElement>();
   const formatParser = useRef<FormatParser>();
+
+  useEffect(() => {
+    if (formatParser.current) {
+      formatParser.current.inputValuePassed(value);
+    }
+  }, [value]);
 
   useEffect(() => {
     if (defaultFormat !== DefaultFormats.Custom) {
@@ -74,7 +78,16 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     if (inputElementRef.current) {
       formatParser.current?.inputElementCreated(inputElementRef.current);
     }
+
+    formatParser.current?.registerFormatCompleteEvent(onFormatComplete);
   }, [defaultFormat, format]);
+
+  const onFormatComplete = useCallback(
+    (value: string) => {
+      onChange?.(value);
+    },
+    [onChange]
+  );
 
   const getPreDefinedFormat = useCallback((format: DefaultFormats) => {
     switch (format) {
@@ -134,7 +147,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   return (
     <ContentEditableInput
       ref={(refElement) => refElement && onInputRefCreated(refElement)}
-      value={value}
       readOnly={readOnly}
       debounceTime={debounceTime}
       fillContainer={fillContainer}
@@ -147,9 +159,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
       allowSingleLineScroll={allowSingleLineScroll}
       onFocus={onFocusHandler}
       onBlur={onBlur}
-      onInput={onInput}
-      onInnerTextChange={onInnerTextChange}
-      onInnerHTMLChange={onInnerHTMLChange}
       onElementCreate={onElementCreate}
       onLeftElementClick={onLeftElementClick}
       onRightElementClick={onRightElementClick}
