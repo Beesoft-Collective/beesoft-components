@@ -1,4 +1,4 @@
-export enum DefaultFormats {
+export enum FormattedInputDefaultFormats {
   DateDayMonthYear,
   DateMonthDayYear,
   DateYearMonthDay,

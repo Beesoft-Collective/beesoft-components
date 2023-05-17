@@ -6,6 +6,9 @@ import { InputSlotCollection } from './input-slot-collection';
 import { KeyProcessor } from './key-processor';
 import { FormatCompleteEvent } from './parser.interfaces';
 
+/**
+ * This is the entry point for the format module.
+ */
 export class FormatParser {
   private readonly keyProcessor: KeyProcessor;
   private readonly formatNavigator: FormatNavigator;
@@ -25,6 +28,10 @@ export class FormatParser {
     this.inputRuleProcessor = new InputRuleProcessor(format);
   }
 
+  /**
+   * When the input element is created, this method is called, so it can be set to all the classes that need it.
+   * @param {HTMLElement} element - The content editable element.
+   */
   public inputElementCreated(element: HTMLElement): void {
     this.keyProcessor.setInputElement(element);
     this.formatNavigator.setInputElement(element);
@@ -33,27 +40,49 @@ export class FormatParser {
     this.inputElementSet = true;
 
     if (this.inputElementSet && this.inputValue.length > 0) {
+      // if there is a passed in value, call the method used to load it into the formatter.
       this.inputValuePassed(this.inputValue);
     }
   }
 
+  /**
+   * Called when the input element gains focus. This method renders the current data and sets the cursor to its current
+   * or saved position.
+   */
   public inputFocused(): void {
     this.formatRenderer.render();
     setTimeout(() => this.formatNavigator.setCursorToCurrentPosition());
   }
 
+  /**
+   * When an input value is passed this is called to load the value into the formatter.
+   * @param {string} inputValue - The value to load into the formatter.
+   */
   public inputValuePassed(inputValue: string): void {
     this.inputValue = inputValue;
     if (this.inputElementSet && this.inputValue.length > 0) {
       this.inputRuleProcessor.processInputValue(inputValue);
-      setTimeout(() => this.formatRenderer.render());
+      // setTimeout is used because this is usually called after the input element has been created. This is a good
+      // article to explain why this is necessary https://web.dev/rendering-performance/.
+      setTimeout(() => {
+        this.formatRenderer.render();
+        this.formatNavigator.setCursorToCurrentPosition();
+      });
     }
   }
 
+  /**
+   * Registers the "event" that is triggered when all input slots are completed.
+   * @param {FormatCompleteEvent} onFormatComplete - The event to call when all input slots are completed.
+   */
   public registerFormatCompleteEvent(onFormatComplete: FormatCompleteEvent): void {
     this.onFormatComplete = onFormatComplete;
   }
 
+  /**
+   * The main entry for the key press event.
+   * @param {KeyboardEvent} event - The event for the formatter to process.
+   */
   public keyDownHandler(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
       return;

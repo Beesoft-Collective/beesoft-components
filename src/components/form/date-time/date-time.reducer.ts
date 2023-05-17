@@ -1,3 +1,5 @@
+import { FormattedInputDefaultFormats } from '../input/formatted-input/formats/input-format.enums';
+
 export enum DateTimeActionType {
   DaySelector,
   MonthSelector,
@@ -9,6 +11,7 @@ export enum DateTimeActionType {
   SetSelectedDateRange,
   SetSelectedStartDate,
   SetSelectedEndDate,
+  SetInputFormat,
   ClearDates,
   InitializeDates,
 }
@@ -20,6 +23,7 @@ export interface DateTimeState {
   selectedStartDate?: Date; // the start and end dates are used for the range selector
   selectedEndDate?: Date;
   dateInitialized: boolean;
+  inputFormat?: FormattedInputDefaultFormats;
 }
 
 export interface DateTimeReducerAction {
@@ -29,6 +33,7 @@ export interface DateTimeReducerAction {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   initialDate?: Date | Array<Date>;
+  inputFormat?: FormattedInputDefaultFormats;
 }
 
 const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeState => {
@@ -89,6 +94,11 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       return {
         ...state,
         selectedEndDate: action.selectedEndDate,
+      };
+    case DateTimeActionType.SetInputFormat:
+      return {
+        ...state,
+        inputFormat: action.inputFormat,
       };
     case DateTimeActionType.ClearDates:
       return {

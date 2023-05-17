@@ -3,7 +3,7 @@ import ContentEditableInput, {
   ContentEditableInputProps,
   ContentEditableInputRef,
 } from '../content-editable-input/content-editable-input.component';
-import { DefaultFormats } from './formats/input-format.enums';
+import { FormattedInputDefaultFormats } from './formats/input-format.enums';
 import { InputFormat } from './formats/input-format.interfaces';
 import { FormatParser } from './parser/format-parser';
 import {
@@ -19,7 +19,7 @@ import {
 
 export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
-  defaultFormat: DefaultFormats;
+  defaultFormat: FormattedInputDefaultFormats;
 }
 
 export interface FormattedInputRef {
@@ -30,7 +30,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const {
     value = '',
     format,
-    defaultFormat = DefaultFormats.Custom,
+    defaultFormat = FormattedInputDefaultFormats.Custom,
     readOnly = false,
     debounceTime = 800,
     fillContainer = true,
@@ -60,7 +60,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   }, [value]);
 
   useEffect(() => {
-    if (defaultFormat !== DefaultFormats.Custom) {
+    if (defaultFormat !== FormattedInputDefaultFormats.Custom) {
       const formatSetting = getPreDefinedFormat(defaultFormat);
       if (!formatSetting) {
         throw new Error('The selected format does not exist');
@@ -89,23 +89,23 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     [onChange]
   );
 
-  const getPreDefinedFormat = useCallback((format: DefaultFormats) => {
+  const getPreDefinedFormat = useCallback((format: FormattedInputDefaultFormats) => {
     switch (format) {
-      case DefaultFormats.DateDayMonthYear:
+      case FormattedInputDefaultFormats.DateDayMonthYear:
         return DayMonthYearFormat;
-      case DefaultFormats.DateMonthDayYear:
+      case FormattedInputDefaultFormats.DateMonthDayYear:
         return MonthDayYearFormat;
-      case DefaultFormats.DateYearMonthDay:
+      case FormattedInputDefaultFormats.DateYearMonthDay:
         return YearMonthDayFormat;
-      case DefaultFormats.DateRangeDayMonthYear:
+      case FormattedInputDefaultFormats.DateRangeDayMonthYear:
         return DayMonthYearRangeFormat;
-      case DefaultFormats.DateRangeMonthDayYear:
+      case FormattedInputDefaultFormats.DateRangeMonthDayYear:
         return MonthDayYearRangeFormat;
-      case DefaultFormats.DateRangeYearMonthDay:
+      case FormattedInputDefaultFormats.DateRangeYearMonthDay:
         return YearMonthDayRangeFormat;
-      case DefaultFormats.Time12Hour:
+      case FormattedInputDefaultFormats.Time12Hour:
         return TwelveHourFormat;
-      case DefaultFormats.Time24Hour:
+      case FormattedInputDefaultFormats.Time24Hour:
         return TwentyFourHourFormat;
     }
   }, []);

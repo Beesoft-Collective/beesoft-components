@@ -3,6 +3,9 @@ import { InputSlotCreator } from './input-slot-creator';
 import { FormatPartSlot } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 
+/**
+ * Allows access to the input slots and their values.
+ */
 export class InputSlotCollection {
   private static instance: InputSlotCollection;
   private readonly inputSlots: FormatPartSlot[];
@@ -11,6 +14,11 @@ export class InputSlotCollection {
     this.inputSlots = InputSlotCreator.create(PartEntryCreator.create(format));
   }
 
+  /**
+   * Since we want to share the slot data we need to use the singleton pattern.
+   * @param {InputFormat} format - The defined input format.
+   * @returns {InputSlotCollection} The singleton instance of this class.
+   */
   public static getInstance(format: InputFormat): InputSlotCollection {
     if (!this.instance) {
       this.instance = new InputSlotCollection(format);
@@ -19,6 +27,9 @@ export class InputSlotCollection {
     return this.instance;
   }
 
+  /**
+   * Clears the input slots and their values. This is used when we want to process the data from scratch.
+   */
   public clearAllSlots(): void {
     for (let i = 0, length = this.inputSlots.length; i < length; i++) {
       this.inputSlots[i].partText = '';
