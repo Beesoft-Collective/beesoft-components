@@ -202,6 +202,19 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
   });
 }
 
+export function getDateFormatByLocale(locale: string) {
+  const year = 2023;
+  const month = 12;
+  const day = 20;
+  const date = new Date(year, month - 1, day);
+  const formattedDate = date.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+  return formattedDate.replace(`${year}`, 'YYYY').replace(`${month}`, 'MM').replace(`${day}`, 'DD');
+}
+
 export function createDefaultColors(): DateTimeColors {
   return {
     inputBgColor: 'bsc-bg-white',

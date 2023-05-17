@@ -86,7 +86,7 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
         <input
           ref={(element) => element && setInputRef(element)}
           className="bsc-border bsc-border-solid bsc-border-black"
-          onFocus={props.onFocus}
+          onFocus={(event) => props.onFocus(event as unknown as FocusEvent)}
           value={props.getValue()}
         />
       </div>
@@ -133,6 +133,22 @@ const OffScreenRightBottomTemplate: Story<DateTimeProps> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   label: 'Date',
+  onChange: action('onChange'),
+};
+
+export const FormattedDateInput = Template.bind({});
+FormattedDateInput.args = {
+  label: 'Date',
+  dateSelection: DateSelectionType.DateOnly,
+  useFormattedInput: true,
+  onChange: action('onChange'),
+};
+
+export const FormattedDateRangeInput = Template.bind({});
+FormattedDateRangeInput.args = {
+  label: 'Date',
+  dateSelection: DateSelectionType.DateRange,
+  useFormattedInput: true,
   onChange: action('onChange'),
 };
 

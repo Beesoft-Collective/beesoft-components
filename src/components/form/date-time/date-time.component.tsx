@@ -5,11 +5,21 @@ import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import ContentEditableInput from '../content-editable-input/content-editable-input.component';
+import { FormInputControl } from '../form-control.interface';
+import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
+import { FormattedInputDefaultFormats } from '../input/formatted-input/formats/input-format.enums';
+import FormattedInput from '../input/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { createDefaultColors, isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
+import {
+  createDefaultColors,
+  getDateFormatByLocale,
+  isDateBetween,
+  loadLocale,
+  parseDate,
+  parseDateRange,
+} from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -24,14 +34,11 @@ import {
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 
-export interface DateTimeProps {
-  value?: string | Date | Array<Date>;
-  readOnly?: boolean;
-  label?: string;
+export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
   useDefaultDateValue?: boolean;
+  useFormattedInput?: boolean;
   allowClear?: boolean;
   locale?: string;
-  className?: string;
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
@@ -41,7 +48,6 @@ export interface DateTimeProps {
   colors?: DateTimeColors;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  onChange?: (value?: Date | Array<Date>) => void;
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
   inputTemplate?: DateTimeInputTemplate;
@@ -52,7 +58,7 @@ export interface DateTimeInputTemplateProps {
   readOnly: boolean;
   allowClear: boolean;
   getValue: () => string;
-  onFocus: (event: React.FocusEvent) => void;
+  onFocus: (event: FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
   iconElement?: JSX.Element;
@@ -65,6 +71,7 @@ export default function DateTime({
   readOnly = false,
   label,
   useDefaultDateValue = false,
+  useFormattedInput = false,
   allowClear = false,
   locale,
   className,
@@ -85,9 +92,12 @@ export default function DateTime({
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
 
+  const isFormattedInput = useRef<boolean>();
+  const inputElementChanged = useRef(false);
   const language = useRef<string>(locale || getBrowserLanguage());
   const loadedLocale = useRef<Locale>();
   const inputElementRef = useRef<HTMLElement>();
+  const dropDownTargetRef = useRef<HTMLElement>();
 
   const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
@@ -116,6 +126,54 @@ export default function DateTime({
       });
     }
   }, [value, loadedLocale.current]);
+
+  useEffect(() => {
+    if (dateSelection && loadedLocale.current && loadedLocale.current.code) {
+      const dateFormatString = getDateFormatByLocale(loadedLocale.current.code);
+
+      if (dateSelection === DateSelectionType.DateOnly) {
+        if (dateFormatString === 'DD/MM/YYYY') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateDayMonthYear,
+          });
+        } else if (dateFormatString === 'MM/DD/YYYY') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateMonthDayYear,
+          });
+        } else if (dateFormatString === 'YYYY/MM/DD') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateYearMonthDay,
+          });
+        }
+      } else if (dateSelection === DateSelectionType.TimeOnly) {
+        // need to implement a time format function
+        dispatcher({
+          type: DateTimeActionType.SetInputFormat,
+          inputFormat: FormattedInputDefaultFormats.Time12Hour,
+        });
+      } else if (dateSelection === DateSelectionType.DateRange) {
+        if (dateFormatString === 'DD/MM/YYYY') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateRangeDayMonthYear,
+          });
+        } else if (dateFormatString === 'MM/DD/YYYY') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateRangeMonthDayYear,
+          });
+        } else if (dateFormatString === 'YYYY/MM/DD') {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.DateRangeYearMonthDay,
+          });
+        }
+      }
+    }
+  }, [dateSelection, loadedLocale.current]);
 
   useEffect(() => {
     if (inputElement) {
@@ -170,13 +228,23 @@ export default function DateTime({
 
   const [state, dispatcher] = useReducer(reducer, initialState);
 
-  const onFocus = (event: React.FocusEvent) => {
-    setDropDownElement(event);
+  const onFocus = () => {
+    setDropDownElement();
     setSelectorOpen(true);
   };
 
   const onInput = (event: React.FormEvent) => {
     const dateString = (event.target as HTMLElement).innerText;
+    onDateStringChange(dateString);
+  };
+
+  const onFormatStringChange = (formattedText?: string) => {
+    if (formattedText) {
+      onDateStringChange(formattedText);
+    }
+  };
+
+  const onDateStringChange = (dateString: string) => {
     const inputDate =
       dateSelection !== DateSelectionType.DateRange
         ? parseDate(dateString, loadedLocale.current)
@@ -218,8 +286,8 @@ export default function DateTime({
     }
   };
 
-  const onCalendarClick = (event: React.MouseEvent) => {
-    setDropDownElement(event);
+  const onCalendarClick = () => {
+    setDropDownElement();
     setSelectorOpen(!selectorOpen);
   };
 
@@ -232,15 +300,19 @@ export default function DateTime({
     onChange?.();
   };
 
-  const onInputElementCreated = (element: HTMLElement) => {
-    if (!inputElementRef.current) {
+  const onInputElementCreated = (element: HTMLElement, formattedInput: boolean) => {
+    if (!inputElementRef.current || isFormattedInput.current !== formattedInput) {
       inputElementRef.current = element;
+      isFormattedInput.current = formattedInput;
+      inputElementChanged.current = true;
     }
   };
 
-  const setDropDownElement = (event: React.FocusEvent | React.MouseEvent) => {
-    if (!dropDownTarget && inputElementRef.current) {
+  const setDropDownElement = () => {
+    if ((!dropDownTargetRef.current || inputElementChanged.current) && inputElementRef.current) {
+      dropDownTargetRef.current = inputElementRef.current;
       setDropDownTarget(inputElementRef.current);
+      inputElementChanged.current = false;
     }
   };
 
@@ -413,18 +485,31 @@ export default function DateTime({
   return (
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
-        <TemplateOutlet props={inputTemplateProps} template={template}>
-          {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
-          <ContentEditableInput
+        {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
+        {useFormattedInput === false || state.inputFormat === undefined ? (
+          <TemplateOutlet props={inputTemplateProps} template={template}>
+            <ContentEditableInput
+              value={getValue()}
+              readOnly={readOnly}
+              className={inputStyles}
+              onFocus={onFocus}
+              onInput={onInput}
+              onElementCreate={(element) => onInputElementCreated(element, false)}
+              {...inputProps}
+            />
+          </TemplateOutlet>
+        ) : (
+          <FormattedInput
             value={getValue()}
             readOnly={readOnly}
             className={inputStyles}
             onFocus={onFocus}
-            onInput={onInput}
-            onElementCreate={onInputElementCreated}
+            onChange={onFormatStringChange}
+            onElementCreate={(element) => onInputElementCreated(element, true)}
+            defaultFormat={state.inputFormat}
             {...inputProps}
           />
-        </TemplateOutlet>
+        )}
         <OverlayPanel
           visible={selectorOpen}
           target={dropDownTarget}

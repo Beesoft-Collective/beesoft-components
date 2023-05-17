@@ -1,4 +1,6 @@
 import { Meta, Story } from '@storybook/react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import React from 'react';
 import ContentEditableInput, { ContentEditableInputProps } from './content-editable-input.component';
 
@@ -7,11 +9,19 @@ export default {
   component: ContentEditableInput,
 } as Meta;
 
+const Template: Story<ContentEditableInputProps> = (args) => <ContentEditableInput {...args} />;
+
 const ValueTitleTemplate: Story<ContentEditableInputProps> = (args) => (
   <div className="bsc-w-24">
     <ContentEditableInput {...args} />
   </div>
 );
+
+export const Placeholder = Template.bind({});
+Placeholder.args = {
+  placeholder: 'This is a placeholder',
+  isSingleLine: true,
+};
 
 export const CheckValueTitle = ValueTitleTemplate.bind({});
 CheckValueTitle.args = {
