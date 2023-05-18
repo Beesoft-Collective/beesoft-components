@@ -19,7 +19,7 @@
   "license": "MIT",
   "main": "build/index.cjs.js",
   "module": "build/index.min.js",
-  "types": "types/src/index.d.ts",
+  "types": "build/types/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
