@@ -16,6 +16,9 @@
     "build",
     "types"
   ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com/"
+  },
   "license": "MIT",
   "main": "build/index.cjs.js",
   "module": "build/index.min.js",
