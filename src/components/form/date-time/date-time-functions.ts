@@ -228,7 +228,16 @@ export function parseDate(dateValue: string, locale?: Locale) {
   const isoDate = parseISO(dateValue);
   if (isNaN(isoDate.valueOf())) {
     // this is an attempt to parse a number of date formats
-    let localDate = parse(dateValue, 'Ppp', new Date(), { locale });
+    let localDate = parse(dateValue, 'P pp', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'Pp', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P HH:mm:ss', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P HH:mm', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P', new Date(), { locale });

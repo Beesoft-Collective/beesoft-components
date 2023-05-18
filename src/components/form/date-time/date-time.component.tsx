@@ -118,8 +118,10 @@ export default function DateTime({
   }, [locale]);
 
   useEffect(() => {
+    console.log('passed value', value);
     if (value) {
       const dateValue = getDateValue();
+      console.log('initial date value', dateValue);
       dispatcher({
         type: DateTimeActionType.InitializeDates,
         initialDate: dateValue,
@@ -205,7 +207,7 @@ export default function DateTime({
   const getDateValue = () => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
-
+    console.log('value', value, 'typeof', typeof value);
     return value
       ? typeof value === 'string'
         ? dateSelection !== DateSelectionType.DateRange
