@@ -54,9 +54,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const formatParser = useRef<FormatParser>();
 
   useEffect(() => {
-    console.log('value received', value);
     if (formatParser.current) {
-      console.log('loading value into parser');
       formatParser.current.inputValuePassed(value);
     }
   }, [value]);
