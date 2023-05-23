@@ -1,5 +1,7 @@
 {
-  "npm": true,
+  "npm": {
+    "publish": true
+  },
   "git": {
     "commitMessage": "[automated commit] Release v${version}",
     "tagAnnotation": "Release v${version}",
