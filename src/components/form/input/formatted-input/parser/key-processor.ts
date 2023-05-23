@@ -1,4 +1,5 @@
 import { InputFormat } from '../formats/input-format.interfaces';
+import { FormatInstanceCollection } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
 import { InputRuleProcessor } from './input-rule-processor';
@@ -9,16 +10,18 @@ import { MovementKeyboardEvent } from './parser.interfaces';
  * Processes any key press and determines where it needs to be handled.
  */
 export class KeyProcessor {
+  private readonly instanceCollection: FormatInstanceCollection;
   private readonly formatNavigator: FormatNavigator;
   private readonly ruleProcessor: InputRuleProcessor;
   private readonly keyTypeChecker: KeyTypeChecker;
   private readonly formatRenderer: FormatRenderer;
 
-  constructor(private format: InputFormat) {
-    this.formatNavigator = FormatNavigator.getInstance(format);
-    this.ruleProcessor = new InputRuleProcessor(format);
+  constructor(private format: InputFormat, instanceId: string) {
+    this.instanceCollection = FormatInstanceCollection.getInstance();
+    this.formatNavigator = this.instanceCollection.getNavigatorInstance(instanceId, format);
+    this.ruleProcessor = new InputRuleProcessor(format, instanceId);
     this.keyTypeChecker = new KeyTypeChecker();
-    this.formatRenderer = new FormatRenderer(format);
+    this.formatRenderer = new FormatRenderer(format, instanceId);
   }
 
   public setInputElement(element: HTMLElement): void {

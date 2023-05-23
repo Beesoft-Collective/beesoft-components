@@ -7,24 +7,10 @@ import { PartEntryCreator } from './part-entry-creator';
  * Allows access to the input slots and their values.
  */
 export class InputSlotCollection {
-  private static instance: InputSlotCollection;
   private readonly inputSlots: FormatPartSlot[];
 
-  private constructor(format: InputFormat) {
+  constructor(format: InputFormat) {
     this.inputSlots = InputSlotCreator.create(PartEntryCreator.create(format));
-  }
-
-  /**
-   * Since we want to share the slot data we need to use the singleton pattern.
-   * @param {InputFormat} format - The defined input format.
-   * @returns {InputSlotCollection} The singleton instance of this class.
-   */
-  public static getInstance(format: InputFormat): InputSlotCollection {
-    if (!this.instance) {
-      this.instance = new InputSlotCollection(format);
-    }
-
-    return this.instance;
   }
 
   /**
@@ -100,5 +86,13 @@ export class InputSlotCollection {
    */
   public allSlotsCompleted() {
     return this.inputSlots.every((slot) => slot.isComplete);
+  }
+
+  /**
+   * Determines if all slots are empty.
+   * @returns {boolean} True if all slots are empty.
+   */
+  public allSlotsEmpty() {
+    return this.inputSlots.every((slot) => slot.partText.length === 0);
   }
 }

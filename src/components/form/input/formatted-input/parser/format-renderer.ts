@@ -1,4 +1,5 @@
 import { InputFormat } from '../formats/input-format.interfaces';
+import { FormatInstanceCollection } from './format-instance-collection';
 import { InputSlotCollection } from './input-slot-collection';
 import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
@@ -7,14 +8,16 @@ import { PartEntryCreator } from './part-entry-creator';
  * Combines the format parts with the input slot collection and renders it into a final output.
  */
 export class FormatRenderer {
+  private readonly instanceCollection: FormatInstanceCollection;
   private readonly formatPartList: FormatPartEntry[];
   private readonly inputSlotCollection: InputSlotCollection;
 
   private inputElement?: HTMLElement;
 
-  constructor(format: InputFormat) {
+  constructor(format: InputFormat, instanceId: string) {
+    this.instanceCollection = FormatInstanceCollection.getInstance();
     this.formatPartList = PartEntryCreator.create(format);
-    this.inputSlotCollection = InputSlotCollection.getInstance(format);
+    this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
   }
 
   public setInputElement(element: HTMLElement) {

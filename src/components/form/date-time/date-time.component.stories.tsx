@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
+import { Button } from '@storybook/react/demo';
 import * as React from 'react';
 import { useState } from 'react';
-import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeFormatType } from './date-time-types';
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
@@ -15,6 +16,43 @@ const Template: Story<DateTimeProps> = (args) => {
   document.body.className = '';
 
   return <DateTime {...args} />;
+};
+
+const MultipleInputTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  const [value, setValue] = useState<string>();
+
+  return (
+    <div className="bsc-flex bsc-flex-col">
+      <div className="bsc-flex-shrink">
+        <Button onClick={() => setValue('15/05/2023')}>Set Value</Button>
+      </div>
+      <div className="bsc-flex-grow">
+        <div className="bsc-flex">
+          <div className="bsc-flex-grow">
+            <DateTime {...args} value={value} />
+          </div>
+          <div className="bsc-flex-grow">
+            <DateTime
+              label="Date 2"
+              dateSelection={DateSelectionType.DateOnly}
+              useFormattedInput={true}
+              onChange={action('onChange')}
+            />
+          </div>
+          <div className="bsc-flex-grow">
+            <DateTime
+              label="Date 3"
+              dateSelection={DateSelectionType.DateOnly}
+              useFormattedInput={true}
+              onChange={action('onChange')}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const SetValueTemplate: Story<DateTimeProps> = (args) => {
@@ -144,10 +182,26 @@ FormattedDateInput.args = {
   onChange: action('onChange'),
 };
 
+export const DoubleFormattedDateInput = MultipleInputTemplate.bind({});
+DoubleFormattedDateInput.args = {
+  label: 'Date',
+  dateSelection: DateSelectionType.DateOnly,
+  useFormattedInput: true,
+  onChange: action('onChange'),
+};
+
 export const FormattedDateRangeInput = Template.bind({});
 FormattedDateRangeInput.args = {
   label: 'Date',
   dateSelection: DateSelectionType.DateRange,
+  useFormattedInput: true,
+  onChange: action('onChange'),
+};
+
+export const FormattedTimeInput = Template.bind({});
+FormattedTimeInput.args = {
+  label: 'Time',
+  dateSelection: DateSelectionType.TimeOnly,
   useFormattedInput: true,
   onChange: action('onChange'),
 };
@@ -226,6 +280,14 @@ export const TimeOnly = Template.bind({});
 TimeOnly.args = {
   label: 'Time Only',
   dateSelection: DateSelectionType.TimeOnly,
+  onChange: action('onChange'),
+};
+
+export const TimeOnly24Hour = Template.bind({});
+TimeOnly24Hour.args = {
+  label: 'Time Only',
+  dateSelection: DateSelectionType.TimeOnly,
+  timeFormat: TimeFormatType.TwentyFourHour,
   onChange: action('onChange'),
 };
 

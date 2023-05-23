@@ -1,4 +1,5 @@
 import { FormatValueType, InputFormat } from '../formats/input-format.interfaces';
+import { FormatInstanceCollection } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
 import { InputSlotCollection } from './input-slot-collection';
@@ -11,17 +12,19 @@ import { PartEntryIterator } from './part-entry-iterator';
  * format.
  */
 export class InputRuleProcessor {
+  private readonly instanceCollection: FormatInstanceCollection;
   private readonly inputSlotCollection: InputSlotCollection;
   private readonly formatNavigator: FormatNavigator;
   private readonly keyTypeChecker: KeyTypeChecker;
   private readonly formatRenderer: FormatRenderer;
   private readonly formatPartList: PartEntryIterator;
 
-  constructor(private format: InputFormat) {
-    this.inputSlotCollection = InputSlotCollection.getInstance(format);
-    this.formatNavigator = FormatNavigator.getInstance(format);
+  constructor(private format: InputFormat, instanceId: string) {
+    this.instanceCollection = FormatInstanceCollection.getInstance();
+    this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
+    this.formatNavigator = this.instanceCollection.getNavigatorInstance(instanceId, format);
     this.keyTypeChecker = new KeyTypeChecker();
-    this.formatRenderer = new FormatRenderer(format);
+    this.formatRenderer = new FormatRenderer(format, instanceId);
     this.formatPartList = new PartEntryIterator(format);
   }
 
@@ -63,7 +66,9 @@ export class InputRuleProcessor {
             const separatorIndex = value.indexOf(separator.inputText, valueIndex);
             const slot = this.inputSlotCollection.getSlot(formatPartIndex);
             if (slot && separatorIndex > -1) {
-              slot.partText = value.substring(valueIndex, separatorIndex);
+              const endIndex =
+                separatorIndex - valueIndex > slot.characterCount ? valueIndex + slot.characterCount : separatorIndex;
+              slot.partText = value.substring(valueIndex, endIndex);
               this.processSlotRules(slot);
               valueIndex = separatorIndex + separator.characterCount;
             }
@@ -72,7 +77,7 @@ export class InputRuleProcessor {
           // this should be the end of the format since there is no corresponding separator
           const slot = this.inputSlotCollection.getSlot(this.formatPartList.currentIndex);
           if (slot) {
-            slot.partText = value.substring(valueIndex);
+            slot.partText = value.substring(valueIndex, valueIndex + slot.characterCount);
             this.processSlotRules(slot);
           }
         }

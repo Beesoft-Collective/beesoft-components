@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
@@ -19,6 +19,7 @@ import {
   loadLocale,
   parseDate,
   parseDateRange,
+  uses24HourTimeByLocale,
 } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
@@ -30,6 +31,7 @@ import {
   DateSelectionType,
   DateTimeColors,
   TimeConstraints,
+  TimeFormatType,
 } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
@@ -150,11 +152,17 @@ export default function DateTime({
           });
         }
       } else if (dateSelection === DateSelectionType.TimeOnly) {
-        // need to implement a time format function
-        dispatcher({
-          type: DateTimeActionType.SetInputFormat,
-          inputFormat: FormattedInputDefaultFormats.Time12Hour,
-        });
+        if (uses24HourTimeByLocale(loadedLocale.current.code)) {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.Time24Hour,
+          });
+        } else {
+          dispatcher({
+            type: DateTimeActionType.SetInputFormat,
+            inputFormat: FormattedInputDefaultFormats.Time12Hour,
+          });
+        }
       } else if (dateSelection === DateSelectionType.DateRange) {
         if (dateFormatString === 'DD/MM/YYYY') {
           dispatcher({
@@ -224,6 +232,7 @@ export default function DateTime({
         ? DateTimeActionType.DaySelector
         : DateTimeActionType.DateRangeSelector,
     currentViewDate: new Date(),
+    timeFormat: TimeFormatType.TwelveHour,
     dateInitialized: false,
   };
 
@@ -368,8 +377,13 @@ export default function DateTime({
           ? dateStyle
             ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
                 timeStyle: dateStyle,
+                hour12: state.timeFormat === TimeFormatType.TwelveHour,
+                hourCycle: state.timeFormat === TimeFormatType.TwentyFourHour ? 'h23' : undefined,
               })
-            : state.selectedDate.toLocaleTimeString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
+                hour12: state.timeFormat === TimeFormatType.TwelveHour,
+                hourCycle: state.timeFormat === TimeFormatType.TwentyFourHour ? 'h23' : undefined,
+              })
           : '';
       case DateSelectionType.DateRange:
         return state.selectedStartDate && state.selectedEndDate
@@ -467,7 +481,7 @@ export default function DateTime({
     iconElement: inputProps.rightElement || inputProps.leftElement,
   };
 
-  const defaultTemplate = (props: DateTimeInputTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+  const defaultTemplate = (props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <>{children}</>
   );
 
@@ -487,8 +501,8 @@ export default function DateTime({
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
         {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
-        {useFormattedInput === false || state.inputFormat === undefined ? (
-          <TemplateOutlet props={inputTemplateProps} template={template}>
+        <TemplateOutlet props={inputTemplateProps} template={template}>
+          {useFormattedInput === false || state.inputFormat === undefined ? (
             <ContentEditableInput
               value={getValue()}
               readOnly={readOnly}
@@ -498,19 +512,19 @@ export default function DateTime({
               onElementCreate={(element) => onInputElementCreated(element, false)}
               {...inputProps}
             />
-          </TemplateOutlet>
-        ) : (
-          <FormattedInput
-            value={getValue()}
-            readOnly={readOnly}
-            className={inputStyles}
-            onFocus={onFocus}
-            onChange={onFormatStringChange}
-            onElementCreate={(element) => onInputElementCreated(element, true)}
-            defaultFormat={state.inputFormat}
-            {...inputProps}
-          />
-        )}
+          ) : (
+            <FormattedInput
+              value={getValue()}
+              readOnly={readOnly}
+              className={inputStyles}
+              onFocus={onFocus}
+              onChange={onFormatStringChange}
+              onElementCreate={(element) => onInputElementCreated(element, true)}
+              defaultFormat={state.inputFormat}
+              {...inputProps}
+            />
+          )}
+        </TemplateOutlet>
         <OverlayPanel
           visible={selectorOpen}
           target={dropDownTarget}
@@ -566,6 +580,7 @@ export default function DateTime({
                   viewDate={state.currentViewDate}
                   showDateSelector={dateSelection === DateSelectionType.DateTime}
                   locale={loadedLocale.current}
+                  timeFormat={state.timeFormat}
                   timeConstraints={timeConstraints}
                   onChange={onChange}
                   dispatcher={dispatcher}

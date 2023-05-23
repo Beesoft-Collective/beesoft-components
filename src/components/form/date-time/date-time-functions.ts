@@ -198,7 +198,24 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
 
         reject('Locale did not load correctly');
       })
-      .catch((error) => reject(error));
+      .catch((error) => {
+        // some locales only have languages, so lets try just loading the default language
+        const localeParts = localeToLoad.split('-');
+        if (localeParts.length === 2) {
+          const language = localeParts[0];
+          import(`date-fns/locale/${language}`)
+            .then((locale) => {
+              if (locale && locale.default) {
+                resolve(locale.default);
+              }
+
+              reject('Locale did not load correctly');
+            })
+            .catch((error) => reject(error));
+        } else {
+          reject(error);
+        }
+      });
   });
 }
 
@@ -213,6 +230,17 @@ export function getDateFormatByLocale(locale: string) {
     day: 'numeric',
   });
   return formattedDate.replace(`${year}`, 'YYYY').replace(`${month}`, 'MM').replace(`${day}`, 'DD');
+}
+
+export function uses24HourTimeByLocale(locale: string) {
+  const date = new Date();
+  const hour = 18;
+  date.setHours(hour);
+
+  // the assumption of this code is that there is a space between the date and the time...if we run into an issue where
+  // the time is separated by a 'T' then we'll need to add an if to check for that possibility
+  const timeParts = date.toLocaleTimeString(locale).split(':');
+  return timeParts[0] === '18';
 }
 
 export function createDefaultColors(): DateTimeColors {
@@ -234,10 +262,16 @@ export function parseDate(dateValue: string, locale?: Locale) {
     localDate = parse(dateValue, 'Pp', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
+    localDate = parse(dateValue, 'P HH:mm', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P HH:mm aaa', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
     localDate = parse(dateValue, 'P HH:mm:ss', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
-    localDate = parse(dateValue, 'P HH:mm', new Date(), { locale });
+    localDate = parse(dateValue, 'P HH:mm:ss aaa', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P', new Date(), { locale });

@@ -1,11 +1,11 @@
 import { InputFormat } from '../formats/input-format.interfaces';
+import { FormatInstanceCollection } from './format-instance-collection';
 import { InputSlotCollection } from './input-slot-collection';
 import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 
 export class FormatNavigator {
-  private static _instance: FormatNavigator;
-
+  private readonly instanceCollection: FormatInstanceCollection;
   private readonly formatPartList: FormatPartEntry[];
   private readonly inputSlotCollection: InputSlotCollection;
 
@@ -17,17 +17,10 @@ export class FormatNavigator {
   private inputRange?: Range;
   private textNode?: Node;
 
-  private constructor(format: InputFormat) {
+  constructor(format: InputFormat, instanceId: string) {
+    this.instanceCollection = FormatInstanceCollection.getInstance();
     this.formatPartList = PartEntryCreator.create(format);
-    this.inputSlotCollection = InputSlotCollection.getInstance(format);
-  }
-
-  public static getInstance(format: InputFormat): FormatNavigator {
-    if (!this._instance) {
-      this._instance = new FormatNavigator(format);
-    }
-
-    return this._instance;
+    this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
   }
 
   public getCursorPosition(): number {
@@ -181,7 +174,6 @@ export class FormatNavigator {
       this.inputSelection?.removeAllRanges();
       this.inputRange.selectNodeContents(this.inputElement);
       this.inputRange.collapse(true);
-      this.inputSelection?.removeAllRanges();
       this.inputSelection?.addRange(this.inputRange);
 
       if (this.inputElement.firstChild) {

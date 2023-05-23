@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import React from 'react';
@@ -21,4 +22,5 @@ export const PassedValue = Template.bind({});
 PassedValue.args = {
   value: '3/2/2023',
   defaultFormat: FormattedInputDefaultFormats.DateDayMonthYear,
+  onChange: action('onChange'),
 };

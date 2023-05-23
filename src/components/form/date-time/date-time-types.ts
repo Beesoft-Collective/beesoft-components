@@ -40,6 +40,11 @@ export enum DateFormatType {
   Long,
 }
 
+export enum TimeFormatType {
+  TwelveHour,
+  TwentyFourHour,
+}
+
 export enum CalendarSelectionMode {
   Normal,
   Range,
