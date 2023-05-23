@@ -40,6 +40,7 @@ const format: InputFormat = {
     },
     {
       characterCount: 2,
+      inputText: '_',
       isSeparator: false,
       possibleValues: ['AM', 'PM'],
     },

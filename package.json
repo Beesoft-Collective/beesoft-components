@@ -17,7 +17,7 @@
     "types"
   ],
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com/"
+    "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
   "main": "build/index.cjs.js",
@@ -31,7 +31,8 @@
     "classnames": "^2.3.1",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
@@ -89,6 +90,7 @@
     "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
     "@types/react-transition-group": "^4.4.5",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
     "autoprefixer": "^10.4.14",

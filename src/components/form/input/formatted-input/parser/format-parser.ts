@@ -1,15 +1,20 @@
+import { v4 as uuidV4 } from 'uuid';
+import { IDisposable } from '../../../../common-interfaces';
 import { InputFormat } from '../formats/input-format.interfaces';
+import { FormatInstanceCollection } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
 import { InputRuleProcessor } from './input-rule-processor';
 import { InputSlotCollection } from './input-slot-collection';
 import { KeyProcessor } from './key-processor';
-import { FormatCompleteEvent } from './parser.interfaces';
+import { FormatChangeEvent } from './parser.interfaces';
 
 /**
  * This is the entry point for the format module.
  */
-export class FormatParser {
+export class FormatParser implements IDisposable {
+  private readonly instanceId: string;
+  private readonly instanceCollection: FormatInstanceCollection;
   private readonly keyProcessor: KeyProcessor;
   private readonly formatNavigator: FormatNavigator;
   private readonly formatRenderer: FormatRenderer;
@@ -17,15 +22,18 @@ export class FormatParser {
   private readonly inputRuleProcessor: InputRuleProcessor;
 
   private inputElementSet = false;
+  private isInputFocused = false;
   private inputElement?: HTMLElement;
-  private onFormatComplete?: FormatCompleteEvent;
+  private onFormatChange?: FormatChangeEvent;
 
   constructor(format: InputFormat, private inputValue = '') {
-    this.keyProcessor = new KeyProcessor(format);
-    this.formatNavigator = FormatNavigator.getInstance(format);
-    this.formatRenderer = new FormatRenderer(format);
-    this.inputSlotCollection = InputSlotCollection.getInstance(format);
-    this.inputRuleProcessor = new InputRuleProcessor(format);
+    this.instanceId = uuidV4();
+    this.instanceCollection = FormatInstanceCollection.getInstance();
+    this.keyProcessor = new KeyProcessor(format, this.instanceId);
+    this.formatNavigator = this.instanceCollection.getNavigatorInstance(this.instanceId, format);
+    this.formatRenderer = new FormatRenderer(format, this.instanceId);
+    this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(this.instanceId, format);
+    this.inputRuleProcessor = new InputRuleProcessor(format, this.instanceId);
   }
 
   /**
@@ -50,8 +58,13 @@ export class FormatParser {
    * or saved position.
    */
   public inputFocused(): void {
+    this.isInputFocused = true;
     this.formatRenderer.render();
     setTimeout(() => this.formatNavigator.setCursorToCurrentPosition());
+  }
+
+  public inputBlurred(): void {
+    this.isInputFocused = false;
   }
 
   /**
@@ -66,17 +79,19 @@ export class FormatParser {
       // article to explain why this is necessary https://web.dev/rendering-performance/.
       setTimeout(() => {
         this.formatRenderer.render();
-        this.formatNavigator.setCursorToCurrentPosition();
+        if (this.isInputFocused) {
+          this.formatNavigator.setCursorToCurrentPosition();
+        }
       });
     }
   }
 
   /**
    * Registers the "event" that is triggered when all input slots are completed.
-   * @param {FormatCompleteEvent} onFormatComplete - The event to call when all input slots are completed.
+   * @param {FormatChangeEvent} onFormatChange - The event to call when all input slots are completed.
    */
-  public registerFormatCompleteEvent(onFormatComplete: FormatCompleteEvent): void {
-    this.onFormatComplete = onFormatComplete;
+  public registerFormatChangeEvent(onFormatChange: FormatChangeEvent): void {
+    this.onFormatChange = onFormatChange;
   }
 
   /**
@@ -92,10 +107,21 @@ export class FormatParser {
     event.stopPropagation();
 
     if (this.keyProcessor.processKeyPress(event)) {
-      if (this.inputSlotCollection.allSlotsCompleted() && this.inputElement && this.onFormatComplete) {
-        // here fire an event to notify the user that the input is complete
-        this.onFormatComplete(this.inputElement.innerHTML);
+      if (this.inputElement && this.onFormatChange) {
+        if (this.inputSlotCollection.allSlotsCompleted()) {
+          // here fire an event to notify the user that the input is complete
+          this.onFormatChange(this.inputElement.innerHTML);
+        } else if (this.inputSlotCollection.allSlotsEmpty()) {
+          // here fire an event to notify the user that the input is empty...this is needed so a fields value can be
+          // removed
+          this.onFormatChange();
+        }
       }
     }
+  }
+
+  public dispose(): void {
+    // dispose of static class instances
+    this.instanceCollection.removeInstances(this.instanceId);
   }
 }

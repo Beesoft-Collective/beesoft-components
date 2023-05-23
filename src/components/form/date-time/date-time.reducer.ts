@@ -1,4 +1,5 @@
 import { FormattedInputDefaultFormats } from '../input/formatted-input/formats/input-format.enums';
+import { TimeFormatType } from './date-time-types';
 
 export enum DateTimeActionType {
   DaySelector,
@@ -23,6 +24,7 @@ export interface DateTimeState {
   selectedStartDate?: Date; // the start and end dates are used for the range selector
   selectedEndDate?: Date;
   dateInitialized: boolean;
+  timeFormat: TimeFormatType;
   inputFormat?: FormattedInputDefaultFormats;
 }
 
@@ -33,6 +35,7 @@ export interface DateTimeReducerAction {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   initialDate?: Date | Array<Date>;
+  timeFormat?: TimeFormatType;
   inputFormat?: FormattedInputDefaultFormats;
 }
 
@@ -98,12 +101,17 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
     case DateTimeActionType.SetInputFormat:
       return {
         ...state,
+        timeFormat:
+          action.inputFormat === FormattedInputDefaultFormats.Time24Hour
+            ? TimeFormatType.TwentyFourHour
+            : action.timeFormat || TimeFormatType.TwelveHour,
         inputFormat: action.inputFormat,
       };
     case DateTimeActionType.ClearDates:
       return {
         currentSelector: state.currentSelector,
         currentViewDate: state.currentViewDate,
+        timeFormat: state.timeFormat,
         dateInitialized: true,
       };
     case DateTimeActionType.InitializeDates:

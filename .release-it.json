@@ -1,0 +1,18 @@
+{
+  "npm": true,
+  "git": {
+    "commitMessage": "[automated commit] Release v${version}",
+    "tagAnnotation": "Release v${version}",
+    "tagName": "v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "Release v${version}"
+  },
+  "plugins": {
+    "@release-it/bumper": {
+      "in": "package.json",
+      "out": "package.json"
+    }
+  }
+}
