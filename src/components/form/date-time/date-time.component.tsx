@@ -249,17 +249,16 @@ export default function DateTime({
   };
 
   const onFormatStringChange = (formattedText?: string) => {
-    if (formattedText) {
-      onDateStringChange(formattedText);
-    }
+    onDateStringChange(formattedText || '');
   };
 
   const onDateStringChange = (dateString: string) => {
+    console.log(`dateString '${dateString}'`);
     const inputDate =
       dateSelection !== DateSelectionType.DateRange
         ? parseDate(dateString, loadedLocale.current)
         : parseDateRange(dateString, loadedLocale.current);
-
+    console.log('inputDate', inputDate);
     if (inputDate) {
       if (!Array.isArray(inputDate)) {
         dispatcher({
@@ -287,6 +286,8 @@ export default function DateTime({
           selectedEndDate: inputDate[1],
         });
       }
+
+      onChange?.(inputDate);
     } else if (dateString === '') {
       dispatcher({
         type: DateTimeActionType.ClearDates,
