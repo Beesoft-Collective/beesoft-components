@@ -46,7 +46,8 @@ jobs:
         run: yarn release-it ${{ github.event.inputs.version }} --ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish package to NPM
-        run: yarn publish
-        env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+#      - name: Publish package to NPM
+#        run: yarn publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
