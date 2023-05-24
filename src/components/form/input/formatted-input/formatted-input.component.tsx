@@ -61,14 +61,13 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   useEffect(() => {
     if (formatParser.current) {
+      console.log('value', value);
       formatParser.current.inputValuePassed(value);
     }
   }, [value]);
 
   useEffect(() => {
-    if (formatParser.current) {
-      formatParser.current.dispose();
-    }
+    formatParser.current?.dispose();
 
     if (defaultFormat !== FormattedInputDefaultFormats.Custom) {
       const formatSetting = getPreDefinedFormat(defaultFormat);

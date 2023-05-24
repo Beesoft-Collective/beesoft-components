@@ -21,6 +21,7 @@ export class FormatParser implements IDisposable {
   private readonly inputSlotCollection: InputSlotCollection;
   private readonly inputRuleProcessor: InputRuleProcessor;
 
+  private previousOutputValue? = '';
   private inputElementSet = false;
   private isInputFocused = false;
   private inputElement?: HTMLElement;
@@ -108,12 +109,14 @@ export class FormatParser implements IDisposable {
 
     if (this.keyProcessor.processKeyPress(event)) {
       if (this.inputElement && this.onFormatChange) {
-        if (this.inputSlotCollection.allSlotsCompleted()) {
+        if (this.inputSlotCollection.allSlotsCompleted() && this.previousOutputValue !== this.inputElement.innerHTML) {
           // here fire an event to notify the user that the input is complete
+          this.previousOutputValue = this.inputElement.innerHTML;
           this.onFormatChange(this.inputElement.innerHTML);
-        } else if (this.inputSlotCollection.allSlotsEmpty()) {
+        } else if (this.inputSlotCollection.allSlotsEmpty() && this.previousOutputValue !== undefined) {
           // here fire an event to notify the user that the input is empty...this is needed so a fields value can be
           // removed
+          this.previousOutputValue = undefined;
           this.onFormatChange();
         }
       }

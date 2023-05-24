@@ -249,7 +249,7 @@ export class InputRuleProcessor {
           // if this is the last input slot, then move the cursor to the end of the input slot.
           this.formatNavigator.moveCursorRight();
         }
-      } else {
+      } else if (currentValue.length + 1 < characterCount) {
         // if the maximum value hasn't been exceeded and the slot hasn't been filled then this is called.
         this.addToInputSlot(key);
         this.formatRenderer.render();

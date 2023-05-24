@@ -112,6 +112,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         currentSelector: state.currentSelector,
         currentViewDate: state.currentViewDate,
         timeFormat: state.timeFormat,
+        inputFormat: state.inputFormat,
         dateInitialized: true,
       };
     case DateTimeActionType.InitializeDates:
