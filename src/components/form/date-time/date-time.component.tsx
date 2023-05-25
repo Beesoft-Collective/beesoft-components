@@ -253,12 +253,11 @@ export default function DateTime({
   };
 
   const onDateStringChange = (dateString: string) => {
-    console.log(`dateString '${dateString}'`);
     const inputDate =
       dateSelection !== DateSelectionType.DateRange
         ? parseDate(dateString, loadedLocale.current)
         : parseDateRange(dateString, loadedLocale.current);
-    console.log('inputDate', inputDate);
+
     if (inputDate) {
       if (!Array.isArray(inputDate)) {
         dispatcher({

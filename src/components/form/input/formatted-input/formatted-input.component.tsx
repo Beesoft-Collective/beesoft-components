@@ -60,10 +60,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   }, []);
 
   useEffect(() => {
-    if (formatParser.current) {
-      console.log('value', value);
-      formatParser.current.inputValuePassed(value);
-    }
+    formatParser.current?.inputValuePassed(value);
   }, [value]);
 
   useEffect(() => {
