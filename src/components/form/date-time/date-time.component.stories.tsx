@@ -182,8 +182,8 @@ FormattedDateInput.args = {
   onChange: action('onChange'),
 };
 
-export const DoubleFormattedDateInput = MultipleInputTemplate.bind({});
-DoubleFormattedDateInput.args = {
+export const MultipleFormattedDateInputs = MultipleInputTemplate.bind({});
+MultipleFormattedDateInputs.args = {
   label: 'Date',
   dateSelection: DateSelectionType.DateOnly,
   useFormattedInput: true,

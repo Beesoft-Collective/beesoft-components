@@ -53,6 +53,36 @@ export class FormatNavigator {
     }
   }
 
+  /**
+   * Called when the mouse is clicked in the input element; this gets the cursor position of where the mouse was
+   * clicked, or the last typed character.
+   */
+  public findCursorPosition() {
+    const range = window.getSelection()?.getRangeAt(0);
+    if (this.inputElement && range) {
+      const treeWalker = document.createTreeWalker(this.inputElement, NodeFilter.SHOW_TEXT, (node) => {
+        const nodeRange = document.createRange();
+        nodeRange.selectNodeContents(node);
+        return nodeRange.compareBoundaryPoints(Range.END_TO_END, range) < 1
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
+      });
+
+      let cursorPosition = 0;
+      while (treeWalker.nextNode()) {
+        cursorPosition += treeWalker.currentNode.textContent?.length || 0;
+      }
+
+      if (range.startContainer.nodeType === Node.TEXT_NODE) {
+        cursorPosition += range.startOffset;
+      }
+
+      const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
+      const maximumLength = lastDataSlot.startPosition + lastDataSlot.partText.length;
+      this.setCursorSelection(cursorPosition > maximumLength ? maximumLength : cursorPosition);
+    }
+  }
+
   public isAtLastPart(): boolean {
     return this.currentPartIndex === this.formatPartList.length - 1;
   }
