@@ -95,6 +95,10 @@ export class FormatParser implements IDisposable {
     this.onFormatChange = onFormatChange;
   }
 
+  public mouseUpHandler(): void {
+    this.formatNavigator.findCursorPosition();
+  }
+
   /**
    * The main entry for the key press event.
    * @param {KeyboardEvent} event - The event for the formatter to process.

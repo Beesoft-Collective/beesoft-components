@@ -132,15 +132,21 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     [onBlur]
   );
 
+  const onMouseUpHandler = useCallback(() => {
+    formatParser.current?.mouseUpHandler();
+  }, []);
+
   const onKeyDownHandler = useCallback((event: KeyboardEvent) => {
     formatParser.current?.keyDownHandler(event);
   }, []);
 
   const onInputRefCreated = useCallback((ref: ContentEditableInputRef) => {
     inputRef.current?.inputElement?.removeEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.removeEventListener('mouseup', onMouseUpHandler);
 
     inputRef.current = ref;
     inputRef.current?.inputElement?.addEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.addEventListener('mouseup', onMouseUpHandler);
     inputElementRef.current = inputRef.current?.inputElement;
   }, []);
 
