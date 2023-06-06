@@ -74,8 +74,13 @@ export class FormatParser implements IDisposable {
    */
   public inputValuePassed(inputValue: string): void {
     this.inputValue = inputValue;
-    if (this.inputElementSet && this.inputValue.length > 0) {
-      this.inputRuleProcessor.processInputValue(inputValue);
+    if (this.inputElementSet) {
+      if (this.inputValue.length > 0) {
+        this.inputRuleProcessor.processInputValue(inputValue);
+      } else {
+        this.inputSlotCollection.clearAllSlots();
+      }
+
       // setTimeout is used because this is usually called after the input element has been created. This is a good
       // article to explain why this is necessary https://web.dev/rendering-performance/.
       setTimeout(() => {

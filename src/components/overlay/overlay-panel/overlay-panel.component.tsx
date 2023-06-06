@@ -179,9 +179,7 @@ export default function OverlayPanel({
   const onEntered = () => {
     if (!panelRef.current) return;
 
-    if (shown) {
-      shown();
-    }
+    shown?.();
 
     let otherElements: Array<HTMLElement> | undefined = undefined;
     if (!shouldTargetCloseOverlay && finalTarget.current) {
@@ -217,14 +215,12 @@ export default function OverlayPanel({
   const onExited = () => {
     setZIndex(-1);
 
-    if (hidden) {
-      hidden();
-    }
+    hidden?.();
   };
 
   const onMarkupCreated = (element: HTMLElement) => {
     panelRef.current = element;
-    markupCreated && markupCreated(element);
+    markupCreated?.(element);
 
     if (finalTarget.current) {
       const position = DomHandler.positionElementToTarget(

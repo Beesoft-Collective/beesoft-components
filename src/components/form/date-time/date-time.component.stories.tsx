@@ -179,6 +179,7 @@ FormattedDateInput.args = {
   label: 'Date',
   dateSelection: DateSelectionType.DateOnly,
   useFormattedInput: true,
+  allowClear: true,
   onChange: action('onChange'),
 };
 
