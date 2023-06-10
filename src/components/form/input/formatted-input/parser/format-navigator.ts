@@ -1,4 +1,4 @@
-import { InputFormat } from '../formats/input-format.interfaces';
+import { InputFormat } from '../input-format.interfaces';
 import { FormatInstanceCollection } from './format-instance-collection';
 import { InputSlotCollection } from './input-slot-collection';
 import { FormatPartEntry } from './parser.interfaces';

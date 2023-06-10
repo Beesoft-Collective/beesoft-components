@@ -1,4 +1,4 @@
-import { FormatValueType, InputFormat } from '../formats/input-format.interfaces';
+import { FormatValueType, InputFormat } from '../input-format.interfaces';
 import { FormatInstanceCollection } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
@@ -261,7 +261,14 @@ export class InputRuleProcessor {
         this.addToInputSlot(key);
         inputSlot.isComplete = true;
         this.formatRenderer.render();
-        this.formatNavigator.moveToNextInputPart();
+
+        if (!this.formatNavigator.isAtLastPart()) {
+          // if there is another input slot, then move the cursor to that slot.
+          this.formatNavigator.moveToNextInputPart();
+        } else {
+          // if this is the last input slot, then move the cursor to the end of the input slot.
+          this.formatNavigator.moveCursorRight();
+        }
       } else {
         this.addToInputSlot(key);
         this.formatRenderer.render();

@@ -1,4 +1,4 @@
-import { FormatPart } from '../formats/input-format.interfaces';
+import { FormatPart } from '../input-format.interfaces';
 
 export interface FormatPartEntry extends FormatPart {
   startPosition: number;

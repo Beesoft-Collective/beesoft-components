@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 import { IDisposable } from '../../../../common-interfaces';
-import { InputFormat } from '../formats/input-format.interfaces';
+import { InputFormat } from '../input-format.interfaces';
 import { FormatInstanceCollection } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';

@@ -3,23 +3,11 @@ import ContentEditableInput, {
   ContentEditableInputProps,
   ContentEditableInputRef,
 } from '../content-editable-input/content-editable-input.component';
-import { FormattedInputDefaultFormats } from './formats/input-format.enums';
-import { InputFormat } from './formats/input-format.interfaces';
+import { InputFormat } from './input-format.interfaces';
 import { FormatParser } from './parser/format-parser';
-import {
-  DayMonthYearFormat,
-  MonthDayYearFormat,
-  YearMonthDayFormat,
-  DayMonthYearRangeFormat,
-  MonthDayYearRangeFormat,
-  YearMonthDayRangeFormat,
-  TwelveHourFormat,
-  TwentyFourHourFormat,
-} from './formats';
 
 export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
-  defaultFormat: FormattedInputDefaultFormats;
 }
 
 export interface FormattedInputRef {
@@ -30,7 +18,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const {
     value = '',
     format,
-    defaultFormat = FormattedInputDefaultFormats.Custom,
     readOnly = false,
     debounceTime = 800,
     fillContainer = true,
@@ -66,27 +53,16 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   useEffect(() => {
     formatParser.current?.dispose();
 
-    if (defaultFormat !== FormattedInputDefaultFormats.Custom) {
-      const formatSetting = getPreDefinedFormat(defaultFormat);
-      if (!formatSetting) {
-        throw new Error('The selected format does not exist');
-      }
-
-      formatParser.current = new FormatParser(formatSetting, value);
-    } else {
-      if (!format) {
-        throw new Error('The format property is required when the default format is custom');
-      }
-
+    if (format) {
       formatParser.current = new FormatParser(format, value);
-    }
 
-    if (inputElementRef.current) {
-      formatParser.current?.inputElementCreated(inputElementRef.current);
-    }
+      if (inputElementRef.current) {
+        formatParser.current?.inputElementCreated(inputElementRef.current);
+      }
 
-    formatParser.current?.registerFormatChangeEvent(onFormatChange);
-  }, [defaultFormat, format]);
+      formatParser.current?.registerFormatChangeEvent(onFormatChange);
+    }
+  }, [format]);
 
   const onFormatChange = useCallback(
     (value?: string) => {
@@ -94,27 +70,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     },
     [onChange]
   );
-
-  const getPreDefinedFormat = useCallback((format: FormattedInputDefaultFormats) => {
-    switch (format) {
-      case FormattedInputDefaultFormats.DateDayMonthYear:
-        return DayMonthYearFormat;
-      case FormattedInputDefaultFormats.DateMonthDayYear:
-        return MonthDayYearFormat;
-      case FormattedInputDefaultFormats.DateYearMonthDay:
-        return YearMonthDayFormat;
-      case FormattedInputDefaultFormats.DateRangeDayMonthYear:
-        return DayMonthYearRangeFormat;
-      case FormattedInputDefaultFormats.DateRangeMonthDayYear:
-        return MonthDayYearRangeFormat;
-      case FormattedInputDefaultFormats.DateRangeYearMonthDay:
-        return YearMonthDayRangeFormat;
-      case FormattedInputDefaultFormats.Time12Hour:
-        return TwelveHourFormat;
-      case FormattedInputDefaultFormats.Time24Hour:
-        return TwentyFourHourFormat;
-    }
-  }, []);
 
   const onFocusHandler = useCallback(
     (event: FocusEvent) => {

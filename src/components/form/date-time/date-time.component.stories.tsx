@@ -207,6 +207,15 @@ FormattedTimeInput.args = {
   onChange: action('onChange'),
 };
 
+export const Formatted24TimeInput = Template.bind({});
+Formatted24TimeInput.args = {
+  label: 'Time',
+  dateSelection: DateSelectionType.TimeOnly,
+  locale: 'de-DE',
+  useFormattedInput: true,
+  onChange: action('onChange'),
+};
+
 export const AllowClear = Template.bind({});
 AllowClear.args = {
   label: 'Date',

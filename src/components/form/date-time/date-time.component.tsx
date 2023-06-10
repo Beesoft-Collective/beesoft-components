@@ -7,20 +7,11 @@ import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/t
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
 import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
-import { FormattedInputDefaultFormats } from '../input/formatted-input/formats/input-format.enums';
 import FormattedInput from '../input/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import {
-  createDefaultColors,
-  getDateFormatByLocale,
-  isDateBetween,
-  loadLocale,
-  parseDate,
-  parseDateRange,
-  uses24HourTimeByLocale,
-} from './date-time-functions';
+import { createDefaultColors, isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -35,6 +26,7 @@ import {
 } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
+import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
 export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
   useDefaultDateValue?: boolean;
@@ -92,6 +84,7 @@ export default function DateTime({
   inputTemplate,
 }: DateTimeProps) {
   const [selectorOpen, setSelectorOpen] = useState(false);
+  const [localeCode, setLocaleCode] = useState<string>();
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
 
   const isFormattedInput = useRef<boolean>();
@@ -100,6 +93,8 @@ export default function DateTime({
   const loadedLocale = useRef<Locale>();
   const inputElementRef = useRef<HTMLElement>();
   const dropDownTargetRef = useRef<HTMLElement>();
+
+  const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
 
   const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
@@ -131,58 +126,13 @@ export default function DateTime({
   }, [value, loadedLocale.current]);
 
   useEffect(() => {
-    if (dateSelection && loadedLocale.current && loadedLocale.current.code) {
-      const dateFormatString = getDateFormatByLocale(loadedLocale.current.code);
-
-      if (dateSelection === DateSelectionType.DateOnly) {
-        if (dateFormatString === 'DD/MM/YYYY') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateDayMonthYear,
-          });
-        } else if (dateFormatString === 'MM/DD/YYYY') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateMonthDayYear,
-          });
-        } else if (dateFormatString === 'YYYY/MM/DD') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateYearMonthDay,
-          });
-        }
-      } else if (dateSelection === DateSelectionType.TimeOnly) {
-        if (uses24HourTimeByLocale(loadedLocale.current.code)) {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.Time24Hour,
-          });
-        } else {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.Time12Hour,
-          });
-        }
-      } else if (dateSelection === DateSelectionType.DateRange) {
-        if (dateFormatString === 'DD/MM/YYYY') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateRangeDayMonthYear,
-          });
-        } else if (dateFormatString === 'MM/DD/YYYY') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateRangeMonthDayYear,
-          });
-        } else if (dateFormatString === 'YYYY/MM/DD') {
-          dispatcher({
-            type: DateTimeActionType.SetInputFormat,
-            inputFormat: FormattedInputDefaultFormats.DateRangeYearMonthDay,
-          });
-        }
-      }
+    if (use24HourTime) {
+      dispatcher({
+        type: DateTimeActionType.SetTimeFormat,
+        timeFormat: use24HourTime ? TimeFormatType.TwentyFourHour : TimeFormatType.TwelveHour,
+      });
     }
-  }, [dateSelection, loadedLocale.current]);
+  }, [use24HourTime]);
 
   useEffect(() => {
     if (inputElement) {
@@ -193,6 +143,7 @@ export default function DateTime({
   const loadLocaleObject = (localeToLoad: string) => {
     loadLocale(localeToLoad)
       .then((locale) => {
+        setLocaleCode(locale.code);
         loadedLocale.current = locale;
         const defaultDate = getDateValue();
 
@@ -502,7 +453,7 @@ export default function DateTime({
       <div className="bc-date-time">
         {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
         <TemplateOutlet props={inputTemplateProps} template={template}>
-          {useFormattedInput === false || state.inputFormat === undefined ? (
+          {useFormattedInput === false ? (
             <ContentEditableInput
               value={getValue()}
               readOnly={readOnly}
@@ -517,10 +468,10 @@ export default function DateTime({
               value={getValue()}
               readOnly={readOnly}
               className={inputStyles}
+              format={inputFormat}
               onFocus={onFocus}
               onChange={onFormatStringChange}
               onElementCreate={(element) => onInputElementCreated(element, true)}
-              defaultFormat={state.inputFormat}
               {...inputProps}
             />
           )}
