@@ -42,7 +42,7 @@ jobs:
         run: yarn install
       - name: Build package
         run: yarn build
-      - name: Release to GitHub
+      - name: Release to GitHub/NPM
         run: yarn release-it ${{ github.event.inputs.version }} --ci
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}

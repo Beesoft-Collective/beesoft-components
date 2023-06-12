@@ -1,5 +1,5 @@
 import { IIterator } from '../../../../../interfaces/iterator.interface';
-import { InputFormat } from '../formats/input-format.interfaces';
+import { InputFormat } from '../input-format.interfaces';
 import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 

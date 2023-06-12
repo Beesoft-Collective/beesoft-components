@@ -1,4 +1,4 @@
-import { InputFormat } from '../formats/input-format.interfaces';
+import { InputFormat } from '../input-format.interfaces';
 import { InputSlotCreator } from './input-slot-creator';
 import { FormatPartSlot } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
@@ -77,7 +77,7 @@ export class InputSlotCollection {
       }
     }
 
-    return this.inputSlots[finalSlotIndex];
+    return this.inputSlots[finalSlotIndex > -1 ? finalSlotIndex : 0];
   }
 
   /**

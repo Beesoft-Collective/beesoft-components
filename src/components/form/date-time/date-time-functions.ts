@@ -219,30 +219,6 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
   });
 }
 
-export function getDateFormatByLocale(locale: string) {
-  const year = 2023;
-  const month = 12;
-  const day = 20;
-  const date = new Date(year, month - 1, day);
-  const formattedDate = date.toLocaleDateString(locale, {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  });
-  return formattedDate.replace(`${year}`, 'YYYY').replace(`${month}`, 'MM').replace(`${day}`, 'DD');
-}
-
-export function uses24HourTimeByLocale(locale: string) {
-  const date = new Date();
-  const hour = 18;
-  date.setHours(hour);
-
-  // the assumption of this code is that there is a space between the date and the time...if we run into an issue where
-  // the time is separated by a 'T' then we'll need to add an if to check for that possibility
-  const timeParts = date.toLocaleTimeString(locale).split(':');
-  return timeParts[0] === '18';
-}
-
 export function createDefaultColors(): DateTimeColors {
   return {
     inputBgColor: 'bsc-bg-white',
@@ -265,16 +241,19 @@ export function parseDate(dateValue: string, locale?: Locale) {
     localDate = parse(dateValue, 'P HH:mm', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
-    localDate = parse(dateValue, 'P HH:mm aaa', new Date(), { locale });
+    localDate = parse(dateValue, 'P hh:mm a..aaa', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P HH:mm:ss', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
-    localDate = parse(dateValue, 'P HH:mm:ss aaa', new Date(), { locale });
+    localDate = parse(dateValue, 'P hh:mm:ss a..aaa', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P p', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'pp', new Date(), { locale });
