@@ -61,7 +61,7 @@ export class FormatParser implements IDisposable {
   public inputFocused(): void {
     this.isInputFocused = true;
     this.formatRenderer.render();
-    setTimeout(() => this.formatNavigator.setCursorToCurrentPosition());
+    setTimeout(() => this.formatNavigator.findCursorPosition());
   }
 
   public inputBlurred(): void {

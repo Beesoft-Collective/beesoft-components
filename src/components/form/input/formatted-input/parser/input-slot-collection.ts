@@ -77,7 +77,7 @@ export class InputSlotCollection {
       }
     }
 
-    return this.inputSlots[finalSlotIndex];
+    return this.inputSlots[finalSlotIndex > -1 ? finalSlotIndex : 0];
   }
 
   /**

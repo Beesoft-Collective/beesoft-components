@@ -241,16 +241,19 @@ export function parseDate(dateValue: string, locale?: Locale) {
     localDate = parse(dateValue, 'P HH:mm', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
-    localDate = parse(dateValue, 'P HH:mm aaa', new Date(), { locale });
+    localDate = parse(dateValue, 'P hh:mm a..aaa', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P HH:mm:ss', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
-    localDate = parse(dateValue, 'P HH:mm:ss aaa', new Date(), { locale });
+    localDate = parse(dateValue, 'P hh:mm:ss a..aaa', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'P', new Date(), { locale });
+    if (!isNaN(localDate.valueOf())) return localDate;
+
+    localDate = parse(dateValue, 'P p', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
     localDate = parse(dateValue, 'pp', new Date(), { locale });

@@ -191,6 +191,25 @@ MultipleFormattedDateInputs.args = {
   onChange: action('onChange'),
 };
 
+export const FormattedDateTimeInput = Template.bind({});
+FormattedDateTimeInput.args = {
+  label: 'Date',
+  dateSelection: DateSelectionType.DateTime,
+  useFormattedInput: true,
+  allowClear: true,
+  onChange: action('onChange'),
+};
+
+export const FormattedDateTime24HourInput = Template.bind({});
+FormattedDateTime24HourInput.args = {
+  label: 'Date Finland',
+  dateSelection: DateSelectionType.DateTime,
+  locale: 'fi-FI',
+  useFormattedInput: true,
+  allowClear: true,
+  onChange: action('onChange'),
+};
+
 export const FormattedDateRangeInput = Template.bind({});
 FormattedDateRangeInput.args = {
   label: 'Date',

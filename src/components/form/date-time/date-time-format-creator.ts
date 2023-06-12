@@ -38,8 +38,7 @@ export class DateTimeFormatCreator {
     time.setHours(hour, minute, second, milliseconds);
 
     const testTimeFormat = time.toLocaleTimeString(localeCode);
-    const timeParts = testTimeFormat.split(':');
-    this.use24HourTime = timeParts[0] === '18';
+    this.use24HourTime = testTimeFormat.startsWith('18');
     this.timeFormat = testTimeFormat
       .replace(`${this.use24HourTime ? hour : '6'}`, 'HH')
       .replace(`${minute}`, 'MM')
