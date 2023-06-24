@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-import React, { ReactNode, useEffect, useReducer, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
@@ -194,6 +195,22 @@ export default function DateTime({
     setSelectorOpen(true);
   };
 
+  const onBlur = useMemo(
+    () =>
+      debounce(() => {
+        setSelectorOpen(false);
+      }, 250),
+    []
+  );
+
+  const onCalendarClick = useMemo(
+    () =>
+      debounce(() => {
+        onBlur.cancel();
+      }, 5),
+    [onBlur]
+  );
+
   const onInput = (event: React.FormEvent) => {
     const dateString = (event.target as HTMLElement).innerText;
     onDateStringChange(dateString);
@@ -247,7 +264,7 @@ export default function DateTime({
     }
   };
 
-  const onCalendarClick = () => {
+  const onCalendarIconClick = () => {
     setDropDownElement();
     setSelectorOpen(!selectorOpen);
   };
@@ -388,7 +405,7 @@ export default function DateTime({
                   <FontAwesomeIcon
                     className={!readOnly ? 'bsc-cursor-pointer' : undefined}
                     icon={['far', 'calendar-alt']}
-                    onClick={!readOnly ? onCalendarClick : undefined}
+                    onClick={!readOnly ? onCalendarIconClick : undefined}
                   />
                 )}
               </div>
@@ -403,7 +420,7 @@ export default function DateTime({
                   <FontAwesomeIcon
                     className={!readOnly ? 'bsc-cursor-pointer' : undefined}
                     icon={['far', 'calendar-alt']}
-                    onClick={!readOnly ? onCalendarClick : undefined}
+                    onClick={!readOnly ? onCalendarIconClick : undefined}
                   />
                 )}
               </div>
@@ -459,6 +476,7 @@ export default function DateTime({
               readOnly={readOnly}
               className={inputStyles}
               onFocus={onFocus}
+              onBlur={onBlur}
               onInput={onInput}
               onElementCreate={(element) => onInputElementCreated(element, false)}
               {...inputProps}
@@ -470,6 +488,7 @@ export default function DateTime({
               className={inputStyles}
               format={inputFormat}
               onFocus={onFocus}
+              onBlur={onBlur}
               onChange={onFormatStringChange}
               onElementCreate={(element) => onInputElementCreated(element, true)}
               {...inputProps}
@@ -484,6 +503,7 @@ export default function DateTime({
           shouldCheckZIndex={true}
           shouldRemainOnScreen={true}
           hidden={onDateTimeHidden}
+          isClickedWithin={onCalendarClick}
           unmountWhenHidden={true}
         >
           <>

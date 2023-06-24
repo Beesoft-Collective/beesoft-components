@@ -33,6 +33,7 @@ export interface OverlayPanelProps {
   hideTransitionOptions?: string;
   shown?: () => void;
   hidden?: () => void;
+  isClickedWithin?: () => void;
   children: ReactNode | Array<ReactNode>;
 }
 
@@ -52,6 +53,7 @@ export default function OverlayPanel({
   hideTransitionOptions = 'linear',
   shown,
   hidden,
+  isClickedWithin,
   markupCreated,
   children,
 }: OverlayPanelProps & MarkupEvents) {
@@ -88,7 +90,7 @@ export default function OverlayPanel({
         resizeObserver.current?.disconnect();
       }
     };
-  }, []);
+  }, [shouldRemainOnScreen]);
 
   useEffect(() => {
     if (target && shouldScrollCloseOverlay) {
@@ -186,7 +188,14 @@ export default function OverlayPanel({
       otherElements = [finalTarget.current];
     }
 
-    const clickListener = (clickedWithin: boolean) => !clickedWithin && setVisibility(false);
+    const clickListener = (clickedWithin: boolean) => {
+      if (clickedWithin) {
+        isClickedWithin?.();
+      } else {
+        setVisibility(false);
+      }
+    };
+
     listenerRef.current = bindDocumentClickListener(panelRef.current, clickListener, otherElements);
 
     if (shouldScrollCloseOverlay) {
