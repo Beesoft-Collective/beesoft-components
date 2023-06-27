@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { InputFormat } from '../../input/formatted-input/input-format.interfaces';
+import { InputFormat } from '../../inputs/formatted-input/input-format.interfaces';
 import { DateTimeFormatCreator } from '../date-time-format-creator';
 import { DateSelectionType } from '../date-time-types';
 

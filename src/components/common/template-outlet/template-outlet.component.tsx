@@ -8,6 +8,8 @@ export interface TemplateOutletProps<TP> {
   children?: React.ReactNode | React.ReactNodeArray;
 }
 
-export default function TemplateOutlet<T>({ template, props, children }: TemplateOutletProps<T>) {
+const TemplateOutlet = <T,>({ template, props, children }: TemplateOutletProps<T>) => {
   return template(props, children);
-}
+};
+
+export default TemplateOutlet;

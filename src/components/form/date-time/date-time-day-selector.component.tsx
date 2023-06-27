@@ -18,7 +18,7 @@ export interface DateTimeDaySelectorProps {
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeDaySelector({
+const DateTimeDaySelector = ({
   selectedDate,
   viewDate,
   locale,
@@ -27,7 +27,7 @@ export default function DateTimeDaySelector({
   isValidDate,
   onChange,
   dispatcher,
-}: DateTimeDaySelectorProps) {
+}: DateTimeDaySelectorProps) => {
   const movePreviousMonth = () => {
     if (viewDate) {
       dispatcher({
@@ -99,4 +99,6 @@ export default function DateTimeDaySelector({
       )}
     </div>
   );
-}
+};
+
+export default DateTimeDaySelector;

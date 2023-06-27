@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface FormInputControl<V = unknown, C = undefined> {
+  name?: string;
   label?: string;
   value?: V;
   readOnly?: boolean;

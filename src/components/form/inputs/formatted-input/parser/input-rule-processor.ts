@@ -8,7 +8,7 @@ import { EditingKeyboardEvent, FormatPartSlot } from './parser.interfaces';
 import { PartEntryIterator } from './part-entry-iterator';
 
 /**
- * Takes input either in the form of a passed value or as a key press and run that input against the rules of the
+ * Takes inputs either in the form of a passed value or as a key press and run that inputs against the rules of the
  * format.
  */
 export class InputRuleProcessor {
@@ -53,8 +53,8 @@ export class InputRuleProcessor {
     this.inputSlotCollection.clearAllSlots();
     this.formatPartList.reset();
 
-    // the assumption of this code is that a format will end with an input slot not a separator. it would be a good idea
-    // to add code to handle the case where the last part of the input is a separator.
+    // the assumption of this code is that a format will end with an inputs slot not a separator. it would be a good idea
+    // to add code to handle the case where the last part of the inputs is a separator.
     let valueIndex = 0;
     while (this.formatPartList.hasNext()) {
       const partEntry = this.formatPartList.next();
@@ -105,7 +105,7 @@ export class InputRuleProcessor {
         // this will delete the item to the left of the cursor
         const isAtBeginningOfInputSlot = inputSlot.startPosition === cursorPosition;
         if (!isAtBeginningOfInputSlot) {
-          // this is run when the cursor is not at the beginning of the input slot
+          // this is run when the cursor is not at the beginning of the inputs slot
           inputSlot.partText =
             inputSlot.partText.substring(0, cursorPositionInSlot - 1) +
             inputSlot.partText.substring(cursorPositionInSlot);
@@ -119,10 +119,10 @@ export class InputRuleProcessor {
 
           this.processSlotRules(inputSlot, true);
         } else {
-          // as a safety precaution we need to check if the current input slot is complete
+          // as a safety precaution we need to check if the current inputs slot is complete
           this.processSlotRules(inputSlot, true);
 
-          // here we are at the beginning of the input slot, so we need to remove the item from the end of the previous
+          // here we are at the beginning of the inputs slot, so we need to remove the item from the end of the previous
           // slot
           const previousSlot = this.inputSlotCollection.getPreviousSlot(inputSlot.partIndex);
           if (previousSlot) {
@@ -177,7 +177,7 @@ export class InputRuleProcessor {
   }
 
   /**
-   * If a key press is data being typed into the input then this is called to process that data.
+   * If a key press is data being typed into the inputs then this is called to process that data.
    * @param {KeyboardEvent} event - Contains the data for the key press.
    * @private
    */
@@ -200,7 +200,7 @@ export class InputRuleProcessor {
       // determines the largest number allowed in the slot
       const maximumValue = inputSlot.maximumValue;
       // if the maximum value is set and exceeded then this setting determines if the formatter will move the next typed
-      // character into the next input slot.
+      // character into the next inputs slot.
       const exceedingMaximumValueCausesTab = inputSlot.exceedingMaximumValueCausesTab || false;
       // if true a numeric value with fewer characters than the ones defined will be filled to the left with zeros.
       const padWithZeros = inputSlot.padWithZeros || false;
@@ -211,9 +211,9 @@ export class InputRuleProcessor {
         // if the maximum value is defined and the new value is greater than the maximum value then some other settings
         // need to be checked.
         if (exceedingMaximumValueCausesTab) {
-          // if this is set then the newly typed character will be added to the next input slot.
+          // if this is set then the newly typed character will be added to the next inputs slot.
           if (padWithZeros) {
-            // if there is any empty space in the input slot then it will be filled with zeros.
+            // if there is any empty space in the inputs slot then it will be filled with zeros.
             inputSlot.partText = inputSlot.partText.padStart(characterCount, '0');
           }
           inputSlot.isComplete = true;
@@ -237,16 +237,16 @@ export class InputRuleProcessor {
           return;
         }
       } else if (currentValue.length + 1 === characterCount) {
-        // this is called when the typed character is the last character in the input slot.
+        // this is called when the typed character is the last character in the inputs slot.
         this.addToInputSlot(key);
         inputSlot.isComplete = true;
         this.formatRenderer.render();
 
         if (!this.formatNavigator.isAtLastPart()) {
-          // if there is another input slot, then move the cursor to that slot.
+          // if there is another inputs slot, then move the cursor to that slot.
           this.formatNavigator.moveToNextInputPart();
         } else {
-          // if this is the last input slot, then move the cursor to the end of the input slot.
+          // if this is the last inputs slot, then move the cursor to the end of the inputs slot.
           this.formatNavigator.moveCursorRight();
         }
       } else if (currentValue.length + 1 < characterCount) {
@@ -256,17 +256,17 @@ export class InputRuleProcessor {
         this.formatNavigator.moveCursorRight();
       }
     } else {
-      // non-numeric input is more simple than numeric input, either we've filled the input slow or we haven't.
+      // non-numeric inputs is more simple than numeric inputs, either we've filled the inputs slow or we haven't.
       if (currentValue.length + 1 === characterCount) {
         this.addToInputSlot(key);
         inputSlot.isComplete = true;
         this.formatRenderer.render();
 
         if (!this.formatNavigator.isAtLastPart()) {
-          // if there is another input slot, then move the cursor to that slot.
+          // if there is another inputs slot, then move the cursor to that slot.
           this.formatNavigator.moveToNextInputPart();
         } else {
-          // if this is the last input slot, then move the cursor to the end of the input slot.
+          // if this is the last inputs slot, then move the cursor to the end of the inputs slot.
           this.formatNavigator.moveCursorRight();
         }
       } else {
@@ -278,8 +278,8 @@ export class InputRuleProcessor {
   }
 
   /**
-   * Makes sure that the key being entered into the input slot is at the correct position.
-   * @param {string} key - The key to be added to the input slot.
+   * Makes sure that the key being entered into the inputs slot is at the correct position.
+   * @param {string} key - The key to be added to the inputs slot.
    * @private
    */
   private addToInputSlot(key: string) {
@@ -290,9 +290,9 @@ export class InputRuleProcessor {
   }
 
   /**
-   * Creates a new value based on where the cursor position is in the input slot.
-   * @param {FormatPartSlot} inputSlot - The input slot the value should be added to.
-   * @param {string} key - The key to be added to the input slot.
+   * Creates a new value based on where the cursor position is in the inputs slot.
+   * @param {FormatPartSlot} inputSlot - The inputs slot the value should be added to.
+   * @param {string} key - The key to be added to the inputs slot.
    * @returns {string} The new value.
    * @private
    */
@@ -301,10 +301,10 @@ export class InputRuleProcessor {
     const cursorPosition = this.formatNavigator.getCursorPosition();
 
     if (cursorPosition >= inputSlot.startPosition + inputSlot.partText.length) {
-      // if the cursor position is at the end of the input slot then add the new key to the end of the input slot
+      // if the cursor position is at the end of the inputs slot then add the new key to the end of the inputs slot
       return currentValue + key;
     } else {
-      // if the cursor position is somewhere other than the end of the input slot then put the new key where the cursor
+      // if the cursor position is somewhere other than the end of the inputs slot then put the new key where the cursor
       // is
       const slotCursorPosition = cursorPosition - inputSlot.startPosition;
       return currentValue.substring(0, slotCursorPosition) + key + currentValue.substring(slotCursorPosition);

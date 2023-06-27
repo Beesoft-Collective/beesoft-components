@@ -33,11 +33,11 @@ export interface OverlayPanelProps {
   hideTransitionOptions?: string;
   shown?: () => void;
   hidden?: () => void;
-  isClickedWithin?: () => void;
+  clickedWithin?: () => void;
   children: ReactNode | Array<ReactNode>;
 }
 
-export default function OverlayPanel({
+const OverlayPanel = ({
   visible,
   target,
   targetPosition = DomTargetPosition.BottomLeft,
@@ -53,10 +53,10 @@ export default function OverlayPanel({
   hideTransitionOptions = 'linear',
   shown,
   hidden,
-  isClickedWithin,
+  clickedWithin,
   markupCreated,
   children,
-}: OverlayPanelProps & MarkupEvents) {
+}: OverlayPanelProps & MarkupEvents) => {
   const [zIndex, setZIndex] = useState(-1);
   const [visibility, setVisibility] = useState(visible);
   const [dimensionsChangedFlag, setDimensionsChangedFlag] = useState(false);
@@ -188,9 +188,9 @@ export default function OverlayPanel({
       otherElements = [finalTarget.current];
     }
 
-    const clickListener = (clickedWithin: boolean) => {
-      if (clickedWithin) {
-        isClickedWithin?.();
+    const clickListener = (isClickedWithin: boolean) => {
+      if (isClickedWithin) {
+        clickedWithin?.();
       } else {
         setVisibility(false);
       }
@@ -292,4 +292,6 @@ export default function OverlayPanel({
       )}
     </BeeSoftTransition>
   );
-}
+};
+
+export default OverlayPanel;

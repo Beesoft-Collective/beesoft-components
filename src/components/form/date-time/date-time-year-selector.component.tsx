@@ -13,7 +13,7 @@ export interface DateTimeYearSelectorProps {
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: DateTimeYearSelectorProps) {
+const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSelectorProps) => {
   const yearMatrix = getTranslatedYearMatrix(viewDate, locale);
 
   const movePreviousDecade = () => {
@@ -71,4 +71,6 @@ export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: D
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeYearSelector;

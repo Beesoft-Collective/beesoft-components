@@ -22,13 +22,13 @@ export interface DateTimeScrollerTemplateProps {
 
 export type DateTimeScrollerTemplate = TemplateFunction<DateTimeScrollerTemplateProps>;
 
-export default function DateTimeScroller({
+const DateTimeScroller = ({
   title,
   scrollerType,
   onTitleClicked,
   onMovePrevious,
   onMoveNext,
-}: DateTimeScrollerProps) {
+}: DateTimeScrollerProps) => {
   const context = useContext(DateTimeContext);
   const viewTemplate = context.dateScrollerTemplate;
 
@@ -63,4 +63,6 @@ export default function DateTimeScroller({
       </div>
     </TemplateOutlet>
   );
-}
+};
+
+export default DateTimeScroller;

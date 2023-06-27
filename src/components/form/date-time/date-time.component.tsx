@@ -7,8 +7,8 @@ import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
-import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
-import FormattedInput from '../input/formatted-input/formatted-input.component';
+import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
+import FormattedInput from '../inputs/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
@@ -61,7 +61,7 @@ export interface DateTimeInputTemplateProps {
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
 
-export default function DateTime({
+const DateTime = ({
   value,
   readOnly = false,
   label,
@@ -83,7 +83,7 @@ export default function DateTime({
   calendarTemplate,
   dateScrollerTemplate,
   inputTemplate,
-}: DateTimeProps) {
+}: DateTimeProps) => {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [localeCode, setLocaleCode] = useState<string>();
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
@@ -503,7 +503,7 @@ export default function DateTime({
           shouldCheckZIndex={true}
           shouldRemainOnScreen={true}
           hidden={onDateTimeHidden}
-          isClickedWithin={onCalendarClick}
+          clickedWithin={onCalendarClick}
           unmountWhenHidden={true}
         >
           <>
@@ -575,4 +575,6 @@ export default function DateTime({
       </div>
     </DateTimeContext.Provider>
   );
-}
+};
+
+export default DateTime;

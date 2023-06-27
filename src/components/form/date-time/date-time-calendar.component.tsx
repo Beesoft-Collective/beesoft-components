@@ -39,7 +39,7 @@ export interface DateTimeCalendarTemplateProps {
 
 export type DateTimeCalendarTemplate = TemplateFunction<DateTimeCalendarTemplateProps>;
 
-export default function DateTimeCalendar({
+const DateTimeCalendar = ({
   viewDate,
   selectedDate,
   selectedStartDate,
@@ -50,7 +50,7 @@ export default function DateTimeCalendar({
   selectableDate,
   isValidDate,
   dispatcher,
-}: DateTimeCalendarProps) {
+}: DateTimeCalendarProps) => {
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
   const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
   const loadedLocale = useRef<Locale>();
@@ -248,4 +248,6 @@ export default function DateTimeCalendar({
       </div>
     </TemplateOutlet>
   );
-}
+};
+
+export default DateTimeCalendar;

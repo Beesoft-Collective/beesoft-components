@@ -16,7 +16,7 @@ export interface DateTimeTimeSelectorProps {
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeTimeSelector({
+const DateTimeTimeSelector = ({
   viewDate,
   showDateSelector,
   locale,
@@ -24,7 +24,7 @@ export default function DateTimeTimeSelector({
   timeConstraints,
   onChange,
   dispatcher,
-}: DateTimeTimeSelectorProps) {
+}: DateTimeTimeSelectorProps) => {
   const maximumHour = useRef(timeFormat === TimeFormatType.TwelveHour ? 11 : 23);
   const hours = useRef<string[]>(
     timeFormat === TimeFormatType.TwelveHour
@@ -214,4 +214,6 @@ export default function DateTimeTimeSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeTimeSelector;

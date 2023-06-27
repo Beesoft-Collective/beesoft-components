@@ -15,14 +15,14 @@ export interface DateTimeRangeSelectorProps {
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeRangeSelector({
+const DateTimeRangeSelector = ({
   viewDate,
   selectedStartDate,
   selectedEndDate,
   locale,
   onChange,
   dispatcher,
-}: DateTimeRangeSelectorProps) {
+}: DateTimeRangeSelectorProps) => {
   const nextMonth = addMonths(viewDate, 1);
 
   const onDateSelected = (date: Date, options?: Record<string, any>) => {
@@ -110,4 +110,6 @@ export default function DateTimeRangeSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeRangeSelector;

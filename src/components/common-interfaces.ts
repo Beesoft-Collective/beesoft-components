@@ -17,3 +17,7 @@ export interface IToString {
 export interface IDisposable {
   dispose: () => void;
 }
+
+export type Required<Type, Key extends keyof Type> = Type & {
+  [Property in Key]-?: Type[Property];
+};

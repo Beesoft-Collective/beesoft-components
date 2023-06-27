@@ -23,7 +23,7 @@ export interface BeeSoftTransitionProps {
   children: (childProps: BeeSoftChildrenTransitionProps) => ReactNode | Array<ReactNode>;
 }
 
-export default function BeeSoftTransition({
+const BeeSoftTransition = ({
   start,
   timeout = 400,
   defaultStyle,
@@ -36,7 +36,7 @@ export default function BeeSoftTransition({
   onExit,
   onExited,
   children,
-}: BeeSoftTransitionProps) {
+}: BeeSoftTransitionProps) => {
   const initialStyle = defaultStyle || {
     transition: `opacity ${timeout}ms ${showTransitionOptions}`,
     opacity: 0,
@@ -69,4 +69,6 @@ export default function BeeSoftTransition({
       {(state) => children({ state, defaultStyle: initialStyle, transitionStyles: transitions })}
     </Transition>
   );
-}
+};
+
+export default BeeSoftTransition;

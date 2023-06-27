@@ -12,12 +12,12 @@ export interface DateTimeMonthSelectorProps {
   dispatcher: React.Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeMonthSelector({
+const DateTimeMonthSelector = ({
   viewDate,
   locale,
   dateSelection = DateSelectionType.DateTime,
   dispatcher,
-}: DateTimeMonthSelectorProps) {
+}: DateTimeMonthSelectorProps) => {
   const monthMatrix = useRef(getTranslatedMonthMatrix(locale));
 
   const movePreviousYear = () => {
@@ -82,4 +82,6 @@ export default function DateTimeMonthSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeMonthSelector;
