@@ -1,11 +1,12 @@
+import cx from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, memo, useCallback, useState } from 'react';
 import { Required } from '../../common-interfaces';
 import { FormInputControl } from '../form-control.interface';
 
 export interface CheckboxChangeEvent {
   name: string;
-  value: unknown;
+  value: string;
   checked: boolean;
 }
 
@@ -27,7 +28,7 @@ const Checkbox = ({
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange?.({
-      name: name ?? event.target.name,
+      name: name || event.target.name,
       value: event.target.value,
       checked: event.target.checked ?? false,
     });
@@ -35,11 +36,27 @@ const Checkbox = ({
     setChecked(event.target.checked ?? false);
   };
 
+  const renderCheckBox = useCallback((isChecked: boolean) => {
+    return isChecked ? (
+      <FontAwesomeIcon icon={['far', 'square-check']} />
+    ) : (
+      <FontAwesomeIcon icon={['far', 'square']} />
+    );
+  }, []);
+
+  const finalStyles = cx(
+    {
+      'bsc-cursor-pointer': !readOnly,
+    },
+    className
+  );
+
   return (
     <div>
       <div className="bsc-hidden">
         <input
           type="checkbox"
+          id={name}
           name={name}
           value={value}
           checked={checked}
@@ -47,12 +64,12 @@ const Checkbox = ({
           onChange={handleOnChange}
         />
       </div>
-      <label htmlFor={name} className={className}>
-        {checked ? <FontAwesomeIcon icon={['far', 'square-check']} /> : <FontAwesomeIcon icon={['far', 'square']} />}
+      <label htmlFor={name} className={finalStyles}>
+        {renderCheckBox(checked)}&nbsp;
         {label}
       </label>
     </div>
   );
 };
 
-export default Checkbox;
+export default memo(Checkbox);
