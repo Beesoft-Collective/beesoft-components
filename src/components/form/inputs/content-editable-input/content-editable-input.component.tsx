@@ -159,9 +159,9 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   }
 
   const classNames = cx(
-    { 'bsc-w-full ': fillContainer },
     'bsc-flex bsc-flex-row bsc-shadow-sm bsc-border bsc-border-solid bsc-border-gray-300 dark:bsc-border-white dark:bsc-bg-gray-900 dark:bsc-text-white bsc-rounded-md bsc-p-2',
     {
+      'bsc-w-full': fillContainer,
       'bsc-overflow-x-auto bsc-overflow-y-hidden bsc-whitespace-pre': isSingleLine && allowSingleLineScroll,
       'bsc-overflow-hidden bsc-whitespace-pre': isSingleLine && !allowSingleLineScroll,
     },

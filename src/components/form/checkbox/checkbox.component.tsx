@@ -1,6 +1,6 @@
-import cx from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { ChangeEvent, memo, useCallback, useState } from 'react';
+import cx from 'classnames';
+import React, { ChangeEvent, memo, useCallback, useMemo, useState } from 'react';
 import { Required } from '../../common-interfaces';
 import { FormInputControl } from '../form-control.interface';
 
@@ -26,33 +26,53 @@ const Checkbox = ({
 }: CheckboxProps) => {
   const [checked, setChecked] = useState(defaultChecked);
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange?.({
-      name: name || event.target.name,
+      name: event.target.name,
       value: event.target.value,
       checked: event.target.checked ?? false,
     });
 
     setChecked(event.target.checked ?? false);
-  };
-
-  const renderCheckBox = useCallback((isChecked: boolean) => {
-    return isChecked ? (
-      <FontAwesomeIcon icon={['far', 'square-check']} />
-    ) : (
-      <FontAwesomeIcon icon={['far', 'square']} />
-    );
   }, []);
 
-  const finalStyles = cx(
-    {
-      'bsc-cursor-pointer': !readOnly,
+  const renderCheckBox = useCallback(
+    (isChecked: boolean) => {
+      const checkedBox = cx('bsc-text-lg', {
+        'bsc-text-blue-600': !readOnly,
+        'bsc-text-gray-400': readOnly,
+      });
+      const uncheckedBox = cx('bsc-text-lg', {
+        'bsc-text-blue-600': !readOnly,
+        'bsc-text-gray-400': readOnly,
+      });
+
+      return isChecked ? (
+        <span className="fa-layers fa-fw focus:bsc-ring focus:bsc-ring-blue-200 focus:bsc-ring-offset-2">
+          <FontAwesomeIcon className={checkedBox} icon={['fas', 'square']} />
+          <FontAwesomeIcon className="bsc-text-sm bsc-text-white" icon={['fas', 'check']} />
+        </span>
+      ) : (
+        <span className="fa-layers fa-fw">
+          <FontAwesomeIcon className={uncheckedBox} icon={['far', 'square']} />
+        </span>
+      );
     },
-    className
+    [readOnly]
   );
 
+  const finalStyles = useMemo(() => {
+    return cx(
+      {
+        'descendant:bsc-cursor-pointer': !readOnly,
+        'bsc-text-gray-400 bsc-pointer-events-none descendant:bsc-pointer-events-none': readOnly,
+      },
+      className
+    );
+  }, [className, readOnly]);
+
   return (
-    <div>
+    <>
       <div className="bsc-hidden">
         <input
           type="checkbox"
@@ -62,13 +82,16 @@ const Checkbox = ({
           checked={checked}
           readOnly={readOnly}
           onChange={handleOnChange}
+          className="focus:bsc-ring focus:bsc-ring-blue-200 bsc-ring-offset-2"
         />
       </div>
-      <label htmlFor={name} className={finalStyles}>
-        {renderCheckBox(checked)}&nbsp;
-        {label}
+      <label className={finalStyles} htmlFor={name}>
+        <div className="bsc-flex">
+          <div className="bsc-flex-shrink bsc-pr-2">{renderCheckBox(checked)}</div>
+          <div className="bsc-flex-grow">{label}</div>
+        </div>
       </label>
-    </div>
+    </>
   );
 };
 

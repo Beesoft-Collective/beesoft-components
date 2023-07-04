@@ -11,7 +11,11 @@ export default {
 const Template: Story<CheckboxProps> = (args) => {
   document.body.className = '';
 
-  return <Checkbox {...args} />;
+  return (
+    <div className="bsc-p-5">
+      <Checkbox {...args} />
+    </div>
+  );
 };
 
 export const Default = Template.bind({});
@@ -19,5 +23,15 @@ Default.args = {
   name: 'test',
   label: 'Test Checkbox',
   value: 'true',
+  onChange: action('onChange'),
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+  name: 'test',
+  label: 'Test Checkbox',
+  value: 'true',
+  defaultChecked: true,
+  readOnly: true,
   onChange: action('onChange'),
 };

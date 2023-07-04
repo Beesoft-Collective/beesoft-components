@@ -4,6 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import { Button } from '@storybook/react/demo';
 import * as React from 'react';
 import { useState } from 'react';
+import { forceAssert } from '../../common-functions';
 import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeFormatType } from './date-time-types';
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
@@ -124,7 +125,7 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
         <input
           ref={(element) => element && setInputRef(element)}
           className="bsc-border bsc-border-solid bsc-border-black"
-          onFocus={(event) => props.onFocus(event as unknown as FocusEvent)}
+          onFocus={(event) => props.onFocus(forceAssert<FocusEvent>(event))}
           value={props.getValue()}
         />
       </div>

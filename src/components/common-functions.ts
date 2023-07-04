@@ -29,7 +29,7 @@ export function generateNumberArray<T>(
 ) {
   const numberArray: Array<T> = [];
   for (let current = startingNumber; current <= endingNumber; current++) {
-    numberArray.push(convertFunction ? convertFunction(current) : (current as unknown as T));
+    numberArray.push(convertFunction ? convertFunction(current) : forceAssert<T>(current));
   }
 
   return numberArray;
@@ -157,4 +157,76 @@ export function isPrimitive(item: unknown): item is string | number | Date | boo
 
 export function containsToString(object: unknown): object is IToString {
   return (isObject(object) || isPrimitive(object)) && object.hasOwnProperty('toString');
+}
+
+/**
+ * Performs an assertion from one type to any other type.
+ * @param value - The initial type to convert.
+ * @returns {T} - The type to convert to.
+ */
+export function forceAssert<T>(value: unknown) {
+  return value as T;
+}
+
+export function applyBeeSoftTheme(theme: Record<string, unknown>) {
+  const root = document.documentElement;
+  Object.keys(theme).forEach((cssVar) => {
+    root.style.setProperty(cssVar, theme[cssVar] as string);
+  });
+}
+
+export function createBeeSoftTheme(
+  primary1: string,
+  primary2: string,
+  primary3: string,
+  primary4: string,
+  primary5: string,
+  secondary1: string,
+  secondary2: string,
+  secondary3: string,
+  secondary4: string,
+  secondary5: string,
+  gray1: string,
+  gray2: string,
+  gray3: string,
+  gray4: string,
+  gray5: string,
+  monoDark1: string,
+  monoDark2: string,
+  monoDark3: string,
+  monoLight1: string,
+  monoLight2: string,
+  monoLight3: string,
+  info: string,
+  success: string,
+  warning: string,
+  error: string
+) {
+  return {
+    '--theme-bsc-primary-1': primary1,
+    '--theme-bsc-primary-2': primary2,
+    '--theme-bsc-primary-3': primary3,
+    '--theme-bsc-primary-4': primary4,
+    '--theme-bsc-primary-5': primary5,
+    '--theme-bsc-secondary-1': secondary1,
+    '--theme-bsc-secondary-2': secondary2,
+    '--theme-bsc-secondary-3': secondary3,
+    '--theme-bsc-secondary-4': secondary4,
+    '--theme-bsc-secondary-5': secondary5,
+    '--theme-bsc-gray-1': gray1,
+    '--theme-bsc-gray-2': gray2,
+    '--theme-bsc-gray-3': gray3,
+    '--theme-bsc-gray-4': gray4,
+    '--theme-bsc-gray-5': gray5,
+    '--theme-bsc-mono-dark-1': monoDark1,
+    '--theme-bsc-mono-dark-2': monoDark2,
+    '--theme-bsc-mono-dark-3': monoDark3,
+    '--theme-bsc-mono-light-1': monoLight1,
+    '--theme-bsc-mono-light-2': monoLight2,
+    '--theme-bsc-mono-light-3': monoLight3,
+    '--theme-bsc-info': info,
+    '--theme-bsc-success': success,
+    '--theme-bsc-warning': warning,
+    '--theme-bsc-error': error,
+  };
 }
