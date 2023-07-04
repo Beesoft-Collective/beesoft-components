@@ -79,6 +79,7 @@ export class FormatParser implements IDisposable {
         this.inputRuleProcessor.processInputValue(inputValue);
       } else {
         this.inputSlotCollection.clearAllSlots();
+        this.previousOutputValue = undefined;
       }
 
       // setTimeout is used because this is usually called after the input element has been created. This is a good
@@ -87,6 +88,10 @@ export class FormatParser implements IDisposable {
         this.formatRenderer.render();
         if (this.isInputFocused) {
           this.formatNavigator.setCursorToCurrentPosition();
+        }
+
+        if (this.inputValue.length > 0) {
+          this.previousOutputValue = this.inputElement?.innerHTML;
         }
       });
     }
