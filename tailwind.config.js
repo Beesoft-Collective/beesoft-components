@@ -6,19 +6,14 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      white: 'white',
+      black: 'black',
       primary: {
         1: 'var(--theme-bsc-primary-1)',
         2: 'var(--theme-bsc-primary-2)',
         3: 'var(--theme-bsc-primary-3)',
         4: 'var(--theme-bsc-primary-4)',
         5: 'var(--theme-bsc-primary-5)',
-      },
-      secondary: {
-        1: 'var(--theme-bsc-secondary-1)',
-        2: 'var(--theme-bsc-secondary-2)',
-        3: 'var(--theme-bsc-secondary-3)',
-        4: 'var(--theme-bsc-secondary-4)',
-        5: 'var(--theme-bsc-secondary-5)',
       },
       gray: {
         1: 'var(--theme-bsc-gray-1)',

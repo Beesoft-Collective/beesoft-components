@@ -14,7 +14,6 @@ import {
   parseISO,
   parse,
 } from 'date-fns';
-import { DateTimeColors } from './date-time-types';
 
 export type DayType = { dayValue: Date | null; isCurrent: boolean };
 
@@ -217,15 +216,6 @@ export function loadLocale(localeToLoad: string): Promise<Locale> {
         }
       });
   });
-}
-
-export function createDefaultColors(): DateTimeColors {
-  return {
-    inputBgColor: 'bsc-bg-white',
-    readOnlyInputBgColor: 'bsc-bg-gray-200',
-    selectedDateColor: 'bsc-bg-blue-100',
-    todayDateColor: 'bsc-bg-green-100',
-  };
 }
 
 export function parseDate(dateValue: string, locale?: Locale) {

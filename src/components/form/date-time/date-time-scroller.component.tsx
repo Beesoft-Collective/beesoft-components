@@ -40,9 +40,10 @@ const DateTimeScroller = ({
     onMoveNext,
   };
 
-  const defaultTemplate = (props: DateTimeScrollerTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
-    <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
-  );
+  const defaultTemplate = (
+    props: DateTimeScrollerTemplateProps,
+    children: React.ReactNode | Array<React.ReactNode>
+  ) => <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>;
 
   const template = viewTemplate || defaultTemplate;
 

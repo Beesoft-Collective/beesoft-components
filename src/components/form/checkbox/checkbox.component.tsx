@@ -38,23 +38,23 @@ const Checkbox = ({
 
   const renderCheckBox = useCallback(
     (isChecked: boolean) => {
-      const checkedBox = cx('bsc-text-lg', {
-        'bsc-text-blue-600': !readOnly,
-        'bsc-text-gray-400': readOnly,
+      const checkedBox = cx({
+        'bsc-text-primary-1': !readOnly,
+        'bsc-text-gray-3': readOnly,
       });
-      const uncheckedBox = cx('bsc-text-lg', {
-        'bsc-text-blue-600': !readOnly,
-        'bsc-text-gray-400': readOnly,
+      const uncheckedBox = cx({
+        'bsc-text-primary-1': !readOnly,
+        'bsc-text-gray-3': readOnly,
       });
 
       return isChecked ? (
-        <span className="fa-layers fa-fw focus:bsc-ring focus:bsc-ring-blue-200 focus:bsc-ring-offset-2">
-          <FontAwesomeIcon className={checkedBox} icon={['fas', 'square']} />
-          <FontAwesomeIcon className="bsc-text-sm bsc-text-white" icon={['fas', 'check']} />
+        <span className="fa-layers fa-fw focus:bsc-ring focus:bsc-ring-primary-5 focus:bsc-ring-offset-2">
+          <FontAwesomeIcon className={checkedBox} size="lg" icon={['fas', 'square']} />
+          <FontAwesomeIcon className="bsc-text-sm bsc-text-white" size="xs" icon={['fas', 'check']} />
         </span>
       ) : (
         <span className="fa-layers fa-fw">
-          <FontAwesomeIcon className={uncheckedBox} icon={['far', 'square']} />
+          <FontAwesomeIcon className={uncheckedBox} size="lg" icon={['far', 'square']} />
         </span>
       );
     },
@@ -65,7 +65,7 @@ const Checkbox = ({
     return cx(
       {
         'descendant:bsc-cursor-pointer': !readOnly,
-        'bsc-text-gray-400 bsc-pointer-events-none descendant:bsc-pointer-events-none': readOnly,
+        'bsc-text-gray-3 bsc-pointer-events-none descendant:bsc-pointer-events-none': readOnly,
       },
       className
     );
@@ -82,7 +82,6 @@ const Checkbox = ({
           checked={checked}
           readOnly={readOnly}
           onChange={handleOnChange}
-          className="focus:bsc-ring focus:bsc-ring-blue-200 bsc-ring-offset-2"
         />
       </div>
       <label className={finalStyles} htmlFor={name}>

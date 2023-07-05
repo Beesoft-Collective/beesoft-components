@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday } from 'date-fns';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
@@ -51,23 +51,24 @@ const DateTimeCalendar = ({
   isValidDate,
   dispatcher,
 }: DateTimeCalendarProps) => {
-  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
   const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
-  const loadedLocale = useRef<Locale>();
-  const weekDaysRef = useRef<Array<string>>();
-  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
   const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
+  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
+  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
+
+  const loadedLocale = useRef<Locale>();
+  const weekDaysRef = useRef<Array<string>>();
 
   const context = useContext(DateTimeContext);
-  const viewTemplate = context.calendarTemplate;
+  const viewTemplate = useMemo(() => context.calendarTemplate, [context.calendarTemplate]);
 
   const loadLocaleObject = async () => {
     return locale || (await loadLocale(getBrowserLanguage()));
   };
 
   /**
-   * When the component first loads setup the locale either from the passed in property or load it from date-fns.
+   * When the component first loads set up the locale either from the passed in property or load it from date-fns.
    */
   useEffect(() => {
     loadLocaleObject()
@@ -188,9 +189,10 @@ const DateTimeCalendar = ({
     isInSelectedDateRange,
   };
 
-  const defaultTemplate = (props: DateTimeCalendarTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
-    <div className="bsc-w-full bc-dt-calendar">{children}</div>
-  );
+  const defaultTemplate = (
+    props: DateTimeCalendarTemplateProps,
+    children: React.ReactNode | Array<React.ReactNode>
+  ) => <div className="bsc-w-full bc-dt-calendar">{children}</div>;
 
   const template = viewTemplate || defaultTemplate;
 
@@ -209,10 +211,8 @@ const DateTimeCalendar = ({
             const dayStyles = cx(
               'bsc-text-center bsc-py-1',
               {
-                'bsc-text-gray-400': !column.isCurrent,
-                [`${
-                  context.colors.selectedDateColor || 'bsc-bg-blue-100'
-                } dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
+                'bsc-text-gray-3': !column.isCurrent,
+                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1 bsc-rounded-full':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
@@ -221,8 +221,8 @@ const DateTimeCalendar = ({
                       isSameDay(selectedStartComparison, column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
-                'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
-                [`${context.colors.todayDateColor || 'bsc-bg-green-100'} dark:bsc-text-black bsc-rounded-full`]:
+                'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
+                'bsc-bg-primary-4 dark:bsc-text-mono-dark-1 bsc-rounded-full':
                   column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
               },
               'bc-dt-date-cell'

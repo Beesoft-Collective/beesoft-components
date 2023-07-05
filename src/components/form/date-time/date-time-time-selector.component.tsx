@@ -151,7 +151,7 @@ const DateTimeTimeSelector = ({
   });
 
   const dateSelectorStyle = cx(
-    'bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-300 dark:bsc-text-white dark:hover:bsc-bg-white dark:hover:bsc-text-black bc-dt-time-date-value',
+    'bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-4 dark:bsc-text-mono-light-1 dark:hover:bsc-bg-mono-light-1 dark:hover:bsc-text-mono-dark-1 bc-dt-time-date-value',
     {
       'bsc-col-span-4': timeFormat === TimeFormatType.TwelveHour,
       'bsc-col-span-3': timeFormat === TimeFormatType.TwentyFourHour,
