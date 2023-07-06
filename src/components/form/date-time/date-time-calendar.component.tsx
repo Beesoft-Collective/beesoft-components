@@ -222,7 +222,7 @@ const DateTimeCalendar = ({
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
                 'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
-                'bsc-bg-primary-4 dark:bsc-text-mono-dark-1 bsc-rounded-full':
+                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1 bsc-rounded-full':
                   column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
               },
               'bc-dt-date-cell'

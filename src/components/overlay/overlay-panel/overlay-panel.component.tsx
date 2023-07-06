@@ -130,6 +130,7 @@ const OverlayPanel = ({
     ) as HTMLElement;
   };
 
+  //FIXME: When the overlay will never fit on the screen we need to find a way to limit the number of times its called.
   const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
     if (panelRef.current) {
       const windowSize = DomHandler.getScreenDimensions();

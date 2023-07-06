@@ -106,7 +106,7 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
   document.body.className = 'bsc-dark';
 
   return (
-    <div className="bsc-bg-gray-900 bsc-p-4" style={{ height: '30rem' }}>
+    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '30rem' }}>
       <DateTime {...args} />
     </div>
   );
@@ -436,17 +436,6 @@ ReadOnlyDate.args = {
   label: 'Read Only Date',
   value: '31/10/1977, 8:30:00 AM',
   readOnly: true,
-  onChange: action('onChange'),
-};
-
-export const ModifiedColors = Template.bind({});
-ModifiedColors.args = {
-  label: 'Modified Colors',
-  colors: {
-    inputBorderColor: 'bsc-border-none',
-    inputBgColor: 'bsc-bg-blue-200',
-    todayDateColor: 'bsc-bg-red-500',
-  },
   onChange: action('onChange'),
 };
 

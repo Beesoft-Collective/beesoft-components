@@ -18,6 +18,16 @@ const Template: Story<CheckboxProps> = (args) => {
   );
 };
 
+const DarkTemplate: Story<CheckboxProps> = (args) => {
+  document.body.className = 'bsc-dark';
+
+  return (
+    <div className="bsc-bg-mono-dark-1 bsc-p-5">
+      <Checkbox {...args} />
+    </div>
+  );
+};
+
 export const Default = Template.bind({});
 Default.args = {
   name: 'test',
@@ -33,5 +43,21 @@ ReadOnly.args = {
   value: 'true',
   defaultChecked: true,
   readOnly: true,
+};
+
+export const DarkMode = DarkTemplate.bind({});
+DarkMode.args = {
+  name: 'test',
+  label: 'Test Checkbox',
+  value: 'true',
   onChange: action('onChange'),
+};
+
+export const DarkModeReadOnly = DarkTemplate.bind({});
+DarkModeReadOnly.args = {
+  name: 'test',
+  label: 'Test Checkbox',
+  value: 'true',
+  defaultChecked: true,
+  readOnly: true,
 };

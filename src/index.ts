@@ -1,4 +1,5 @@
 // components
+import { CheckboxChangeEvent } from './components/common-interfaces';
 import Checkbox from './components/form/checkbox/checkbox.component';
 import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import DateTime from './components/form/date-time/date-time.component';
@@ -9,7 +10,6 @@ import OverlayPanel from './components/overlay/overlay-panel/overlay-panel.compo
 import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
-import { CheckboxChangeEvent } from './components/form/checkbox/checkbox.component';
 import { DateSelectionType } from './components/form/date-time/date-time-types';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.component';
 import { DateTimeScrollerTemplateProps } from './components/form/date-time/date-time-scroller.component';

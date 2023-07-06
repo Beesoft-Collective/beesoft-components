@@ -1,14 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import React, { ChangeEvent, memo, useCallback, useMemo, useState } from 'react';
-import { Required } from '../../common-interfaces';
+import { CheckboxChangeEvent, Required } from '../../common-interfaces';
 import { FormInputControl } from '../form-control.interface';
-
-export interface CheckboxChangeEvent {
-  name: string;
-  value: string;
-  checked: boolean;
-}
 
 export interface CheckboxProps
   extends Required<FormInputControl<string, CheckboxChangeEvent>, 'name' | 'label' | 'value'> {
@@ -38,23 +32,23 @@ const Checkbox = ({
 
   const renderCheckBox = useCallback(
     (isChecked: boolean) => {
-      const checkedBox = cx({
-        'bsc-text-primary-1': !readOnly,
-        'bsc-text-gray-3': readOnly,
-      });
-      const uncheckedBox = cx({
-        'bsc-text-primary-1': !readOnly,
-        'bsc-text-gray-3': readOnly,
+      const squareStyles = cx({
+        'bsc-text-primary-1 dark:bsc-text-mono-light-1': !readOnly,
+        'bsc-text-gray-3 dark:bsc-text-mono-light-3': readOnly,
       });
 
       return isChecked ? (
-        <span className="fa-layers fa-fw focus:bsc-ring focus:bsc-ring-primary-5 focus:bsc-ring-offset-2">
-          <FontAwesomeIcon className={checkedBox} size="lg" icon={['fas', 'square']} />
-          <FontAwesomeIcon className="bsc-text-sm bsc-text-white" size="xs" icon={['fas', 'check']} />
+        <span className="fa-layers fa-fw">
+          <FontAwesomeIcon className={squareStyles} size="lg" icon={['fas', 'square']} />
+          <FontAwesomeIcon
+            className="bsc-text-sm bsc-text-white dark:bsc-text-mono-dark-1"
+            size="xs"
+            icon={['fas', 'check']}
+          />
         </span>
       ) : (
         <span className="fa-layers fa-fw">
-          <FontAwesomeIcon className={uncheckedBox} size="lg" icon={['far', 'square']} />
+          <FontAwesomeIcon className={squareStyles} size="lg" icon={['far', 'square']} />
         </span>
       );
     },
@@ -70,6 +64,13 @@ const Checkbox = ({
       className
     );
   }, [className, readOnly]);
+
+  const labelStyles = useMemo(() => {
+    return cx('bsc-flex-grow', {
+      'dark:bsc-text-mono-light-1': !readOnly,
+      'dark:bsc-text-mono-light-3': readOnly,
+    });
+  }, [readOnly]);
 
   return (
     <>
@@ -87,7 +88,7 @@ const Checkbox = ({
       <label className={finalStyles} htmlFor={name}>
         <div className="bsc-flex">
           <div className="bsc-flex-shrink bsc-pr-2">{renderCheckBox(checked)}</div>
-          <div className="bsc-flex-grow">{label}</div>
+          <div className={labelStyles}>{label}</div>
         </div>
       </label>
     </>
