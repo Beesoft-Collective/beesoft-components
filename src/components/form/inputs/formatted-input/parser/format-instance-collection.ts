@@ -23,7 +23,8 @@ export class FormatInstanceCollection {
 
   public getNavigatorInstance(instanceKey: string, format: InputFormat) {
     if (!this.navigatorInstances[instanceKey]) {
-      this.navigatorInstances[instanceKey] = new FormatNavigator(format, instanceKey);
+      const inputSlotCollection = this.getInputSlotInstance(instanceKey, format);
+      this.navigatorInstances[instanceKey] = new FormatNavigator(format, instanceKey, inputSlotCollection);
     }
 
     return this.navigatorInstances[instanceKey];

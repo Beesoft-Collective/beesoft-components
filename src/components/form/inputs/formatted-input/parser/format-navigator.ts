@@ -1,13 +1,10 @@
 import { InputFormat } from '../input-format.interfaces';
-import { FormatInstanceCollection } from './format-instance-collection';
 import { InputSlotCollection } from './input-slot-collection';
 import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 
 export class FormatNavigator {
-  private readonly instanceCollection: FormatInstanceCollection;
   private readonly formatPartList: FormatPartEntry[];
-  private readonly inputSlotCollection: InputSlotCollection;
 
   private currentPartIndex = 0;
   private currentCursorPosition = 0;
@@ -17,10 +14,8 @@ export class FormatNavigator {
   private inputRange?: Range;
   private textNode?: Node;
 
-  constructor(format: InputFormat, instanceId: string) {
-    this.instanceCollection = FormatInstanceCollection.getInstance();
+  constructor(format: InputFormat, instanceId: string, private inputSlotCollection: InputSlotCollection) {
     this.formatPartList = PartEntryCreator.create(format);
-    this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
   }
 
   public getCursorPosition(): number {
