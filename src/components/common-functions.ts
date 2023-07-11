@@ -192,10 +192,10 @@ export function createBeeSoftTheme(
   monoLight1: string,
   monoLight2: string,
   monoLight3: string,
-  info: string,
-  success: string,
-  warning: string,
-  error: string
+  info = '#2e7ff8',
+  success = '#53ae0c',
+  warning = '#ff6914',
+  error = '#f01616'
 ) {
   return {
     '--theme-bsc-primary-1': primary1,

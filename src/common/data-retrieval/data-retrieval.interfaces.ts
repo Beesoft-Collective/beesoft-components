@@ -57,9 +57,12 @@ export type BeeSoftFilterComparison =
   | 'NOT_EQUALS'
   | 'CONTAINS'
   | 'GREATER_THAN'
+  | 'GREATER_THAN_EQUAL_TO'
   | 'LESS_THAN'
+  | 'LESS_THAN_EQUAL_TO'
   | 'IN'
-  | 'NOT_IN';
+  | 'NOT_IN'
+  | 'BETWEEN';
 
 /**
  * The filter to apply to the data.
