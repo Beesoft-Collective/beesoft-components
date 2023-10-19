@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PAT }}
-          ref: develop
+          ref: ${{github.ref_name}}
       - name: Setup Node
         uses: actions/setup-node@v3
         with:

@@ -3,6 +3,8 @@ import { JsonData, JsonDataItem } from '../../components/common-interfaces';
 import { FormFieldType } from '../../components/form/form-control.interface';
 import { DataSender } from './data-sender';
 
+// TODO: Move this and the data sender to beesoft-common
+
 /**
  * A simple data wrapper that allows for passing custom options to be returned by the calling component.
  */

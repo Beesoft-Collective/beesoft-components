@@ -126,7 +126,15 @@ export function getAllElementStyleValuesRecursive(
     : currentValues;
 }
 
-export function getAllElementStyleValues(style: string, action: (styleValue: string) => boolean) {
+/**
+ * Searches the entire DOM to find all elements containing a particular style.
+ *
+ * WARNING: This uses the query selector "body *", when used on a page with a lot of markup this can perform poorly.
+ * @param {string} style - The CSS style property to search for.
+ * @param {(styleValue: string) => boolean} action - A function passed by the caller to determine if the style should be in the results.
+ * @returns {Array<string>} Returns all acceptable values
+ */
+export function getAllElementStyleValues(style: string, action: (styleValue: string) => boolean): Array<string> {
   const allElements = Array.from(document.querySelectorAll('body *'));
   const foundStyles: Array<string> = [];
 
@@ -140,7 +148,7 @@ export function getAllElementStyleValues(style: string, action: (styleValue: str
   return foundStyles;
 }
 
-export function isObject(object: unknown): object is Record<string, never> {
+export function isObject(object: unknown): object is Record<string, unknown> {
   return typeof object === 'object' && object !== null;
 }
 
@@ -164,7 +172,7 @@ export function containsToString(object: unknown): object is IToString {
  * @param value - The initial type to convert.
  * @returns {T} - The type to convert to.
  */
-export function forceAssert<T>(value: unknown) {
+export function forceAssert<T>(value: unknown): T {
   return value as T;
 }
 
