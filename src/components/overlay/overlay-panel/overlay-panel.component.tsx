@@ -62,6 +62,7 @@ const OverlayPanel = ({
   const [dimensionsChangedFlag, setDimensionsChangedFlag] = useState(false);
 
   const dimensionsChangedRef = useRef(false);
+  const parentZIndex = useRef<Array<number>>();
   const displayZIndex = useRef(100);
   const panelDimensions = useRef<OverlayPanelDimensions>({
     left: 0,
@@ -106,14 +107,12 @@ const OverlayPanel = ({
       }
     }
 
-    if (shouldCheckZIndex) {
-      const parentZIndex = getAllElementStyleValues('zIndex', (styleValue) => {
-        const elementZIndex = parseInt(styleValue);
-
-        return elementZIndex >= 100;
-      }).map((item) => parseInt(item));
-      if (parentZIndex.length > 0) {
-        displayZIndex.current = Math.max(...parentZIndex) + 1;
+    if (shouldCheckZIndex && !parentZIndex.current) {
+      parentZIndex.current = getAllElementStyleValues('zIndex', (styleValue) => parseInt(styleValue) >= 100).map((item) =>
+        parseInt(item)
+      );
+      if (parentZIndex.current.length > 0) {
+        displayZIndex.current = Math.max(...parentZIndex.current) + 1;
       }
     }
 

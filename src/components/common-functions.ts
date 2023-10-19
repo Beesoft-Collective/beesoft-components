@@ -138,7 +138,7 @@ export function getAllElementStyleValues(style: string, action: (styleValue: str
   const allElements = Array.from(document.querySelectorAll('body *'));
   const foundStyles: Array<string> = [];
 
-  for (let i = 0, length = allElements.length; i < length; i++) {
+  for (let i = allElements.length; i-- !== 0; ) {
     const elementStyles = getComputedStyle(allElements[i]);
     if (elementStyles[style] && action(elementStyles[style])) {
       foundStyles.push(elementStyles[style]);

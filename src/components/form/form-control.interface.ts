@@ -1,12 +1,6 @@
 import React from 'react';
 
-export type FormFieldType =
-  | 'CHECKBOX'
-  | 'DATE_TIME'
-  | 'DATE_RANGE'
-  | 'TEXT_FIELD'
-  | 'TEXT_AREA'
-  | 'CUSTOM';
+export type FormFieldType = 'CHECKBOX' | 'DATE_TIME' | 'DATE_RANGE' | 'TEXT_FIELD' | 'TEXT_AREA' | 'CUSTOM';
 
 export interface FormInputControl<V = unknown, C = undefined> {
   name?: string;
