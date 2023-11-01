@@ -4,7 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import { Button } from '@storybook/react/demo';
 import * as React from 'react';
 import { useState } from 'react';
-import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeFormatType } from './date-time-types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
 
 export default {
@@ -63,6 +63,22 @@ const SetValueTemplate: Story<DateTimeProps> = (args) => {
   return (
     <>
       <button type="button" onClick={() => setValue('09/03/2021')}>
+        Set Value
+      </button>
+      <br />
+      <DateTime {...args} value={value} />
+    </>
+  );
+};
+
+const SetValueUndefinedTemplate: Story<DateTimeProps> = (args) => {
+  document.body.className = '';
+
+  const [value, setValue] = useState<string | undefined>('10/10/2023');
+
+  return (
+    <>
+      <button type="button" onClick={() => setValue(undefined)}>
         Set Value
       </button>
       <br />
@@ -316,7 +332,6 @@ export const TimeOnly24Hour = Template.bind({});
 TimeOnly24Hour.args = {
   label: 'Time Only',
   dateSelection: DateSelectionType.TimeOnly,
-  timeFormat: TimeFormatType.TwentyFourHour,
   onChange: action('onChange'),
 };
 
@@ -389,6 +404,12 @@ BodyScrollDateTime.args = {
 export const DelaySetValue = SetValueTemplate.bind({});
 DelaySetValue.args = {
   label: 'Date',
+  onChange: action('onChange'),
+};
+
+export const SetValueUndefined = SetValueUndefinedTemplate.bind({});
+SetValueUndefined.args = {
+  label: 'Date to Undefined',
   onChange: action('onChange'),
 };
 
