@@ -123,6 +123,10 @@ export default function DateTime({
         type: DateTimeActionType.InitializeDates,
         initialDate: dateValue,
       });
+    } else {
+      dispatcher({
+        type: DateTimeActionType.ClearDates,
+      });
     }
   }, [value, loadedLocale.current]);
 
