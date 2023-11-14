@@ -7,8 +7,9 @@ import {
   faChevronDown,
   faTimes,
   faSquare as faSolidSquare,
+  faCircle as faSolidCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { faCalendarAlt, faCalendarTimes, faSquare } from '@fortawesome/free-regular-svg-icons';
+import { faCalendarAlt, faCalendarTimes, faSquare, faCircle } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faAngleRight,
@@ -20,5 +21,7 @@ library.add(
   faCalendarTimes,
   faSolidSquare,
   faSquare,
-  faTimes
+  faTimes,
+  faCircle,
+  faSolidCircle
 );
