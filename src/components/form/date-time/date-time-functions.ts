@@ -190,7 +190,7 @@ export function isDateBetween(checkDate: Date, startComparisonDate: Date, endCom
 
 export function loadLocale(localeToLoad: string): Promise<Locale> {
   return new Promise<Locale>((resolve, reject) => {
-    import(`date-fns/locale/${localeToLoad}`)
+    import(/* @vite-ignore */ `date-fns/locale/${localeToLoad}`)
       .then((locale) => {
         if (locale && locale.default) {
           resolve(locale.default);

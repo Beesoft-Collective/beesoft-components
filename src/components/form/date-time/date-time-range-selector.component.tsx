@@ -25,7 +25,7 @@ export default function DateTimeRangeSelector({
 }: DateTimeRangeSelectorProps) {
   const nextMonth = addMonths(viewDate, 1);
 
-  const onDateSelected = (date: Date, options?: Record<string, any>) => {
+  const onDateSelected = (date: Date, options?: Record<string, unknown>) => {
     if (!options || !options.setEndDate) {
       dispatcher({
         type: DateTimeActionType.SetSelectedStartDate,

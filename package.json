@@ -2,132 +2,100 @@
   "name": "beesoft-components",
   "version": "0.3.2",
   "private": false,
+  "type": "module",
   "author": "Brandon Trabon",
   "keywords": [
     "react",
     "ui components",
-    "date time"
+    "date time",
+    "mobile"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Beehive-Software-Consultants/beesoft-components"
   },
   "files": [
-    "build",
+    "dist",
     "types"
   ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "license": "MIT",
-  "main": "build/index.cjs.js",
-  "module": "build/index.min.js",
-  "types": "build/types/src/index.d.ts",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./types/index.d.ts",
+  "scripts": {
+    "dev": "bunx --bun vite",
+    "build": "rimraf build && rimraf types && bunx --bun vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/free-regular-svg-icons": "^6.4.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "classnames": "^2.3.1",
-    "date-fns": "^2.29.3",
+    "classnames": "^2.3.2",
+    "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.5",
-    "uuid": "^9.0.0"
-  },
-  "scripts": {
-    "start": "start-storybook -p 6006 -s public",
-    "build": "rimraf build && rimraf types && rollup -c --environment NODE_ENV:production",
-    "build:app": "craco build",
-    "test": "echo \"craco test\"",
-    "eject": "react-scripts eject",
-    "storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006 -s public",
-    "build-storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider build-storybook -s public"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/preset-env": "^7.21.4",
-    "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.21.4",
-    "@craco/craco": "^7.1.0",
-    "@release-it/bumper": "^4.0.2",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-terser": "^0.4.1",
-    "@rollup/plugin-typescript": "^11.1.0",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/builder-webpack5": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
-    "@storybook/node-logger": "^6.5.16",
-    "@storybook/preset-create-react-app": "^4.1.2",
-    "@storybook/react": "^6.5.16",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/dot-object": "^2.1.2",
-    "@types/jest": "^26.0.15",
-    "@types/lodash": "^4.14.168",
-    "@types/node": "18.0.0",
-    "@types/react": "^18.0.31",
-    "@types/react-dom": "^18.0.11",
-    "@types/react-transition-group": "^4.4.5",
-    "@types/uuid": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
-    "autoprefixer": "^10.4.14",
-    "babel-plugin-macros": "^3.1.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.37.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
+    "@release-it/bumper": "^5.1.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@storybook/addon-essentials": "^7.5.3",
+    "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-links": "^7.5.3",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.3",
+    "@storybook/react": "^7.5.3",
+    "@storybook/react-vite": "^7.5.3",
+    "@storybook/testing-library": "^0.2.2",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/lodash": "^4.14.201",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-transition-group": "^4.4.9",
+    "@types/uuid": "^9.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "autoprefixer": "^10.4.16",
+    "bun-types": "^1.0.11",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.6.11",
-    "postcss": "^8.4.21",
-    "prettier": "^2.8.7",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-storybook": "^0.6.15",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
-    "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "release-it": "^15.10.1",
-    "rollup": "^3.20.2",
-    "rollup-plugin-copy": "^3.4.0",
+    "release-it": "^16.2.1",
     "rollup-plugin-gzip": "^3.1.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "tailwindcss": "^3.3.1",
-    "ts-loader": "^9.4.2",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^5.0.3",
-    "webpack": "^5"
+    "storybook": "^7.5.3",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.6.3"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "resolutions": {
-    "**/@types/react": "^18.0.31",
-    "@storybook/react/webpack": "^5",
-    "@storybook/react-docgen-typescript-plugin": "1.0.6--canary.9.cd77847.0"
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

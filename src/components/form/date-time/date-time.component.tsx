@@ -453,7 +453,7 @@ export default function DateTime({
     iconElement: inputProps.rightElement || inputProps.leftElement,
   };
 
-  const defaultTemplate = (props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <>{children}</>
   );
 

@@ -152,7 +152,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
     focus,
   }));
 
-  const dynamicProps = {};
+  const dynamicProps: Record<string, unknown> = {};
 
   if (isSingleLine) {
     dynamicProps['onKeyDown'] = onKeyDown;

@@ -1,40 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es6",
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "rootDir": ".",
-    "declaration": true,
-    "declarationDir": "types",
-    "outDir": "types",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "removeComments": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "sourceMap": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "jsx": "react-jsx",
     "isolatedModules": true,
-    "allowJs": true,
-    "newLine": "lf"
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "types",
-    "public"
-  ]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
