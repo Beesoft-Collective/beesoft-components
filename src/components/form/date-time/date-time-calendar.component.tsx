@@ -1,11 +1,11 @@
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday } from 'date-fns';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
+import { DateTimeContext } from './date-time-context';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
-import { DateTimeContext } from './date-time-context';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeCalendarProps {
@@ -188,7 +188,7 @@ export default function DateTimeCalendar({
     isInSelectedDateRange,
   };
 
-  const defaultTemplate = (props: DateTimeCalendarTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+  const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <div className="bsc-w-full bc-dt-calendar">{children}</div>
   );
 

@@ -30,20 +30,20 @@ jobs:
           token: ${{ secrets.PAT }}
           ref: develop
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 18
+          node-version: latest
           registry-url: https://registry.npmjs.org/
       - name: Git config
         run: |
           git config user.name ${{github.actor}}
           git config user.email ${{github.actor}}@users.noreply.github.com
       - name: Install dependencies
-        run: yarn install
+        run: bun install
       - name: Build package
-        run: yarn build
+        run: bun run build
       - name: Release to GitHub/NPM
-        run: yarn release-it ${{ github.event.inputs.version }} --ci
+        run: bunx --bun release-it ${{ github.event.inputs.version }} --ci
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}

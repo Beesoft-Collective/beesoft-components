@@ -188,248 +188,242 @@ export function isDateBetween(checkDate: Date, startComparisonDate: Date, endCom
   return checkDate.getTime() >= startComparisonDate.getTime() && checkDate.getTime() <= endComparisonDate.getTime();
 }
 
-export function loadLocale(localeToLoad: string): Promise<Locale> {
-  return new Promise<Locale>((resolve, reject) => {
-    importLocale(localeToLoad)
-      .then((locale) => {
-        if (locale && locale.default) {
-          resolve(locale.default);
-        }
+export async function loadLocale(localeToLoad: string) {
+  const importedFromEsmSh: Locale = (
+    await import(/* @vite-ignore */ `https://esm.sh/date-fns/locale/${getLocaleName(localeToLoad)}/index.js`)
+  ).default;
 
-        reject('Locale did not load correctly');
-      })
-      .catch((error) => reject(error));
-  });
+  return importedFromEsmSh;
 }
 
-function importLocale(localeToLoad: string) {
+function getLocaleName(localeToLoad: string) {
   const [language, locale] = localeToLoad.split('-');
 
   switch (language) {
     case 'af':
-      return import('date-fns/locale/af');
+      return 'af';
     case 'ar':
       switch (locale) {
         case 'DZ':
-          return import('date-fns/locale/ar-DZ');
+          return 'ar-DZ';
         case 'EG':
-          return import('date-fns/locale/ar-EG');
+          return 'ar-EG';
         case 'MA':
-          return import('date-fns/locale/ar-MA');
+          return 'ar-MA';
         case 'SA':
-          return import('date-fns/locale/ar-SA');
+          return 'ar-SA';
         case 'TN':
-          return import('date-fns/locale/ar-TN');
+          return 'ar-TN';
         default:
-          return import('date-fns/locale/ar');
+          return 'ar';
       }
     case 'az':
-      return import('date-fns/locale/az');
+      return 'az';
     case 'be':
       switch (locale) {
         case 'tarask':
-          return import('date-fns/locale/be-tarask');
+          return 'be-tarask';
         default:
-          return import('date-fns/locale/be');
+          return 'be';
       }
     case 'bg':
-      return import('date-fns/locale/bg');
+      return 'bg';
     case 'bn':
-      return import('date-fns/locale/bn');
+      return 'bn';
     case 'bs':
-      return import('date-fns/locale/bs');
+      return 'bs';
     case 'ca':
-      return import('date-fns/locale/ca');
+      return 'ca';
     case 'cs':
-      return import('date-fns/locale/cs');
+      return 'cs';
     case 'cy':
-      return import('date-fns/locale/cy');
+      return 'cy';
     case 'da':
-      return import('date-fns/locale/da');
+      return 'da';
     case 'de':
       switch (locale) {
         case 'AT':
-          return import('date-fns/locale/de-AT');
+          return 'de-AT';
         default:
-          return import('date-fns/locale/de');
+          return 'de';
       }
     case 'el':
-      return import('date-fns/locale/el');
+      return 'el';
     case 'en':
       switch (locale) {
         case 'AU':
-          return import('date-fns/locale/en-AU');
+          return 'en-AU';
         case 'CA':
-          return import('date-fns/locale/en-CA');
+          return 'en-CA';
         case 'GB':
-          return import('date-fns/locale/en-GB');
+          return 'en-GB';
         case 'IE':
-          return import('date-fns/locale/en-IE');
+          return 'en-IE';
         case 'IN':
-          return import('date-fns/locale/en-IN');
+          return 'en-IN';
         case 'NZ':
-          return import('date-fns/locale/en-NZ');
+          return 'en-NZ';
         case 'US':
-          return import('date-fns/locale/en-US');
+          return 'en-US';
         default:
-          return import('date-fns/locale/en-ZA');
+          return 'en-ZA';
       }
     case 'eo':
-      return import('date-fns/locale/eo');
+      return 'eo';
     case 'es':
-      return import('date-fns/locale/es');
+      return 'es';
     case 'et':
-      return import('date-fns/locale/et');
+      return 'et';
     case 'eu':
-      return import('date-fns/locale/eu');
+      return 'eu';
     case 'fa':
-      return import('date-fns/locale/fa-IR');
+      return 'fa-IR';
     case 'fi':
-      return import('date-fns/locale/fi');
+      return 'fi';
     case 'fr':
       switch (locale) {
         case 'CA':
-          return import('date-fns/locale/fr-CA');
+          return 'fr-CA';
         case 'CH':
-          return import('date-fns/locale/fr-CH');
+          return 'fr-CH';
         default:
-          return import('date-fns/locale/fr');
+          return 'fr';
       }
     case 'fy':
-      return import('date-fns/locale/fy');
+      return 'fy';
     case 'gd':
-      return import('date-fns/locale/gd');
+      return 'gd';
     case 'gl':
-      return import('date-fns/locale/gl');
+      return 'gl';
     case 'gu':
-      return import('date-fns/locale/gu');
+      return 'gu';
     case 'he':
-      return import('date-fns/locale/he');
+      return 'he';
     case 'hi':
-      return import('date-fns/locale/hi');
+      return 'hi';
     case 'hr':
-      return import('date-fns/locale/hr');
+      return 'hr';
     case 'ht':
-      return import('date-fns/locale/ht');
+      return 'ht';
     case 'hu':
-      return import('date-fns/locale/hu');
+      return 'hu';
     case 'hy':
-      return import('date-fns/locale/hy');
+      return 'hy';
     case 'id':
-      return import('date-fns/locale/id');
+      return 'id';
     case 'is':
-      return import('date-fns/locale/is');
+      return 'is';
     case 'it':
       switch (locale) {
         case 'CH':
-          return import('date-fns/locale/it-CH');
+          return 'it-CH';
         default:
-          return import('date-fns/locale/it');
+          return 'it';
       }
     case 'ja':
       switch (locale) {
         case 'Hira':
-          return import('date-fns/locale/ja-Hira');
+          return 'ja-Hira';
         default:
-          return import('date-fns/locale/ja');
+          return 'ja';
       }
     case 'ka':
-      return import('date-fns/locale/ka');
+      return 'ka';
     case 'kk':
-      return import('date-fns/locale/kk');
+      return 'kk';
     case 'km':
-      return import('date-fns/locale/km');
+      return 'km';
     case 'kn':
-      return import('date-fns/locale/kn');
+      return 'kn';
     case 'ko':
-      return import('date-fns/locale/ko');
+      return 'ko';
     case 'lb':
-      return import('date-fns/locale/lb');
+      return 'lb';
     case 'lt':
-      return import('date-fns/locale/lt');
+      return 'lt';
     case 'lv':
-      return import('date-fns/locale/lv');
+      return 'lv';
     case 'mk':
-      return import('date-fns/locale/mk');
+      return 'mk';
     case 'mn':
-      return import('date-fns/locale/mn');
+      return 'mn';
     case 'ms':
-      return import('date-fns/locale/ms');
+      return 'ms';
     case 'mt':
-      return import('date-fns/locale/mt');
+      return 'mt';
     case 'nb':
-      return import('date-fns/locale/nb');
+      return 'nb';
     case 'nl':
       switch (locale) {
         case 'BE':
-          return import('date-fns/locale/nl-BE');
+          return 'nl-BE';
         default:
-          return import('date-fns/locale/nl');
+          return 'nl';
       }
     case 'nn':
-      return import('date-fns/locale/nn');
+      return 'nn';
     case 'oc':
-      return import('date-fns/locale/oc');
+      return 'oc';
     case 'pl':
-      return import('date-fns/locale/pl');
+      return 'pl';
     case 'pt':
       switch (locale) {
         case 'BR':
-          return import('date-fns/locale/pt-BR');
+          return 'pt-BR';
         default:
-          return import('date-fns/locale/pt');
+          return 'pt';
       }
     case 'ro':
-      return import('date-fns/locale/ro');
+      return 'ro';
     case 'ru':
-      return import('date-fns/locale/ru');
+      return 'ru';
     case 'sk':
-      return import('date-fns/locale/sk');
+      return 'sk';
     case 'sl':
-      return import('date-fns/locale/sl');
+      return 'sl';
     case 'sq':
-      return import('date-fns/locale/sq');
+      return 'sq';
     case 'sr':
       switch (locale) {
         case 'Latn':
-          return import('date-fns/locale/sr-Latn');
+          return 'sr-Latn';
         default:
-          return import('date-fns/locale/sr');
+          return 'sr';
       }
     case 'sv':
-      return import('date-fns/locale/sv');
+      return 'sv';
     case 'ta':
-      return import('date-fns/locale/ta');
+      return 'ta';
     case 'te':
-      return import('date-fns/locale/te');
+      return 'te';
     case 'th':
-      return import('date-fns/locale/th');
+      return 'th';
     case 'tr':
-      return import('date-fns/locale/tr');
+      return 'tr';
     case 'ug':
-      return import('date-fns/locale/ug');
+      return 'ug';
     case 'uk':
-      return import('date-fns/locale/uk');
+      return 'uk';
     case 'uz':
       switch (locale) {
         case 'Cyrl':
-          return import('date-fns/locale/uz-Cyrl');
+          return 'uz-Cyrl';
         default:
-          return import('date-fns/locale/uz');
+          return 'uz';
       }
     case 'vi':
-      return import('date-fns/locale/vi');
+      return 'vi';
     case 'zh':
       switch (locale) {
         case 'CN':
-          return import('date-fns/locale/zh-CN');
+          return 'zh-CN';
         case 'HK':
-          return import('date-fns/locale/zh-HK');
+          return 'zh-HK';
         default:
-          return import('date-fns/locale/zh-TW');
+          return 'zh-TW';
       }
     default:
-      return import('date-fns/locale/en-AU');
+      return 'en-AU';
   }
 }
 
