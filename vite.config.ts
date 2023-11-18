@@ -20,7 +20,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'BeesoftComponents',
-      formats: ['es'],
+      formats: ['es', 'umd'],
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
