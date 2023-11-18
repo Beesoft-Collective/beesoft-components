@@ -12,7 +12,7 @@ import FormattedInput from '../input/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { createDefaultColors, isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
+import { createDefaultColors, loadLocale, isDateBetween, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -453,7 +453,7 @@ export default function DateTime({
     iconElement: inputProps.rightElement || inputProps.leftElement,
   };
 
-  const defaultTemplate = (props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <>{children}</>
   );
 

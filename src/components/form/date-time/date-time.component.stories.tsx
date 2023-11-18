@@ -1,32 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Meta, Story } from '@storybook/react';
-import { Button } from '@storybook/react/demo';
-import * as React from 'react';
 import { useState } from 'react';
-import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types';
-import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component';
+import { DateTimeInputTemplateProps } from '../../../../types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
+import DateTime, { DateTimeProps } from './date-time.component.tsx';
 
-export default {
+const meta: Meta<typeof DateTime> = {
   title: 'Form/Date Time',
   component: DateTime,
-} as Meta;
-
-const Template: Story<DateTimeProps> = (args) => {
-  document.body.className = '';
-
-  return <DateTime {...args} />;
 };
 
-const MultipleInputTemplate: Story<DateTimeProps> = (args) => {
+export default meta;
+
+type Story = StoryObj<typeof DateTime>;
+
+const Template = (args: DateTimeProps) => {
+  document.body.className = '';
+
+  return (
+    <div className="bsc-p-4">
+      <DateTime {...args} />
+    </div>
+  );
+};
+
+const MultipleInputTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   const [value, setValue] = useState<string>();
 
   return (
-    <div className="bsc-flex bsc-flex-col">
+    <div className="bsc-flex bsc-flex-col bsc-p-4">
       <div className="bsc-flex-shrink">
-        <Button onClick={() => setValue('15/05/2023')}>Set Value</Button>
+        <button onClick={() => setValue('15/05/2023')}>Set Value</button>
       </div>
       <div className="bsc-flex-grow">
         <div className="bsc-flex">
@@ -55,53 +62,53 @@ const MultipleInputTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
-const SetValueTemplate: Story<DateTimeProps> = (args) => {
+const SetValueTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   const [value, setValue] = useState<string>();
 
   return (
-    <>
+    <div className="bsc-p-4">
       <button type="button" onClick={() => setValue('09/03/2021')}>
         Set Value
       </button>
       <br />
       <DateTime {...args} value={value} />
-    </>
+    </div>
   );
 };
 
-const SetValueUndefinedTemplate: Story<DateTimeProps> = (args) => {
+const SetValueUndefinedTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   const [value, setValue] = useState<string | undefined>('10/10/2023');
 
   return (
-    <>
+    <div className="bsc-p-4">
       <button type="button" onClick={() => setValue(undefined)}>
         Set Value
       </button>
       <br />
       <DateTime {...args} value={value} />
-    </>
+    </div>
   );
 };
 
-const BodyScrollTemplate: Story<DateTimeProps> = (args) => {
+const BodyScrollTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
-    <div className="bsc-w-full" style={{ height: '60rem' }}>
+    <div className="bsc-w-full bsc-p-4" style={{ height: '60rem' }}>
       <DateTime {...args} />
     </div>
   );
 };
 
-const ScrollTemplate: Story<DateTimeProps> = (args) => {
+const ScrollTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
-    <div className="bsc-w-full bsc-flex bsc-flex-col">
+    <div className="bsc-w-full bsc-flex bsc-flex-col bsc-p-4">
       <div className="bsc-w-full bsc-pb-8 bsc-flex-shrink">Test Header</div>
       <div className="bsc-w-full bsc-flex-grow bsc-flex bsc-flex-row">
         <div className="bsc-border-r bsc-border-solid bsc-border-gray-500">
@@ -117,7 +124,7 @@ const ScrollTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
-const DarkTemplate: Story<DateTimeProps> = (args) => {
+const DarkTemplate = (args: DateTimeProps) => {
   document.body.className = 'bsc-dark';
 
   return (
@@ -127,7 +134,7 @@ const DarkTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
-const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
+const OverrideInputTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   const [inputRef, setInputRef] = useState<HTMLInputElement>();
@@ -148,10 +155,14 @@ const OverrideInputTemplate: Story<DateTimeProps> = (args) => {
   );
   /* eslint-enable react/prop-types */
 
-  return <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef as HTMLElement} />;
+  return (
+    <div className="bsc-p-4">
+      <DateTime {...args} inputTemplate={inputTemplate} inputElement={inputRef as HTMLElement} />
+    </div>
+  );
 };
 
-const OffScreenRightTemplate: Story<DateTimeProps> = (args) => {
+const OffScreenRightTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
@@ -164,7 +175,7 @@ const OffScreenRightTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
-const OffScreenRightBottomTemplate: Story<DateTimeProps> = (args) => {
+const OffScreenRightBottomTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
@@ -184,300 +195,378 @@ const OffScreenRightBottomTemplate: Story<DateTimeProps> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  label: 'Date',
-  onChange: action('onChange'),
+export const Default: Story = {
+  args: {
+    label: 'Date',
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const FormattedDateInput = Template.bind({});
-FormattedDateInput.args = {
-  label: 'Date',
-  dateSelection: DateSelectionType.DateOnly,
-  useFormattedInput: true,
-  allowClear: true,
-  onChange: action('onChange'),
+export const FormattedDateInput: Story = {
+  args: {
+    label: 'Date',
+    dateSelection: DateSelectionType.DateOnly,
+    useFormattedInput: true,
+    allowClear: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const MultipleFormattedDateInputs = MultipleInputTemplate.bind({});
-MultipleFormattedDateInputs.args = {
-  label: 'Date',
-  dateSelection: DateSelectionType.DateOnly,
-  useFormattedInput: true,
-  onChange: action('onChange'),
+export const MultipleFormattedDateInputs: Story = {
+  args: {
+    label: 'Date',
+    dateSelection: DateSelectionType.DateOnly,
+    useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <MultipleInputTemplate {...args} />,
 };
 
-export const FormattedDateTimeInput = Template.bind({});
-FormattedDateTimeInput.args = {
-  label: 'Date',
-  dateSelection: DateSelectionType.DateTime,
-  useFormattedInput: true,
-  allowClear: true,
-  onChange: action('onChange'),
+export const FormattedDateTimeInput: Story = {
+  args: {
+    label: 'Date',
+    dateSelection: DateSelectionType.DateTime,
+    useFormattedInput: true,
+    allowClear: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const FormattedDateTime24HourInput = Template.bind({});
-FormattedDateTime24HourInput.args = {
-  label: 'Date Finland',
-  dateSelection: DateSelectionType.DateTime,
-  locale: 'fi-FI',
-  useFormattedInput: true,
-  allowClear: true,
-  onChange: action('onChange'),
+export const FormattedDateTime24HourInput: Story = {
+  args: {
+    label: 'Date Finland',
+    dateSelection: DateSelectionType.DateTime,
+    locale: 'fi-FI',
+    useFormattedInput: true,
+    allowClear: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const FormattedDateRangeInput = Template.bind({});
-FormattedDateRangeInput.args = {
-  label: 'Date',
-  dateSelection: DateSelectionType.DateRange,
-  useFormattedInput: true,
-  onChange: action('onChange'),
+export const FormattedDateRangeInput: Story = {
+  args: {
+    label: 'Date',
+    dateSelection: DateSelectionType.DateRange,
+    useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const FormattedTimeInput = Template.bind({});
-FormattedTimeInput.args = {
-  label: 'Time',
-  dateSelection: DateSelectionType.TimeOnly,
-  useFormattedInput: true,
-  onChange: action('onChange'),
+export const FormattedTimeInput: Story = {
+  args: {
+    label: 'Time',
+    dateSelection: DateSelectionType.TimeOnly,
+    useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const Formatted24TimeInput = Template.bind({});
-Formatted24TimeInput.args = {
-  label: 'Time',
-  dateSelection: DateSelectionType.TimeOnly,
-  locale: 'de-DE',
-  useFormattedInput: true,
-  onChange: action('onChange'),
+export const Formatted24TimeInput: Story = {
+  args: {
+    label: 'Time',
+    dateSelection: DateSelectionType.TimeOnly,
+    locale: 'de-DE',
+    useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const AllowClear = Template.bind({});
-AllowClear.args = {
-  label: 'Date',
-  allowClear: true,
-  onChange: action('onChange'),
+export const AllowClear: Story = {
+  args: {
+    label: 'Date',
+    allowClear: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const SetDateValue = Template.bind({});
-SetDateValue.args = {
-  label: 'Date',
-  value: '30/03/2021, 4:15:00 PM',
-  onChange: action('onChange'),
+export const SetDateValue: Story = {
+  args: {
+    label: 'Date',
+    value: '30/03/2021, 4:15:00 PM',
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const CurrentDateTime = Template.bind({});
-CurrentDateTime.args = {
-  label: 'Date',
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
+export const CurrentDateTime: Story = {
+  args: {
+    label: 'Date',
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const IconOnLeft = Template.bind({});
-IconOnLeft.args = {
-  label: 'Left Icon',
-  useDefaultDateValue: true,
-  iconPosition: CalendarIconPosition.Left,
-  onChange: action('onChange'),
+export const IconOnLeft: Story = {
+  args: {
+    label: 'Left Icon',
+    useDefaultDateValue: true,
+    iconPosition: CalendarIconPosition.Left,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const NoIcon = Template.bind({});
-NoIcon.args = {
-  label: 'No Icon',
-  iconPosition: CalendarIconPosition.None,
-  onChange: action('onChange'),
+export const NoIcon: Story = {
+  args: {
+    label: 'No Icon',
+    iconPosition: CalendarIconPosition.None,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const ChangeIcon = Template.bind({});
-ChangeIcon.args = {
-  label: 'Different Icon',
-  icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
-  onChange: action('onChange'),
+export const ChangeIcon: Story = {
+  args: {
+    label: 'Different Icon',
+    icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const InputTemplate = OverrideInputTemplate.bind({});
-InputTemplate.args = {
-  label: 'Custom Input Template',
-  onChange: action('onChange'),
+export const InputTemplate: Story = {
+  args: {
+    label: 'Custom Input Template',
+    onChange: action('onChange'),
+  },
+  render: (args) => <OverrideInputTemplate {...args} />,
 };
 
-export const DarkMode = DarkTemplate.bind({});
-DarkMode.args = {
-  label: 'Date',
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
+export const DarkMode: Story = {
+  args: {
+    label: 'Date',
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <DarkTemplate {...args} />,
 };
 
-export const IsoDateTime = Template.bind({});
-IsoDateTime.args = {
-  label: 'Date',
-  value: '2021-04-20T14:20:00+08:00',
-  onChange: action('onChange'),
+export const IsoDateTime: Story = {
+  args: {
+    label: 'Date',
+    value: '2021-04-20T14:20:00+08:00',
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const DateOnly = Template.bind({});
-DateOnly.args = {
-  label: 'Date Only',
-  dateSelection: DateSelectionType.DateOnly,
-  onChange: action('onChange'),
+export const DateOnly: Story = {
+  args: {
+    label: 'Date Only',
+    dateSelection: DateSelectionType.DateOnly,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const TimeOnly = Template.bind({});
-TimeOnly.args = {
-  label: 'Time Only',
-  dateSelection: DateSelectionType.TimeOnly,
-  onChange: action('onChange'),
+export const TimeOnly: Story = {
+  args: {
+    label: 'Time Only',
+    dateSelection: DateSelectionType.TimeOnly,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const TimeOnly24Hour = Template.bind({});
-TimeOnly24Hour.args = {
-  label: 'Time Only',
-  dateSelection: DateSelectionType.TimeOnly,
-  onChange: action('onChange'),
+export const TimeOnly24Hour: Story = {
+  args: {
+    label: 'Time Only',
+    dateSelection: DateSelectionType.TimeOnly,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const DateRange = Template.bind({});
-DateRange.args = {
-  label: 'Date Range',
-  dateSelection: DateSelectionType.DateRange,
-  onChange: action('onChange'),
+export const DateRange: Story = {
+  args: {
+    label: 'Date Range',
+    dateSelection: DateSelectionType.DateRange,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const DateRangeSetValue = Template.bind({});
-DateRangeSetValue.args = {
-  label: 'Date Range',
-  dateSelection: DateSelectionType.DateRange,
-  value: '30/03/2021 - 14/04/2021',
-  onChange: action('onChange'),
+export const DateRangeSetValue: Story = {
+  args: {
+    label: 'Date Range',
+    dateSelection: DateSelectionType.DateRange,
+    value: '30/03/2021 - 14/04/2021',
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const DateRangeDefaultValue = Template.bind({});
-DateRangeDefaultValue.args = {
-  label: 'Date Range',
-  dateSelection: DateSelectionType.DateRange,
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
+export const DateRangeDefaultValue: Story = {
+  args: {
+    label: 'Date Range',
+    dateSelection: DateSelectionType.DateRange,
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const DateRangeOnChange = Template.bind({});
-DateRangeOnChange.args = {
-  label: 'Date Range',
-  dateSelection: DateSelectionType.DateRange,
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
+export const DateRangeOnChange: Story = {
+  args: {
+    label: 'Date Range',
+    dateSelection: DateSelectionType.DateRange,
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const CssClassNameChange = Template.bind({});
-CssClassNameChange.args = {
-  label: 'Css Class Change',
-  useDefaultDateValue: true,
-  className: 'bsc-border-none bsc-text-sm bsc-border-transparent',
-  onChange: action('onChange'),
+export const CssClassNameChange: Story = {
+  args: {
+    label: 'Css Class Change',
+    useDefaultDateValue: true,
+    className: '!bsc-border-none !bsc-text-sm !bsc-border-transparent',
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
 };
 
-export const MinuteConstraint = Template.bind({});
-MinuteConstraint.args = {
-  label: 'Date',
-  timeConstraints: {
-    minutes: {
-      min: 0,
-      max: 59,
-      step: 10,
+export const MinuteConstraint: Story = {
+  args: {
+    label: 'Date',
+    timeConstraints: {
+      minutes: {
+        min: 0,
+        max: 59,
+        step: 10,
+      },
     },
+    onChange: action('onChange'),
   },
-  onChange: action('onChange'),
+  render: (args) => <Template {...args} />,
 };
 
-export const ScrollDateTime = ScrollTemplate.bind({});
-ScrollDateTime.args = {
-  label: 'Date',
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
-};
-
-export const BodyScrollDateTime = BodyScrollTemplate.bind({});
-BodyScrollDateTime.args = {
-  label: 'Date',
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
-};
-
-export const DelaySetValue = SetValueTemplate.bind({});
-DelaySetValue.args = {
-  label: 'Date',
-  onChange: action('onChange'),
-};
-
-export const SetValueUndefined = SetValueUndefinedTemplate.bind({});
-SetValueUndefined.args = {
-  label: 'Date to Undefined',
-  onChange: action('onChange'),
-};
-
-export const SelectableDate = Template.bind({});
-SelectableDate.args = {
-  label: 'Date',
-  selectableDate: (date: Date) => date.getDay() !== 0,
-  onChange: action('onChange'),
-};
-
-export const IsValidSelectedDate = Template.bind({});
-IsValidSelectedDate.args = {
-  label: 'Date',
-  isValidDate: (date: Date) => date.getDay() !== 0,
-  onChange: action('onChange'),
-};
-
-export const ShortDate = Template.bind({});
-ShortDate.args = {
-  label: 'Date',
-  dateFormat: DateFormatType.Short,
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
-};
-
-export const MediumDate = Template.bind({});
-MediumDate.args = {
-  label: 'Date',
-  dateFormat: DateFormatType.Medium,
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
-};
-
-export const LongDate = Template.bind({});
-LongDate.args = {
-  label: 'Date',
-  dateFormat: DateFormatType.Long,
-  useDefaultDateValue: true,
-  onChange: action('onChange'),
-};
-
-export const ReadOnlyDate = Template.bind({});
-ReadOnlyDate.args = {
-  label: 'Read Only Date',
-  value: '31/10/1977, 8:30:00 AM',
-  readOnly: true,
-  onChange: action('onChange'),
-};
-
-export const ModifiedColors = Template.bind({});
-ModifiedColors.args = {
-  label: 'Modified Colors',
-  colors: {
-    inputBorderColor: 'bsc-border-none',
-    inputBgColor: 'bsc-bg-blue-200',
-    todayDateColor: 'bsc-bg-red-500',
+export const ScrollDateTime: Story = {
+  args: {
+    label: 'Date',
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
   },
-  onChange: action('onChange'),
+  render: (args) => <ScrollTemplate {...args} />,
 };
 
-export const OffScreenRight = OffScreenRightTemplate.bind({});
-OffScreenRight.args = {
-  label: 'Off Screen Right',
-  onChange: action('onChange'),
+export const BodyScrollDateTime: Story = {
+  args: {
+    label: 'Date',
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <BodyScrollTemplate {...args} />,
 };
 
-export const OffScreenRightBottom = OffScreenRightBottomTemplate.bind({});
-OffScreenRightBottom.args = {
-  label: 'Off Screen Right Bottom',
-  onChange: action('onChange'),
+export const DelaySetValue: Story = {
+  args: {
+    label: 'Date',
+    onChange: action('onChange'),
+  },
+  render: (args) => <SetValueTemplate {...args} />,
+};
+
+export const SetValueUndefined: Story = {
+  args: {
+    label: 'Date to Undefined',
+    onChange: action('onChange'),
+  },
+  render: (args) => <SetValueUndefinedTemplate {...args} />,
+};
+
+export const SelectableDate: Story = {
+  args: {
+    label: 'Date',
+    selectableDate: (date: Date) => date.getDay() !== 0,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const IsValidSelectedDate: Story = {
+  args: {
+    label: 'Date',
+    isValidDate: (date: Date) => date.getDay() !== 0,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const ShortDate: Story = {
+  args: {
+    label: 'Date',
+    dateFormat: DateFormatType.Short,
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const MediumDate: Story = {
+  args: {
+    label: 'Date',
+    dateFormat: DateFormatType.Medium,
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const LongDate: Story = {
+  args: {
+    label: 'Date',
+    dateFormat: DateFormatType.Long,
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const ReadOnlyDate: Story = {
+  args: {
+    label: 'Read Only Date',
+    value: '31/10/1977, 8:30:00 AM',
+    readOnly: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const ModifiedColors: Story = {
+  args: {
+    label: 'Modified Colors',
+    colors: {
+      inputBorderColor: 'bsc-border-none',
+      inputBgColor: 'bsc-bg-blue-200',
+      todayDateColor: 'bsc-bg-red-500',
+    },
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const OffScreenRight: Story = {
+  args: {
+    label: 'Off Screen Right',
+    onChange: action('onChange'),
+  },
+  render: (args) => <OffScreenRightTemplate {...args} />,
+};
+
+export const OffScreenRightBottom: Story = {
+  args: {
+    label: 'Off Screen Right Bottom',
+    onChange: action('onChange'),
+  },
+  render: (args) => <OffScreenRightBottomTemplate {...args} />,
 };

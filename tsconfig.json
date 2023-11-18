@@ -1,40 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es6",
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "rootDir": ".",
-    "declaration": true,
-    "declarationDir": "types",
-    "outDir": "types",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "removeComments": true,
-    "allowSyntheticDefaultImports": true,
+    // add Bun type definitions
+    "types": ["bun-types"],
+
+    // enable latest features
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+
+    // if TS 5.x+
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "moduleDetection": "force",
+
+    "jsx": "react-jsx", // support JSX
+    "allowJs": true, // allow importing `.js` from `.ts`
+
+    // best practices
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "jsx": "react-jsx",
-    "isolatedModules": true,
-    "allowJs": true,
-    "newLine": "lf"
+    "skipLibCheck": true,
+    "composite": true,
+    "downlevelIteration": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "types",
-    "public"
-  ]
+  "include": ["./src/**/*", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "types", "public"],
 }

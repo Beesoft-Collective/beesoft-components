@@ -1,30 +1,32 @@
-import { Meta, Story } from '@storybook/react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import ContentEditableInput, { ContentEditableInputProps } from './content-editable-input.component';
 
-export default {
+const meta: Meta<typeof ContentEditableInput> = {
   title: 'Form/Content Editable Input',
   component: ContentEditableInput,
-} as Meta;
+};
 
-const Template: Story<ContentEditableInputProps> = (args) => <ContentEditableInput {...args} />;
+export default meta;
 
-const ValueTitleTemplate: Story<ContentEditableInputProps> = (args) => (
+type Story = StoryObj<typeof ContentEditableInput>;
+
+const ValueTitleTemplate = (args: ContentEditableInputProps) => (
   <div className="bsc-w-24">
     <ContentEditableInput {...args} />
   </div>
 );
 
-export const Placeholder = Template.bind({});
-Placeholder.args = {
-  placeholder: 'This is a placeholder',
-  isSingleLine: true,
+export const Placeholder: Story = {
+  args: {
+    placeholder: 'This is a placeholder',
+    isSingleLine: true,
+  },
 };
 
-export const CheckValueTitle = ValueTitleTemplate.bind({});
-CheckValueTitle.args = {
-  value: 'A really long value that should cause it to be shown as a tooltip',
-  isSingleLine: true,
+export const CheckValueTitle: Story = {
+  args: {
+    value: 'A really long value that should cause it to be shown as a tooltip',
+    isSingleLine: true,
+  },
+  render: (args) => <ValueTitleTemplate {...args} />,
 };

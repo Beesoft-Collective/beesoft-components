@@ -188,35 +188,243 @@ export function isDateBetween(checkDate: Date, startComparisonDate: Date, endCom
   return checkDate.getTime() >= startComparisonDate.getTime() && checkDate.getTime() <= endComparisonDate.getTime();
 }
 
-export function loadLocale(localeToLoad: string): Promise<Locale> {
-  return new Promise<Locale>((resolve, reject) => {
-    import(`date-fns/locale/${localeToLoad}`)
-      .then((locale) => {
-        if (locale && locale.default) {
-          resolve(locale.default);
-        }
+export async function loadLocale(localeToLoad: string) {
+  const importedFromEsmSh: Locale = (
+    await import(/* @vite-ignore */ `https://esm.sh/date-fns/locale/${getLocaleName(localeToLoad)}/index.js`)
+  ).default;
 
-        reject('Locale did not load correctly');
-      })
-      .catch((error) => {
-        // some locales only have languages, so lets try just loading the default language
-        const localeParts = localeToLoad.split('-');
-        if (localeParts.length === 2) {
-          const language = localeParts[0];
-          import(`date-fns/locale/${language}`)
-            .then((locale) => {
-              if (locale && locale.default) {
-                resolve(locale.default);
-              }
+  return importedFromEsmSh;
+}
 
-              reject('Locale did not load correctly');
-            })
-            .catch((error) => reject(error));
-        } else {
-          reject(error);
-        }
-      });
-  });
+function getLocaleName(localeToLoad: string) {
+  const [language, locale] = localeToLoad.split('-');
+
+  switch (language) {
+    case 'af':
+      return 'af';
+    case 'ar':
+      switch (locale) {
+        case 'DZ':
+          return 'ar-DZ';
+        case 'EG':
+          return 'ar-EG';
+        case 'MA':
+          return 'ar-MA';
+        case 'SA':
+          return 'ar-SA';
+        case 'TN':
+          return 'ar-TN';
+        default:
+          return 'ar';
+      }
+    case 'az':
+      return 'az';
+    case 'be':
+      switch (locale) {
+        case 'tarask':
+          return 'be-tarask';
+        default:
+          return 'be';
+      }
+    case 'bg':
+      return 'bg';
+    case 'bn':
+      return 'bn';
+    case 'bs':
+      return 'bs';
+    case 'ca':
+      return 'ca';
+    case 'cs':
+      return 'cs';
+    case 'cy':
+      return 'cy';
+    case 'da':
+      return 'da';
+    case 'de':
+      switch (locale) {
+        case 'AT':
+          return 'de-AT';
+        default:
+          return 'de';
+      }
+    case 'el':
+      return 'el';
+    case 'en':
+      switch (locale) {
+        case 'AU':
+          return 'en-AU';
+        case 'CA':
+          return 'en-CA';
+        case 'GB':
+          return 'en-GB';
+        case 'IE':
+          return 'en-IE';
+        case 'IN':
+          return 'en-IN';
+        case 'NZ':
+          return 'en-NZ';
+        case 'US':
+          return 'en-US';
+        default:
+          return 'en-ZA';
+      }
+    case 'eo':
+      return 'eo';
+    case 'es':
+      return 'es';
+    case 'et':
+      return 'et';
+    case 'eu':
+      return 'eu';
+    case 'fa':
+      return 'fa-IR';
+    case 'fi':
+      return 'fi';
+    case 'fr':
+      switch (locale) {
+        case 'CA':
+          return 'fr-CA';
+        case 'CH':
+          return 'fr-CH';
+        default:
+          return 'fr';
+      }
+    case 'fy':
+      return 'fy';
+    case 'gd':
+      return 'gd';
+    case 'gl':
+      return 'gl';
+    case 'gu':
+      return 'gu';
+    case 'he':
+      return 'he';
+    case 'hi':
+      return 'hi';
+    case 'hr':
+      return 'hr';
+    case 'ht':
+      return 'ht';
+    case 'hu':
+      return 'hu';
+    case 'hy':
+      return 'hy';
+    case 'id':
+      return 'id';
+    case 'is':
+      return 'is';
+    case 'it':
+      switch (locale) {
+        case 'CH':
+          return 'it-CH';
+        default:
+          return 'it';
+      }
+    case 'ja':
+      switch (locale) {
+        case 'Hira':
+          return 'ja-Hira';
+        default:
+          return 'ja';
+      }
+    case 'ka':
+      return 'ka';
+    case 'kk':
+      return 'kk';
+    case 'km':
+      return 'km';
+    case 'kn':
+      return 'kn';
+    case 'ko':
+      return 'ko';
+    case 'lb':
+      return 'lb';
+    case 'lt':
+      return 'lt';
+    case 'lv':
+      return 'lv';
+    case 'mk':
+      return 'mk';
+    case 'mn':
+      return 'mn';
+    case 'ms':
+      return 'ms';
+    case 'mt':
+      return 'mt';
+    case 'nb':
+      return 'nb';
+    case 'nl':
+      switch (locale) {
+        case 'BE':
+          return 'nl-BE';
+        default:
+          return 'nl';
+      }
+    case 'nn':
+      return 'nn';
+    case 'oc':
+      return 'oc';
+    case 'pl':
+      return 'pl';
+    case 'pt':
+      switch (locale) {
+        case 'BR':
+          return 'pt-BR';
+        default:
+          return 'pt';
+      }
+    case 'ro':
+      return 'ro';
+    case 'ru':
+      return 'ru';
+    case 'sk':
+      return 'sk';
+    case 'sl':
+      return 'sl';
+    case 'sq':
+      return 'sq';
+    case 'sr':
+      switch (locale) {
+        case 'Latn':
+          return 'sr-Latn';
+        default:
+          return 'sr';
+      }
+    case 'sv':
+      return 'sv';
+    case 'ta':
+      return 'ta';
+    case 'te':
+      return 'te';
+    case 'th':
+      return 'th';
+    case 'tr':
+      return 'tr';
+    case 'ug':
+      return 'ug';
+    case 'uk':
+      return 'uk';
+    case 'uz':
+      switch (locale) {
+        case 'Cyrl':
+          return 'uz-Cyrl';
+        default:
+          return 'uz';
+      }
+    case 'vi':
+      return 'vi';
+    case 'zh':
+      switch (locale) {
+        case 'CN':
+          return 'zh-CN';
+        case 'HK':
+          return 'zh-HK';
+        default:
+          return 'zh-TW';
+      }
+    default:
+      return 'en-AU';
+  }
 }
 
 export function createDefaultColors(): DateTimeColors {
