@@ -84,7 +84,7 @@ export default function DateTimeRangeSelector({
       </div>
       <div className="bsc-flex-grow">
         <div className="bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-range-wrapper">
-          <div className="bsc-border-r bsc-border-solid bsc-border-gray-400 bsc-pr-4 bc-dt-range-calendar-1">
+          <div className="bsc-border-r bsc-border-solid bsc-border-gray-3 bsc-pr-4 bc-dt-range-calendar-1">
             <DateTimeCalendar
               viewDate={viewDate}
               selectedStartDate={selectedStartDate}

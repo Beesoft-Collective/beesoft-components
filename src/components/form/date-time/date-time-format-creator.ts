@@ -1,4 +1,4 @@
-import { FormatPart, FormatValueType, InputFormat } from '../input/formatted-input/input-format.interfaces';
+import { FormatPart, FormatValueType, InputFormat } from '../inputs/formatted-input/input-format.interfaces';
 import { DateSelectionType } from './date-time-types';
 
 export class DateTimeFormatCreator {

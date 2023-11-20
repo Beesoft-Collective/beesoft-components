@@ -130,6 +130,7 @@ export default function OverlayPanel({
     ) as HTMLElement;
   };
 
+  //FIXME: When the overlay will never fit on the screen we need to find a way to limit the number of times its called.
   const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
     if (panelRef.current) {
       const windowSize = DomHandler.getScreenDimensions();
@@ -279,7 +280,7 @@ export default function OverlayPanel({
     >
       {({ state, defaultStyle, transitionStyles }) => (
         <div
-          className="bsc-fixed bsc-bg-white dark:bsc-bg-gray-900 bsc-border bsc-border-solid dark:bsc-text-white dark:bsc-border-white bsc-shadow"
+          className="bsc-fixed bsc-bg-white dark:bsc-bg-mono-dark-1 bsc-border bsc-border-solid dark:bsc-text-mono-light-1 dark:bsc-border-mono-light-1 bsc-shadow"
           style={{
             ...baseStyles,
             ...defaultStyle,

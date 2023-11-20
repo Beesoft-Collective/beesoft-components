@@ -5,7 +5,7 @@ import { FormatPartEntry, FormatPartSlot } from './parser.interfaces';
  */
 export class InputSlotCreator {
   /**
-   * Creates input slots from a list of format part entries.
+   * Creates inputs slots from a list of format part entries.
    */
   public static create(formatPartEntries: FormatPartEntry[]): FormatPartSlot[] {
     const slots: FormatPartSlot[] = [];

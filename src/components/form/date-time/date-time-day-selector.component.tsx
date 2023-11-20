@@ -90,7 +90,7 @@ export default function DateTimeDaySelector({
       {showTimeSelector && (
         <div className="bsc-w-full bsc-flex bsc-flex-row bsc-p-2 bsc-justify-center bc-dt-time-value-wrapper">
           <div
-            className="bsc-p-2 bsc-cursor-pointer hover:bsc-bg-gray-300 dark:hover:bsc-bg-white dark:hover:bsc-text-black dark:bsc-text-white bc-dt-time-value"
+            className="bsc-p-2 bsc-cursor-pointer hover:bsc-bg-gray-4 dark:hover:bsc-bg-mono-light-2 dark:hover:bsc-text-mono-dark-2 dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1 bc-dt-time-value"
             onClick={onTimeClicked}
           >
             {selectedDate?.toLocaleTimeString(locale.code) || getDefaultTime(locale)}

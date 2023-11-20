@@ -54,7 +54,7 @@ export class FormatNavigator {
   }
 
   /**
-   * Called when the mouse is clicked in the input element; this gets the cursor position of where the mouse was
+   * Called when the mouse is clicked in the inputs element; this gets the cursor position of where the mouse was
    * clicked, or the last typed character.
    */
   public findCursorPosition() {
@@ -88,8 +88,8 @@ export class FormatNavigator {
   }
 
   public moveHome(): void {
-    // instead of moving the cursor to the beginning of the input element, we move the cursor to the start position of
-    // the first input slot. this is useful in cases where the first format part is a separator.
+    // instead of moving the cursor to the beginning of the inputs element, we move the cursor to the start position of
+    // the first inputs slot. this is useful in cases where the first format part is a separator.
     const firstSlot = this.inputSlotCollection.getFirstSlot();
     this.setCursorSelection(firstSlot.startPosition);
   }
