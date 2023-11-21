@@ -18,7 +18,10 @@ export class DateTimeFormatCreator {
     return this.use24HourTime;
   }
 
-  constructor(private dateSelection: DateSelectionType, localeCode: string) {
+  constructor(
+    private dateSelection: DateSelectionType,
+    localeCode: string
+  ) {
     const year = 2023;
     const month = 12;
     const day = 20;

@@ -4,12 +4,12 @@ export function useKeyDown(keyCode: string | Array<string>) {
   const [keyDown, setKeyDown] = useState(false);
   const keyCodes = typeof keyCode === 'string' ? [keyCode] : keyCode;
 
-  const downHandler = ({ key }) => {
+  const downHandler = ({ key }: KeyboardEvent) => {
     if (keyCodes.includes(key)) {
       setKeyDown(true);
     }
   };
-  const upHandler = ({ key }) => {
+  const upHandler = ({ key }: KeyboardEvent) => {
     if (keyCodes.includes(key)) {
       setKeyDown(false);
     }

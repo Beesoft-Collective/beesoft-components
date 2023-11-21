@@ -14,7 +14,7 @@ export interface FormatPart {
    */
   placeholder?: string;
   /**
-   * The text displayed when the inputs is focused and no text has been entered at that spot.
+   * The text displayed when the inputs are focused and no text has been entered at that spot.
    */
   inputText?: string;
   /**

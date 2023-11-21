@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
@@ -28,7 +29,7 @@ import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
-export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
+export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;
   useFormattedInput?: boolean;
   allowClear?: boolean;
@@ -36,7 +37,7 @@ export interface DateTimeProps extends FormInputControl<string | Date | Array<Da
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   iconPosition?: CalendarIconPosition;
   inputElement?: HTMLElement;
   selectableDate?: (currentDate: Date) => boolean;
@@ -54,7 +55,7 @@ export interface DateTimeInputTemplateProps {
   onFocus: (event: FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
-  iconElement?: JSX.Element;
+  iconElement?: React.JSX.Element;
 }
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;

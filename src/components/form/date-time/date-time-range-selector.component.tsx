@@ -1,6 +1,6 @@
-import { addMonths } from 'date-fns';
-import subMonths from 'date-fns/subMonths';
-import React from 'react';
+import { addMonths, subMonths } from 'date-fns';
+import { Dispatch } from 'react';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
 import { CalendarSelectionMode, DateScrollerType } from './date-time-types';
@@ -11,18 +11,18 @@ export interface DateTimeRangeSelectorProps {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   locale: Locale;
-  onChange?: (value?: Date | Array<Date>) => void;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  onChange?: (value?: TypeOrArray<Date>) => void;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeRangeSelector({
+const DateTimeRangeSelector = ({
   viewDate,
   selectedStartDate,
   selectedEndDate,
   locale,
   onChange,
   dispatcher,
-}: DateTimeRangeSelectorProps) {
+}: DateTimeRangeSelectorProps) => {
   const nextMonth = addMonths(viewDate, 1);
 
   const onDateSelected = (date: Date, options?: Record<string, unknown>) => {
@@ -110,4 +110,6 @@ export default function DateTimeRangeSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeRangeSelector;

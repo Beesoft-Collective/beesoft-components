@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday } from 'date-fns';
-import React, { ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DateTimeContext } from './date-time-context';
@@ -18,7 +18,7 @@ export interface DateTimeCalendarProps {
   onDateSelected?: (date: Date, options?: Record<string, any>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  dispatcher?: React.Dispatch<DateTimeReducerAction>;
+  dispatcher?: Dispatch<DateTimeReducerAction>;
 }
 
 export interface DateTimeCalendarTemplateProps {
@@ -211,7 +211,7 @@ const DateTimeCalendar = ({
               'bsc-text-center bsc-py-1',
               {
                 'bsc-text-gray-3': !column.isCurrent,
-                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1 bsc-rounded-full':
+                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
@@ -221,8 +221,10 @@ const DateTimeCalendar = ({
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
                 'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
-                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1 bsc-rounded-full':
-                  column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
+                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1':
+                  column.dayValue &&
+                  isToday(column.dayValue) &&
+                  !(isSelectedDate(column.dayValue) || isInSelectedDateRange(column.dayValue)),
               },
               'bc-dt-date-cell'
             );

@@ -1,6 +1,6 @@
-import addMonths from 'date-fns/addMonths';
-import subMonths from 'date-fns/subMonths';
-import React from 'react';
+import { addMonths, subMonths } from 'date-fns';
+import { Dispatch } from 'react';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
@@ -14,11 +14,11 @@ export interface DateTimeDaySelectorProps {
   showTimeSelector: boolean;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  onChange?: (value?: Date | Array<Date>) => void;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  onChange?: (value?: TypeOrArray<Date>) => void;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeDaySelector({
+const DateTimeDaySelector = ({
   selectedDate,
   viewDate,
   locale,
@@ -27,7 +27,7 @@ export default function DateTimeDaySelector({
   isValidDate,
   onChange,
   dispatcher,
-}: DateTimeDaySelectorProps) {
+}: DateTimeDaySelectorProps) => {
   const movePreviousMonth = () => {
     if (viewDate) {
       dispatcher({
@@ -99,4 +99,6 @@ export default function DateTimeDaySelector({
       )}
     </div>
   );
-}
+};
+
+export default DateTimeDaySelector;

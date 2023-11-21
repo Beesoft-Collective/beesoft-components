@@ -1,13 +1,13 @@
 import cx from 'classnames';
-import { debounce } from 'lodash';
-import React, { forwardRef, memo, Ref, useCallback, useImperativeHandle, useRef } from 'react';
+import { debounce } from 'lodash-es';
+import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
 import { FormInputControl } from '../../form-control.interface';
 
 export interface ContentEditableInputProps extends FormInputControl<string> {
   debounceTime?: number;
   fillContainer?: boolean;
-  leftElement?: JSX.Element;
-  rightElement?: JSX.Element;
+  leftElement?: React.JSX.Element;
+  rightElement?: React.JSX.Element;
   leftElementClassName?: string;
   rightElementClassName?: string;
   isSingleLine?: boolean;
@@ -195,4 +195,4 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   );
 };
 
-export default memo(forwardRef(ContentEditableInput));
+export default forwardRef(ContentEditableInput);

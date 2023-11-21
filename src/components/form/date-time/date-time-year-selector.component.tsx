@@ -1,7 +1,5 @@
-import addYears from 'date-fns/addYears';
-import setYear from 'date-fns/setYear';
-import subYears from 'date-fns/subYears';
-import React from 'react';
+import { addYears, setYear, subYears } from 'date-fns';
+import { Dispatch } from 'react';
 import { getTranslatedYearMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
 import { DateScrollerType } from './date-time-types';
@@ -10,10 +8,10 @@ import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 export interface DateTimeYearSelectorProps {
   viewDate: Date;
   locale: Locale;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: DateTimeYearSelectorProps) {
+const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSelectorProps) => {
   const yearMatrix = getTranslatedYearMatrix(viewDate, locale);
 
   const movePreviousDecade = () => {
@@ -71,4 +69,6 @@ export default function DateTimeYearSelector({ viewDate, locale, dispatcher }: D
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeYearSelector;

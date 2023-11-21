@@ -1,9 +1,8 @@
-import { throttle } from 'lodash';
-import debounce from 'lodash/debounce';
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { throttle, debounce } from 'lodash-es';
+import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
-import { MarkupEvents } from '../../common-interfaces';
+import { MarkupEvents, TypeOrArray } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomElementAlignment, DomHandler, DomTargetPosition } from '../../dom-handler';
 
@@ -34,10 +33,10 @@ export interface OverlayPanelProps {
   shown?: () => void;
   hidden?: () => void;
   isClickedWithin?: () => void;
-  children: ReactNode | Array<ReactNode>;
+  children: TypeOrArray<ReactNode>;
 }
 
-export default function OverlayPanel({
+const OverlayPanel = ({
   visible,
   target,
   targetPosition = DomTargetPosition.BottomLeft,
@@ -56,7 +55,7 @@ export default function OverlayPanel({
   isClickedWithin,
   markupCreated,
   children,
-}: OverlayPanelProps & MarkupEvents) {
+}: OverlayPanelProps & MarkupEvents) => {
   const [zIndex, setZIndex] = useState(-1);
   const [visibility, setVisibility] = useState(visible);
   const [dimensionsChangedFlag, setDimensionsChangedFlag] = useState(false);
@@ -252,8 +251,8 @@ export default function OverlayPanel({
     }
   };
 
-  const baseStyles: React.CSSProperties = useMemo(() => {
-    const styles: React.CSSProperties = {
+  const baseStyles: CSSProperties = useMemo(() => {
+    const styles: CSSProperties = {
       top: `${panelDimensions.current.top}px`,
       left: `${panelDimensions.current.left}px`,
       zIndex,
@@ -293,4 +292,6 @@ export default function OverlayPanel({
       )}
     </BeeSoftTransition>
   );
-}
+};
+
+export default OverlayPanel;

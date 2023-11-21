@@ -180,7 +180,7 @@ export function containsToString(object: unknown): object is IToString {
  * @param value - The initial type to convert.
  * @returns {T} - The type to convert to.
  */
-export function forceAssert<T>(value: unknown) {
+export function forceAssert<T>(value: unknown): T {
   return value as T;
 }
 
