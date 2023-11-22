@@ -25,3 +25,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           exitOnceUploaded: true
+      - name: Upload Logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: external-logs
+          path: /home/runner/work/beesoft-components/beesoft-components/**/*.log
