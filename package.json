@@ -3,7 +3,9 @@
   "version": "0.3.2",
   "private": false,
   "type": "module",
-  "author": "Brandon Trabon",
+  "author": {
+    "name": "Brandon Trabon"
+  },
   "keywords": [
     "react",
     "ui components",
@@ -12,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Beehive-Software-Consultants/beesoft-components"
+    "url": "git+https://github.com/Beehive-Software-Consultants/beesoft-components.git"
   },
   "files": [
     "dist",
@@ -28,7 +30,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "bunx chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -64,6 +67,7 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "autoprefixer": "^10.4.16",
     "bun-types": "^1.0.12",
+    "chromatic": "^9.1.0",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -96,5 +100,11 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Beehive-Software-Consultants/beesoft-components/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/Beehive-Software-Consultants/beesoft-components#readme",
+  "_id": "beesoft-components@0.3.2"
 }
