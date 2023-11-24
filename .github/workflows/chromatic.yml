@@ -20,8 +20,8 @@ jobs:
       - name: Install dependencies
         run: bun install
       - name: Publish to Chromatic
-        run: bun run chromatic
-        env:
+        uses: chromaui/action@v1
+        with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           exitOnceUploaded: true
