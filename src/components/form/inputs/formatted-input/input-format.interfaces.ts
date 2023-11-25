@@ -10,11 +10,11 @@ export interface FormatPart {
   characterCount: number;
   /**
    * In a separator this will be the character displayed between format sections; in a format section this is displayed
-   * when no text has been entered in the input.
+   * when no text has been entered in the inputs.
    */
   placeholder?: string;
   /**
-   * The text displayed when the input is focused and no text has been entered at that spot.
+   * The text displayed when the inputs are focused and no text has been entered at that spot.
    */
   inputText?: string;
   /**
@@ -43,11 +43,11 @@ export interface FormatPart {
    */
   maximumValue?: number;
   /**
-   * If the maximum value is exceeded this will cause the input to show an error.
+   * If the maximum value is exceeded this will cause the inputs to show an error.
    */
   exceedingMaximumValueCausesError?: boolean;
   /**
-   * If the maximum value is exceeded this will cause the input to tab to the next section.
+   * If the maximum value is exceeded this will cause the inputs to tab to the next section.
    */
   exceedingMaximumValueCausesTab?: boolean;
   /**
@@ -63,7 +63,7 @@ export interface FormatPart {
 
 export interface InputFormat {
   /**
-   * When true deleting a character earlier in the input text will shift the other characters into other format parts
+   * When true deleting a character earlier in the inputs text will shift the other characters into other format parts
    * (default false). This would probably be used in a credit card or phone number format.
    */
   deleteShiftsFormatPart?: boolean;

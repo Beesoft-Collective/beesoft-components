@@ -1,6 +1,6 @@
-import { addMonths } from 'date-fns';
-import subMonths from 'date-fns/subMonths';
-import React from 'react';
+import { addMonths, subMonths } from 'date-fns';
+import { Dispatch } from 'react';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
 import { CalendarSelectionMode, DateScrollerType } from './date-time-types';
@@ -11,18 +11,18 @@ export interface DateTimeRangeSelectorProps {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   locale: Locale;
-  onChange?: (value?: Date | Array<Date>) => void;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  onChange?: (value?: TypeOrArray<Date>) => void;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeRangeSelector({
+const DateTimeRangeSelector = ({
   viewDate,
   selectedStartDate,
   selectedEndDate,
   locale,
   onChange,
   dispatcher,
-}: DateTimeRangeSelectorProps) {
+}: DateTimeRangeSelectorProps) => {
   const nextMonth = addMonths(viewDate, 1);
 
   const onDateSelected = (date: Date, options?: Record<string, unknown>) => {
@@ -84,7 +84,7 @@ export default function DateTimeRangeSelector({
       </div>
       <div className="bsc-flex-grow">
         <div className="bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-range-wrapper">
-          <div className="bsc-border-r bsc-border-solid bsc-border-gray-400 bsc-pr-4 bc-dt-range-calendar-1">
+          <div className="bsc-border-r bsc-border-solid bsc-border-gray-3 bsc-pr-4 bc-dt-range-calendar-1">
             <DateTimeCalendar
               viewDate={viewDate}
               selectedStartDate={selectedStartDate}
@@ -110,4 +110,6 @@ export default function DateTimeRangeSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeRangeSelector;

@@ -17,3 +17,5 @@ export interface IToString {
 export interface IDisposable {
   dispose: () => void;
 }
+
+export type TypeOrArray<T> = T | Array<T>;

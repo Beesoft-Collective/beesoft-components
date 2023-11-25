@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
-import { cloneDeep } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import { cloneDeep } from 'lodash-es';
+import { Dispatch, useEffect, useRef, useState } from 'react';
 import { generateNumberArray } from '../../common-functions';
 import { TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
@@ -13,10 +13,10 @@ export interface DateTimeTimeSelectorProps {
   timeFormat?: TimeFormatType;
   timeConstraints?: TimeConstraints;
   onChange?: (value?: Date | Array<Date>) => void;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeTimeSelector({
+const DateTimeTimeSelector = ({
   viewDate,
   showDateSelector,
   locale,
@@ -24,7 +24,7 @@ export default function DateTimeTimeSelector({
   timeConstraints,
   onChange,
   dispatcher,
-}: DateTimeTimeSelectorProps) {
+}: DateTimeTimeSelectorProps) => {
   const maximumHour = useRef(timeFormat === TimeFormatType.TwelveHour ? 11 : 23);
   const hours = useRef<string[]>(
     timeFormat === TimeFormatType.TwelveHour
@@ -151,7 +151,7 @@ export default function DateTimeTimeSelector({
   });
 
   const dateSelectorStyle = cx(
-    'bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-300 dark:bsc-text-white dark:hover:bsc-bg-white dark:hover:bsc-text-black bc-dt-time-date-value',
+    'bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-4 dark:bsc-text-mono-light-1 dark:hover:bsc-bg-mono-light-1 dark:hover:bsc-text-mono-dark-1 bc-dt-time-date-value',
     {
       'bsc-col-span-4': timeFormat === TimeFormatType.TwelveHour,
       'bsc-col-span-3': timeFormat === TimeFormatType.TwentyFourHour,
@@ -214,4 +214,6 @@ export default function DateTimeTimeSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeTimeSelector;

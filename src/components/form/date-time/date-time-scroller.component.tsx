@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DateScrollerType } from './date-time-types';
 import { DateTimeContext } from './date-time-context';
@@ -22,13 +23,13 @@ export interface DateTimeScrollerTemplateProps {
 
 export type DateTimeScrollerTemplate = TemplateFunction<DateTimeScrollerTemplateProps>;
 
-export default function DateTimeScroller({
+const DateTimeScroller = ({
   title,
   scrollerType,
   onTitleClicked,
   onMovePrevious,
   onMoveNext,
-}: DateTimeScrollerProps) {
+}: DateTimeScrollerProps) => {
   const context = useContext(DateTimeContext);
   const viewTemplate = context.dateScrollerTemplate;
 
@@ -40,7 +41,7 @@ export default function DateTimeScroller({
     onMoveNext,
   };
 
-  const defaultTemplate = (props: DateTimeScrollerTemplateProps, children: React.ReactNode | React.ReactNodeArray) => (
+  const defaultTemplate = (props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
   );
 
@@ -63,4 +64,6 @@ export default function DateTimeScroller({
       </div>
     </TemplateOutlet>
   );
-}
+};
+
+export default DateTimeScroller;

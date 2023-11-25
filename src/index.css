@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --theme-bsc-primary-1: #2f54ff;
+  --theme-bsc-primary-2: #5f7bff;
+  --theme-bsc-primary-3: #899eff;
+  --theme-bsc-primary-4: #b4c1ff;
+  --theme-bsc-primary-5: #dee4ff;
+  --theme-bsc-gray-1: #303030;
+  --theme-bsc-gray-2: #5f5f5f;
+  --theme-bsc-gray-3: #8f8f8f;
+  --theme-bsc-gray-4: #bebebe;
+  --theme-bsc-gray-5: #eeeeee;
+  --theme-bsc-mono-dark-1: #222222;
+  --theme-bsc-mono-dark-2: #3c3c3c;
+  --theme-bsc-mono-dark-3: #4e4e4e;
+  --theme-bsc-mono-light-1: #fefefe;
+  --theme-bsc-mono-light-2: #eeeeee;
+  --theme-bsc-mono-light-3: #cccccc;
+  --theme-bsc-info: #2e7ff8;
+  --theme-bsc-success: #53ae0c;
+  --theme-bsc-warning: #ff6914;
+  --theme-bsc-error: #f01616;
+}

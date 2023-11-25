@@ -1,18 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
+import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
-import ContentEditableInput from '../input/content-editable-input/content-editable-input.component';
-import FormattedInput from '../input/formatted-input/formatted-input.component';
+import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
+import FormattedInput from '../inputs/formatted-input/formatted-input.component';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { createDefaultColors, loadLocale, isDateBetween, parseDate, parseDateRange } from './date-time-functions';
+import { isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component';
@@ -21,7 +22,6 @@ import {
   CalendarIconPosition,
   DateFormatType,
   DateSelectionType,
-  DateTimeColors,
   TimeConstraints,
   TimeFormatType,
 } from './date-time-types';
@@ -29,7 +29,7 @@ import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
-export interface DateTimeProps extends FormInputControl<string | Date | Array<Date>, Date | Array<Date>> {
+export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;
   useFormattedInput?: boolean;
   allowClear?: boolean;
@@ -37,10 +37,9 @@ export interface DateTimeProps extends FormInputControl<string | Date | Array<Da
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   iconPosition?: CalendarIconPosition;
   inputElement?: HTMLElement;
-  colors?: DateTimeColors;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   calendarTemplate?: DateTimeCalendarTemplate;
@@ -56,12 +55,12 @@ export interface DateTimeInputTemplateProps {
   onFocus: (event: FocusEvent) => void;
   onInput: (event: React.FormEvent) => void;
   iconPosition: CalendarIconPosition;
-  iconElement?: JSX.Element;
+  iconElement?: React.JSX.Element;
 }
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
 
-export default function DateTime({
+const DateTime = ({
   value,
   readOnly = false,
   label,
@@ -76,14 +75,13 @@ export default function DateTime({
   icon,
   iconPosition = CalendarIconPosition.Right,
   inputElement,
-  colors = createDefaultColors(),
   selectableDate,
   isValidDate,
   onChange,
   calendarTemplate,
   dateScrollerTemplate,
   inputTemplate,
-}: DateTimeProps) {
+}: DateTimeProps) => {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [localeCode, setLocaleCode] = useState<string>();
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
@@ -100,7 +98,6 @@ export default function DateTime({
   const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
     dateScrollerTemplate,
-    colors,
   });
 
   useEffect(() => {
@@ -393,7 +390,7 @@ export default function DateTime({
       : iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: (
-            <div className="bsc-flex">
+            <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
               {allowClear && !readOnly && (
                 <div>
                   <FontAwesomeIcon
@@ -418,7 +415,7 @@ export default function DateTime({
         }
       : {
           leftElement: (
-            <div className="bsc-flex">
+            <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
               <div className="bsc-mr-2">
                 {icon || (
                   <FontAwesomeIcon
@@ -462,17 +459,17 @@ export default function DateTime({
   const inputStyles = cx(
     'bsc-text-left',
     {
-      [`${colors?.readOnlyInputBgColor || 'bsc-bg-gray-200'}`]: readOnly,
-      [`${colors?.inputBgColor || 'bsc-bg-white'}`]: !readOnly,
+      'bsc-bg-gray-2': readOnly,
+      'bsc-bg-white': !readOnly,
     },
-    `dark:bsc-bg-black ${colors?.inputBorderColor} bc-dt-input`,
+    `dark:bsc-bg-mono-dark-1 bc-dt-input`,
     className
   );
 
   return (
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
-        {label && <label className="dark:bsc-text-white bc-dt-label">{label}</label>}
+        {label && <label className="dark:bsc-text-mono-light-1 bc-dt-label">{label}</label>}
         <TemplateOutlet props={inputTemplateProps} template={template}>
           {useFormattedInput === false ? (
             <ContentEditableInput
@@ -579,4 +576,6 @@ export default function DateTime({
       </div>
     </DateTimeContext.Provider>
   );
-}
+};
+
+export default DateTime;

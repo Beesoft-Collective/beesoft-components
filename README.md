@@ -103,7 +103,7 @@ To allow for more customizing CSS placeholder classes have been added to the com
     // the styles for the component label
   }
   .bc-dt-input {
-    // the styles for the input containing the date string
+    // the styles for the inputs containing the date string
   }
   .bc-dt-day-selector {
     .bc-dt-scroller {

@@ -5,7 +5,7 @@ import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 
 /**
- * Combines the format parts with the input slot collection and renders it into a final output.
+ * Combines the format parts with the inputs slot collection and renders it into a final output.
  */
 export class FormatRenderer {
   private readonly instanceCollection: FormatInstanceCollection;
@@ -25,7 +25,7 @@ export class FormatRenderer {
   }
 
   /**
-   * Renders the formatted data by looping through the format parts and using the data from the input slots.
+   * Renders the formatted data by looping through the format parts and using the data from the inputs slots.
    */
   public render() {
     let output = '';
@@ -33,20 +33,20 @@ export class FormatRenderer {
     for (let i = 0, length = this.formatPartList.length; i < length; i++) {
       const partEntry = this.formatPartList[i];
       if (!partEntry.isSeparator) {
-        // for an input part, we need to get the data from the input slot collection
+        // for an inputs part, we need to get the data from the inputs slot collection
         const inputSlot = this.inputSlotCollection.getSlot(i);
         if (inputSlot) {
-          // if the slot isn't completely filled by the data then render input text for the remaining text
+          // if the slot isn't completely filled by the data then render inputs text for the remaining text
           output +=
             inputSlot.partText + inputSlot.inputText?.repeat(inputSlot.characterCount - inputSlot.partText.length);
         }
       } else {
-        // for a separator just render the input text
+        // for a separator just render the inputs text
         output += partEntry.inputText;
       }
     }
 
-    // set the output to the input element
+    // set the output to the inputs element
     if (this.inputElement) {
       this.inputElement.innerHTML = output;
     }

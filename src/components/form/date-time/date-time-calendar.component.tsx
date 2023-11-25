@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday } from 'date-fns';
-import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DateTimeContext } from './date-time-context';
@@ -18,7 +18,7 @@ export interface DateTimeCalendarProps {
   onDateSelected?: (date: Date, options?: Record<string, any>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  dispatcher?: React.Dispatch<DateTimeReducerAction>;
+  dispatcher?: Dispatch<DateTimeReducerAction>;
 }
 
 export interface DateTimeCalendarTemplateProps {
@@ -39,7 +39,7 @@ export interface DateTimeCalendarTemplateProps {
 
 export type DateTimeCalendarTemplate = TemplateFunction<DateTimeCalendarTemplateProps>;
 
-export default function DateTimeCalendar({
+const DateTimeCalendar = ({
   viewDate,
   selectedDate,
   selectedStartDate,
@@ -50,24 +50,25 @@ export default function DateTimeCalendar({
   selectableDate,
   isValidDate,
   dispatcher,
-}: DateTimeCalendarProps) {
-  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
+}: DateTimeCalendarProps) => {
   const [isLocaleLoaded, setIsLocaleLoaded] = useState(false);
-  const loadedLocale = useRef<Locale>();
-  const weekDaysRef = useRef<Array<string>>();
-  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
   const [selectedStartComparison, setSelectedStartComparison] = useState<number>();
   const [selectedEndComparison, setSelectedEndComparison] = useState<number>();
+  const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
+  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
+
+  const loadedLocale = useRef<Locale>();
+  const weekDaysRef = useRef<Array<string>>();
 
   const context = useContext(DateTimeContext);
-  const viewTemplate = context.calendarTemplate;
+  const viewTemplate = useMemo(() => context.calendarTemplate, [context.calendarTemplate]);
 
   const loadLocaleObject = async () => {
     return locale || (await loadLocale(getBrowserLanguage()));
   };
 
   /**
-   * When the component first loads setup the locale either from the passed in property or load it from date-fns.
+   * When the component first loads set up the locale either from the passed in property or load it from date-fns.
    */
   useEffect(() => {
     loadLocaleObject()
@@ -209,10 +210,8 @@ export default function DateTimeCalendar({
             const dayStyles = cx(
               'bsc-text-center bsc-py-1',
               {
-                'bsc-text-gray-400': !column.isCurrent,
-                [`${
-                  context.colors.selectedDateColor || 'bsc-bg-blue-100'
-                } dark:bsc-bg-white dark:bsc-text-black bsc-rounded-full`]:
+                'bsc-text-gray-3': !column.isCurrent,
+                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
@@ -221,9 +220,11 @@ export default function DateTimeCalendar({
                       isSameDay(selectedStartComparison, column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
                 'bsc-cursor-pointer': isSelectable,
-                'bsc-text-red-300 bsc-cursor-not-allowed': !isSelectable,
-                [`${context.colors.todayDateColor || 'bsc-bg-green-100'} dark:bsc-text-black bsc-rounded-full`]:
-                  column.dayValue && isToday(column.dayValue) && !isSelectedDate(column.dayValue),
+                'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
+                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1':
+                  column.dayValue &&
+                  isToday(column.dayValue) &&
+                  !(isSelectedDate(column.dayValue) || isInSelectedDateRange(column.dayValue)),
               },
               'bc-dt-date-cell'
             );
@@ -248,4 +249,6 @@ export default function DateTimeCalendar({
       </div>
     </TemplateOutlet>
   );
-}
+};
+
+export default DateTimeCalendar;

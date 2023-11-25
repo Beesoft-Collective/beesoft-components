@@ -1,18 +1,19 @@
-import React, { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group/Transition';
+import { TypeOrArray } from '../../common-interfaces.ts';
 
 export interface BeeSoftChildrenTransitionProps {
   state: TransitionStatus;
-  defaultStyle: React.CSSProperties;
-  transitionStyles: Record<string, React.CSSProperties>;
+  defaultStyle: CSSProperties;
+  transitionStyles: Record<string, CSSProperties>;
 }
 
 export interface BeeSoftTransitionProps {
   start: boolean;
   timeout?: number;
-  defaultStyle?: React.CSSProperties;
-  transitionStyles?: Record<string, React.CSSProperties>;
+  defaultStyle?: CSSProperties;
+  transitionStyles?: Record<string, CSSProperties>;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
   unmountOnExit?: boolean;
@@ -20,10 +21,10 @@ export interface BeeSoftTransitionProps {
   onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
   onExit?: (node: HTMLElement) => void;
   onExited?: (node: HTMLElement) => void;
-  children: (childProps: BeeSoftChildrenTransitionProps) => ReactNode | Array<ReactNode>;
+  children: (childProps: BeeSoftChildrenTransitionProps) => TypeOrArray<ReactNode>;
 }
 
-export default function BeeSoftTransition({
+const BeeSoftTransition = ({
   start,
   timeout = 400,
   defaultStyle,
@@ -36,7 +37,7 @@ export default function BeeSoftTransition({
   onExit,
   onExited,
   children,
-}: BeeSoftTransitionProps) {
+}: BeeSoftTransitionProps) => {
   const initialStyle = defaultStyle || {
     transition: `opacity ${timeout}ms ${showTransitionOptions}`,
     opacity: 0,
@@ -69,4 +70,6 @@ export default function BeeSoftTransition({
       {(state) => children({ state, defaultStyle: initialStyle, transitionStyles: transitions })}
     </Transition>
   );
-}
+};
+
+export default BeeSoftTransition;

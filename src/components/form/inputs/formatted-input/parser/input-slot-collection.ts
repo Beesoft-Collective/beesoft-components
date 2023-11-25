@@ -4,7 +4,7 @@ import { FormatPartSlot } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
 
 /**
- * Allows access to the input slots and their values.
+ * Allows access to the inputs slots and their values.
  */
 export class InputSlotCollection {
   private readonly inputSlots: FormatPartSlot[];
@@ -14,7 +14,7 @@ export class InputSlotCollection {
   }
 
   /**
-   * Clears the input slots and their values. This is used when we want to process the data from scratch.
+   * Clears the inputs slots and their values. This is used when we want to process the data from scratch.
    */
   public clearAllSlots(): void {
     for (let i = 0, length = this.inputSlots.length; i < length; i++) {
@@ -32,7 +32,7 @@ export class InputSlotCollection {
   }
 
   /**
-   * Returns the first input slot in the collection.
+   * Returns the first inputs slot in the collection.
    * @returns {FormatPartSlot} The first slot in the collection.
    */
   public getFirstSlot() {

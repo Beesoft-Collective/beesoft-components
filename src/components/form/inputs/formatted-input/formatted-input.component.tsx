@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import ContentEditableInput, {
   ContentEditableInputProps,
   ContentEditableInputRef,
@@ -135,4 +135,4 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   );
 };
 
-export default memo(forwardRef(FormattedInput));
+export default forwardRef(FormattedInput);

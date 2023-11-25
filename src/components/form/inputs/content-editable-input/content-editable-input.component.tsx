@@ -1,13 +1,13 @@
 import cx from 'classnames';
-import { debounce } from 'lodash';
-import React, { forwardRef, memo, Ref, useCallback, useImperativeHandle, useRef } from 'react';
+import { debounce } from 'lodash-es';
+import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
 import { FormInputControl } from '../../form-control.interface';
 
 export interface ContentEditableInputProps extends FormInputControl<string> {
   debounceTime?: number;
   fillContainer?: boolean;
-  leftElement?: JSX.Element;
-  rightElement?: JSX.Element;
+  leftElement?: React.JSX.Element;
+  rightElement?: React.JSX.Element;
   leftElementClassName?: string;
   rightElementClassName?: string;
   isSingleLine?: boolean;
@@ -51,7 +51,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   } = props;
 
   const textStyles = useRef('bsc-flex-grow focus:bsc-outline-none');
-  const placeHolderStyles = useRef('bsc-text-gray-400');
+  const placeHolderStyles = useRef('bsc-text-gray-4');
   const inputRef = useRef<HTMLElement>();
 
   const focusListener = useCallback(
@@ -160,7 +160,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
 
   const classNames = cx(
     { 'bsc-w-full ': fillContainer },
-    'bsc-flex bsc-flex-row bsc-shadow-sm bsc-border bsc-border-solid bsc-border-gray-300 dark:bsc-border-white dark:bsc-bg-gray-900 dark:bsc-text-white bsc-rounded-md bsc-p-2',
+    'bsc-flex bsc-flex-row bsc-shadow-sm bsc-border bsc-border-solid bsc-border-gray-3 dark:bsc-border-white dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1 bsc-rounded-md bsc-p-2',
     {
       'bsc-overflow-x-auto bsc-overflow-y-hidden bsc-whitespace-pre': isSingleLine && allowSingleLineScroll,
       'bsc-overflow-hidden bsc-whitespace-pre': isSingleLine && !allowSingleLineScroll,
@@ -195,4 +195,4 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   );
 };
 
-export default memo(forwardRef(ContentEditableInput));
+export default forwardRef(ContentEditableInput);

@@ -38,7 +38,7 @@ export class FormatParser implements IDisposable {
   }
 
   /**
-   * When the input element is created, this method is called, so it can be set to all the classes that need it.
+   * When the inputs element is created, this method is called, so it can be set to all the classes that need it.
    * @param {HTMLElement} element - The content editable element.
    */
   public inputElementCreated(element: HTMLElement): void {
@@ -55,7 +55,7 @@ export class FormatParser implements IDisposable {
   }
 
   /**
-   * Called when the input element gains focus. This method renders the current data and sets the cursor to its current
+   * Called when the inputs element gains focus. This method renders the current data and sets the cursor to its current
    * or saved position.
    */
   public inputFocused(): void {
@@ -69,7 +69,7 @@ export class FormatParser implements IDisposable {
   }
 
   /**
-   * When an input value is passed this is called to load the value into the formatter.
+   * When an inputs value is passed this is called to load the value into the formatter.
    * @param {string} inputValue - The value to load into the formatter.
    */
   public inputValuePassed(inputValue: string): void {
@@ -82,7 +82,7 @@ export class FormatParser implements IDisposable {
         this.previousOutputValue = undefined;
       }
 
-      // setTimeout is used because this is usually called after the input element has been created. This is a good
+      // setTimeout is used because this is usually called after the inputs element has been created. This is a good
       // article to explain why this is necessary https://web.dev/rendering-performance/.
       setTimeout(() => {
         this.formatRenderer.render();
@@ -98,8 +98,8 @@ export class FormatParser implements IDisposable {
   }
 
   /**
-   * Registers the "event" that is triggered when all input slots are completed.
-   * @param {FormatChangeEvent} onFormatChange - The event to call when all input slots are completed.
+   * Registers the "event" that is triggered when all inputs slots are completed.
+   * @param {FormatChangeEvent} onFormatChange - The event to call when all inputs slots are completed.
    */
   public registerFormatChangeEvent(onFormatChange: FormatChangeEvent): void {
     this.onFormatChange = onFormatChange;
@@ -124,11 +124,11 @@ export class FormatParser implements IDisposable {
     if (this.keyProcessor.processKeyPress(event)) {
       if (this.inputElement && this.onFormatChange) {
         if (this.inputSlotCollection.allSlotsCompleted() && this.previousOutputValue !== this.inputElement.innerHTML) {
-          // here fire an event to notify the user that the input is complete
+          // here fire an event to notify the user that the inputs is complete
           this.previousOutputValue = this.inputElement.innerHTML;
           this.onFormatChange(this.inputElement.innerHTML);
         } else if (this.inputSlotCollection.allSlotsEmpty() && this.previousOutputValue !== undefined) {
-          // here fire an event to notify the user that the input is empty...this is needed so a fields value can be
+          // here fire an event to notify the user that the inputs is empty...this is needed so a fields value can be
           // removed
           this.previousOutputValue = undefined;
           this.onFormatChange();

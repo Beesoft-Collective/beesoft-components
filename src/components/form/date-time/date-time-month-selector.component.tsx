@@ -1,5 +1,5 @@
 import { addYears, setMonth, subYears } from 'date-fns';
-import React, { useRef } from 'react';
+import { Dispatch, useRef } from 'react';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
 import { DateScrollerType, DateSelectionType } from './date-time-types';
@@ -9,15 +9,15 @@ export interface DateTimeMonthSelectorProps {
   viewDate: Date;
   locale: Locale;
   dateSelection?: DateSelectionType;
-  dispatcher: React.Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
 
-export default function DateTimeMonthSelector({
+const DateTimeMonthSelector = ({
   viewDate,
   locale,
   dateSelection = DateSelectionType.DateTime,
   dispatcher,
-}: DateTimeMonthSelectorProps) {
+}: DateTimeMonthSelectorProps) => {
   const monthMatrix = useRef(getTranslatedMonthMatrix(locale));
 
   const movePreviousYear = () => {
@@ -82,4 +82,6 @@ export default function DateTimeMonthSelector({
       </div>
     </div>
   );
-}
+};
+
+export default DateTimeMonthSelector;

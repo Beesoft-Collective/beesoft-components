@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { DateTimeInputTemplateProps } from '../../../../types';
+import { forceAssert } from '../../common-functions.ts';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
-import DateTime, { DateTimeProps } from './date-time.component.tsx';
+import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component.tsx';
 
 const meta: Meta<typeof DateTime> = {
   title: 'Form/Date Time',
@@ -128,7 +128,7 @@ const DarkTemplate = (args: DateTimeProps) => {
   document.body.className = 'bsc-dark';
 
   return (
-    <div className="bsc-bg-gray-900 bsc-p-4" style={{ height: '30rem' }}>
+    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '30rem' }}>
       <DateTime {...args} />
     </div>
   );
@@ -147,7 +147,7 @@ const OverrideInputTemplate = (args: DateTimeProps) => {
         <input
           ref={(element) => element && setInputRef(element)}
           className="bsc-border bsc-border-solid bsc-border-black"
-          onFocus={(event) => props.onFocus(event as unknown as FocusEvent)}
+          onFocus={(event) => props.onFocus(forceAssert<FocusEvent>(event))}
           value={props.getValue()}
         />
       </div>
@@ -537,19 +537,6 @@ export const ReadOnlyDate: Story = {
     label: 'Read Only Date',
     value: '31/10/1977, 8:30:00 AM',
     readOnly: true,
-    onChange: action('onChange'),
-  },
-  render: (args) => <Template {...args} />,
-};
-
-export const ModifiedColors: Story = {
-  args: {
-    label: 'Modified Colors',
-    colors: {
-      inputBorderColor: 'bsc-border-none',
-      inputBgColor: 'bsc-bg-blue-200',
-      todayDateColor: 'bsc-bg-red-500',
-    },
     onChange: action('onChange'),
   },
   render: (args) => <Template {...args} />,

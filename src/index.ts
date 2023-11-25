@@ -1,8 +1,11 @@
 // components
-import ContentEditableInput from './components/form/input/content-editable-input/content-editable-input.component';
+import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import DateTime from './components/form/date-time/date-time.component';
-import FormattedInput from './components/form/input/formatted-input/formatted-input.component';
+import FormattedInput from './components/form/inputs/formatted-input/formatted-input.component';
 import OverlayPanel from './components/overlay/overlay-panel/overlay-panel.component';
+
+// functions
+import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
 import { DateSelectionType } from './components/form/date-time/date-time-types';
@@ -14,7 +17,7 @@ import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-
 import './index.css';
 import '../src/components/font-awesome';
 
-export { ContentEditableInput, DateTime, FormattedInput, OverlayPanel };
+export { ContentEditableInput, DateTime, FormattedInput, OverlayPanel, applyBeeSoftTheme, createBeeSoftTheme };
 
 export type {
   DateSelectionType,
