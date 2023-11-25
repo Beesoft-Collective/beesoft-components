@@ -502,6 +502,17 @@ export const IsValidSelectedDate: Story = {
   render: (args) => <Template {...args} />,
 };
 
+export const IsValidInputDate: Story = {
+  args: {
+    label: 'Date (Sunday is invalid)',
+    dateSelection: DateSelectionType.DateOnly,
+    useFormattedInput: true,
+    isValidDate: (date: Date) => date.getDay() !== 0,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
 export const ShortDate: Story = {
   args: {
     label: 'Date',
