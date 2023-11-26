@@ -88,6 +88,49 @@ export class DomHandler {
     };
   }
 
+  public static canPositionElementOnScreen(element: HTMLElement, target: HTMLElement) {
+    const screen = DomHandler.getScreenDimensions();
+    const rectangle = element.getBoundingClientRect();
+
+    const bottomLeft = DomHandler.positionElementToTarget(
+      element,
+      target,
+      DomElementAlignment.TopLeft,
+      DomTargetPosition.BottomLeft
+    );
+    if (bottomLeft.left + rectangle.width < screen.width && bottomLeft.top + rectangle.height < screen.height) {
+      return true;
+    }
+
+    const bottomRight = DomHandler.positionElementToTarget(
+      element,
+      target,
+      DomElementAlignment.TopRight,
+      DomTargetPosition.BottomRight
+    );
+    if (bottomRight.left >= 0 && bottomLeft.top + rectangle.height < screen.height) {
+      return true;
+    }
+
+    const topLeft = DomHandler.positionElementToTarget(
+      element,
+      target,
+      DomElementAlignment.BottomLeft,
+      DomTargetPosition.TopLeft
+    );
+    if (topLeft.left + rectangle.width < screen.width && topLeft.top >= 0) {
+      return true;
+    }
+
+    const topRight = DomHandler.positionElementToTarget(
+      element,
+      target,
+      DomElementAlignment.BottomRight,
+      DomTargetPosition.TopRight
+    );
+    return topRight.left >= 0 && topRight.top >= 0;
+  }
+
   public static positionElementToTargetOnScreen(
     element: HTMLElement,
     target: HTMLElement,
@@ -100,7 +143,7 @@ export class DomHandler {
 
     if (location) {
       if (elementAlignment === DomElementAlignment.TopLeft && targetPosition === DomTargetPosition.BottomLeft) {
-        // this is the default setting...the only places the overlay could be off screen would be right and bottom
+        // this is the default setting...the only places the overlay could be off-screen would be right and bottom
         if (location.right && !location.bottom) {
           return DomHandler.positionElementToTarget(
             element,

@@ -112,7 +112,7 @@ const ScrollTemplate = (args: DateTimeProps) => {
       <div className="bsc-w-full bsc-pb-8 bsc-flex-shrink">Test Header</div>
       <div className="bsc-w-full bsc-flex-grow bsc-flex bsc-flex-row">
         <div className="bsc-border-r bsc-border-solid bsc-border-gray-500">
-          <div className="bsc-overflow-scroll" style={{ height: '25rem' }}>
+          <div className="bsc-overflow-scroll" style={{ height: '25rem', width: '10rem' }}>
             <div style={{ height: '50rem', paddingTop: '10rem' }}>
               <DateTime {...args} />
             </div>
