@@ -92,16 +92,19 @@ const OverlayPanel = ({
   }, [shouldRemainOnScreen]);
 
   useEffect(() => {
-    if (target && shouldScrollCloseOverlay) {
+    if (target) {
       finalTarget.current = getTargetElement(target);
-      scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget.current, {
-        overflow: 'scroll, auto',
-        overflowX: 'scroll, auto',
-        overflowY: 'scroll, auto',
-      });
 
-      if ((scrollerPanelRef.current as HTMLElement).tagName.toLowerCase() === 'html') {
-        scrollerPanelRef.current = document;
+      if (shouldScrollCloseOverlay) {
+        scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget.current, {
+          overflow: 'scroll, auto',
+          overflowX: 'scroll, auto',
+          overflowY: 'scroll, auto',
+        });
+
+        if ((scrollerPanelRef.current as HTMLElement).tagName.toLowerCase() === 'html') {
+          scrollerPanelRef.current = document;
+        }
       }
     }
 
@@ -129,15 +132,15 @@ const OverlayPanel = ({
     ) as HTMLElement;
   };
 
-  //FIXME: When the overlay will never fit on the screen we need to find a way to limit the number of times its called.
   const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
     if (panelRef.current) {
       const windowSize = DomHandler.getScreenDimensions();
-      const overlayRectangle = entries[entries.length - 1].target.getBoundingClientRect();
+      const overlayElement = entries[entries.length - 1].target as HTMLElement;
+      const overlayRectangle = overlayElement.getBoundingClientRect();
       const offScreenLocation = DomHandler.determineOffScreenLocation(overlayRectangle);
 
       if (offScreenLocation) {
-        if (finalTarget.current) {
+        if (finalTarget.current && DomHandler.canPositionElementOnScreen(overlayElement, finalTarget.current)) {
           const newDimensions = DomHandler.positionElementToTargetOnScreen(
             panelRef.current,
             finalTarget.current,
