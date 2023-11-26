@@ -16,27 +16,28 @@ _Starting with version 0.2.0 there are breaking changes with the current templat
 
 This is the main component in the library currently; it has the ability to select not only a date but also time. Below are the current component properties (currently all of them are optional).
 
-| Name        | Type       | Description |
-| ----------- | ---------- | ----------- |
-| **value** | `string, Date or Date[]` | Sets the value of the component can either be a date object or a string in a local or ISO format. |
-| **readOnly** | `boolean` | Allows the component to have a value set but not allow it to be modified. |
-| **label** | `string` | Sets the label for the component. |
-| **useDefaultDateValue** | `boolean` | If set to true then the current date will be populated in the selection box. |
-| **locale** | `string` | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used. |
-| **className** | `string` | Allows css modifications to be made to the default input box of the component. |
-| **dateSelection** | `DateSelectionType` | Allows the component to be set in 4 modes DateTime, Date Only, Time Only and Date Range (`default Date/Time`). |
-| **dateFormat** | `DateFormatType` | Allows for the date to be formatted in short, medium or long formats. |
-| **timeConstraints** | `TimeConstraints` | Allows the time selection component to determine how the increment/decrement the values (currently only minute works). |
-| **icon** | `JSX.Element` | This can be used to change the calendar icon. |
-| **iconPosition** | `CalendarIconPosition` | Determines if the calendar icon appears on the right or the left. |
-| **inputElement** | `HTMLElement` | When a custom input template is used this gives the component the HTMLElement to use for calendar positioning. |
-| **colors** | `DateTimeColors` | A group of settings that can be used to change particular color settings. |
-| **selectableDate** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
-| **isValidDate** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
-| **onChange** | `(value: Date) => void` | Returns the value selected by the user (even though this optional it is recommended to be set). |
-| **calendarTemplate** | `DateTimeCalendarTemplate` | Allows the calendar UI to be overridden or added to. |
-| **dateScrollerTemplate** | `DateTimeScrollerTemplate` | Allows the scroller UI to be overridden or added to. |
-| **inputTemplate** | `DateTimeInputTemplate` | Allows for a different input and label to be used for the component. |
+| Name                     | Type                              | Description                                                                                                                                                              |
+|--------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **value**                | `string, Date or Date[]`          | Sets the value of the component can either be a date object or a string in a local or ISO format.                                                                        |
+| **readOnly**             | `boolean`                         | Allows the component to have a value set but not allow it to be modified.                                                                                                |
+| **label**                | `string`                          | Sets the label for the component.                                                                                                                                        |
+| **useDefaultDateValue**  | `boolean`                         | If set to true then the current date will be populated in the selection box.                                                                                             |
+| **useFormattedInput**    | `boolean`                         | If set to true the formatted input will be used for typing the date.                                                                                                     |                                                  |
+| **locale**               | `string`                          | Allows the locale settings to be overridden, if this is not set then the users locale settings will be used.                                                             |
+| **className**            | `string`                          | Allows css modifications to be made to the default input box of the component.                                                                                           |
+| **dateSelection**        | `DateSelectionType`               | Allows the component to be set in 4 modes DateTime, Date Only, Time Only and Date Range (`default Date/Time`).                                                           |
+| **dateFormat**           | `DateFormatType`                  | Allows for the date to be formatted in short, medium or long formats.                                                                                                    |
+| **timeConstraints**      | `TimeConstraints`                 | Allows the time selection component to determine how the increment/decrement the values (currently only minute works).                                                   |
+| **icon**                 | `JSX.Element`                     | This can be used to change the calendar icon.                                                                                                                            |
+| **iconPosition**         | `CalendarIconPosition`            | Determines if the calendar icon appears on the right or the left.                                                                                                        |
+| **inputElement**         | `HTMLElement`                     | When a custom input template is used this gives the component the HTMLElement to use for calendar positioning.                                                           |
+| **colors**               | `DateTimeColors`                  | A group of settings that can be used to change particular color settings.                                                                                                |
+| **selectableDate**       | `(currentDate: Date) => boolean`  | Determines if a date is allowed to be selected...if false is returned then the date will be disabled.                                                                    |
+| **isValidDate**          | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. This also works for dates typed into the formatted input. |
+| **onChange**             | `(value: Date) => void`           | Returns the value selected by the user (even though this optional it is recommended to be set).                                                                          |
+| **calendarTemplate**     | `DateTimeCalendarTemplate`        | Allows the calendar UI to be overridden or added to.                                                                                                                     |
+| **dateScrollerTemplate** | `DateTimeScrollerTemplate`        | Allows the scroller UI to be overridden or added to.                                                                                                                     |
+| **inputTemplate**        | `DateTimeInputTemplate`           | Allows for a different input and label to be used for the component.                                                                                                     |
 
 ### Templating
 

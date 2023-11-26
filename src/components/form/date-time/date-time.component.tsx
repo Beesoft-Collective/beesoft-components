@@ -40,7 +40,17 @@ export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Dat
   icon?: React.JSX.Element;
   iconPosition?: CalendarIconPosition;
   inputElement?: HTMLElement;
+  /**
+   * If the passed function returns false then that date will not be selectable and will be marked with the error style.
+   * @param {Date} currentDate - The date to test.
+   * @returns {boolean} false indicates the date should not be selectable.
+   */
   selectableDate?: (currentDate: Date) => boolean;
+  /**
+   * If the passed function returns false then the date will not be selected in the input.
+   * @param {Date} selectedDate - The selected date to test.
+   * @returns {boolean} false indicates the date is not valid.
+   */
   isValidDate?: (selectedDate: Date) => boolean;
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
@@ -215,6 +225,23 @@ const DateTime = ({
   const onInput = (event: React.FormEvent) => {
     const dateString = (event.target as HTMLElement).innerText;
     onDateStringChange(dateString);
+  };
+
+  const isValidFormatString = (value?: string) => {
+    if (value) {
+      const dateValue = parseDate(value, loadedLocale.current);
+      if (dateValue) {
+        if (isValidDate) {
+          return isValidDate(dateValue);
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   };
 
   const onFormatStringChange = (formattedText?: string) => {
@@ -488,6 +515,7 @@ const DateTime = ({
               readOnly={readOnly}
               className={inputStyles}
               format={inputFormat}
+              isInputValid={isValidFormatString}
               onFocus={onFocus}
               onBlur={onBlur}
               onChange={onFormatStringChange}

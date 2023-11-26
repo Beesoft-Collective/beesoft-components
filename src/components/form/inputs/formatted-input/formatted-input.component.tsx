@@ -1,4 +1,5 @@
-import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import cx from 'classnames';
+import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ContentEditableInput, {
   ContentEditableInputProps,
   ContentEditableInputRef,
@@ -8,6 +9,7 @@ import { FormatParser } from './parser/format-parser';
 
 export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
+  isInputValid?: (value?: string) => boolean;
 }
 
 export interface FormattedInputRef {
@@ -28,6 +30,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     rightElementClassName,
     isSingleLine = false,
     allowSingleLineScroll = false,
+    isInputValid,
     onChange,
     onFocus,
     onBlur,
@@ -35,6 +38,8 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     onLeftElementClick,
     onRightElementClick,
   } = props;
+
+  const [isValidInput, setIsValidInput] = useState(true);
 
   const inputRef = useRef<ContentEditableInputRef>();
   const inputElementRef = useRef<HTMLElement>();
@@ -66,7 +71,16 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   const onFormatChange = useCallback(
     (value?: string) => {
-      onChange?.(value);
+      if (isInputValid) {
+        if (isInputValid(value)) {
+          setIsValidInput(true);
+          onChange?.(value);
+        } else {
+          setIsValidInput(false);
+        }
+      } else {
+        onChange?.(value);
+      }
     },
     [onChange]
   );
@@ -113,6 +127,10 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     focus,
   }));
 
+  const finalClassName = cx(className, {
+    '!bsc-border-error': !isValidInput,
+  });
+
   return (
     <ContentEditableInput
       ref={(refElement) => refElement && onInputRefCreated(refElement)}
@@ -121,7 +139,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
       fillContainer={fillContainer}
       leftElement={leftElement}
       rightElement={rightElement}
-      className={className}
+      className={finalClassName}
       leftElementClassName={leftElementClassName}
       rightElementClassName={rightElementClassName}
       isSingleLine={isSingleLine}
