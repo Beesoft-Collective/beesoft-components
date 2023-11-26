@@ -43,7 +43,7 @@ jobs:
       - name: Build package
         run: bun run build
       - name: Release to GitHub/NPM
-        run: bunx --bun release-it ${{ github.event.inputs.version }} --ci
+        run: bunx release-it ${{ github.event.inputs.version }} --ci
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
