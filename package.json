@@ -1,6 +1,6 @@
 {
   "name": "beesoft-components",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": false,
   "type": "module",
   "author": {
@@ -106,6 +106,5 @@
     "url": "https://github.com/Beehive-Software-Consultants/beesoft-components/issues"
   },
   "readme": "ERROR: No README data found!",
-  "homepage": "https://github.com/Beehive-Software-Consultants/beesoft-components#readme",
-  "_id": "beesoft-components@0.3.2"
+  "homepage": "https://github.com/Beehive-Software-Consultants/beesoft-components#readme"
 }
