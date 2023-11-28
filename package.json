@@ -18,8 +18,7 @@
   },
   "files": [
     "dist",
-    "types",
-    "./style.css"
+    "types"
   ],
   "license": "MIT",
   "main": "./dist/index.umd.js",
@@ -89,12 +88,6 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
-    }
   },
   "publishConfig": {
     "access": "public",
