@@ -33,7 +33,6 @@ jobs:
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-          registry-url: https://registry.npmjs.org/
       - name: Git config
         run: |
           git config user.name ${{github.actor}}
