@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
 import { debounce } from 'lodash-es';
@@ -6,6 +5,7 @@ import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } fr
 import { getBrowserLanguage } from '../../common-functions';
 import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
+import { Calendar2LineIcon, CloseLineIcon } from '../../icons.ts';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
 import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
@@ -420,50 +420,42 @@ const DateTime = ({
             <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
               {allowClear && !readOnly && (
                 <div>
-                  <FontAwesomeIcon
-                    className="bsc-cursor-pointer bsc-text-sm"
-                    icon={['fas', 'times']}
-                    size="sm"
-                    onClick={onClearClick}
-                  />
+                  <CloseLineIcon size={16} className="bsc-cursor-pointer bsc-text-sm" onClick={onClearClick} />
                 </div>
               )}
               <div className="bsc-ml-2">
                 {icon || (
-                  <FontAwesomeIcon
+                  <Calendar2LineIcon
+                    size={16}
                     className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                    icon={['far', 'calendar-alt']}
                     onClick={!readOnly ? onCalendarIconClick : undefined}
                   />
                 )}
               </div>
             </div>
           ),
+          rightElementClassName: 'bsc-justify-center',
         }
       : {
           leftElement: (
             <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
               <div className="bsc-mr-2">
                 {icon || (
-                  <FontAwesomeIcon
+                  <Calendar2LineIcon
+                    size={16}
                     className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                    icon={['far', 'calendar-alt']}
                     onClick={!readOnly ? onCalendarIconClick : undefined}
                   />
                 )}
               </div>
               {allowClear && !readOnly && (
                 <div>
-                  <FontAwesomeIcon
-                    className="bsc-cursor-pointer bsc-text-sm"
-                    icon={['fas', 'times']}
-                    size="sm"
-                    onClick={onClearClick}
-                  />
+                  <CloseLineIcon size={16} className="bsc-cursor-pointer bsc-text-sm" onClick={onClearClick} />
                 </div>
               )}
             </div>
           ),
+          leftElementClassName: 'bsc-justify-center',
         };
 
   const inputTemplateProps: DateTimeInputTemplateProps = {

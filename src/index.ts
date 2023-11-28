@@ -15,7 +15,6 @@ import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-
 
 // styles
 import './index.css';
-import '../src/components/font-awesome';
 
 export { ContentEditableInput, DateTime, FormattedInput, OverlayPanel, applyBeeSoftTheme, createBeeSoftTheme };
 

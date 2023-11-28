@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactNode, useContext } from 'react';
 import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
-import { DateScrollerType } from './date-time-types';
+import { ArrowLeftSLineIcon, ArrowRightSLineIcon } from '../../icons.ts';
 import { DateTimeContext } from './date-time-context';
+import { DateScrollerType } from './date-time-types';
 
 export interface DateTimeScrollerProps {
   title: string;
@@ -41,7 +41,7 @@ const DateTimeScroller = ({
     onMoveNext,
   };
 
-  const defaultTemplate = (props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
+  const defaultTemplate = (_props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
   );
 
@@ -51,7 +51,7 @@ const DateTimeScroller = ({
     <TemplateOutlet props={templateProps} template={template}>
       <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-left">
         <button className="focus:bsc-outline-none" onClick={onMovePrevious}>
-          <FontAwesomeIcon icon={['fas', 'angle-left']} />
+          <ArrowLeftSLineIcon size={24} />
         </button>
       </div>
       <div className="bsc-flex-grow bsc-text-center bsc-cursor-pointer bc-dt-scroller-title" onClick={onTitleClicked}>
@@ -59,7 +59,7 @@ const DateTimeScroller = ({
       </div>
       <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-right">
         <button className="focus:bsc-outline-none" onClick={onMoveNext}>
-          <FontAwesomeIcon icon={['fas', 'angle-right']} />
+          <ArrowRightSLineIcon size={24} />
         </button>
       </div>
     </TemplateOutlet>
