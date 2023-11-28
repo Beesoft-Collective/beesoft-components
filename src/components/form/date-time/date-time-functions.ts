@@ -189,7 +189,7 @@ export function isDateBetween(checkDate: Date, startComparisonDate: Date, endCom
 
 export async function loadLocale(localeToLoad: string) {
   const importedFromEsmSh: Locale = (
-    await import(/* @vite-ignore */ `https://esm.sh/date-fns/locale/${getLocaleName(localeToLoad)}/index.js`)
+    await import(/* @vite-ignore */ `/node_modules/date-fns/locale/${getLocaleName(localeToLoad)}`)
   ).default;
 
   return importedFromEsmSh;
