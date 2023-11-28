@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
@@ -319,15 +318,6 @@ export const NoIcon: Story = {
   args: {
     label: 'No Icon',
     iconPosition: CalendarIconPosition.None,
-    onChange: action('onChange'),
-  },
-  render: (args) => <Template {...args} />,
-};
-
-export const ChangeIcon: Story = {
-  args: {
-    label: 'Different Icon',
-    icon: <FontAwesomeIcon icon={['far', 'calendar-times']} />,
     onChange: action('onChange'),
   },
   render: (args) => <Template {...args} />,

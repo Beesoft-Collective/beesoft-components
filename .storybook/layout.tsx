@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import '../src/index.css';
-import '../src/components/font-awesome';
 import { applyBeeSoftTheme, createBeeSoftTheme } from '../src/components/common-functions';
+
+import '../src/index.css';
 
 // @ts-ignore
 const Layout = ({children}) => {

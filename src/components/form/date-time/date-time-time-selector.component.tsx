@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import { cloneDeep } from 'lodash-es';
 import { Dispatch, useEffect, useRef, useState } from 'react';
 import { generateNumberArray } from '../../common-functions';
+import { ArrowDownSLineIcon, ArrowUpSLineIcon } from '../../icons.ts';
 import { TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -171,19 +171,19 @@ const DateTimeTimeSelector = ({
         )}
         <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-increase">
           <button className="focus:bsc-outline-none" onClick={increaseHour}>
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+            <ArrowUpSLineIcon />
           </button>
         </div>
         <div>&nbsp;</div>
         <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-increase">
           <button className="focus:bsc-outline-none" onClick={increaseMinute}>
-            <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+            <ArrowUpSLineIcon />
           </button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
           <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-increase">
             <button className="focus:bsc-outline-none" onClick={changeMeridian}>
-              <FontAwesomeIcon icon={['fas', 'chevron-up']} />
+              <ArrowUpSLineIcon />
             </button>
           </div>
         )}
@@ -195,19 +195,19 @@ const DateTimeTimeSelector = ({
         )}
         <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-decrease">
           <button className="focus:bsc-outline-none" onClick={decreaseHour}>
-            <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+            <ArrowDownSLineIcon />
           </button>
         </div>
         <div>&nbsp;</div>
         <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-decrease">
           <button className="focus:bsc-outline-none" onClick={decreaseMinute}>
-            <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+            <ArrowDownSLineIcon />
           </button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
           <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-decrease">
             <button className="focus:bsc-outline-none" onClick={changeMeridian}>
-              <FontAwesomeIcon icon={['fas', 'chevron-down']} />
+              <ArrowDownSLineIcon />
             </button>
           </div>
         )}
