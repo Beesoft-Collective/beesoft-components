@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid';
 import { IDisposable } from '../../../../common-interfaces';
 import { InputFormat } from '../input-format.interfaces';
-import { FormatInstanceCollection } from './format-instance-collection';
+import { FormatInstanceCollection, FormatInstanceCollectionManager } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
 import { InputRuleProcessor } from './input-rule-processor';
@@ -27,9 +27,12 @@ export class FormatParser implements IDisposable {
   private inputElement?: HTMLElement;
   private onFormatChange?: FormatChangeEvent;
 
-  constructor(format: InputFormat, private inputValue = '') {
+  constructor(
+    format: InputFormat,
+    private inputValue = ''
+  ) {
     this.instanceId = uuidV4();
-    this.instanceCollection = FormatInstanceCollection.getInstance();
+    this.instanceCollection = FormatInstanceCollectionManager.getInstance();
     this.keyProcessor = new KeyProcessor(format, this.instanceId);
     this.formatNavigator = this.instanceCollection.getNavigatorInstance(this.instanceId, format);
     this.formatRenderer = new FormatRenderer(format, this.instanceId);
