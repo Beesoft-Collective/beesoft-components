@@ -4,9 +4,9 @@
     "types": ["bun-types"],
 
     // enable latest features
-    "lib": ["ESNext"],
+    "lib": ["esnext"],
     "module": "esnext",
-    "target": "es5",
+    "target": "esnext",
 
     // if TS 5.x+
     "moduleResolution": "bundler",
