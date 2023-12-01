@@ -39,6 +39,10 @@ jobs:
           git config user.email ${{github.actor}}@users.noreply.github.com
       - name: Install dependencies
         run: bun install
+      - name: Initialize NPM Config
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
       - name: Build package
         run: bun run build
       - name: Release to GitHub/NPM

@@ -417,7 +417,7 @@ const DateTime = ({
       : iconPosition === CalendarIconPosition.Right
       ? {
           rightElement: (
-            <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
+            <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
               {allowClear && !readOnly && (
                 <div>
                   <CloseLineIcon size={16} className="bsc-cursor-pointer bsc-text-sm" onClick={onClearClick} />
@@ -438,7 +438,7 @@ const DateTime = ({
         }
       : {
           leftElement: (
-            <div className="bsc-flex bsc-text-primary-1 dark:bsc-text-mono-light-1">
+            <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
               <div className="bsc-mr-2">
                 {icon || (
                   <Calendar2LineIcon
