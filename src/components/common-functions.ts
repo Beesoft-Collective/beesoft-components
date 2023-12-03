@@ -1,4 +1,4 @@
-import { IToString } from './common-interfaces';
+import { BeeSoftTheme, IToString } from './common-interfaces';
 
 export function getElementByClassNameRecursive(element: Element, className: string): Element {
   if (typeof element.className === 'string' && element.className.includes(className)) {
@@ -191,48 +191,27 @@ export function applyBeeSoftTheme(theme: Record<string, unknown>) {
   });
 }
 
-export function createBeeSoftTheme(
-  primary1: string,
-  primary2: string,
-  primary3: string,
-  primary4: string,
-  primary5: string,
-  gray1: string,
-  gray2: string,
-  gray3: string,
-  gray4: string,
-  gray5: string,
-  monoDark1: string,
-  monoDark2: string,
-  monoDark3: string,
-  monoLight1: string,
-  monoLight2: string,
-  monoLight3: string,
-  info: string,
-  success: string,
-  warning: string,
-  error: string
-) {
+export function createBeeSoftTheme(theme: BeeSoftTheme) {
   return {
-    '--theme-bsc-primary-1': primary1,
-    '--theme-bsc-primary-2': primary2,
-    '--theme-bsc-primary-3': primary3,
-    '--theme-bsc-primary-4': primary4,
-    '--theme-bsc-primary-5': primary5,
-    '--theme-bsc-gray-1': gray1,
-    '--theme-bsc-gray-2': gray2,
-    '--theme-bsc-gray-3': gray3,
-    '--theme-bsc-gray-4': gray4,
-    '--theme-bsc-gray-5': gray5,
-    '--theme-bsc-mono-dark-1': monoDark1,
-    '--theme-bsc-mono-dark-2': monoDark2,
-    '--theme-bsc-mono-dark-3': monoDark3,
-    '--theme-bsc-mono-light-1': monoLight1,
-    '--theme-bsc-mono-light-2': monoLight2,
-    '--theme-bsc-mono-light-3': monoLight3,
-    '--theme-bsc-info': info,
-    '--theme-bsc-success': success,
-    '--theme-bsc-warning': warning,
-    '--theme-bsc-error': error,
+    '--theme-bsc-primary-1': theme.primary1,
+    '--theme-bsc-primary-2': theme.primary2,
+    '--theme-bsc-primary-3': theme.primary3,
+    '--theme-bsc-primary-4': theme.primary4,
+    '--theme-bsc-primary-5': theme.primary5,
+    '--theme-bsc-gray-1': theme.gray1 || '#303030',
+    '--theme-bsc-gray-2': theme.gray2 || '#5f5f5f',
+    '--theme-bsc-gray-3': theme.gray3 || '#8f8f8f',
+    '--theme-bsc-gray-4': theme.gray4 || '#bebebe',
+    '--theme-bsc-gray-5': theme.gray5 || '#eeeeee',
+    '--theme-bsc-mono-dark-1': theme.monoDark1 || '#222222',
+    '--theme-bsc-mono-dark-2': theme.monoDark2 || '#3c3c3c',
+    '--theme-bsc-mono-dark-3': theme.monoDark3 || '#4e4e4e',
+    '--theme-bsc-mono-light-1': theme.monoLight1 || '#fefefe',
+    '--theme-bsc-mono-light-2': theme.monoLight2 || '#eeeeee',
+    '--theme-bsc-mono-light-3': theme.monoLight3 || '#cccccc',
+    '--theme-bsc-info': theme.info || '#2e7ff8',
+    '--theme-bsc-success': theme.success || '#53ae0c',
+    '--theme-bsc-warning': theme.warning || '#ff6914',
+    '--theme-bsc-error': theme.error || '#f01616',
   };
 }
