@@ -1,5 +1,5 @@
 import { InputFormat } from '../input-format.interfaces';
-import { FormatInstanceCollection } from './format-instance-collection';
+import { FormatInstanceCollection, FormatInstanceCollectionManager } from './format-instance-collection';
 import { InputSlotCollection } from './input-slot-collection';
 import { FormatPartEntry } from './parser.interfaces';
 import { PartEntryCreator } from './part-entry-creator';
@@ -15,7 +15,7 @@ export class FormatRenderer {
   private inputElement?: HTMLElement;
 
   constructor(format: InputFormat, instanceId: string) {
-    this.instanceCollection = FormatInstanceCollection.getInstance();
+    this.instanceCollection = FormatInstanceCollectionManager.getInstance();
     this.formatPartList = PartEntryCreator.create(format);
     this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
   }

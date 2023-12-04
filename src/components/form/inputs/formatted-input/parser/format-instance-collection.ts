@@ -2,16 +2,8 @@ import { InputFormat } from '../input-format.interfaces';
 import { FormatNavigator } from './format-navigator';
 import { InputSlotCollection } from './input-slot-collection';
 
-export class FormatInstanceCollection {
+export class FormatInstanceCollectionManager {
   private static instance: FormatInstanceCollection;
-
-  private readonly navigatorInstances: Record<string, FormatNavigator>;
-  private readonly inputSlotInstances: Record<string, InputSlotCollection>;
-
-  private constructor() {
-    this.navigatorInstances = {};
-    this.inputSlotInstances = {};
-  }
 
   public static getInstance(): FormatInstanceCollection {
     if (!this.instance) {
@@ -19,6 +11,16 @@ export class FormatInstanceCollection {
     }
 
     return this.instance;
+  }
+}
+
+export class FormatInstanceCollection {
+  private readonly navigatorInstances: Record<string, FormatNavigator>;
+  private readonly inputSlotInstances: Record<string, InputSlotCollection>;
+
+  constructor() {
+    this.navigatorInstances = {};
+    this.inputSlotInstances = {};
   }
 
   public getNavigatorInstance(instanceKey: string, format: InputFormat) {
