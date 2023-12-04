@@ -1,5 +1,5 @@
 import { InputFormat } from '../input-format.interfaces';
-import { FormatInstanceCollection } from './format-instance-collection';
+import { FormatInstanceCollection, FormatInstanceCollectionManager } from './format-instance-collection';
 import { FormatNavigator } from './format-navigator';
 import { FormatRenderer } from './format-renderer';
 import { InputRuleProcessor } from './input-rule-processor';
@@ -16,8 +16,11 @@ export class KeyProcessor {
   private readonly keyTypeChecker: KeyTypeChecker;
   private readonly formatRenderer: FormatRenderer;
 
-  constructor(private format: InputFormat, instanceId: string) {
-    this.instanceCollection = FormatInstanceCollection.getInstance();
+  constructor(
+    private format: InputFormat,
+    instanceId: string
+  ) {
+    this.instanceCollection = FormatInstanceCollectionManager.getInstance();
     this.formatNavigator = this.instanceCollection.getNavigatorInstance(instanceId, format);
     this.ruleProcessor = new InputRuleProcessor(format, instanceId);
     this.keyTypeChecker = new KeyTypeChecker();
