@@ -2,6 +2,7 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers.ts';
 import { getAllElementStyleValues } from '../../common-functions.ts';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component.tsx';
+import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { getTargetElement } from '../../overlay/overlay-functions.ts';
 import { MobileOverlayPanelProps } from './mobile-overlay-panel.props.ts';
 
@@ -36,12 +37,11 @@ const MobileOverlayPanel = ({
       if (styleValue === 'auto' || styleValue === '-1') {
         return false;
       }
-      console.log('style value', styleValue);
-      return parseInt(styleValue) >= 100;
-    }).map(parseInt);
+
+      return parseInt(styleValue) > 100;
+    }).map((value) => parseInt(value, 10));
 
     if (parentZIndex.length > 0) {
-      console.log('parent z index', parentZIndex);
       underlayDisplayZIndex.current = Math.max(...parentZIndex) + 1;
       displayZIndex.current = Math.max(...parentZIndex) + 2;
     }
@@ -118,7 +118,12 @@ const MobileOverlayPanel = ({
             className="bsc-fixed bsc-left-0 bsc-bottom-0 bsc-bg-white bsc-w-full"
             style={{ zIndex, ...defaultStyle, ...transitionStyles[state] }}
           >
-            {children}
+            <div className="bsc-w-full">{children}</div>
+            <>
+              <Button buttonType="primary" fullWidth={true} className="bsc-text-xs bsc-font-bold">
+                DONE
+              </Button>
+            </>
           </div>
         </>
       )}

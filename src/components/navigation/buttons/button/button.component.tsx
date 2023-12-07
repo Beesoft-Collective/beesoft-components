@@ -16,6 +16,10 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
     children,
   } = props;
 
+  const handleOnClick = () => {
+    onClick?.();
+  };
+
   const click = () => {
     buttonRef.current?.click();
   };
@@ -25,7 +29,7 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
   }));
 
   const buttonStyles = cx(
-    'bsc-p-2 bsc-rounded',
+    'bsc-p-4',
     {
       'bsc-w-full': fullWidth,
       'bsc-bg-gray-3 bsc-text-gray-2': disabled,
@@ -39,7 +43,14 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
   );
 
   return (
-    <button ref={buttonRef} type={type} onClick={onClick} disabled={disabled} form={form} className={buttonStyles}>
+    <button
+      ref={buttonRef}
+      type={type}
+      onClick={handleOnClick}
+      disabled={disabled}
+      form={form}
+      className={buttonStyles}
+    >
       {children}
     </button>
   );
