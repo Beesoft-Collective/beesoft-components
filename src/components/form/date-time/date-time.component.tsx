@@ -6,6 +6,7 @@ import { getBrowserLanguage } from '../../common-functions';
 import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { Calendar2LineIcon, CloseLineIcon } from '../../icons.ts';
+import { MobileOverlayPanel } from '../../mobile/overlay/mobile-overlay-panel.component.tsx';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
 import { FormInputControl } from '../form-control.interface';
 import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
@@ -458,6 +459,74 @@ const DateTime = ({
           leftElementClassName: 'bsc-justify-center',
         };
 
+  const renderSelector = () => (
+    <>
+      {state.currentSelector === DateTimeActionType.DaySelector &&
+        canShowDateSelectors &&
+        state.dateInitialized &&
+        loadedLocale.current && (
+          <DateTimeDaySelector
+            selectedDate={state.selectedDate}
+            viewDate={state.currentViewDate}
+            locale={loadedLocale.current}
+            showTimeSelector={dateSelection === DateSelectionType.DateTime}
+            selectableDate={selectableDate}
+            isValidDate={isValidDate}
+            dispatcher={dispatcher}
+            onChange={onChange}
+          />
+        )}
+      {state.currentSelector === DateTimeActionType.MonthSelector &&
+        canShowDateSelectors &&
+        state.dateInitialized &&
+        loadedLocale.current && (
+          <DateTimeMonthSelector
+            viewDate={state.currentViewDate}
+            locale={loadedLocale.current}
+            dateSelection={dateSelection}
+            dispatcher={dispatcher}
+          />
+        )}
+      {state.currentSelector === DateTimeActionType.YearSelector &&
+        canShowDateSelectors &&
+        state.dateInitialized &&
+        loadedLocale.current && (
+          <DateTimeYearSelector
+            viewDate={state.currentViewDate}
+            locale={loadedLocale.current}
+            dispatcher={dispatcher}
+          />
+        )}
+      {state.currentSelector === DateTimeActionType.TimeSelector &&
+        canShowTimeSelector &&
+        state.dateInitialized &&
+        loadedLocale.current && (
+          <DateTimeTimeSelector
+            viewDate={state.currentViewDate}
+            showDateSelector={dateSelection === DateSelectionType.DateTime}
+            locale={loadedLocale.current}
+            timeFormat={state.timeFormat}
+            timeConstraints={timeConstraints}
+            onChange={onChange}
+            dispatcher={dispatcher}
+          />
+        )}
+      {state.currentSelector === DateTimeActionType.DateRangeSelector &&
+        canShowDateSelectors &&
+        state.dateInitialized &&
+        loadedLocale.current && (
+          <DateTimeRangeSelector
+            viewDate={state.currentViewDate}
+            selectedStartDate={state.selectedStartDate}
+            selectedEndDate={state.selectedEndDate}
+            locale={loadedLocale.current}
+            onChange={onChange}
+            dispatcher={dispatcher}
+          />
+        )}
+    </>
+  );
+
   const inputTemplateProps: DateTimeInputTemplateProps = {
     label,
     readOnly,
@@ -489,110 +558,70 @@ const DateTime = ({
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
         {label && <label className="dark:bsc-text-mono-light-1 bc-dt-label">{label}</label>}
-        <TemplateOutlet props={inputTemplateProps} template={template}>
-          {useFormattedInput === false ? (
-            <ContentEditableInput
-              value={getValue()}
-              readOnly={readOnly}
-              className={inputStyles}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              onInput={onInput}
-              onElementCreate={(element) => onInputElementCreated(element, false)}
-              {...inputProps}
-            />
-          ) : (
-            <FormattedInput
-              value={getValue()}
-              readOnly={readOnly}
-              className={inputStyles}
-              format={inputFormat}
-              isInputValid={isValidFormatString}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              onChange={onFormatStringChange}
-              onElementCreate={(element) => onInputElementCreated(element, true)}
-              {...inputProps}
-            />
-          )}
-        </TemplateOutlet>
-        <OverlayPanel
-          visible={selectorOpen}
-          target={dropDownTarget}
-          shouldTargetCloseOverlay={false}
-          shouldScrollCloseOverlay={true}
-          shouldCheckZIndex={true}
-          shouldRemainOnScreen={true}
-          hidden={onDateTimeHidden}
-          isClickedWithin={onCalendarClick}
-          unmountWhenHidden={true}
-        >
-          <>
-            {state.currentSelector === DateTimeActionType.DaySelector &&
-              canShowDateSelectors &&
-              state.dateInitialized &&
-              loadedLocale.current && (
-                <DateTimeDaySelector
-                  selectedDate={state.selectedDate}
-                  viewDate={state.currentViewDate}
-                  locale={loadedLocale.current}
-                  showTimeSelector={dateSelection === DateSelectionType.DateTime}
-                  selectableDate={selectableDate}
-                  isValidDate={isValidDate}
-                  dispatcher={dispatcher}
-                  onChange={onChange}
-                />
-              )}
-            {state.currentSelector === DateTimeActionType.MonthSelector &&
-              canShowDateSelectors &&
-              state.dateInitialized &&
-              loadedLocale.current && (
-                <DateTimeMonthSelector
-                  viewDate={state.currentViewDate}
-                  locale={loadedLocale.current}
-                  dateSelection={dateSelection}
-                  dispatcher={dispatcher}
-                />
-              )}
-            {state.currentSelector === DateTimeActionType.YearSelector &&
-              canShowDateSelectors &&
-              state.dateInitialized &&
-              loadedLocale.current && (
-                <DateTimeYearSelector
-                  viewDate={state.currentViewDate}
-                  locale={loadedLocale.current}
-                  dispatcher={dispatcher}
-                />
-              )}
-            {state.currentSelector === DateTimeActionType.TimeSelector &&
-              canShowTimeSelector &&
-              state.dateInitialized &&
-              loadedLocale.current && (
-                <DateTimeTimeSelector
-                  viewDate={state.currentViewDate}
-                  showDateSelector={dateSelection === DateSelectionType.DateTime}
-                  locale={loadedLocale.current}
-                  timeFormat={state.timeFormat}
-                  timeConstraints={timeConstraints}
-                  onChange={onChange}
-                  dispatcher={dispatcher}
-                />
-              )}
-            {state.currentSelector === DateTimeActionType.DateRangeSelector &&
-              canShowDateSelectors &&
-              state.dateInitialized &&
-              loadedLocale.current && (
-                <DateTimeRangeSelector
-                  viewDate={state.currentViewDate}
-                  selectedStartDate={state.selectedStartDate}
-                  selectedEndDate={state.selectedEndDate}
-                  locale={loadedLocale.current}
-                  onChange={onChange}
-                  dispatcher={dispatcher}
-                />
-              )}
-          </>
-        </OverlayPanel>
+        <div className="max-sm:bsc-hidden">
+          <TemplateOutlet props={inputTemplateProps} template={template}>
+            {useFormattedInput === false ? (
+              <ContentEditableInput
+                value={getValue()}
+                readOnly={readOnly}
+                className={inputStyles}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onInput={onInput}
+                onElementCreate={(element) => onInputElementCreated(element, false)}
+                {...inputProps}
+              />
+            ) : (
+              <FormattedInput
+                value={getValue()}
+                readOnly={readOnly}
+                className={inputStyles}
+                format={inputFormat}
+                isInputValid={isValidFormatString}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChange={onFormatStringChange}
+                onElementCreate={(element) => onInputElementCreated(element, true)}
+                {...inputProps}
+              />
+            )}
+          </TemplateOutlet>
+        </div>
+        <div className="md:bsc-hidden">
+          <ContentEditableInput
+            value={getValue()}
+            readOnly={false}
+            className={inputStyles}
+            onFocus={onFocus}
+            onElementCreate={(element) => onInputElementCreated(element, false)}
+            {...inputProps}
+          />
+        </div>
+        <div className="max-sm:bsc-hidden">
+          <OverlayPanel
+            visible={selectorOpen}
+            target={dropDownTarget}
+            shouldTargetCloseOverlay={false}
+            shouldScrollCloseOverlay={true}
+            shouldCheckZIndex={true}
+            shouldRemainOnScreen={true}
+            hidden={onDateTimeHidden}
+            isClickedWithin={onCalendarClick}
+            unmountWhenHidden={true}
+          >
+            {renderSelector()}
+          </OverlayPanel>
+        </div>
+        <div className="md:bsc-hidden">
+          <MobileOverlayPanel
+            visible={selectorOpen}
+            target={dropDownTarget}
+            hidden={onDateTimeHidden}
+            unmountWhenHidden={true}
+          >
+            {renderSelector()}
+          </MobileOverlayPanel>
+        </div>
       </div>
     </DateTimeContext.Provider>
   );

@@ -8,6 +8,7 @@ export interface MobileOverlayPanelProps {
   transitionDuration?: number;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
+  approveText?: string;
   shown?: () => void;
   hidden?: () => void;
   isClickedWithin?: () => void;

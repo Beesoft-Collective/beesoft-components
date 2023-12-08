@@ -13,6 +13,7 @@ const MobileOverlayPanel = ({
   transitionDuration = 400,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
   hideTransitionOptions = 'linear',
+  approveText = 'DONE',
   shown,
   hidden,
   isClickedWithin,
@@ -120,8 +121,13 @@ const MobileOverlayPanel = ({
           >
             <div className="bsc-w-full">{children}</div>
             <>
-              <Button buttonType="primary" fullWidth={true} className="bsc-text-xs bsc-font-bold">
-                DONE
+              <Button
+                buttonType="primary"
+                fullWidth={true}
+                onClick={() => setVisibility(false)}
+                className="bsc-text-xs bsc-font-bold"
+              >
+                {approveText}
               </Button>
             </>
           </div>
