@@ -29,7 +29,7 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
   }));
 
   const buttonStyles = cx(
-    'bsc-p-4',
+    'bsc-p-4 dark:bsc-bg-mono-light-1 dark:hover:bsc-bg-mono-light-2 dark:bsc-text-mono-dark-1',
     {
       'bsc-w-full': fullWidth,
       'bsc-bg-gray-3 bsc-text-gray-2': disabled,

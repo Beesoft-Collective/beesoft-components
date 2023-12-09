@@ -29,6 +29,7 @@ import {
 import DateTimeYearSelector from './date-time-year-selector.component';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
+import { useMediaQuery } from '@react-hook/media-query';
 
 export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;
@@ -105,6 +106,8 @@ const DateTime = ({
   const dropDownTargetRef = useRef<HTMLElement>();
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
+
+  const isMobile = useMediaQuery('not all and (min-width: 640px)');
 
   const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
@@ -558,70 +561,69 @@ const DateTime = ({
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
         {label && <label className="dark:bsc-text-mono-light-1 bc-dt-label">{label}</label>}
-        <div className="max-sm:bsc-hidden">
-          <TemplateOutlet props={inputTemplateProps} template={template}>
-            {useFormattedInput === false ? (
-              <ContentEditableInput
-                value={getValue()}
-                readOnly={readOnly}
-                className={inputStyles}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                onInput={onInput}
-                onElementCreate={(element) => onInputElementCreated(element, false)}
-                {...inputProps}
-              />
-            ) : (
-              <FormattedInput
-                value={getValue()}
-                readOnly={readOnly}
-                className={inputStyles}
-                format={inputFormat}
-                isInputValid={isValidFormatString}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                onChange={onFormatStringChange}
-                onElementCreate={(element) => onInputElementCreated(element, true)}
-                {...inputProps}
-              />
-            )}
-          </TemplateOutlet>
-        </div>
-        <div className="md:bsc-hidden">
-          <ContentEditableInput
-            value={getValue()}
-            readOnly={false}
-            className={inputStyles}
-            onFocus={onFocus}
-            onElementCreate={(element) => onInputElementCreated(element, false)}
-            {...inputProps}
-          />
-        </div>
-        <div className="max-sm:bsc-hidden">
-          <OverlayPanel
-            visible={selectorOpen}
-            target={dropDownTarget}
-            shouldTargetCloseOverlay={false}
-            shouldScrollCloseOverlay={true}
-            shouldCheckZIndex={true}
-            shouldRemainOnScreen={true}
-            hidden={onDateTimeHidden}
-            isClickedWithin={onCalendarClick}
-            unmountWhenHidden={true}
-          >
-            {renderSelector()}
-          </OverlayPanel>
-        </div>
-        <div className="md:bsc-hidden">
-          <MobileOverlayPanel
-            visible={selectorOpen}
-            target={dropDownTarget}
-            hidden={onDateTimeHidden}
-            unmountWhenHidden={true}
-          >
-            {renderSelector()}
-          </MobileOverlayPanel>
-        </div>
+        {!isMobile ? (
+          <>
+            <TemplateOutlet props={inputTemplateProps} template={template}>
+              {useFormattedInput === false ? (
+                <ContentEditableInput
+                  value={getValue()}
+                  readOnly={readOnly}
+                  className={inputStyles}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onInput={onInput}
+                  onElementCreate={(element) => onInputElementCreated(element, false)}
+                  {...inputProps}
+                />
+              ) : (
+                <FormattedInput
+                  value={getValue()}
+                  readOnly={readOnly}
+                  className={inputStyles}
+                  format={inputFormat}
+                  isInputValid={isValidFormatString}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onChange={onFormatStringChange}
+                  onElementCreate={(element) => onInputElementCreated(element, true)}
+                  {...inputProps}
+                />
+              )}
+            </TemplateOutlet>
+            <OverlayPanel
+              visible={selectorOpen}
+              target={dropDownTarget}
+              shouldTargetCloseOverlay={false}
+              shouldScrollCloseOverlay={true}
+              shouldCheckZIndex={true}
+              shouldRemainOnScreen={true}
+              hidden={onDateTimeHidden}
+              isClickedWithin={onCalendarClick}
+              unmountWhenHidden={true}
+            >
+              {renderSelector()}
+            </OverlayPanel>
+          </>
+        ) : (
+          <>
+            <ContentEditableInput
+              value={getValue()}
+              readOnly={false}
+              className={inputStyles}
+              onFocus={onFocus}
+              onElementCreate={(element) => onInputElementCreated(element, false)}
+              {...inputProps}
+            />
+            <MobileOverlayPanel
+              visible={selectorOpen}
+              target={dropDownTarget}
+              hidden={onDateTimeHidden}
+              unmountWhenHidden={true}
+            >
+              {renderSelector()}
+            </MobileOverlayPanel>
+          </>
+        )}
       </div>
     </DateTimeContext.Provider>
   );

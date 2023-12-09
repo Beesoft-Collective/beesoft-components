@@ -34,6 +34,7 @@
     "chromatic": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
+    "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
@@ -75,6 +76,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "release-it": "^16.2.1",
