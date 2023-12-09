@@ -12,6 +12,7 @@ export interface ContentEditableInputProps extends FormInputControl<string> {
   rightElementClassName?: string;
   isSingleLine?: boolean;
   allowSingleLineScroll?: boolean;
+  inputMode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
   onInnerTextChange?: (value: string) => void;
   onInnerHTMLChange?: (value: string) => void;
   onElementCreate?: (element: HTMLElement) => void;
@@ -39,6 +40,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
     rightElementClassName,
     isSingleLine = true,
     allowSingleLineScroll = false,
+    inputMode,
     placeholder,
     onFocus,
     onBlur,
@@ -182,6 +184,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
         className={textStyles.current}
         contentEditable={!readOnly}
         suppressContentEditableWarning={true}
+        inputMode={inputMode}
         onInput={onInputChanged}
       >
         {value}

@@ -609,6 +609,7 @@ const DateTime = ({
             <ContentEditableInput
               value={getValue()}
               readOnly={false}
+              inputMode="none"
               className={inputStyles}
               onFocus={onFocus}
               onElementCreate={(element) => onInputElementCreated(element, false)}
