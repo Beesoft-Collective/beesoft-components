@@ -127,7 +127,7 @@ const DarkTemplate = (args: DateTimeProps) => {
   document.body.className = 'bsc-dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '30rem' }}>
+    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
       <DateTime {...args} />
     </div>
   );

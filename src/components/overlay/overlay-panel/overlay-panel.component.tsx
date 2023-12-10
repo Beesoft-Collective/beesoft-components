@@ -5,6 +5,7 @@ import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsid
 import { MarkupEvents, TypeOrArray } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomElementAlignment, DomHandler, DomTargetPosition } from '../../dom-handler';
+import { getTargetElement } from '../overlay-functions.ts';
 
 interface OverlayPanelDimensions {
   left: number;
@@ -123,14 +124,6 @@ const OverlayPanel = ({
       setVisibility(visible);
     }
   }, [target, visible, shouldScrollCloseOverlay, shouldCheckZIndex]);
-
-  const getTargetElement = (target: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element) => {
-    return (
-      (target as React.MouseEvent<Element, MouseEvent>).target
-        ? (target as React.MouseEvent<Element, MouseEvent>).target
-        : target
-    ) as HTMLElement;
-  };
 
   const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
     if (panelRef.current) {
