@@ -42,7 +42,7 @@ const DateTimeScroller = ({
   };
 
   const defaultTemplate = (_props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
-    <div className="bsc-w-full bsc-flex bsc-flex-row bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
+    <div className="bsc-w-full bsc-flex bsc-flex-row bsc-items-center bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
@@ -50,7 +50,7 @@ const DateTimeScroller = ({
   return (
     <TemplateOutlet props={templateProps} template={template}>
       <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-left">
-        <button className="focus:bsc-outline-none" onClick={onMovePrevious}>
+        <button className="bsc-p-2 focus:bsc-outline-none" onClick={onMovePrevious}>
           <ArrowLeftSLineIcon size={24} />
         </button>
       </div>
@@ -58,7 +58,7 @@ const DateTimeScroller = ({
         {title}
       </div>
       <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-right">
-        <button className="focus:bsc-outline-none" onClick={onMoveNext}>
+        <button className="bsc-p-2 focus:bsc-outline-none" onClick={onMoveNext}>
           <ArrowRightSLineIcon size={24} />
         </button>
       </div>
