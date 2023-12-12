@@ -3,6 +3,10 @@ export default {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   prefix: 'bsc-',
   darkMode: 'class', // or 'media' or 'class'
+  corePlugins: {
+    // due to https://github.com/tailwindlabs/tailwindcss/issues/6602 - buttons disappear
+    preflight: false,
+  },
   theme: {
     colors: {
       transparent: 'transparent',
