@@ -4,6 +4,7 @@ import { TypeOrArray } from '../../common-interfaces.ts';
 export interface MobileOverlayPanelProps {
   visible: boolean;
   target?: React.MouseEvent<Element, MouseEvent> | HTMLElement | Element | null;
+  appendTo?: HTMLElement;
   unmountWhenHidden?: boolean;
   transitionDuration?: number;
   showTransitionOptions?: string;

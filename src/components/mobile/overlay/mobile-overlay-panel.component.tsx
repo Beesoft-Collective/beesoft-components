@@ -1,4 +1,5 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers.ts';
 import { getAllElementStyleValues } from '../../common-functions.ts';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component.tsx';
@@ -9,6 +10,7 @@ import { MobileOverlayPanelProps } from './mobile-overlay-panel.props.ts';
 const MobileOverlayPanel = ({
   visible,
   target,
+  appendTo = document.body,
   unmountWhenHidden = false,
   transitionDuration = 400,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
@@ -97,7 +99,7 @@ const MobileOverlayPanel = ({
     entered: { opacity: 0.5 },
   };
 
-  return (
+  return ReactDOM.createPortal(
     <BeeSoftTransition
       start={visibility}
       timeout={transitionDuration}
@@ -137,7 +139,8 @@ const MobileOverlayPanel = ({
           </div>
         </div>
       )}
-    </BeeSoftTransition>
+    </BeeSoftTransition>,
+    appendTo
   );
 };
 
