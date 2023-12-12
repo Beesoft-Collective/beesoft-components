@@ -560,7 +560,7 @@ const DateTime = ({
   return (
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
-        {label && <label className="dark:bsc-text-mono-light-1 bc-dt-label">{label}</label>}
+        {label && <label className="bc-dt-label dark:bsc-text-mono-light-1">{label}</label>}
         {!isMobile ? (
           <>
             <TemplateOutlet props={inputTemplateProps} template={template}>
@@ -608,7 +608,7 @@ const DateTime = ({
           <>
             <ContentEditableInput
               value={getValue()}
-              readOnly={false}
+              readOnly={readOnly}
               inputMode="none"
               className={inputStyles}
               onFocus={onFocus}
