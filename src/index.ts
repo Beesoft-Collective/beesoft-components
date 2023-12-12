@@ -1,4 +1,5 @@
 // components
+import { Button } from './components/navigation/buttons/button/button.component.tsx';
 import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import DateTime from './components/form/date-time/date-time.component';
 import FormattedInput from './components/form/inputs/formatted-input/formatted-input.component';
@@ -18,6 +19,7 @@ import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-
 import './index.css';
 
 export {
+  Button,
   ContentEditableInput,
   DateTime,
   FormattedInput,

@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { MobileOverlayPanel } from './mobile-overlay-panel.component.tsx';
 import { MobileOverlayPanelProps } from './mobile-overlay-panel.props.ts';
 
@@ -19,7 +20,7 @@ const Template = (args: Omit<MobileOverlayPanelProps, 'children'>) => {
 
   return (
     <>
-      <button onClick={() => showOverlay()}>Show Overlay</button>
+      <Button onClick={() => showOverlay()}>Show Overlay</Button>
       <MobileOverlayPanel {...args} visible={visible} hidden={() => setVisible(false)}>
         <>This is some test content</>
       </MobileOverlayPanel>

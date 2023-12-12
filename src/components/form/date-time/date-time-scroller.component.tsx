@@ -2,6 +2,7 @@ import { ReactNode, useContext } from 'react';
 import { TypeOrArray } from '../../common-interfaces.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { ArrowLeftSLineIcon, ArrowRightSLineIcon } from '../../icons.ts';
+import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateTimeContext } from './date-time-context';
 import { DateScrollerType } from './date-time-types';
 
@@ -42,25 +43,25 @@ const DateTimeScroller = ({
   };
 
   const defaultTemplate = (_props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
-    <div className="bsc-w-full bsc-flex bsc-flex-row bsc-items-center bsc-py-1 bsc-px-2 bc-dt-scroller">{children}</div>
+    <div className="bc-dt-scroller bsc-flex bsc-w-full bsc-flex-row bsc-items-center bsc-px-2 bsc-py-1">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-left">
-        <button className="bsc-p-2 focus:bsc-outline-none" onClick={onMovePrevious}>
+      <div className="bc-dt-scroller-left bsc-flex-shrink bsc-cursor-pointer">
+        <Button className="bsc-bg-transparent focus:bsc-outline-none" onClick={onMovePrevious}>
           <ArrowLeftSLineIcon size={24} />
-        </button>
+        </Button>
       </div>
-      <div className="bsc-flex-grow bsc-text-center bsc-cursor-pointer bc-dt-scroller-title" onClick={onTitleClicked}>
+      <div className="bc-dt-scroller-title bsc-flex-grow bsc-cursor-pointer bsc-text-center" onClick={onTitleClicked}>
         {title}
       </div>
-      <div className="bsc-flex-shrink bsc-cursor-pointer bc-dt-scroller-right">
-        <button className="bsc-p-2 focus:bsc-outline-none" onClick={onMoveNext}>
+      <div className="bc-dt-scroller-right bsc-flex-shrink bsc-cursor-pointer">
+        <Button className="bsc-bg-transparent focus:bsc-outline-none" onClick={onMoveNext}>
           <ArrowRightSLineIcon size={24} />
-        </button>
+        </Button>
       </div>
     </TemplateOutlet>
   );
