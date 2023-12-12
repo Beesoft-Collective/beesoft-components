@@ -50,11 +50,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NPM_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        if: ${{ !cancelled() }}
-        with:
-          name: build-files
-          path: |
-            /home/runner/work/beesoft-components/beesoft-components/**/*
-            !/home/runner/work/beesoft-components/beesoft-components/node_modules/**/*
