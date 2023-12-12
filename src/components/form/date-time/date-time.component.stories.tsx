@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { forceAssert } from '../../common-functions.ts';
+import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
 import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component.tsx';
 
@@ -32,7 +33,7 @@ const MultipleInputTemplate = (args: DateTimeProps) => {
   return (
     <div className="bsc-flex bsc-flex-col bsc-p-4">
       <div className="bsc-flex-shrink">
-        <button onClick={() => setValue('15/05/2023')}>Set Value</button>
+        <Button onClick={() => setValue('15/05/2023')}>Set Value</Button>
       </div>
       <div className="bsc-flex-grow">
         <div className="bsc-flex">
@@ -68,9 +69,9 @@ const SetValueTemplate = (args: DateTimeProps) => {
 
   return (
     <div className="bsc-p-4">
-      <button type="button" onClick={() => setValue('09/03/2021')}>
+      <Button type="button" onClick={() => setValue('09/03/2021')}>
         Set Value
-      </button>
+      </Button>
       <br />
       <DateTime {...args} value={value} />
     </div>
@@ -84,9 +85,9 @@ const SetValueUndefinedTemplate = (args: DateTimeProps) => {
 
   return (
     <div className="bsc-p-4">
-      <button type="button" onClick={() => setValue(undefined)}>
+      <Button type="button" onClick={() => setValue(undefined)}>
         Set Value
-      </button>
+      </Button>
       <br />
       <DateTime {...args} value={value} />
     </div>
@@ -107,10 +108,10 @@ const ScrollTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
-    <div className="bsc-w-full bsc-flex bsc-flex-col bsc-p-4">
-      <div className="bsc-w-full bsc-pb-8 bsc-flex-shrink">Test Header</div>
-      <div className="bsc-w-full bsc-flex-grow bsc-flex bsc-flex-row">
-        <div className="bsc-border-r bsc-border-solid bsc-border-gray-500">
+    <div className="bsc-flex bsc-w-full bsc-flex-col bsc-p-4">
+      <div className="bsc-w-full bsc-flex-shrink bsc-pb-8">Test Header</div>
+      <div className="bsc-flex bsc-w-full bsc-flex-grow bsc-flex-row">
+        <div className="bsc-border-gray-500 bsc-border-r bsc-border-solid">
           <div className="bsc-overflow-scroll" style={{ height: '25rem', width: '10rem' }}>
             <div style={{ height: '50rem', paddingTop: '10rem' }}>
               <DateTime {...args} />
@@ -165,7 +166,7 @@ const OffScreenRightTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
-    <div className="bsc-w-full bsc-flex bsc-pr-2">
+    <div className="bsc-flex bsc-w-full bsc-pr-2">
       <div className="bsc-flex-grow">&nbsp;</div>
       <div className="bsc-flex-shrink" style={{ minWidth: '150px' }}>
         <DateTime {...args} />
@@ -178,11 +179,11 @@ const OffScreenRightBottomTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
-    <div className="bsc-w-full bsc-h-screen bsc-flex bsc-pr-2 bsc-pb-2">
-      <div className="bsc-w-full bsc-h-full bsc-flex-col">
+    <div className="bsc-flex bsc-h-screen bsc-w-full bsc-pb-2 bsc-pr-2">
+      <div className="bsc-h-full bsc-w-full bsc-flex-col">
         <div className="bsc-h-3/4">&nbsp;</div>
         <div className="bsc-flex-shrink">
-          <div className="bsc-w-full bsc-flex">
+          <div className="bsc-flex bsc-w-full">
             <div className="bsc-flex-grow">&nbsp;</div>
             <div className="bsc-flex-shrink" style={{ minWidth: '150px' }}>
               <DateTime {...args} />

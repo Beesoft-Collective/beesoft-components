@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash-es';
 import { Dispatch, useEffect, useRef, useState } from 'react';
 import { generateNumberArray } from '../../common-functions';
 import { ArrowDownSLineIcon, ArrowUpSLineIcon } from '../../icons.ts';
+import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
@@ -160,7 +161,7 @@ const DateTimeTimeSelector = ({
 
   return (
     <div
-      className="bsc-flex bsc-flex-row bsc-justify-center bsc-p-2 bc-dt-time-selector"
+      className="bc-dt-time-selector bsc-flex bsc-flex-row bsc-justify-center bsc-p-2"
       style={{ minWidth: timeFormat === TimeFormatType.TwelveHour ? '15rem' : '11rem' }}
     >
       <div className={gridWrapperStyle}>
@@ -169,46 +170,46 @@ const DateTimeTimeSelector = ({
             {dateString.current}
           </div>
         )}
-        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-increase">
-          <button className="focus:bsc-outline-none" onClick={increaseHour}>
+        <div className="bc-dt-time-hour-increase bsc-cursor-pointer bsc-text-center">
+          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseHour}>
             <ArrowUpSLineIcon />
-          </button>
+          </Button>
         </div>
         <div>&nbsp;</div>
-        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-increase">
-          <button className="focus:bsc-outline-none" onClick={increaseMinute}>
+        <div className="bc-dt-time-minute-increase bsc-cursor-pointer bsc-text-center">
+          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseMinute}>
             <ArrowUpSLineIcon />
-          </button>
+          </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-increase">
-            <button className="focus:bsc-outline-none" onClick={changeMeridian}>
+          <div className="bc-dt-time-meridian-increase bsc-cursor-pointer bsc-text-center">
+            <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
               <ArrowUpSLineIcon />
-            </button>
+            </Button>
           </div>
         )}
-        <div className="bsc-text-center bc-dt-time-hour-value">{hours.current[currentHour]}</div>
-        <div className="bsc-text-center bc-dt-time-separator">:</div>
-        <div className="bsc-text-center bc-dt-time-minute-value">{minutes.current[currentMinute]}</div>
+        <div className="bc-dt-time-hour-value bsc-text-center">{hours.current[currentHour]}</div>
+        <div className="bc-dt-time-separator bsc-text-center">:</div>
+        <div className="bc-dt-time-minute-value bsc-text-center">{minutes.current[currentMinute]}</div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bsc-text-center bc-dt-time-meridian-value">{ampm.current[currentMeridian]}</div>
+          <div className="bc-dt-time-meridian-value bsc-text-center">{ampm.current[currentMeridian]}</div>
         )}
-        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-hour-decrease">
-          <button className="focus:bsc-outline-none" onClick={decreaseHour}>
+        <div className="bc-dt-time-hour-decrease bsc-cursor-pointer bsc-text-center">
+          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseHour}>
             <ArrowDownSLineIcon />
-          </button>
+          </Button>
         </div>
         <div>&nbsp;</div>
-        <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-minute-decrease">
-          <button className="focus:bsc-outline-none" onClick={decreaseMinute}>
+        <div className="bc-dt-time-minute-decrease bsc-cursor-pointer bsc-text-center">
+          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseMinute}>
             <ArrowDownSLineIcon />
-          </button>
+          </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bsc-text-center bsc-cursor-pointer bc-dt-time-meridian-decrease">
-            <button className="focus:bsc-outline-none" onClick={changeMeridian}>
+          <div className="bc-dt-time-meridian-decrease bsc-cursor-pointer bsc-text-center">
+            <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
               <ArrowDownSLineIcon />
-            </button>
+            </Button>
           </div>
         )}
       </div>
