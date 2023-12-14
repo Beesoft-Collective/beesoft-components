@@ -175,7 +175,7 @@ const DateTimeTimeSelector = ({
             <ArrowUpSLineIcon />
           </Button>
         </div>
-        <div>&nbsp;</div>
+        <div></div>
         <div className="bc-dt-time-minute-increase bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseMinute}>
             <ArrowUpSLineIcon />
@@ -199,7 +199,7 @@ const DateTimeTimeSelector = ({
             <ArrowDownSLineIcon />
           </Button>
         </div>
-        <div>&nbsp;</div>
+        <div></div>
         <div className="bc-dt-time-minute-decrease bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseMinute}>
             <ArrowDownSLineIcon />
