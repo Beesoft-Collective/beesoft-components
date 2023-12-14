@@ -15,6 +15,16 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
     gzipPlugin(),
+    {
+      name: 'remove-bg-transparent',
+      transform(src, id) {
+        if (id.includes('beesoft-components/src/index.css')) {
+          return {
+            code: src.replace(/(background-color:\s?transparent;)/, '/* $1 */ '),
+          };
+        }
+      },
+    },
   ],
   build: {
     lib: {
