@@ -2,9 +2,9 @@ import { useMediaQuery } from '@react-hook/media-query';
 import { MediaQueryProps } from './media-query.props.ts';
 
 const MediaQuery = ({
-  mobileQuery = 'screen and (max-width: 640px)',
-  tabletQuery = 'screen and (min-width: 641px and max-width: 768px)',
-  desktopQuery = 'screen and (min-width: 1024px)',
+  mobileQuery = 'screen and (max-device-width: 40rem)',
+  tabletQuery = 'screen and (min-device-width: 40.01rem) and (max-device-width: 63.9375rem)',
+  desktopQuery = 'screen and (min-device-width: 64rem)',
   mobileMarkup,
   aboveMobileMarkup,
   tabletMarkup,
