@@ -23,14 +23,6 @@ export const MobileAndAbove: Story = {
   },
 };
 
-export const MobileTabletAndAbove: Story = {
-  args: {
-    mobileMarkup: <div className="bsc-w-full">This is the mobile only markup</div>,
-    tabletMarkup: <div className="bsc-w-full">This is the tablet only markup</div>,
-    aboveTabletMarkup: <div className="bsc-w-full">This is for anything above tablet</div>,
-  },
-};
-
 export const MobileTabletDesktop: Story = {
   args: {
     mobileMarkup: <div className="bsc-w-full">This is the mobile only markup</div>,

@@ -8,7 +8,6 @@ const MediaQuery = ({
   mobileMarkup,
   aboveMobileMarkup,
   tabletMarkup,
-  aboveTabletMarkup,
   desktopMarkup,
 }: MediaQueryProps) => {
   const isMobile = useMediaQuery(mobileQuery);
@@ -22,8 +21,6 @@ const MediaQuery = ({
       return aboveMobileMarkup;
     } else if (isTablet && tabletMarkup) {
       return tabletMarkup;
-    } else if (!isTablet && aboveTabletMarkup) {
-      return aboveTabletMarkup;
     } else if (isDesktop && desktopMarkup) {
       return desktopMarkup;
     } else {
