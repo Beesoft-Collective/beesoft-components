@@ -119,7 +119,7 @@ const OverlayPanel = ({
     if (visible !== undefined) {
       setVisibility(visible);
     }
-  }, [target, visible, shouldScrollCloseOverlay, shouldCheckZIndex, shouldRemainOnScreen]);
+  }, [target, visible, shouldScrollCloseOverlay, shouldCheckZIndex]);
 
   const resizeCallback = (entries: Array<ResizeObserverEntry>) => {
     if (panelRef.current) {
