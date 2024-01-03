@@ -77,6 +77,10 @@ const OverlayPanel = ({
   const resizeObserver = useRef<ResizeObserver>();
 
   useEffect(() => {
+    if (shouldRemainOnScreen === true) {
+      resizeObserver.current = new ResizeObserver(resizeCallback);
+    }
+
     return () => {
       if (shouldRemainOnScreen === true) {
         if (panelRef.current) {
@@ -223,6 +227,10 @@ const OverlayPanel = ({
   };
 
   const onMarkupCreated = (element: HTMLElement) => {
+    if (shouldRemainOnScreen === true && panelRef.current) {
+      resizeObserver.current?.unobserve(panelRef.current);
+    }
+
     panelRef.current = element;
     markupCreated?.(element);
 
@@ -244,10 +252,7 @@ const OverlayPanel = ({
         (DomHandler.canPositionElementOnScreenWithTarget(panelRef.current, finalTarget.current) ||
           DomHandler.canPositionElementOnScreen(panelRef.current))
       ) {
-        resizeObserver.current?.unobserve(panelRef.current);
         resizeObserver.current?.observe(panelRef.current);
-
-        resizeObserver.current = new ResizeObserver(resizeCallback);
       }
     }
   };
