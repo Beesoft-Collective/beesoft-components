@@ -7,8 +7,8 @@ export default {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      white: 'white',
-      black: 'black',
+      white: 'var(--theme-bsc-white)',
+      black: 'var(--theme-bsc-black)',
       primary: {
         1: 'var(--theme-bsc-primary-1)',
         2: 'var(--theme-bsc-primary-2)',
