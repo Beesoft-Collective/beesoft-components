@@ -203,6 +203,8 @@ export function createBeeSoftTheme(theme: BeeSoftTheme) {
     '--theme-bsc-gray-3': theme.gray3 || '#8f8f8f',
     '--theme-bsc-gray-4': theme.gray4 || '#bebebe',
     '--theme-bsc-gray-5': theme.gray5 || '#eeeeee',
+    '--theme-bsc-white': theme.white || '#ffffff',
+    '--theme-bsc-black': theme.black || '#000000',
     '--theme-bsc-mono-dark-1': theme.monoDark1 || '#222222',
     '--theme-bsc-mono-dark-2': theme.monoDark2 || '#3c3c3c',
     '--theme-bsc-mono-dark-3': theme.monoDark3 || '#4e4e4e',
