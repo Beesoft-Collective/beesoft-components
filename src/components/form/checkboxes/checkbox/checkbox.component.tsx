@@ -71,15 +71,29 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   // TODO: Once the library context is created animation will be able to be turned on and off
   const checkboxStyles = cx(
-    'bsc-checkbox-animate bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1'
+    'bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
+    {
+      'bsc-checkbox-animate': !readOnly,
+      'bsc-checkbox-no-animate': readOnly,
+    }
   );
 
   const innerCheckboxStyles = cx(
-    'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none [transition:box-shadow_0.3s] dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1'
+    'bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none [transition:box-shadow_0.3s] dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    {
+      'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark':
+        !readOnly,
+      'bsc-checkbox-border-read-only dark:bsc-checkbox-border-dark-read-only bsc-checkbox-border-checked-read-only dark:bsc-checkbox-border-checked-dark-read-only':
+        readOnly,
+    }
   );
 
   const svgStyles = cx(
-    'bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-fill-primary-1 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-fill-mono-light-1 dark:bsc-stroke-mono-dark-3'
+    'bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-stroke-mono-dark-3',
+    {
+      'bsc-fill-primary-1 dark:bsc-fill-mono-light-1': !readOnly,
+      'bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
+    }
   );
 
   return (

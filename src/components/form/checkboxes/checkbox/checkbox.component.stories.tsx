@@ -38,6 +38,7 @@ export const ReadOnly: Story = {
     name: 'test',
     label: 'Test Checkbox',
     value: 'test',
+    checked: true,
     readOnly: true,
   },
 };
@@ -56,6 +57,7 @@ export const DarkReadOnly: Story = {
     name: 'test',
     label: 'Test Checkbox',
     value: 'test',
+    checked: true,
     readOnly: true,
   },
   render: (args) => <DarkTemplate {...args} />,
