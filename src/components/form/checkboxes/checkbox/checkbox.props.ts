@@ -6,8 +6,17 @@ export enum CheckboxLabelLocation {
   Left,
 }
 
+export interface CheckboxCheckState {
+  checked: boolean;
+  partial: boolean;
+}
+
 export interface CheckboxProps extends FormInputControl<unknown, CheckboxChangeEvent> {
   checked?: boolean;
   partial?: boolean;
   labelLocation?: CheckboxLabelLocation;
+}
+
+export interface CheckboxRef {
+  setPartiallyChecked: (partiallyChecked: boolean) => void;
 }
