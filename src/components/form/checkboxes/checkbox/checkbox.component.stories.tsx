@@ -1,7 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { useRef, useState } from 'react';
+import { Button } from '../../../navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './checkbox.component.tsx';
-import { CheckboxProps } from './checkbox.props.ts';
+import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Form/Checkbox',
@@ -14,6 +16,39 @@ const meta: Meta<typeof Checkbox> = {
 export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
+
+const PartialTemplate = (args: CheckboxProps) => {
+  const [partial, setPartial] = useState(args.partial || false);
+  const checkboxRef = useRef<CheckboxRef>(null);
+
+  const onPartialClicked = () => {
+    setPartial(!partial);
+  };
+
+  const onPartialRefClicked = () => {
+    checkboxRef.current?.setPartiallyChecked(true);
+  };
+
+  return (
+    <div className="bsc-w-full">
+      <div className="bsc-mb-2 bsc-flex bsc-w-full">
+        <div className="bsc-flex-1">
+          <Button buttonType="primary" onClick={onPartialClicked}>
+            Set Partial
+          </Button>
+        </div>
+        <div className="bsc-flex-1">
+          <Button buttonType="secondary" onClick={onPartialRefClicked}>
+            Set Partial with Ref
+          </Button>
+        </div>
+      </div>
+      <div>
+        <Checkbox ref={checkboxRef} {...args} partial={partial} />
+      </div>
+    </div>
+  );
+};
 
 const DarkTemplate = (args: CheckboxProps) => {
   document.body.className = 'bsc-dark';
@@ -41,6 +76,16 @@ export const ReadOnly: Story = {
     checked: true,
     readOnly: true,
   },
+};
+
+export const Partial: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+    partial: true,
+  },
+  render: (args) => <PartialTemplate {...args} />,
 };
 
 export const Dark: Story = {
