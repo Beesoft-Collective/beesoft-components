@@ -48,13 +48,21 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
       originalEvent: event,
       value,
       checked: checkedValue,
+      partial: false,
     });
   };
 
   const setPartiallyChecked = (partiallyChecked: boolean) => {
-    setCheckedState({
+    const state: CheckboxCheckState = {
       checked: partiallyChecked ? true : checkedStateRef.current?.checked || false,
       partial: partiallyChecked,
+    };
+
+    setCheckedState(state);
+
+    onChange?.({
+      ...state,
+      value,
     });
   };
 
