@@ -1,5 +1,6 @@
 import cx from 'classnames';
-import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
+import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
 import { useStateRef } from '../../../../common/hooks/use-state-ref.ts';
 import { CheckboxCheckState, CheckboxLabelLocation, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
@@ -16,12 +17,21 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     onChange,
   } = props;
 
+  const [useAnimation, setUseAnimation] = useState(true);
+
   const [checkedState, setCheckedState, checkedStateRef] = useStateRef<CheckboxCheckState>({
     checked: false,
     partial: false,
   });
 
   const id = useId();
+  const beeSoftContext = useBeeSoftContext();
+
+  useEffect(() => {
+    if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
+      setUseAnimation(beeSoftContext.useAnimations);
+    }
+  }, [beeSoftContext]);
 
   useEffect(() => {
     setCheckedState({
@@ -85,18 +95,18 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     'bsc-text-gray-4 dark:bsc-text-mono-light-3': readOnly,
   });
 
-  // TODO: Once the library context is created animation will be able to be turned on and off
   const checkboxStyles = cx(
     'bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
     {
-      'bsc-checkbox-animate': !readOnly,
-      'bsc-checkbox-no-animate': readOnly,
+      'bsc-checkbox-animate': !readOnly && useAnimation,
+      'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimation),
     }
   );
 
   const innerCheckboxStyles = cx(
-    'bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none [transition:box-shadow_0.3s] dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    'bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
     {
+      '[transition:box-shadow_0.3s]': useAnimation,
       'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark':
         !readOnly,
       'bsc-checkbox-border-read-only dark:bsc-checkbox-border-dark-read-only bsc-checkbox-border-checked-read-only dark:bsc-checkbox-border-checked-dark-read-only':

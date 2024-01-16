@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
+import { BeeSoftProvider } from '../../../../common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './checkbox.component.tsx';
 import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
@@ -17,7 +18,23 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
+const Template = (args: CheckboxProps) => <Checkbox {...args} />;
+
+const ContextAnimationTemplate = (args: CheckboxProps) => (
+  <BeeSoftProvider useAnimations={true}>
+    <Template {...args} />
+  </BeeSoftProvider>
+);
+
+const ContextNoAnimationTemplate = (args: CheckboxProps) => (
+  <BeeSoftProvider useAnimations={false}>
+    <Template {...args} />
+  </BeeSoftProvider>
+);
+
 const PartialTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
   const [partial, setPartial] = useState(args.partial || false);
   const checkboxRef = useRef<CheckboxRef>(null);
 
@@ -76,6 +93,24 @@ export const ReadOnly: Story = {
     checked: true,
     readOnly: true,
   },
+};
+
+export const ContextAnimations: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+  },
+  render: (args) => <ContextAnimationTemplate {...args} />,
+};
+
+export const ContextNoAnimations: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+  },
+  render: (args) => <ContextNoAnimationTemplate {...args} />,
 };
 
 export const Partial: Story = {

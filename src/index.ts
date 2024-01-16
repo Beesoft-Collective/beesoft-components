@@ -1,4 +1,5 @@
 // components
+import { BeeSoftProvider } from './common/contexts/beesoft.context.tsx';
 import { Button } from './components/navigation/buttons/button/button.component.tsx';
 import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import { DateTime } from './components/form/date-time/date-time.component';
@@ -20,6 +21,7 @@ import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-
 import './index.css';
 
 export {
+  BeeSoftProvider,
   Button,
   ContentEditableInput,
   DateTime,
