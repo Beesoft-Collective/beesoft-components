@@ -4,73 +4,24 @@ import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { TypeOrArray } from '../../common-interfaces.ts';
-import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
+import TemplateOutlet from '../../common/template-outlet/template-outlet.component';
 import { Calendar2LineIcon, CloseLineIcon } from '../../icons.ts';
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import { MobileOverlayPanel } from '../../mobile/overlay/mobile-overlay-panel.component.tsx';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import { FormInputControl } from '../form-control.interface';
 import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
 import FormattedInput from '../inputs/formatted-input/formatted-input.component';
-import { DateTimeCalendarTemplate } from './date-time-calendar.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
-import { DateTimeScrollerTemplate } from './date-time-scroller.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
-import {
-  CalendarIconPosition,
-  DateFormatType,
-  DateSelectionType,
-  TimeConstraints,
-  TimeFormatType,
-} from './date-time-types';
+import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeFormatType } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
+import { DateTimeInputTemplateProps, DateTimeProps } from './date-time.props.ts';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
-
-export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
-  useDefaultDateValue?: boolean;
-  useFormattedInput?: boolean;
-  allowClear?: boolean;
-  locale?: string;
-  dateSelection?: DateSelectionType;
-  dateFormat?: DateFormatType;
-  timeConstraints?: TimeConstraints;
-  icon?: React.JSX.Element;
-  iconPosition?: CalendarIconPosition;
-  inputElement?: HTMLElement;
-  /**
-   * If the passed function returns false then that date will not be selectable and will be marked with the error style.
-   * @param {Date} currentDate - The date to test.
-   * @returns {boolean} false indicates the date should not be selectable.
-   */
-  selectableDate?: (currentDate: Date) => boolean;
-  /**
-   * If the passed function returns false then the date will not be selected in the input.
-   * @param {Date} selectedDate - The selected date to test.
-   * @returns {boolean} false indicates the date is not valid.
-   */
-  isValidDate?: (selectedDate: Date) => boolean;
-  calendarTemplate?: DateTimeCalendarTemplate;
-  dateScrollerTemplate?: DateTimeScrollerTemplate;
-  inputTemplate?: DateTimeInputTemplate;
-}
-
-export interface DateTimeInputTemplateProps {
-  label?: string;
-  readOnly: boolean;
-  allowClear: boolean;
-  getValue: () => string;
-  onFocus: (event: FocusEvent) => void;
-  onInput: (event: React.FormEvent) => void;
-  iconPosition: CalendarIconPosition;
-  iconElement?: React.JSX.Element;
-}
-
-export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
 
 const DateTime = ({
   value,
@@ -79,6 +30,7 @@ const DateTime = ({
   useDefaultDateValue = false,
   useFormattedInput = false,
   allowClear = false,
+  closeSelector = false,
   locale,
   className,
   dateSelection = DateSelectionType.DateTime,
@@ -294,6 +246,14 @@ const DateTime = ({
     }
   };
 
+  const onDateSelectorChange = (value?: TypeOrArray<Date>) => {
+    if (dateSelection === DateSelectionType.DateOnly && closeSelector === true) {
+      setSelectorOpen(false);
+    }
+
+    onChange?.(value);
+  };
+
   const onCalendarIconClick = () => {
     setDropDownElement();
     setSelectorOpen(!selectorOpen);
@@ -474,7 +434,7 @@ const DateTime = ({
             selectableDate={selectableDate}
             isValidDate={isValidDate}
             dispatcher={dispatcher}
-            onChange={onChange}
+            onChange={onDateSelectorChange}
           />
         )}
       {state.currentSelector === DateTimeActionType.MonthSelector &&
@@ -631,4 +591,4 @@ const DateTime = ({
   );
 };
 
-export default DateTime;
+export { DateTime };

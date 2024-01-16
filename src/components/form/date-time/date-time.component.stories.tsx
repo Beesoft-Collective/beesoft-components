@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
-import DateTime, { DateTimeInputTemplateProps, DateTimeProps } from './date-time.component.tsx';
+import { DateTime } from './date-time.component.tsx';
+import { DateTimeInputTemplateProps, DateTimeProps } from './date-time.props.ts';
 
 const meta: Meta<typeof DateTime> = {
   title: 'Form/Date Time',
@@ -273,6 +274,37 @@ export const Formatted24TimeInput: Story = {
     dateSelection: DateSelectionType.TimeOnly,
     locale: 'de-DE',
     useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const CloseOnSelection: Story = {
+  args: {
+    label: 'Date',
+    closeSelector: true,
+    dateSelection: DateSelectionType.DateOnly,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const CloseOnSelectionInvalidDate: Story = {
+  args: {
+    label: 'Date (Australia Day 2024 Invalid)',
+    closeSelector: true,
+    dateSelection: DateSelectionType.DateOnly,
+    isValidDate: (date) => !(date.getFullYear() === 2024 && date.getMonth() === 0 && date.getDate() === 26),
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const CloseOnSelectionNotDateOnly: Story = {
+  args: {
+    label: 'Date',
+    closeSelector: true,
+    dateSelection: DateSelectionType.DateTime,
     onChange: action('onChange'),
   },
   render: (args) => <Template {...args} />,
