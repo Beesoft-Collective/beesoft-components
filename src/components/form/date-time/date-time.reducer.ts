@@ -107,7 +107,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
         timeFormat: state.timeFormat,
         dateInitialized: true,
       };
-    case DateTimeActionType.InitializeDates:
+    case DateTimeActionType.InitializeDates: {
       const baseState = {
         ...state,
         currentViewDate: getInitialDate(action.initialDate),
@@ -126,6 +126,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
           selectedEndDate: action.initialDate[1],
         };
       }
+    }
     default:
       return {
         ...state,

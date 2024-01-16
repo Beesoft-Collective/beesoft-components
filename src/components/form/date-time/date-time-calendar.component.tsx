@@ -190,16 +190,16 @@ const DateTimeCalendar = ({
   };
 
   const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: ReactNode | Array<ReactNode>) => (
-    <div className="bsc-w-full bc-dt-calendar">{children}</div>
+    <div className="bc-dt-calendar bsc-w-full">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="bsc-grid bsc-grid-cols-7 bsc-gap-3 bc-dt-day-row bsc-min-w-[329px]">
+      <div className="bc-dt-day-row bsc-grid bsc-min-w-[329px] bsc-grid-cols-7 bsc-gap-3">
         {weekDaysRef.current?.map((day, index) => (
-          <div key={index} className="bsc-text-center bsc-font-bold bc-dt-day-cell">
+          <div key={index} className="bc-dt-day-cell bsc-text-center bsc-font-bold">
             {day}
           </div>
         ))}
