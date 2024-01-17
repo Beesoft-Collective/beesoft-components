@@ -1,5 +1,6 @@
 import { throttle, debounce } from 'lodash-es';
 import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { useBeeSoftContext } from '../../../common/hooks/use-beesoft-context.ts';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
 import { MarkupEvents, TypeOrArray } from '../../common-interfaces';
@@ -73,8 +74,9 @@ const OverlayPanel = ({
   const scrollerPanelRef = useRef<HTMLElement | Document>();
   const listenerRef = useRef<(event: MouseEvent) => void>();
   const scrollListenerRef = useRef<(event: Event) => void>();
-
   const resizeObserver = useRef<ResizeObserver>();
+
+  const beeSoftContext = useBeeSoftContext();
 
   useEffect(() => {
     if (shouldRemainOnScreen === true) {
@@ -97,11 +99,17 @@ const OverlayPanel = ({
       finalTarget.current = getTargetElement(target);
 
       if (shouldScrollCloseOverlay) {
-        scrollerPanelRef.current = getElementByCssStylesRecursive(finalTarget.current, {
-          overflow: 'scroll, auto',
-          overflowX: 'scroll, auto',
-          overflowY: 'scroll, auto',
-        });
+        const isValidElement = beeSoftContext?.isValidScrollableElement;
+        scrollerPanelRef.current = getElementByCssStylesRecursive(
+          finalTarget.current,
+          {
+            overflow: 'scroll, auto',
+            overflowX: 'scroll, auto',
+            overflowY: 'scroll, auto',
+          },
+          false,
+          isValidElement
+        );
 
         if ((scrollerPanelRef.current as HTMLElement).tagName.toLowerCase() === 'html') {
           scrollerPanelRef.current = document;

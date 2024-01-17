@@ -107,15 +107,22 @@ export function elementHasAnyStyle(element: HTMLElement, styles: Record<string, 
 export function getElementByCssStylesRecursive(
   element: HTMLElement,
   styles: Record<string, string | number>,
-  matchAllStyles = false
+  matchAllStyles = false,
+  isValidElement?: (element: HTMLElement) => boolean
 ): HTMLElement {
   if (matchAllStyles && elementHasAllStyles(element, styles)) {
-    return element;
+    if (!isValidElement || isValidElement?.(element) === true) {
+      return element;
+    }
   } else if (!matchAllStyles && elementHasAnyStyle(element, styles)) {
-    return element;
+    if (!isValidElement || isValidElement?.(element) === true) {
+      return element;
+    }
   }
 
-  return element.parentElement ? getElementByCssStylesRecursive(element.parentElement, styles) : element;
+  return element.parentElement
+    ? getElementByCssStylesRecursive(element.parentElement, styles, matchAllStyles, isValidElement)
+    : element;
 }
 
 export function getAllElementStyleValuesRecursive(
