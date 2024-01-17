@@ -85,6 +85,13 @@ export const Default: Story = {
   },
 };
 
+export const NoLabel: Story = {
+  args: {
+    name: 'test',
+    value: 'test',
+  },
+};
+
 export const ReadOnly: Story = {
   args: {
     name: 'test',

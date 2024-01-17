@@ -124,7 +124,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   return (
     <div className={wrapperStyles}>
-      {labelLocation === CheckboxLabelLocation.Left && (
+      {label && labelLocation === CheckboxLabelLocation.Left && (
         <label htmlFor={id} className={labelStyles}>
           label
         </label>
@@ -142,7 +142,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
           {!checkedState.partial ? <polyline points="5 10.75 8.5 14.25 16 6" /> : <polyline points="6 10.5 16 10.5" />}
         </svg>
       </label>
-      {labelLocation === CheckboxLabelLocation.Right && (
+      {label && labelLocation === CheckboxLabelLocation.Right && (
         <label htmlFor={id} className={labelStyles}>
           {label}
         </label>
