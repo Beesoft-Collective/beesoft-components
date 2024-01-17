@@ -60,7 +60,7 @@ const PartialTemplate = (args: CheckboxProps) => {
           </Button>
         </div>
       </div>
-      <div>
+      <div className="bsc-p-2">
         <Checkbox ref={checkboxRef} {...args} partial={partial} />
       </div>
     </div>
