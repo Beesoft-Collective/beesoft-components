@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { BeeSoftProvider } from '../../../common/contexts/beesoft.context.tsx';
 import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
@@ -105,7 +106,7 @@ const BodyScrollTemplate = (args: DateTimeProps) => {
   );
 };
 
-const ScrollTemplate = (args: DateTimeProps) => {
+const IssueScrollTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
   return (
@@ -114,7 +115,11 @@ const ScrollTemplate = (args: DateTimeProps) => {
       <div className="bsc-flex bsc-w-full bsc-flex-grow bsc-flex-row">
         <div className="bsc-border-gray-500 bsc-border-r bsc-border-solid">
           <div className="bsc-overflow-scroll" style={{ height: '25rem', width: '10rem' }}>
-            <div style={{ height: '50rem', paddingTop: '10rem' }}>
+            <div
+              className="bsc-overflow-x-auto"
+              data-skip-element={true}
+              style={{ height: '50rem', paddingTop: '10rem' }}
+            >
               <DateTime {...args} />
             </div>
           </div>
@@ -122,6 +127,21 @@ const ScrollTemplate = (args: DateTimeProps) => {
         <div className="bsc-flex-grow">Non Scrollable Content</div>
       </div>
     </div>
+  );
+};
+
+const ScrollTemplateContext = (args: DateTimeProps) => {
+  document.body.className = '';
+
+  return (
+    <BeeSoftProvider
+      isValidScrollableElement={(element) => {
+        const skipElement = element.dataset.skipElement;
+        return skipElement === undefined || !skipElement;
+      }}
+    >
+      <IssueScrollTemplate {...args} />
+    </BeeSoftProvider>
   );
 };
 
@@ -473,13 +493,22 @@ export const MinuteConstraint: Story = {
   render: (args) => <Template {...args} />,
 };
 
-export const ScrollDateTime: Story = {
+export const InvalidScrollDateTime: Story = {
   args: {
     label: 'Date',
     useDefaultDateValue: true,
     onChange: action('onChange'),
   },
-  render: (args) => <ScrollTemplate {...args} />,
+  render: (args) => <IssueScrollTemplate {...args} />,
+};
+
+export const FixedScrollDataTime: Story = {
+  args: {
+    label: 'Date',
+    useDefaultDateValue: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <ScrollTemplateContext {...args} />,
 };
 
 export const BodyScrollDateTime: Story = {
