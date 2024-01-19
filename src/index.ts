@@ -1,6 +1,7 @@
 // components
 import { BeeSoftProvider } from './common/contexts/beesoft.context.tsx';
 import { Button } from './components/navigation/buttons/button/button.component.tsx';
+import { Checkbox } from './components/form/checkboxes/checkbox/checkbox.component.tsx';
 import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import { DateTime } from './components/form/date-time/date-time.component';
 import FormattedInput from './components/form/inputs/formatted-input/formatted-input.component';
@@ -12,6 +13,7 @@ import OverlayPanel from './components/overlay/overlay-panel/overlay-panel.compo
 import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
+import { CheckboxLabelLocation, CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
 import { DateTimeScrollerTemplateProps } from './components/form/date-time/date-time-scroller.component';
@@ -23,6 +25,7 @@ import './index.css';
 export {
   BeeSoftProvider,
   Button,
+  Checkbox,
   ContentEditableInput,
   DateTime,
   FormattedInput,
@@ -35,8 +38,9 @@ export {
   createBeeSoftTheme,
 
   // types to be used as values
+  CheckboxLabelLocation,
   DateFormatType,
   DateSelectionType,
 };
 
-export type { DateTimeInputTemplateProps, DateTimeScrollerTemplateProps, DateTimeCalendarTemplateProps };
+export type { CheckboxRef, DateTimeInputTemplateProps, DateTimeScrollerTemplateProps, DateTimeCalendarTemplateProps };
