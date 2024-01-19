@@ -1,8 +1,9 @@
-import { SyntheticEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 export interface CheckboxChangeEvent {
+  name?: string;
   value: unknown;
   checked: boolean;
   partial: boolean;
-  originalEvent?: SyntheticEvent<HTMLInputElement, Event>;
+  originalEvent?: ChangeEvent<HTMLInputElement>;
 }

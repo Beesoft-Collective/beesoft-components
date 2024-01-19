@@ -57,6 +57,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
     onChange?.({
       originalEvent: event,
+      name: name || event.target.name,
       value,
       checked: checkedValue,
       partial: false,
@@ -73,6 +74,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
     onChange?.({
       ...state,
+      name,
       value,
     });
   };
