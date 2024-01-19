@@ -20,21 +20,70 @@ type Story = StoryObj<typeof Checkbox>;
 
 const Template = (args: CheckboxProps) => <Checkbox {...args} />;
 
-const CheckedPropertyTemplate = (args: CheckboxProps) => {
-  const [checkedState, setCheckedState] = useState(false);
-  const switchCheckedProperty = () => {
-    setCheckedState(!checkedState);
-  };
-
+const CheckboxScrollTemplate = (args: CheckboxProps) => {
   return (
-    <>
-      <div className="bsc-mb-2">
-        <Button onClick={switchCheckedProperty}>Switch Checked</Button>
+    <div className="bsc-max-h-[200px] bsc-w-full bsc-overflow-y-auto">
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 1" />
       </div>
-      <div>
-        <Checkbox {...args} checked={checkedState} />
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 2" />
       </div>
-    </>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 3" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 4" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 5" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 6" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 7" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 8" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 9" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 10" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 11" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 12" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 13" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 14" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 15" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 16" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 17" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 18" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 19" />
+      </div>
+      <div className="bsc-p-1">
+        <Checkbox {...args} label="Item 20" />
+      </div>
+    </div>
   );
 };
 
@@ -109,7 +158,7 @@ export const CheckedProperty: Story = {
     label: 'Test Checkbox',
     value: 'test',
   },
-  render: (args) => <CheckedPropertyTemplate {...args} />,
+  render: (args) => <CheckboxScrollTemplate {...args} />,
 };
 
 export const NoLabel: Story = {
