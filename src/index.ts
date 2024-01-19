@@ -13,6 +13,7 @@ import OverlayPanel from './components/overlay/overlay-panel/overlay-panel.compo
 import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
+import { CheckboxChangeEvent } from './components/form/checkboxes/checkboxes.interfaces.ts';
 import { CheckboxLabelLocation, CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
@@ -43,4 +44,10 @@ export {
   DateSelectionType,
 };
 
-export type { CheckboxRef, DateTimeInputTemplateProps, DateTimeScrollerTemplateProps, DateTimeCalendarTemplateProps };
+export type {
+  CheckboxChangeEvent,
+  CheckboxRef,
+  DateTimeInputTemplateProps,
+  DateTimeScrollerTemplateProps,
+  DateTimeCalendarTemplateProps,
+};
