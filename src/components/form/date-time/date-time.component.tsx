@@ -4,6 +4,7 @@ import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import { TypeOrArray } from '../../common-interfaces.ts';
+import { Label } from '../../common/label/label.component.tsx';
 import TemplateOutlet from '../../common/template-outlet/template-outlet.component';
 import { Calendar2LineIcon, CloseLineIcon } from '../../icons.ts';
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
@@ -508,17 +509,17 @@ const DateTime = ({
   const inputStyles = cx(
     'bsc-text-left',
     {
-      'bsc-bg-gray-2': readOnly,
-      'bsc-bg-white': !readOnly,
+      'bsc-bg-gray-4 dark:bsc-bg-mono-dark-3': readOnly,
+      'bsc-bg-white dark:bsc-bg-mono-dark-1': !readOnly,
     },
-    `dark:bsc-bg-mono-dark-1 bc-dt-input`,
+    `bc-dt-input`,
     className
   );
 
   return (
     <DateTimeContext.Provider value={contextProps.current}>
       <div className="bc-date-time">
-        {label && <label className="bc-dt-label dark:bsc-text-mono-light-1">{label}</label>}
+        {label && <Label label={label} readOnly={readOnly} className="bc-dt-label" />}
         <MediaQuery
           mobileMarkup={
             <>

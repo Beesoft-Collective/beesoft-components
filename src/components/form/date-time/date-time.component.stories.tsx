@@ -605,6 +605,16 @@ export const ReadOnlyDate: Story = {
   render: (args) => <Template {...args} />,
 };
 
+export const ReadOnlyDateDark: Story = {
+  args: {
+    label: 'Read Only Date',
+    value: '31/10/1977, 8:30:00 AM',
+    readOnly: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <DarkTemplate {...args} />,
+};
+
 export const OffScreenRight: Story = {
   args: {
     label: 'Off Screen Right',

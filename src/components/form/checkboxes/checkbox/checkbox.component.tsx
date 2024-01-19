@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
 import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
 import { useStateRef } from '../../../../common/hooks/use-state-ref.ts';
+import { Label } from '../../../common/label/label.component.tsx';
 import { CheckboxCheckState, CheckboxLabelLocation, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
 const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
@@ -81,22 +82,20 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   }));
 
   const wrapperStyles = cx(
-    'bsc-flex bsc-items-center',
+    'bc-checkbox-wrapper bsc-flex bsc-items-center',
     {
       'bsc-pointer-events-none bsc-text-gray-2 dark:bsc-text-mono-light-3': readOnly,
     },
     className
   );
 
-  const labelStyles = cx('bsc-cursor-pointer', {
+  const labelStyles = cx('bc-checkbox-label bsc-cursor-pointer', {
     'bsc-ml-2': labelLocation === CheckboxLabelLocation.Right,
     'bsc-mr-2': labelLocation === CheckboxLabelLocation.Left,
-    'bsc-text-black dark:bsc-text-mono-light-1': !readOnly,
-    'bsc-text-gray-4 dark:bsc-text-mono-light-3': readOnly,
   });
 
   const checkboxStyles = cx(
-    'bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
+    'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
     {
       'bsc-checkbox-animate': !readOnly && useAnimation,
       'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimation),
@@ -104,7 +103,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 
   const innerCheckboxStyles = cx(
-    'bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    'bc-checkbox bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
     {
       '[transition:box-shadow_0.3s]': useAnimation,
       'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark':
@@ -115,7 +114,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 
   const svgStyles = cx(
-    'bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-stroke-mono-dark-3',
+    'bc-checkbox-svg bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-stroke-mono-dark-3',
     {
       'bsc-fill-primary-1 dark:bsc-fill-mono-light-1': !readOnly,
       'bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
@@ -125,9 +124,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   return (
     <div className={wrapperStyles}>
       {label && labelLocation === CheckboxLabelLocation.Left && (
-        <label htmlFor={id} className={labelStyles}>
-          label
-        </label>
+        <Label label={label} htmlFor={id} readOnly={readOnly} className={labelStyles} />
       )}
       <label className={checkboxStyles}>
         <input
@@ -143,9 +140,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         </svg>
       </label>
       {label && labelLocation === CheckboxLabelLocation.Right && (
-        <label htmlFor={id} className={labelStyles}>
-          {label}
-        </label>
+        <Label label={label} htmlFor={id} readOnly={readOnly} className={labelStyles} />
       )}
     </div>
   );
