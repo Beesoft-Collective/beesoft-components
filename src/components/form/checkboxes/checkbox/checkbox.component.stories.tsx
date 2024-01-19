@@ -20,6 +20,24 @@ type Story = StoryObj<typeof Checkbox>;
 
 const Template = (args: CheckboxProps) => <Checkbox {...args} />;
 
+const CheckedPropertyTemplate = (args: CheckboxProps) => {
+  const [checkedState, setCheckedState] = useState(false);
+  const switchCheckedProperty = () => {
+    setCheckedState(!checkedState);
+  };
+
+  return (
+    <>
+      <div className="bsc-mb-2">
+        <Button onClick={switchCheckedProperty}>Switch Checked</Button>
+      </div>
+      <div>
+        <Checkbox {...args} checked={checkedState} />
+      </div>
+    </>
+  );
+};
+
 const ContextAnimationTemplate = (args: CheckboxProps) => (
   <BeeSoftProvider useAnimations={true}>
     <Template {...args} />
@@ -83,6 +101,15 @@ export const Default: Story = {
     label: 'Test Checkbox',
     value: 'test',
   },
+};
+
+export const CheckedProperty: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+  },
+  render: (args) => <CheckedPropertyTemplate {...args} />,
 };
 
 export const NoLabel: Story = {
