@@ -2,7 +2,8 @@ import cx from 'classnames';
 import { cloneDeep } from 'lodash-es';
 import { Dispatch, useEffect, useRef, useState } from 'react';
 import { generateNumberArray } from '../../common-functions';
-import { ArrowDownSLineIcon, ArrowUpSLineIcon } from '../../icons.ts';
+import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
+import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
@@ -172,19 +173,19 @@ const DateTimeTimeSelector = ({
         )}
         <div className="bc-dt-time-hour-increase bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseHour}>
-            <ArrowUpSLineIcon />
+            <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
           </Button>
         </div>
         <div></div>
         <div className="bc-dt-time-minute-increase bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseMinute}>
-            <ArrowUpSLineIcon />
+            <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
           </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
           <div className="bc-dt-time-meridian-increase bsc-cursor-pointer bsc-text-center">
             <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
-              <ArrowUpSLineIcon />
+              <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
             </Button>
           </div>
         )}
@@ -196,19 +197,19 @@ const DateTimeTimeSelector = ({
         )}
         <div className="bc-dt-time-hour-decrease bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseHour}>
-            <ArrowDownSLineIcon />
+            <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
           </Button>
         </div>
         <div></div>
         <div className="bc-dt-time-minute-decrease bsc-cursor-pointer bsc-text-center">
           <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseMinute}>
-            <ArrowDownSLineIcon />
+            <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
           </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
           <div className="bc-dt-time-meridian-decrease bsc-cursor-pointer bsc-text-center">
             <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
-              <ArrowDownSLineIcon />
+              <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
             </Button>
           </div>
         )}
