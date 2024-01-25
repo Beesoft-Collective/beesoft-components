@@ -1,7 +1,8 @@
 import { ReactNode, useContext } from 'react';
 import { TypeOrArray } from '../../common-interfaces.ts';
+import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
+import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
-import { ArrowLeftSLineIcon, ArrowRightSLineIcon } from '../../icons.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateTimeContext } from './date-time-context';
 import { DateScrollerType } from './date-time-types';
@@ -52,7 +53,7 @@ const DateTimeScroller = ({
     <TemplateOutlet props={templateProps} template={template}>
       <div className="bc-dt-scroller-left bsc-flex-shrink bsc-cursor-pointer">
         <Button className="bsc-bg-transparent focus:bsc-outline-none" onClick={onMovePrevious}>
-          <ArrowLeftSLineIcon size={24} />
+          <BeeSoftIcon icon="chevronLeft" size={IconSize.Regular} />
         </Button>
       </div>
       <div className="bc-dt-scroller-title bsc-flex-grow bsc-cursor-pointer bsc-text-center" onClick={onTitleClicked}>
@@ -60,7 +61,7 @@ const DateTimeScroller = ({
       </div>
       <div className="bc-dt-scroller-right bsc-flex-shrink bsc-cursor-pointer">
         <Button className="bsc-bg-transparent focus:bsc-outline-none" onClick={onMoveNext}>
-          <ArrowRightSLineIcon size={24} />
+          <BeeSoftIcon icon="chevronRight" size={IconSize.Regular} />
         </Button>
       </div>
     </TemplateOutlet>

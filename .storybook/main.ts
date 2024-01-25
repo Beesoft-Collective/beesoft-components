@@ -6,6 +6,7 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "@storybook/addon-a11y",
   ],
   core: {
     builder: '@storybook/builder-vite',
@@ -21,5 +22,10 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  viteFinal(config) {
+    config.plugins = (config.plugins ?? []).filter((plugin) => plugin && 'name' in plugin && plugin.name !== 'vite:dts');
+    return config;
+  },
 };
+
 export default config;

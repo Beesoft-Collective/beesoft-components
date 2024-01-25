@@ -39,12 +39,11 @@
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.5",
-    "remixicon-react": "^1.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@release-it/bumper": "^5.1.0",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@storybook/addon-a11y": "^7.6.10",
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
     "@storybook/addon-links": "^7.5.3",
