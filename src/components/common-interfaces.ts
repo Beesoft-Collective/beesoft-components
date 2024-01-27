@@ -42,5 +42,3 @@ export interface BeeSoftTheme {
   warning?: string;
   error?: string;
 }
-
-export type TypeOrArray<T> = T | Array<T>;

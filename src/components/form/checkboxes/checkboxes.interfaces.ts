@@ -7,3 +7,8 @@ export interface CheckboxChangeEvent {
   partial: boolean;
   originalEvent?: ChangeEvent<HTMLInputElement>;
 }
+
+export interface CheckboxGroupChangeEvent {
+  name: string;
+  value: Array<unknown>;
+}

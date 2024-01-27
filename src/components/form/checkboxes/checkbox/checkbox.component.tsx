@@ -1,7 +1,7 @@
+import { useStateRef } from '@beesoft/common';
 import cx from 'classnames';
 import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
 import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
-import { useStateRef } from '../../../../common/hooks/use-state-ref.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { CheckboxCheckState, CheckboxLabelLocation, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
