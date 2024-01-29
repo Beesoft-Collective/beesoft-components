@@ -1,6 +1,6 @@
-import { addMonths, subMonths } from 'date-fns';
+import { TypeOrArray } from '@beesoft/common';
+import { addMonths, subMonths, Locale } from 'date-fns';
 import { Dispatch } from 'react';
-import { TypeOrArray } from '../../common-interfaces.ts';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';

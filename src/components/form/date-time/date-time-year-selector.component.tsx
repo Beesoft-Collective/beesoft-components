@@ -1,4 +1,4 @@
-import { addYears, setYear, subYears } from 'date-fns';
+import { addYears, setYear, subYears, Locale } from 'date-fns';
 import { Dispatch } from 'react';
 import { getTranslatedYearMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
@@ -48,14 +48,14 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
         onMovePrevious={movePreviousDecade}
         onMoveNext={moveNextDecade}
       />
-      <div className="bsc-w-full bc-dt-year-wrapper">
-        <div className="bsc-grid bsc-grid-cols-4 bsc-gap-4 bc-dt-year-grid">
+      <div className="bc-dt-year-wrapper bsc-w-full">
+        <div className="bc-dt-year-grid bsc-grid bsc-grid-cols-4 bsc-gap-4">
           {yearMatrix.map((row, rIndex) =>
             row.map((column, cIndex) => {
               return column.length > 0 ? (
                 <div
                   key={rIndex.toString() + cIndex.toString()}
-                  className="bsc-text-center bsc-cursor-pointer bc-dt-year-cell"
+                  className="bc-dt-year-cell bsc-cursor-pointer bsc-text-center"
                   onClick={() => onYearClicked(column)}
                 >
                   {column}

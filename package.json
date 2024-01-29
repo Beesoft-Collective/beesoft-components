@@ -34,9 +34,10 @@
     "chromatic": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
+    "@beesoft/common": "^0.1.2",
     "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.3.1",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.5",
     "uuid": "^9.0.1"

@@ -1,9 +1,10 @@
+import { TypeOrArray } from '@beesoft/common';
 import { throttle, debounce } from 'lodash-es';
 import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useBeeSoftContext } from '../../../common/hooks/use-beesoft-context.ts';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
-import { MarkupEvents, TypeOrArray } from '../../common-interfaces';
+import { MarkupEvents } from '../../common-interfaces';
 import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomElementAlignment, DomHandler, DomTargetPosition } from '../../dom-handler';
 import { getTargetElement } from '../overlay-functions.ts';

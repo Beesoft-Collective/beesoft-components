@@ -342,7 +342,7 @@ export const AllowClear: Story = {
 export const SetDateValue: Story = {
   args: {
     label: 'Date',
-    value: '30/03/2021, 4:15:00 PM',
+    value: '30/03/2021, 4:15 PM',
     onChange: action('onChange'),
   },
   render: (args) => <Template {...args} />,

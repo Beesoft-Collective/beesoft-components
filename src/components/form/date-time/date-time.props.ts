@@ -1,5 +1,5 @@
+import { TypeOrArray } from '@beesoft/common';
 import React from 'react';
-import { TypeOrArray } from '../../common-interfaces.ts';
 import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
 import { FormInputControl } from '../form-control.interface.ts';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component.tsx';

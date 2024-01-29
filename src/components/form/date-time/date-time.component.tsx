@@ -1,9 +1,9 @@
+import { TypeOrArray } from '@beesoft/common';
 import cx from 'classnames';
-import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, startOfMonth, Locale } from 'date-fns';
 import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
-import { TypeOrArray } from '../../common-interfaces.ts';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Label } from '../../common/label/label.component.tsx';
@@ -148,8 +148,8 @@ const DateTime = ({
       dateSelection === DateSelectionType.TimeOnly
         ? DateTimeActionType.TimeSelector
         : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
-        ? DateTimeActionType.DaySelector
-        : DateTimeActionType.DateRangeSelector,
+          ? DateTimeActionType.DaySelector
+          : DateTimeActionType.DateRangeSelector,
     currentViewDate: new Date(),
     timeFormat: TimeFormatType.TwelveHour,
     dateInitialized: false,
@@ -293,8 +293,8 @@ const DateTime = ({
         dateSelection === DateSelectionType.TimeOnly
           ? DateTimeActionType.TimeSelector
           : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
-          ? DateTimeActionType.DaySelector
-          : DateTimeActionType.DateRangeSelector,
+            ? DateTimeActionType.DaySelector
+            : DateTimeActionType.DateRangeSelector,
     });
   };
 
@@ -379,60 +379,60 @@ const DateTime = ({
     iconPosition === CalendarIconPosition.None
       ? {}
       : iconPosition === CalendarIconPosition.Right
-      ? {
-          rightElement: (
-            <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
-              {allowClear && !readOnly && (
-                <div>
-                  <BeeSoftIcon
-                    icon="close"
-                    size={IconSize.Small}
-                    className="bsc-cursor-pointer bsc-text-sm"
-                    onClick={onClearClick}
-                  />
+        ? {
+            rightElement: (
+              <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
+                {allowClear && !readOnly && (
+                  <div>
+                    <BeeSoftIcon
+                      icon="close"
+                      size={IconSize.Small}
+                      className="bsc-cursor-pointer bsc-text-sm"
+                      onClick={onClearClick}
+                    />
+                  </div>
+                )}
+                <div className="bsc-ml-2">
+                  {icon || (
+                    <BeeSoftIcon
+                      icon="calendar"
+                      size={IconSize.Small}
+                      className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                      onClick={!readOnly ? onCalendarIconClick : undefined}
+                    />
+                  )}
                 </div>
-              )}
-              <div className="bsc-ml-2">
-                {icon || (
-                  <BeeSoftIcon
-                    icon="calendar"
-                    size={IconSize.Small}
-                    className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                    onClick={!readOnly ? onCalendarIconClick : undefined}
-                  />
+              </div>
+            ),
+            rightElementClassName: 'bsc-justify-center',
+          }
+        : {
+            leftElement: (
+              <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
+                <div className="bsc-mr-2">
+                  {icon || (
+                    <BeeSoftIcon
+                      icon="calendar"
+                      size={IconSize.Small}
+                      className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                      onClick={!readOnly ? onCalendarIconClick : undefined}
+                    />
+                  )}
+                </div>
+                {allowClear && !readOnly && (
+                  <div>
+                    <BeeSoftIcon
+                      icon="close"
+                      size={IconSize.Small}
+                      className="bsc-cursor-pointer bsc-text-sm"
+                      onClick={onClearClick}
+                    />
+                  </div>
                 )}
               </div>
-            </div>
-          ),
-          rightElementClassName: 'bsc-justify-center',
-        }
-      : {
-          leftElement: (
-            <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
-              <div className="bsc-mr-2">
-                {icon || (
-                  <BeeSoftIcon
-                    icon="calendar"
-                    size={IconSize.Small}
-                    className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                    onClick={!readOnly ? onCalendarIconClick : undefined}
-                  />
-                )}
-              </div>
-              {allowClear && !readOnly && (
-                <div>
-                  <BeeSoftIcon
-                    icon="close"
-                    size={IconSize.Small}
-                    className="bsc-cursor-pointer bsc-text-sm"
-                    onClick={onClearClick}
-                  />
-                </div>
-              )}
-            </div>
-          ),
-          leftElementClassName: 'bsc-justify-center',
-        };
+            ),
+            leftElementClassName: 'bsc-justify-center',
+          };
 
   const renderSelector = () => (
     <>
@@ -536,15 +536,17 @@ const DateTime = ({
         <MediaQuery
           mobileMarkup={
             <>
-              <ContentEditableInput
-                value={getValue()}
-                readOnly={readOnly}
-                inputMode="none"
-                className={inputStyles}
-                onFocus={onFocus}
-                onElementCreate={(element) => onInputElementCreated(element, false)}
-                {...inputProps}
-              />
+              <TemplateOutlet props={inputTemplateProps} template={template}>
+                <ContentEditableInput
+                  value={getValue()}
+                  readOnly={readOnly}
+                  inputMode="none"
+                  className={inputStyles}
+                  onFocus={onFocus}
+                  onElementCreate={(element) => onInputElementCreated(element, false)}
+                  {...inputProps}
+                />
+              </TemplateOutlet>
               <MobileOverlayPanel
                 visible={selectorOpen}
                 target={dropDownTarget}
