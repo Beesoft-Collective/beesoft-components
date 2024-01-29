@@ -1,5 +1,5 @@
+import { TypeOrArray } from '@beesoft/common';
 import { ReactNode } from 'react';
-import { TypeOrArray } from '../../common-interfaces.ts';
 
 export interface MediaQueryProps {
   /**

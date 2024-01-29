@@ -1,5 +1,5 @@
+import { TypeOrArray } from '@beesoft/common';
 import { ReactNode, useContext } from 'react';
-import { TypeOrArray } from '../../common-interfaces.ts';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';

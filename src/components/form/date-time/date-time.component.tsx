@@ -1,6 +1,6 @@
 import { TypeOrArray } from '@beesoft/common';
 import cx from 'classnames';
-import { addMonths, endOfMonth, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, startOfMonth, Locale } from 'date-fns';
 import { debounce } from 'lodash-es';
 import React, { ReactNode, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';

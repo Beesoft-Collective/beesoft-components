@@ -1,7 +1,7 @@
+import { TypeOrArray } from '@beesoft/common';
 import { CSSProperties, ReactNode } from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group/Transition';
-import { TypeOrArray } from '../../common-interfaces.ts';
 
 export interface BeeSoftChildrenTransitionProps {
   state: TransitionStatus;

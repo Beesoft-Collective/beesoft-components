@@ -1,5 +1,5 @@
+import { JsonData } from '@beesoft/common';
 import React from 'react';
-import { JsonData } from '../common-interfaces.ts';
 
 export interface FormInputControl<V = unknown, C = undefined> {
   label?: string;

@@ -2,6 +2,7 @@
 import { BeeSoftProvider } from './common/contexts/beesoft.context.tsx';
 import { Button } from './components/navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './components/form/checkboxes/checkbox/checkbox.component.tsx';
+import { CheckboxGroup } from './components/form/checkboxes/checkbox-group/checkbox-group.component.tsx';
 import ContentEditableInput from './components/form/inputs/content-editable-input/content-editable-input.component';
 import { DateTime } from './components/form/date-time/date-time.component';
 import FormattedInput from './components/form/inputs/formatted-input/formatted-input.component';
@@ -14,6 +15,8 @@ import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-funct
 
 // types
 import { CheckboxChangeEvent } from './components/form/checkboxes/checkboxes.interfaces.ts';
+import { CheckboxGroupChangeEvent } from './components/form/checkboxes/checkboxes.interfaces.ts';
+import { CheckboxGroupOrientation } from './components/form/checkboxes/checkbox-group/checkbox-group.props.ts';
 import { CheckboxLabelLocation, CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
@@ -27,6 +30,7 @@ export {
   BeeSoftProvider,
   Button,
   Checkbox,
+  CheckboxGroup,
   ContentEditableInput,
   DateTime,
   FormattedInput,
@@ -39,6 +43,7 @@ export {
   createBeeSoftTheme,
 
   // types to be used as values
+  CheckboxGroupOrientation,
   CheckboxLabelLocation,
   DateFormatType,
   DateSelectionType,
@@ -46,6 +51,7 @@ export {
 
 export type {
   CheckboxChangeEvent,
+  CheckboxGroupChangeEvent,
   CheckboxRef,
   DateTimeInputTemplateProps,
   DateTimeScrollerTemplateProps,

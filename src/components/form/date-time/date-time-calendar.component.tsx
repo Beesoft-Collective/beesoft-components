@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { isBefore, isSameDay, isToday } from 'date-fns';
+import { isBefore, isSameDay, isToday, Locale } from 'date-fns';
 import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';

@@ -1,5 +1,5 @@
+import { TypeOrArray } from '@beesoft/common';
 import React, { ReactNode } from 'react';
-import { TypeOrArray } from '../../common-interfaces.ts';
 
 export type TemplateFunction<TF> = (props: TF, children?: TypeOrArray<ReactNode>) => React.JSX.Element;
 
