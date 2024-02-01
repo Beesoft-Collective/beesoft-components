@@ -1,12 +1,23 @@
 import cx from 'classnames';
 import { useMemo, useRef } from 'react';
-import { BeeSoftIconProps, IconSize } from './beesoft-icon.props.ts';
-import { BeeSoftIconService } from './beesoft-icon.service.tsx';
+import { BeeSoftIconList, BeeSoftIconProps, IconSize } from './beesoft-icon.props.ts';
 import { CalendarIcon } from './icons/calendar-icon.tsx';
+import { ChevronDownIcon } from './icons/chevron-down-icon.tsx';
+import { ChevronLeftIcon } from './icons/chevron-left-icon.tsx';
+import { ChevronRightIcon } from './icons/chevron-right-icon.tsx';
+import { ChevronUpIcon } from './icons/chevron-up-icon.tsx';
+import { CloseIcon } from './icons/close-icon.tsx';
 
 const BeeSoftIcon = ({ icon, size = IconSize.Regular, onClick, className }: BeeSoftIconProps) => {
-  const iconService = useRef(BeeSoftIconService.getInstance());
-  const Icon = useMemo(() => iconService.current.getIcon(icon) || CalendarIcon, [icon]);
+  const iconList = useRef<BeeSoftIconList>({
+    calendar: CalendarIcon,
+    chevronDown: ChevronDownIcon,
+    chevronLeft: ChevronLeftIcon,
+    chevronRight: ChevronRightIcon,
+    chevronUp: ChevronUpIcon,
+    close: CloseIcon,
+  });
+  const Icon = useMemo(() => iconList.current[icon] || CalendarIcon, [icon]);
 
   const iconStyles = cx(
     {
