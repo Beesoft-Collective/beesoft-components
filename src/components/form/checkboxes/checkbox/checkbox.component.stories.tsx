@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 import { BeeSoftProvider } from '../../../../common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
+import { CheckboxChangeEvent } from '../checkboxes.interfaces.ts';
 import { Checkbox } from './checkbox.component.tsx';
 import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
@@ -67,6 +68,22 @@ const PartialTemplate = (args: CheckboxProps) => {
   );
 };
 
+const StateTemplate = (args: CheckboxProps) => {
+  const [checkedState, setCheckedState] = useState<{ checked: boolean }>();
+
+  const handleOnChange = (event?: CheckboxChangeEvent) => {
+    console.log('handle on change', event);
+    setCheckedState(event);
+    args.onChange?.(event);
+  };
+
+  return (
+    <div className="bsc-p-4">
+      <Checkbox {...args} checked={checkedState?.checked} onChange={handleOnChange} />
+    </div>
+  );
+};
+
 const DarkTemplate = (args: CheckboxProps) => {
   document.body.className = 'bsc-dark';
 
@@ -90,6 +107,33 @@ export const NoLabel: Story = {
     name: 'test',
     value: 'test',
   },
+};
+
+export const SetChecked: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+    checked: true,
+  },
+};
+
+export const SetPartial: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+    partial: true,
+  },
+};
+
+export const CheckedState: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+  },
+  render: (args) => <StateTemplate {...args} />,
 };
 
 export const ReadOnly: Story = {

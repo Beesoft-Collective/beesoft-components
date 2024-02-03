@@ -1,4 +1,4 @@
-import { useStateRef } from '@beesoft/common';
+import { useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
 import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
 import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
@@ -20,7 +20,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const [useAnimation, setUseAnimation] = useState(true);
 
-  const [checkedState, setCheckedState, checkedStateRef] = useStateRef<CheckboxCheckState>({
+  const [checkedState, setCheckedState, checkedStateRef] = useStateRefInitial<CheckboxCheckState>({
     checked: false,
     partial: false,
   });
@@ -35,21 +35,28 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   }, [beeSoftContext]);
 
   useEffect(() => {
-    setCheckedState({
-      checked,
-      partial: false,
-    });
-  }, [checked]);
-
-  useEffect(() => {
-    setCheckedState({
-      checked: partial ? true : checkedState.checked,
-      partial,
-    });
-  }, [partial]);
+    if (checkedState.initial) {
+      setCheckedState({
+        checked: partial ? true : checked,
+        partial,
+      });
+    } else {
+      if (checkedState.value.partial !== partial) {
+        setCheckedState({
+          checked: partial ? true : checkedState.value.checked,
+          partial,
+        });
+      } else {
+        setCheckedState({
+          checked,
+          partial: false,
+        });
+      }
+    }
+  }, [checked, partial]);
 
   const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    const checkedValue = checkedStateRef.current?.partial === true ? true : event.target.checked;
+    const checkedValue = checkedStateRef.current?.value.partial === true ? true : event.target.checked;
     setCheckedState({
       checked: checkedValue,
       partial: false,
@@ -66,7 +73,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const setPartiallyChecked = (partiallyChecked: boolean) => {
     const state: CheckboxCheckState = {
-      checked: partiallyChecked ? true : checkedStateRef.current?.checked || false,
+      checked: partiallyChecked ? true : checkedStateRef.current?.value.checked || false,
       partial: partiallyChecked,
     };
 
@@ -133,12 +140,16 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
           id={id}
           name={name}
           type="checkbox"
-          checked={checkedState.checked}
+          checked={checkedState.value.checked}
           onChange={handleChangeEvent}
           className={innerCheckboxStyles}
         />
         <svg viewBox="0 0 21 21" className={svgStyles}>
-          {!checkedState.partial ? <polyline points="5 10.75 8.5 14.25 16 6" /> : <polyline points="6 10.5 16 10.5" />}
+          {!checkedState.value.partial ? (
+            <polyline points="5 10.75 8.5 14.25 16 6" />
+          ) : (
+            <polyline points="6 10.5 16 10.5" />
+          )}
         </svg>
       </label>
       {label && labelLocation === CheckboxLabelLocation.Right && (
