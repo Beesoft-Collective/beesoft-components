@@ -1,7 +1,8 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { CheckboxGroup } from './checkbox-group.component.tsx';
-import { CheckboxGroupOrientation, CheckboxGroupProps } from './checkbox-group.props.ts';
+import { CheckboxGroupProps } from './checkbox-group.props.ts';
 
 const meta: Meta<typeof CheckboxGroup> = {
   title: 'Form/Checkbox Group',
@@ -46,7 +47,7 @@ export const Horizontal: Story = {
   args: {
     name: 'test',
     label: 'Test Items',
-    orientation: CheckboxGroupOrientation.Horizontal,
+    orientation: FormGroupItemOrientation.Horizontal,
     valueField: 'id',
     textField: 'caption',
     data,
