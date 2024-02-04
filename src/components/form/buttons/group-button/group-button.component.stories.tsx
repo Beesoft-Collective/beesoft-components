@@ -30,7 +30,7 @@ export const MultiSelect: Story = {
     textField: 'caption',
     data,
     isMultiSelect: true,
-  }
+  },
 };
 
 export const MultiSelectVertical: Story = {
@@ -42,5 +42,5 @@ export const MultiSelectVertical: Story = {
     data,
     orientation: FormGroupItemOrientation.Vertical,
     isMultiSelect: true,
-  }
+  },
 };

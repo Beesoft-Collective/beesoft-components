@@ -53,15 +53,22 @@ const GroupButton = ({
     isFirstItem: boolean,
     isLastItem: boolean
   ) => {
-    const checkboxStyles = cx('has-[:checked]:bsc-bg-primary-1 has-[:checked]:bsc-text-white bsc-cursor-pointer bsc-border-solid bsc-border-gray-3 bsc-p-2', {
-      'bsc-border-t bsc-border-l bsc-border-b bsc-rounded-l-md bsc-pl-2': isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
-      'bsc-border-t bsc-border-r bsc-border-l bsc-border-b bsc-rounded-r-md bsc-pr-2': isLastItem && orientation === FormGroupItemOrientation.Horizontal,
-      'bsc-border-t bsc-border-b': !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Horizontal,
-      'bsc-border-l': !isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
-      'bsc-border-l bsc-border-r bsc-border-t bsc-rounded-t-md': isFirstItem && orientation === FormGroupItemOrientation.Vertical,
-      'bsc-border bsc-rounded-b-md': isLastItem && orientation === FormGroupItemOrientation.Vertical,
-      'bsc-border-t bsc-border-l bsc-border-r': !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Vertical,
-    });
+    const checkboxStyles = cx(
+      'has-[:checked]:bsc-bg-primary-1 has-[:checked]:bsc-text-white bsc-cursor-pointer bsc-border-solid bsc-border-gray-3 bsc-p-2',
+      {
+        'bsc-border-t bsc-border-l bsc-border-b bsc-rounded-l-md bsc-pl-2':
+          isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc-border-t bsc-border-r bsc-border-l bsc-border-b bsc-rounded-r-md bsc-pr-2':
+          isLastItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc-border-t bsc-border-b': !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc-border-l': !isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc-border-l bsc-border-r bsc-border-t bsc-rounded-t-md':
+          isFirstItem && orientation === FormGroupItemOrientation.Vertical,
+        'bsc-border bsc-rounded-b-md': isLastItem && orientation === FormGroupItemOrientation.Vertical,
+        'bsc-border-t bsc-border-l bsc-border-r':
+          !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Vertical,
+      }
+    );
 
     return (
       <label htmlFor={itemId} className={checkboxStyles}>
