@@ -33,14 +33,13 @@ const ContextNoAnimationTemplate = (args: CheckboxProps) => (
   </BeeSoftProvider>
 );
 
-const PartialTemplate = (args: CheckboxProps) => {
+const PartialCheckedTemplate = (args: CheckboxProps) => {
   document.body.className = '';
 
-  const [partial, setPartial] = useState(args.partial || false);
   const checkboxRef = useRef<CheckboxRef>(null);
 
-  const onPartialClicked = () => {
-    setPartial(!partial);
+  const onCheckedRefClicked = () => {
+    checkboxRef.current?.setChecked(true);
   };
 
   const onPartialRefClicked = () => {
@@ -51,8 +50,8 @@ const PartialTemplate = (args: CheckboxProps) => {
     <div className="bsc-w-full">
       <div className="bsc-mb-2 bsc-flex bsc-w-full">
         <div className="bsc-flex-1">
-          <Button buttonType="primary" onClick={onPartialClicked}>
-            Set Partial
+          <Button buttonType="primary" onClick={onCheckedRefClicked}>
+            Set Checked with Ref
           </Button>
         </div>
         <div className="bsc-flex-1">
@@ -62,7 +61,7 @@ const PartialTemplate = (args: CheckboxProps) => {
         </div>
       </div>
       <div className="bsc-p-2">
-        <Checkbox ref={checkboxRef} {...args} partial={partial} />
+        <Checkbox ref={checkboxRef} {...args} />
       </div>
     </div>
   );
@@ -171,7 +170,7 @@ export const Partial: Story = {
     value: 'test',
     partial: true,
   },
-  render: (args) => <PartialTemplate {...args} />,
+  render: (args) => <PartialCheckedTemplate {...args} />,
 };
 
 export const Dark: Story = {
