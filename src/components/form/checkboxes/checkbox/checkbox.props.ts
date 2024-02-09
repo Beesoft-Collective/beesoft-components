@@ -19,4 +19,5 @@ export interface CheckboxProps extends FormInputControl<unknown, CheckboxChangeE
 
 export interface CheckboxRef {
   setPartiallyChecked: (partiallyChecked: boolean) => void;
+  setChecked: (checked: boolean) => void;
 }
