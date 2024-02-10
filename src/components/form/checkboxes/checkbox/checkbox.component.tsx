@@ -78,16 +78,18 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     };
 
     setCheckedState(state);
+  };
 
-    onChange?.({
-      ...state,
-      name,
-      value,
+  const setChecked = (checked: boolean) => {
+    setCheckedState({
+      checked,
+      partial: false,
     });
   };
 
   useImperativeHandle(ref, () => ({
     setPartiallyChecked,
+    setChecked,
   }));
 
   const wrapperStyles = cx(
