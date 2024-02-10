@@ -38,6 +38,7 @@
     "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
+    "dot-object": "^2.1.4",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.5",
     "uuid": "^9.0.1"
@@ -57,6 +58,7 @@
     "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/bun": "^1.0.4",
+    "@types/dot-object": "^2.1.6",
     "@types/lodash-es": "^4.17.11",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

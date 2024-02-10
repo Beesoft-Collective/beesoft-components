@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { GroupButton } from './group-button.component.tsx';
+import { GroupButtonProps } from './group-button.props.ts';
 
 const meta: Meta<typeof GroupButton> = {
   title: 'Form/Group Button',
@@ -15,12 +16,43 @@ export default meta;
 
 type Story = StoryObj<typeof GroupButton>;
 
+const DarkTemplate = (args: GroupButtonProps) => {
+  document.body.className = 'bsc-dark';
+
+  return (
+    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+      <GroupButton {...args} />
+    </div>
+  );
+};
+
 const data = [
   { id: 1, caption: 'Test Item' },
   { id: 2, caption: 'Longer Test Item' },
   { id: 3, caption: 'Test Item 3' },
   { id: 4, caption: 'Test Item 4' },
 ];
+
+export const SingleSelect: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    data,
+  },
+};
+
+export const SingleSelectSetValue: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    value: 2,
+    data,
+  },
+};
 
 export const MultiSelect: Story = {
   args: {
@@ -30,6 +62,42 @@ export const MultiSelect: Story = {
     textField: 'caption',
     data,
     isMultiSelect: true,
+  },
+};
+
+export const MultiSelectSetValue: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    value: [1, 3],
+    data,
+    isMultiSelect: true,
+  },
+};
+
+export const MultiSelectReadOnly: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    value: [1, 3],
+    data,
+    isMultiSelect: true,
+    readOnly: true,
+  },
+};
+
+export const SingleSelectVertical: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    data,
+    orientation: FormGroupItemOrientation.Vertical,
   },
 };
 
@@ -43,4 +111,43 @@ export const MultiSelectVertical: Story = {
     orientation: FormGroupItemOrientation.Vertical,
     isMultiSelect: true,
   },
+};
+
+export const DarkMultiSelect: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    data,
+    isMultiSelect: true,
+  },
+  render: (args) => <DarkTemplate {...args} />,
+};
+
+export const DarkMultiSelectSetValue: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    value: [1, 3],
+    data,
+    isMultiSelect: true,
+  },
+  render: (args) => <DarkTemplate {...args} />,
+};
+
+export const DarkMultiSelectReadOnly: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button',
+    valueField: 'id',
+    textField: 'caption',
+    value: [1, 3],
+    data,
+    isMultiSelect: true,
+    readOnly: true,
+  },
+  render: (args) => <DarkTemplate {...args} />,
 };
