@@ -15,10 +15,11 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     partial = false,
     labelLocation = CheckboxLabelLocation.Right,
     className,
+    useAnimation,
     onChange,
   } = props;
 
-  const [useAnimation, setUseAnimation] = useState(true);
+  const [useAnimationState, setUseAnimationState] = useState(true);
 
   const [checkedState, setCheckedState, checkedStateRef] = useStateRefInitial<CheckboxCheckState>({
     checked: false,
@@ -29,10 +30,12 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const beeSoftContext = useBeeSoftContext();
 
   useEffect(() => {
-    if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
-      setUseAnimation(beeSoftContext.useAnimations);
+    if (useAnimation !== undefined) {
+      setUseAnimationState(useAnimation);
+    } else if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
+      setUseAnimationState(beeSoftContext.useAnimations);
     }
-  }, [beeSoftContext]);
+  }, [beeSoftContext, useAnimation]);
 
   useEffect(() => {
     if (checkedState.initial) {
@@ -67,7 +70,6 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
       name: name || event.target.name,
       value,
       checked: checkedValue,
-      partial: false,
     });
   };
 
@@ -108,15 +110,15 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const checkboxStyles = cx(
     'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
     {
-      'bsc-checkbox-animate': !readOnly && useAnimation,
-      'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimation),
+      'bsc-checkbox-animate': !readOnly && useAnimationState,
+      'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
     }
   );
 
   const innerCheckboxStyles = cx(
     'bc-checkbox bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
     {
-      '[transition:box-shadow_0.3s]': useAnimation,
+      '[transition:box-shadow_0.3s]': useAnimationState,
       'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark':
         !readOnly,
       'bsc-checkbox-border-read-only dark:bsc-checkbox-border-dark-read-only bsc-checkbox-border-checked-read-only dark:bsc-checkbox-border-checked-dark-read-only':
