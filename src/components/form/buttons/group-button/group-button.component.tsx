@@ -1,7 +1,7 @@
 import { JsonData, JsonItem, TypeOrArray, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import dot from 'dot-object';
-import { ChangeEvent, ReactNode, useEffect, useId, useState } from 'react';
+import { ChangeEvent, ReactNode, useCallback, useEffect, useId, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import TemplateOutlet from '../../../common/template-outlet/template-outlet.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
@@ -95,7 +95,7 @@ const GroupButton = ({
     </label>
   );
 
-  const defaultTemplate = (_props: GroupButtonItemTemplateProps, children: TypeOrArray<ReactNode>) => <>{children}</>;
+  const defaultTemplate = useCallback((_props: GroupButtonItemTemplateProps, children: TypeOrArray<ReactNode>) => <>{children}</>, []);
 
   const template = itemTemplate || defaultTemplate;
 
