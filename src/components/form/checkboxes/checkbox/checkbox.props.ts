@@ -1,3 +1,4 @@
+import { ComponentAnimationProps } from '../../../component-interfaces.ts';
 import { FormInputControl } from '../../form-control.interface.ts';
 import { CheckboxChangeEvent } from '../checkboxes.interfaces.ts';
 
@@ -11,7 +12,7 @@ export interface CheckboxCheckState {
   partial: boolean;
 }
 
-export interface CheckboxProps extends FormInputControl<unknown, CheckboxChangeEvent> {
+export interface CheckboxProps extends FormInputControl<unknown, CheckboxChangeEvent>, ComponentAnimationProps {
   checked?: boolean;
   partial?: boolean;
   labelLocation?: CheckboxLabelLocation;

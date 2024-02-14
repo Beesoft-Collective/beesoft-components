@@ -154,6 +154,16 @@ export const ContextAnimations: Story = {
   render: (args) => <ContextAnimationTemplate {...args} />,
 };
 
+export const ContextAnimationsUseAnimation: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+    useAnimation: false,
+  },
+  render: (args) => <ContextAnimationTemplate {...args} />,
+};
+
 export const ContextNoAnimations: Story = {
   args: {
     name: 'test',
