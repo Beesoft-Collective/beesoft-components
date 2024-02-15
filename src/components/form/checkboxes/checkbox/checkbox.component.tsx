@@ -1,4 +1,4 @@
-import { useStateRefInitial } from '@beesoft/common';
+import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
 import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
 import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
@@ -26,6 +26,9 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     partial: false,
   });
 
+  const checkedProperty = usePropertyChanged(checked);
+  const partialProperty = usePropertyChanged(partial);
+
   const id = useId();
   const beeSoftContext = useBeeSoftContext();
 
@@ -44,17 +47,13 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         partial,
       });
     } else {
-      if (checkedState.value.partial !== partial) {
-        setCheckedState({
-          checked: partial ? true : checkedState.value.checked,
-          partial,
-        });
-      } else {
-        setCheckedState({
-          checked,
-          partial: false,
-        });
-      }
+      const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
+      const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
+
+      setCheckedState({
+        checked: newPartial ? true : newChecked,
+        partial: newPartial,
+      });
     }
   }, [checked, partial]);
 
