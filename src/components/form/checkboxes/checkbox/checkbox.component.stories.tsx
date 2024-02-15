@@ -105,9 +105,13 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
 
   return (
     <div className="bsc-w-full bsc-p-4">
-      <div className="bsc-w-full bsc-flex">
-        <div><Button onClick={setCheckboxState}>Set State</Button></div>
-        <div><Button onClick={resetState}>Reset State</Button></div>
+      <div className="bsc-flex bsc-w-full">
+        <div>
+          <Button onClick={setCheckboxState}>Set State</Button>
+        </div>
+        <div>
+          <Button onClick={resetState}>Reset State</Button>
+        </div>
       </div>
       <div>
         <Checkbox {...args} checked={partialState.checked} partial={partialState.partial} />
