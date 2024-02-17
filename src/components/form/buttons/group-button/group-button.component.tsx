@@ -21,22 +21,52 @@ const GroupButton = ({
   onChange,
   itemTemplate,
 }: GroupButtonProps) => {
-  const [selectedValue, setSelectedValue] = useState<unknown>();
-  const [selectedValues, setSelectedValues] = useState<Array<unknown>>([]);
+  const [selectedValue, setSelectedValue] = useState<string>();
+  const [selectedValues, setSelectedValues] = useState<Array<string>>([]);
   const staticData = useDeepMemo(() => data, [data]);
 
   const id = useId();
 
   useEffect(() => {
     if (isMultiSelect) {
-      setSelectedValues((value ?? []) as Array<unknown>);
+      const values = Array.isArray(value) ? value.map((item) => item.toString()) : value ? [String(value)] : undefined;
+      setSelectedValues(values ?? []);
     } else {
-      setSelectedValue(value);
+      if (value) {
+        setSelectedValue(value.toString());
+      }
     }
   }, [value]);
 
-  const isChecked = (value: unknown) =>
-    isMultiSelect ? selectedValues.findIndex((item) => item == value) > -1 : selectedValue == value;
+  const isChecked = (value: string) =>
+    isMultiSelect ? selectedValues.findIndex((item) => item === value) > -1 : selectedValue === value;
+
+  const onSelectionChange = (value: string | number) => {
+    const convertedValue = value.toString();
+    if (isMultiSelect) {
+      const checked = isChecked(convertedValue);
+      let updatedValues: Array<string>;
+      if (!checked) {
+        updatedValues = [...selectedValues, convertedValue];
+      } else {
+        updatedValues = selectedValues.filter((item) => item != convertedValue);
+      }
+
+      setSelectedValues(updatedValues);
+      onChange?.({
+        name,
+        value: updatedValues,
+      });
+    } else {
+      if (convertedValue !== selectedValue) {
+        setSelectedValue(convertedValue);
+        onChange?.({
+          name,
+          value: convertedValue,
+        });
+      }
+    }
+  };
 
   const onSingleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -51,7 +81,7 @@ const GroupButton = ({
   const onMultiChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
 
-    let updatedValues: Array<unknown>;
+    let updatedValues: Array<string>;
     if (checked) {
       updatedValues = [...selectedValues, value];
     } else {
@@ -65,7 +95,7 @@ const GroupButton = ({
     });
   };
 
-  const renderCheckbox = (itemId: string, itemText: string, itemValue: string | number, itemStyles: string) => (
+  const renderCheckbox = (itemId: string, itemText: string, itemValue: string, itemStyles: string) => (
     <label key={itemId} htmlFor={itemId} className={itemStyles}>
       <input
         id={itemId}
@@ -80,7 +110,7 @@ const GroupButton = ({
     </label>
   );
 
-  const renderRadioButton = (itemId: string, itemText: string, itemValue: string | number, itemStyles: string) => (
+  const renderRadioButton = (itemId: string, itemText: string, itemValue: string, itemStyles: string) => (
     <label key={itemId} htmlFor={itemId} className={itemStyles}>
       <input
         id={itemId}
@@ -95,14 +125,17 @@ const GroupButton = ({
     </label>
   );
 
-  const defaultTemplate = useCallback((_props: GroupButtonItemTemplateProps, children: TypeOrArray<ReactNode>) => <>{children}</>, []);
+  const defaultTemplate = useCallback(
+    (_props: GroupButtonItemTemplateProps, children: TypeOrArray<ReactNode>) => <>{children}</>,
+    []
+  );
 
   const template = itemTemplate || defaultTemplate;
 
   const renderItems = (item: JsonItem, index: number, array: JsonData) => {
     const itemId = `element_${id}_${index}`;
     const itemText = dot.pick(textField, item) as string;
-    const itemValue = dot.pick(valueField, item) as string | number;
+    const itemValue = String(dot.pick(valueField, item));
     const isFirstItem = index === 0;
     const isLastItem = index === array.length - 1;
 
@@ -129,11 +162,15 @@ const GroupButton = ({
 
     const itemTemplateProps: GroupButtonItemTemplateProps = {
       itemId,
+      selectedValue: isMultiSelect ? selectedValues : selectedValue,
       itemText,
       itemValue,
       itemData: item,
+      itemStyles,
+      isSelected: isChecked(itemValue),
       isFirstItem,
       isLastItem,
+      onItemChanged: onSelectionChange,
     };
 
     return isMultiSelect ? (

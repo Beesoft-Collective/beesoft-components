@@ -1,5 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { Button } from '../../../navigation/buttons/button/button.component.tsx';
+import { ButtonType } from '../../../navigation/buttons/button/button.props.ts';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { GroupButton } from './group-button.component.tsx';
 import { GroupButtonProps } from './group-button.props.ts';
@@ -110,6 +112,106 @@ export const MultiSelectVertical: Story = {
     data,
     orientation: FormGroupItemOrientation.Vertical,
     isMultiSelect: true,
+  },
+};
+
+export const MultiSelectTemplate: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button Template',
+    valueField: 'id',
+    textField: 'caption',
+    data,
+    isMultiSelect: true,
+    itemTemplate: (props) => {
+      let type: ButtonType = 'primary';
+      if (props.isSelected) {
+        type = 'warning';
+      }
+
+      return (
+        <div key={props.itemId} className="bsc-p-4">
+          <Button buttonType={type} onClick={() => props.onItemChanged(props.itemValue)}>
+            {props.itemText}
+          </Button>
+        </div>
+      );
+    },
+  },
+};
+
+export const MultiSelectValueTemplate: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button Template',
+    value: [1, 4],
+    valueField: 'id',
+    textField: 'caption',
+    data,
+    isMultiSelect: true,
+    itemTemplate: (props) => {
+      let type: ButtonType = 'primary';
+      if (props.isSelected) {
+        type = 'warning';
+      }
+
+      return (
+        <div key={props.itemId} className="bsc-p-4">
+          <Button buttonType={type} onClick={() => props.onItemChanged(props.itemValue)}>
+            {props.itemText}
+          </Button>
+        </div>
+      );
+    },
+  },
+};
+
+export const SingleSelectTemplate: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button Template',
+    valueField: 'id',
+    textField: 'caption',
+    data,
+    itemTemplate: (props) => {
+      let type: ButtonType = 'primary';
+      if (props.isSelected) {
+        type = 'warning';
+      }
+
+      return (
+        <div key={props.itemId} className="bsc-p-4">
+          <Button buttonType={type} onClick={() => props.onItemChanged(props.itemValue)}>
+            {props.itemText}
+          </Button>
+        </div>
+      );
+    },
+  },
+};
+
+export const SingleSelectVerticalTemplate: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Group Button Template',
+    valueField: 'id',
+    textField: 'caption',
+    orientation: FormGroupItemOrientation.Vertical,
+    data,
+    itemTemplate: (props) => {
+      let type: ButtonType = 'primary';
+      if (props.isSelected) {
+        type = 'warning';
+      }
+
+      return (
+        <div key={props.itemId} className="bsc-p-4">
+          <Button buttonType={type} onClick={() => props.onItemChanged(props.itemValue)}>
+            {props.itemText}
+          </Button>
+        </div>
+      );
+    },
   },
 };
 
