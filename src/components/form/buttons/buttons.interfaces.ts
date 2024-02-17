@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 
-export interface CheckboxChangeEvent {
-  name?: string;
+export interface ButtonChangeEvent {
+  name: string;
   value: unknown;
   checked: boolean;
   originalEvent?: ChangeEvent<HTMLInputElement>;

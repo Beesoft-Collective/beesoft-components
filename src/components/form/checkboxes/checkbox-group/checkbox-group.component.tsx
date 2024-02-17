@@ -2,9 +2,10 @@ import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
+import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { Checkbox } from '../checkbox/checkbox.component.tsx';
 import { CheckboxChangeEvent } from '../checkboxes.interfaces.ts';
-import { CheckboxGroupOrientation, CheckboxGroupProps } from './checkbox-group.props.ts';
+import { CheckboxGroupProps } from './checkbox-group.props.ts';
 
 const CheckboxGroup = ({
   name,
@@ -14,7 +15,7 @@ const CheckboxGroup = ({
   textField,
   valueField,
   readOnly = false,
-  orientation = CheckboxGroupOrientation.Vertical,
+  orientation = FormGroupItemOrientation.Vertical,
   className,
   onChange,
 }: CheckboxGroupProps) => {
@@ -57,7 +58,7 @@ const CheckboxGroup = ({
 
   const containerStyles = cx('bsc-flex bsc-flex-col bsc-gap-1', className);
   const checkboxStyles = cx('bsc-flex bsc-gap-1', {
-    'bsc-flex-col': orientation === CheckboxGroupOrientation.Vertical,
+    'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
   });
 
   const renderItems = (finalData: JsonData) => <div className={checkboxStyles}>{finalData.map(renderCheckbox)}</div>;
