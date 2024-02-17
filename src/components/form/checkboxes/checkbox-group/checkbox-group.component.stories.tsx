@@ -72,6 +72,7 @@ export const ReadOnly: Story = {
     valueField: 'id',
     textField: 'caption',
     data,
+    value: [1, 3],
     readOnly: true,
   },
 };

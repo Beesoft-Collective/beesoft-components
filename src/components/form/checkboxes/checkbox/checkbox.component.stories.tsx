@@ -71,7 +71,6 @@ const StateTemplate = (args: CheckboxProps) => {
   const [checkedState, setCheckedState] = useState<{ checked: boolean }>();
 
   const handleOnChange = (event?: CheckboxChangeEvent) => {
-    console.log('handle on change', event);
     setCheckedState(event);
     args.onChange?.(event);
   };
