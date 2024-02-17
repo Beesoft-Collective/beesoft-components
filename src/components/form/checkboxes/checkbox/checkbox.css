@@ -1,0 +1,48 @@
+.bsc-checkbox-border {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-gray-2);
+}
+
+.bsc-checkbox-border-read-only {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-gray-4);
+}
+
+.bsc-checkbox-border-dark {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-mono-light-1);
+}
+
+.bsc-checkbox-border-dark-read-only {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-mono-light-3);
+}
+
+/* The hover style should only be applied if the checkbox is not checked */
+.bsc-checkbox-border-hover:not(:checked):hover {
+  box-shadow: inset 0 0 0 2px var(--theme-bsc-gray-4);
+}
+
+.bsc-checkbox-border-hover-dark:not(:checked):hover {
+  box-shadow: inset 0 0 0 2px var(--theme-bsc-mono-light-1);
+}
+
+.bsc-checkbox-border-checked:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-primary-1);
+}
+
+.bsc-checkbox-border-checked-read-only:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-primary-4);
+}
+
+.bsc-checkbox-border-checked-dark:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-mono-light-1);
+}
+
+.bsc-checkbox-border-checked-dark-read-only:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-mono-light-3);
+}
+
+.bsc-checkbox-animate input:checked + svg {
+  @apply bsc-animate-bounce
+}
+
+.bsc-checkbox-no-animate input:checked + svg {
+  transform: scale(1);
+}
