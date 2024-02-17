@@ -83,6 +83,43 @@ const StateTemplate = (args: CheckboxProps) => {
   );
 };
 
+const PartialSetStateTemplate = (args: CheckboxProps) => {
+  const [partialState, setPartialState] = useState<{ checked: boolean; partial: boolean }>({
+    checked: false,
+    partial: false,
+  });
+
+  const setCheckboxState = () => {
+    setPartialState({
+      checked: true,
+      partial: true,
+    });
+  };
+
+  const resetState = () => {
+    setPartialState({
+      checked: false,
+      partial: false,
+    });
+  };
+
+  return (
+    <div className="bsc-w-full bsc-p-4">
+      <div className="bsc-flex bsc-w-full">
+        <div>
+          <Button onClick={setCheckboxState}>Set State</Button>
+        </div>
+        <div>
+          <Button onClick={resetState}>Reset State</Button>
+        </div>
+      </div>
+      <div>
+        <Checkbox {...args} checked={partialState.checked} partial={partialState.partial} />
+      </div>
+    </div>
+  );
+};
+
 const DarkTemplate = (args: CheckboxProps) => {
   document.body.className = 'bsc-dark';
 
@@ -133,6 +170,15 @@ export const CheckedState: Story = {
     value: 'test',
   },
   render: (args) => <StateTemplate {...args} />,
+};
+
+export const PartialState: Story = {
+  args: {
+    name: 'test',
+    label: 'Test Checkbox',
+    value: 'test',
+  },
+  render: (args) => <PartialSetStateTemplate {...args} />,
 };
 
 export const ReadOnly: Story = {
