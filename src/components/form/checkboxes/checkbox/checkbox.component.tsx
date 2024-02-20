@@ -41,6 +41,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   }, [beeSoftContext, useAnimation]);
 
   useEffect(() => {
+    console.log('useEffect checked state', checkedState);
     if (checkedState.initial) {
       setCheckedState({
         checked: partial ? true : checked,
