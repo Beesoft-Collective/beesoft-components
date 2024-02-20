@@ -25,7 +25,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     checked: false,
     partial: false,
   });
-  console.log('checked', checked, 'partial', partial);
+  console.log('name', name, 'checked', checked, 'partial', partial);
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
 
@@ -41,19 +41,19 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   }, [beeSoftContext, useAnimation]);
 
   useEffect(() => {
-    console.log('useEffect checked state', checkedState);
+    console.log('name', name, 'useEffect checked state', JSON.stringify(checkedState));
     if (checkedState.initial) {
       setCheckedState({
         checked: partial ? true : checked,
         partial,
       });
     } else {
-      console.log('checked property changed', checkedProperty.changed);
-      console.log('partial property changed', partialProperty.changed);
+      console.log('name', name, 'checked property changed', checkedProperty.changed);
+      console.log('name', name, 'partial property changed', partialProperty.changed);
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
-      console.log('new checked', newChecked);
-      console.log('new partial', newPartial);
+      console.log('name', name, 'new checked', newChecked);
+      console.log('name', name, 'new partial', newPartial);
       setCheckedState({
         checked: newPartial ? true : newChecked,
         partial: newPartial,
@@ -136,7 +136,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
       'bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
-  console.log('checked state', checkedState);
+  console.log('name', name, 'checked state', JSON.stringify(checkedState));
   return (
     <div className={wrapperStyles}>
       {label && labelLocation === CheckboxLabelLocation.Left && (
