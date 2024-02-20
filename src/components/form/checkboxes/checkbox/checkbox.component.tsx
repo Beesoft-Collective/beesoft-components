@@ -28,7 +28,8 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   console.log('name', name, 'checked', checked, 'partial', partial);
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
-
+  console.log('name', name, 'checked property', checkedProperty);
+  console.log('name', name, 'partial property', partialProperty);
   const id = useId();
   const beeSoftContext = useBeeSoftContext();
 
@@ -56,8 +57,8 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         partial,
       });
     } else {
-      console.log('name', name, 'checked property', checkedProperty);
-      console.log('name', name, 'partial property', partialProperty);
+      console.log('name', name, 'useEffect checked property', checkedProperty);
+      console.log('name', name, 'useEffect partial property', partialProperty);
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
       console.log('name', name, 'new checked', newChecked);
