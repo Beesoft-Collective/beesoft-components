@@ -34,7 +34,7 @@
     "chromatic": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
-    "@beesoft/common": "^0.1.6",
+    "@beesoft/common": "0.1.7-0",
     "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
