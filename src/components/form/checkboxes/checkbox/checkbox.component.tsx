@@ -33,6 +33,14 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const beeSoftContext = useBeeSoftContext();
 
   useEffect(() => {
+    console.log('name', name, 'component created');
+
+    return () => {
+      console.log('name', name, 'component destroyed');
+    };
+  }, []);
+
+  useEffect(() => {
     if (useAnimation !== undefined) {
       setUseAnimationState(useAnimation);
     } else if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
