@@ -26,17 +26,18 @@ const Toggle = ({ name, label, value, checked = false, readOnly = false, classNa
 
   const wrapperStyles = cx('bc-toggle-wrapper bsc-flex bsc-flex-col', className);
 
-  const switchContainerStyles = cx('bsc-flex bsc-relative bsc-bg-gray-3 bsc-w-[70px] bsc-h-[30px] bsc-rounded-full');
+  const switchContainerStyles = cx(
+    'bsc-toggle-switch bsc-flex bsc-mt-0.5 bsc-relative bsc-cursor-pointer bsc-bg-gray-3 bsc-w-[70px] bsc-h-[30px] bsc-rounded-full has-[:checked]:bsc-bg-primary-1 focus-within:bsc-ring focus-within:bsc-ring-offset-2 [transition:background-color_1s]'
+  );
 
   const switchStyles = cx(
-    'bsc-absolute bsc-bg-white bsc-rounded-full bsc-w-[22px] bsc-h-[22px] bsc-top-[4px] bsc-left-[4px]'
+    'bsc-absolute bsc-bg-white bsc-rounded-full bsc-cursor-pointer bsc-w-[22px] bsc-h-[22px] bsc-top-[4px] bsc-left-[4px] [transition:0.5s]'
   );
 
   return (
     <div className={wrapperStyles}>
       {label && <Label label={label} htmlFor={id} readOnly={readOnly} />}
       <label className={switchContainerStyles}>
-        <div className={switchStyles} />
         <input
           id={id}
           name={name}
@@ -46,6 +47,7 @@ const Toggle = ({ name, label, value, checked = false, readOnly = false, classNa
           onChange={handleChangeEvent}
           className="bsc-appearance-none"
         />
+        <div id="switch" className={switchStyles} />
       </label>
     </div>
   );
