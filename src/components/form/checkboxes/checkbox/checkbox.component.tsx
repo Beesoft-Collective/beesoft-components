@@ -1,7 +1,7 @@
 import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
-import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
-import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
+import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { CheckboxCheckState, CheckboxLabelLocation, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
@@ -19,8 +19,6 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     onChange,
   } = props;
 
-  const [useAnimationState, setUseAnimationState] = useState(true);
-
   const [checkedState, setCheckedState, checkedStateRef] = useStateRefInitial<CheckboxCheckState>({
     checked: false,
     partial: false,
@@ -30,15 +28,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const partialProperty = usePropertyChanged(partial);
 
   const id = useId();
-  const beeSoftContext = useBeeSoftContext();
-
-  useEffect(() => {
-    if (useAnimation !== undefined) {
-      setUseAnimationState(useAnimation);
-    } else if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
-      setUseAnimationState(beeSoftContext.useAnimations);
-    }
-  }, [beeSoftContext, useAnimation]);
+  const useAnimationState = useShouldAnimate(useAnimation);
 
   useEffect(() => {
     if (checkedState.initial) {
