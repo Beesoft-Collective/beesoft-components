@@ -6,7 +6,7 @@ const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
     'bc-label',
     {
       'bsc-text-black dark:bsc-text-mono-light-1': !readOnly,
-      'bsc-text-gray-4 dark:bsc-text-mono-light-3': readOnly,
+      'bsc-text-gray-4 dark:bsc-text-mono-light-3 bsc-pointer-events-none': readOnly,
     },
     className
   );
