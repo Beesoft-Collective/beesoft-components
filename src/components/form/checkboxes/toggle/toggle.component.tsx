@@ -44,7 +44,7 @@ const Toggle = ({
     {
       'bsc-cursor-pointer bsc-bg-gray-3 dark:bsc-bg-mono-dark-3 has-[:checked]:bsc-bg-primary-1 has-[:checked]:dark:bsc-bg-mono-light-2':
         !readOnly,
-      'bsc-pointer-events-none bsc-bg-gray-4 dark:bsc-bg-mono-dark-2 has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3':
+      'bc-read-only bsc-pointer-events-none bsc-bg-gray-4 dark:bsc-bg-mono-dark-2 has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3':
         readOnly,
     },
     focusRingStyles
@@ -54,7 +54,7 @@ const Toggle = ({
     'bc-toggle-switch bsc-absolute bsc-rounded-full dark:bsc-border dark:bsc-border-solid dark:bsc-border-mono-dark-1 bsc-w-[22px] bsc-h-[22px] bsc-top-[4px] bsc-left-[4px]',
     {
       'bsc-bg-white bsc-cursor-pointer': !readOnly,
-      'bsc-bg-gray-5 bsc-pointer-events-none': readOnly,
+      'bc-read-only bsc-bg-gray-5 bsc-pointer-events-none': readOnly,
       '[transition:0.3s]': !readOnly && useAnimationState,
     }
   );

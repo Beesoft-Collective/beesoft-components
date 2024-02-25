@@ -87,7 +87,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const wrapperStyles = cx(
     'bc-checkbox-wrapper bsc-flex bsc-items-center',
     {
-      'bsc-pointer-events-none bsc-text-gray-2 dark:bsc-text-mono-light-3': readOnly,
+      'bc-read-only bsc-pointer-events-none bsc-text-gray-2 dark:bsc-text-mono-light-3': readOnly,
     },
     className
   );
@@ -102,7 +102,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px]',
     {
       'bsc-checkbox-animate': !readOnly && useAnimationState,
-      'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
+      'bc-read-only bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
     },
     focusStyles
   );
@@ -112,7 +112,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     {
       '[transition:box-shadow_0.3s]': useAnimationState,
       'bsc-checkbox': !readOnly,
-      'bsc-checkbox-read-only': readOnly,
+      'bc-read-only bsc-checkbox-read-only': readOnly,
     }
   );
 
@@ -120,7 +120,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     'bc-checkbox-svg bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-stroke-mono-dark-3',
     {
       'bsc-fill-primary-1 dark:bsc-fill-mono-light-1': !readOnly,
-      'bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
+      'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
 

@@ -29,10 +29,10 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
   }));
 
   const buttonStyles = cx(
-    'max-sm:bsc-p-4 md:bsc-p-2 dark:bsc-bg-mono-light-1 dark:hover:bsc-bg-mono-light-2 dark:bsc-text-mono-dark-1',
+    'bc-button max-sm:bsc-p-4 md:bsc-p-2 dark:bsc-bg-mono-light-1 dark:hover:bsc-bg-mono-light-2 dark:bsc-text-mono-dark-1',
     {
       'bsc-w-full': fullWidth,
-      'bsc-bg-gray-3 bsc-text-gray-2': disabled,
+      'bc-disabled bsc-bg-gray-3 bsc-text-gray-2': disabled,
       'bsc-bg-primary-1 bsc-text-white hover:bsc-bg-primary-2': buttonType === 'primary',
       'bsc-bg-primary-2 bsc-text-white hover:bsc-bg-primary-3': buttonType === 'secondary',
       'bsc-bg-info bsc-text-white': buttonType === 'info',

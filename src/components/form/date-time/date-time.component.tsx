@@ -522,7 +522,7 @@ const DateTime = ({
   const inputStyles = cx(
     'bsc-text-left',
     {
-      'bsc-bg-gray-4 dark:bsc-bg-mono-dark-3': readOnly,
+      'bc-read-only bsc-bg-gray-4 dark:bsc-bg-mono-dark-3': readOnly,
       'bsc-bg-white dark:bsc-bg-mono-dark-1': !readOnly,
     },
     `bc-dt-input`,
