@@ -143,11 +143,11 @@ const GroupButton = ({
     const isLastItem = index === array.length - 1;
 
     const itemStyles = cx(
-      'bsc-cursor-pointer bsc-border-solid bsc-p-2 bsc-font-medium',
+      'bc-group-button-item bsc-cursor-pointer bsc-border-solid bsc-p-2 bsc-font-medium',
       {
         'has-[:checked]:bsc-bg-primary-1 has-[:checked]:dark:bsc-bg-mono-light-1 has-[:checked]:bsc-text-white has-[:checked]:dark:bsc-text-mono-dark-1 dark:bsc-text-mono-light-1 bsc-text-gray-2 bsc-border-gray-3 dark:bsc-border-mono-light-2':
           !readOnly,
-        'has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3 has-[:checked]:bsc-text-gray-5 has-[:checked]:dark:bsc-text-mono-dark-3 dark:bsc-text-mono-light-3 bsc-text-gray-3 bsc-border-gray-4 dark:bsc-border-mono-light-3 bsc-pointer-events-none':
+        'bc-read-only has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3 has-[:checked]:bsc-text-gray-5 has-[:checked]:dark:bsc-text-mono-dark-3 dark:bsc-text-mono-light-3 bsc-text-gray-3 bsc-border-gray-4 dark:bsc-border-mono-light-3 bsc-pointer-events-none':
           readOnly,
         'bsc-border-t bsc-border-l bsc-border-b bsc-rounded-l-md bsc-pl-2':
           isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
