@@ -1,7 +1,8 @@
 import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
-import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle, useState } from 'react';
-import { useBeeSoftContext } from '../../../../common/hooks/use-beesoft-context.ts';
+import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
+import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { CheckboxCheckState, CheckboxLabelLocation, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
@@ -19,8 +20,6 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     onChange,
   } = props;
 
-  const [useAnimationState, setUseAnimationState] = useState(true);
-
   const [checkedState, setCheckedState, checkedStateRef] = useStateRefInitial<CheckboxCheckState>({
     checked: false,
     partial: false,
@@ -30,15 +29,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const partialProperty = usePropertyChanged(partial);
 
   const id = useId();
-  const beeSoftContext = useBeeSoftContext();
-
-  useEffect(() => {
-    if (useAnimation !== undefined) {
-      setUseAnimationState(useAnimation);
-    } else if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
-      setUseAnimationState(beeSoftContext.useAnimations);
-    }
-  }, [beeSoftContext, useAnimation]);
+  const useAnimationState = useShouldAnimate(useAnimation);
 
   useEffect(() => {
     if (checkedState.initial) {
@@ -106,22 +97,22 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     'bsc-mr-2': labelLocation === CheckboxLabelLocation.Left,
   });
 
+  const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const checkboxStyles = cx(
-    'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px] focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1',
+    'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px]',
     {
       'bsc-checkbox-animate': !readOnly && useAnimationState,
       'bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
-    }
+    },
+    focusStyles
   );
 
   const innerCheckboxStyles = cx(
-    'bc-checkbox bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    'bc-checkbox-inner bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
     {
       '[transition:box-shadow_0.3s]': useAnimationState,
-      'bsc-checkbox-border dark:bsc-checkbox-border-dark bsc-checkbox-border-hover dark:bsc-checkbox-border-hover-dark bsc-checkbox-border-checked dark:bsc-checkbox-border-checked-dark':
-        !readOnly,
-      'bsc-checkbox-border-read-only dark:bsc-checkbox-border-dark-read-only bsc-checkbox-border-checked-read-only dark:bsc-checkbox-border-checked-dark-read-only':
-        readOnly,
+      'bsc-checkbox': !readOnly,
+      'bsc-checkbox-read-only': readOnly,
     }
   );
 

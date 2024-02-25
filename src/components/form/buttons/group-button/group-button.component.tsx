@@ -2,6 +2,7 @@ import { JsonData, JsonItem, TypeOrArray, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import dot from 'dot-object';
 import { ChangeEvent, ReactNode, useCallback, useEffect, useId, useState } from 'react';
+import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import TemplateOutlet from '../../../common/template-outlet/template-outlet.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
@@ -125,6 +126,8 @@ const GroupButton = ({
     </label>
   );
 
+  const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
+
   const defaultTemplate = useCallback(
     (_props: GroupButtonItemTemplateProps, children: TypeOrArray<ReactNode>) => <>{children}</>,
     []
@@ -140,7 +143,7 @@ const GroupButton = ({
     const isLastItem = index === array.length - 1;
 
     const itemStyles = cx(
-      'bsc-cursor-pointer bsc-border-solid bsc-p-2 focus-within:bsc-ring focus-within:bsc-ring-offset-2 dark:bsc-ring-mono-light-1 dark:bsc-ring-offset-mono-dark-1 bsc-font-medium',
+      'bsc-cursor-pointer bsc-border-solid bsc-p-2 bsc-font-medium',
       {
         'has-[:checked]:bsc-bg-primary-1 has-[:checked]:dark:bsc-bg-mono-light-1 has-[:checked]:bsc-text-white has-[:checked]:dark:bsc-text-mono-dark-1 dark:bsc-text-mono-light-1 bsc-text-gray-2 bsc-border-gray-3 dark:bsc-border-mono-light-2':
           !readOnly,
@@ -157,7 +160,8 @@ const GroupButton = ({
         'bsc-border bsc-rounded-b-md': isLastItem && orientation === FormGroupItemOrientation.Vertical,
         'bsc-border-t bsc-border-l bsc-border-r':
           !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Vertical,
-      }
+      },
+      focusStyles
     );
 
     const itemTemplateProps: GroupButtonItemTemplateProps = {

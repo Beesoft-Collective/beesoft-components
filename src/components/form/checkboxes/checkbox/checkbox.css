@@ -1,0 +1,59 @@
+/****************************
+ * Not Dark
+ **/
+:not(.bsc-dark) .bsc-checkbox {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-gray-2);
+}
+
+/* The hover style should only be applied if the checkbox is not checked */
+:not(.bsc-dark) .bsc-checkbox:not(:checked):hover {
+  box-shadow: inset 0 0 0 2px var(--theme-bsc-gray-4);
+}
+
+:not(.bsc-dark) .bsc-checkbox:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-primary-1);
+}
+
+:not(.bsc-dark) .bsc-checkbox-read-only {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-gray-4);
+}
+
+:not(.bsc-dark) .bsc-checkbox-read-only:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-primary-4);
+}
+
+/****************************
+ * Is Dark
+ **/
+
+:is(.bsc-dark) .bsc-checkbox {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-mono-light-2);
+}
+
+:is(.bsc-dark) .bsc-checkbox:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-mono-light-2);
+}
+
+:is(.bsc-dark) .bsc-checkbox:not(:checked):hover {
+  box-shadow: inset 0 0 0 2px var(--theme-bsc-mono-light-2);
+}
+
+:is(.bsc-dark) .bsc-checkbox-read-only {
+  box-shadow: inset 0 0 0 1px var(--theme-bsc-mono-light-3);
+}
+
+:is(.bsc-dark) .bsc-checkbox-read-only:checked {
+  box-shadow: inset 0 0 0 11px var(--theme-bsc-mono-light-3);
+}
+
+/****************************
+ * Animation Settings
+ **/
+
+.bsc-checkbox-animate input:checked + svg {
+  @apply bsc-animate-bounce
+}
+
+.bsc-checkbox-no-animate input:checked + svg {
+  transform: scale(1);
+}
