@@ -16,6 +16,15 @@
   "plugins": {
     "@release-it/bumper": {
       "in": "package.json"
+    },
+    "@release-it/keep-a-changelog": {
+      "addUnreleased": true,
+      "strictLatest": false,
+      "head": "develop",
+      "addVersionUrl": true,
+      "versionUrlFormats": {
+        "versionUrl": "{repositoryUrl}/releases/tag/{tagName}"
+      }
     }
   }
 }

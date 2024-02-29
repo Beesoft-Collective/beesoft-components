@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@release-it/bumper": "^5.1.0",
+    "@release-it/keep-a-changelog": "^5.0.0",
     "@storybook/addon-a11y": "^7.6.10",
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
