@@ -5,14 +5,14 @@ import { TransitionStatus } from 'react-transition-group/Transition';
 
 export interface BeeSoftChildrenTransitionProps {
   state: TransitionStatus;
-  defaultStyle: CSSProperties;
+  defaultStyles: CSSProperties;
   transitionStyles: Record<string, CSSProperties>;
 }
 
 export interface BeeSoftTransitionProps {
   start: boolean;
   timeout?: number;
-  defaultStyle?: CSSProperties;
+  defaultStyles?: CSSProperties;
   transitionStyles?: Record<string, CSSProperties>;
   showTransitionOptions?: string;
   hideTransitionOptions?: string;
@@ -27,7 +27,7 @@ export interface BeeSoftTransitionProps {
 const BeeSoftTransition = ({
   start,
   timeout = 400,
-  defaultStyle,
+  defaultStyles,
   transitionStyles,
   showTransitionOptions = 'cubic-bezier(0, 0, 0.2, 1)',
   hideTransitionOptions = 'linear',
@@ -38,7 +38,7 @@ const BeeSoftTransition = ({
   onExited,
   children,
 }: BeeSoftTransitionProps) => {
-  const initialStyle = defaultStyle || {
+  const initialStyle = defaultStyles || {
     transition: `opacity ${timeout}ms ${showTransitionOptions}`,
     opacity: 0,
   };
@@ -67,7 +67,7 @@ const BeeSoftTransition = ({
       onExited={onExited}
       unmountOnExit={unmountOnExit}
     >
-      {(state) => children({ state, defaultStyle: initialStyle, transitionStyles: transitions })}
+      {(state) => children({ state, defaultStyles: initialStyle, transitionStyles: transitions })}
     </Transition>
   );
 };

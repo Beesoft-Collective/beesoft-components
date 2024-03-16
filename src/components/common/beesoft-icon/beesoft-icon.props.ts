@@ -8,6 +8,8 @@ export interface BeeSoftIconList {
   chevronRight: FC<IconProps>;
   chevronUp: FC<IconProps>;
   close: FC<IconProps>;
+  minus: FC<IconProps>;
+  plus: FC<IconProps>;
 }
 
 export enum IconSize {
