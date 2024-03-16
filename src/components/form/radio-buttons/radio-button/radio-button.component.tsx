@@ -1,4 +1,5 @@
 import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
+import cx from 'classnames';
 import { ChangeEvent, useId, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
@@ -45,7 +46,7 @@ const RadioButton = ({
         name={name}
         label={dot.pick(textField, item)}
         value={itemValue}
-        checked={itemValue == value}
+        checked={itemValue == selectedValue}
         labelLocation={labelLocation}
         readOnly={readOnly}
         useAnimation={useAnimation}
@@ -54,14 +55,19 @@ const RadioButton = ({
     );
   };
 
-  const renderItems = (finalData: JsonData) => <div>{finalData.map(renderRadioButton)}</div>
+  const containerStyles = cx('bsc-flex bsc-flex-col bsc-gap-1', className);
+  const checkboxStyles = cx('bsc-flex bsc-gap-1', {
+    'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
+  });
+
+  const renderItems = (finalData: JsonData) => <div className={checkboxStyles}>{finalData.map(renderRadioButton)}</div>;
 
   return (
-    <div>
+    <div className={containerStyles}>
       {label && <Label label={label} readOnly={readOnly} />}
       {staticData && renderItems(staticData)}
     </div>
-  )
+  );
 };
 
 export { RadioButton };
