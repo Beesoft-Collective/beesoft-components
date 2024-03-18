@@ -1,5 +1,6 @@
 import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
+import dot from 'dot-object';
 import { ChangeEvent, useId, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';

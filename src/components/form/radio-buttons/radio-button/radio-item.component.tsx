@@ -25,11 +25,12 @@ const RadioItem = ({
   const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center', {
     'bc-read-only': readOnly,
   });
+  const radioStyles = cx('bc-radio-outer bsc-relative *:bsc-size-[21px]');
 
   return (
     <div className={wrapperStyles}>
       {labelLocation === SelectionLabelLocation.Left && <Label label={label} htmlFor={id} readOnly={readOnly} />}
-      <label>
+      <label className={radioStyles}>
         <input
           id={id}
           name={name}
@@ -37,10 +38,10 @@ const RadioItem = ({
           type="radio"
           checked={checked}
           onChange={handleOnChange}
-          className="bc-radio-inner bsc-appearance-none"
+          className="bc-radio-inner bsc-hidden"
         />
-        <svg width={21} height={21} viewBox="0 0 21 21" preserveAspectRatio="xMidYMid meet">
-          <circle cx={15} cy={15} r={13} fill="none" stroke="#000" strokeWidth={2} />
+        <svg width={21} height={21} viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet">
+          <circle cx={15} cy={15} r={13} fill="none" stroke="#000" strokeWidth={1} />
         </svg>
       </label>
       {labelLocation === SelectionLabelLocation.Right && <Label label={label} htmlFor={id} readOnly={readOnly} />}
