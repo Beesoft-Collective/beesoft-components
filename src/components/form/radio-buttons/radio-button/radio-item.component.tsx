@@ -22,10 +22,14 @@ const RadioItem = ({
     onChange?.(event);
   };
 
-  const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center', {
+  const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center *:bsc-cursor-pointer', {
     'bc-read-only': readOnly,
   });
-  const radioStyles = cx('bc-radio-outer bsc-relative *:bsc-size-[21px]');
+  const radioStyles = cx('bc-radio-outer bsc-relative *:bsc-size-[21px] bsc-radio-item', {
+    'bsc-pl-2': labelLocation === SelectionLabelLocation.Left,
+    'bsc-pr-2': labelLocation === SelectionLabelLocation.Right,
+    'bsc-radio-item-animate': !readOnly && useAnimationState,
+  });
 
   return (
     <div className={wrapperStyles}>
@@ -41,7 +45,8 @@ const RadioItem = ({
           className="bc-radio-inner bsc-hidden"
         />
         <svg width={21} height={21} viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet">
-          <circle cx={15} cy={15} r={13} fill="none" stroke="#000" strokeWidth={1} />
+          <circle cx={15} cy={15} r={13} />
+          <circle cx="50%" cy="50%" r={8} />
         </svg>
       </label>
       {labelLocation === SelectionLabelLocation.Right && <Label label={label} htmlFor={id} readOnly={readOnly} />}
