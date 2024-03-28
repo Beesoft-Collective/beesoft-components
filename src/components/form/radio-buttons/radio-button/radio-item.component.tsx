@@ -26,8 +26,8 @@ const RadioItem = ({
     'bc-read-only': readOnly,
   });
   const radioStyles = cx('bc-radio-outer bsc-relative *:bsc-size-[21px] bsc-radio-item', {
-    'bsc-pl-2': labelLocation === SelectionLabelLocation.Left,
-    'bsc-pr-2': labelLocation === SelectionLabelLocation.Right,
+    'bsc-pl-1': labelLocation === SelectionLabelLocation.Left,
+    'bsc-pr-1': labelLocation === SelectionLabelLocation.Right,
     'bsc-radio-item-animate': !readOnly && useAnimationState,
   });
 
