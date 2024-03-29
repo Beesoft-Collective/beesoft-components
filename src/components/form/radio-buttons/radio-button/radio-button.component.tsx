@@ -43,6 +43,7 @@ const RadioButton = ({
 
     return (
       <RadioItem
+        key={radioId}
         id={radioId}
         name={name}
         label={dot.pick(textField, item)}
@@ -56,13 +57,15 @@ const RadioButton = ({
     );
   };
 
-  const containerStyles = cx('bsc-flex bsc-flex-col bsc-gap-1', className);
-  const checkboxStyles = cx('bsc-flex bsc-gap-1', {
+  const containerStyles = cx('bc-radio-container bsc-flex bsc-flex-col bsc-gap-1', className);
+  const radioButtonStyles = cx('bc-radio-wrapper bsc-flex bsc-gap-1', {
     'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
     '[&>*]:bsc-pr-2': orientation === FormGroupItemOrientation.Horizontal,
   });
 
-  const renderItems = (finalData: JsonData) => <div className={checkboxStyles}>{finalData.map(renderRadioButton)}</div>;
+  const renderItems = (finalData: JsonData) => (
+    <div className={radioButtonStyles}>{finalData.map(renderRadioButton)}</div>
+  );
 
   return (
     <div className={containerStyles}>
