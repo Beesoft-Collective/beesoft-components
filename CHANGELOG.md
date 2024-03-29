@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-03-29
+
 ### Added
 
 - Created the new radio button component.
 - Added advanced features to the button component.
 
+
+[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.8.0...develop
+[0.8.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.8.0
