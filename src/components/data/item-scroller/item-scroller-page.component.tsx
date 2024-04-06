@@ -28,7 +28,12 @@ const ItemScrollerPage = ({ intersectionObserver, resizeObserver, page, height, 
   const pageStyles: CSSProperties = height ? { height: `${height}px` } : {};
 
   return (
-    <div data-page={page} style={pageStyles} ref={(element) => element && onPageElementCreated(element)}>
+    <div
+      data-page={page}
+      data-name="page"
+      style={pageStyles}
+      ref={(element) => element && onPageElementCreated(element)}
+    >
       {children}
     </div>
   );

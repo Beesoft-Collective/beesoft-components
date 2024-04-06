@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { ReactNode, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ItemScrollerPage } from './item-scroller-page.component.tsx';
 import { ItemScrollerProps } from './item-scroller.props.ts';
+import { ScrollerPageMarker } from './scroller-page-marker.component.tsx';
 
 const ItemScroller = ({
   scrollingElement,
@@ -18,6 +19,8 @@ const ItemScroller = ({
 
   const currentPage = useRef(1);
   const totalPages = useRef(0);
+  const lastFulfilledPage = useRef(0);
+  const nextPageIndex = useRef<number>();
   const loadedData = useRef<JsonData>([]);
   const calculatedRenderPages = useRef<Record<string, JsonData>>({});
   const pageHeights = useRef<Record<number, number>>({});
@@ -37,11 +40,16 @@ const ItemScroller = ({
   }, []);
 
   useEffect(() => {
+    nextPageIndex.current = Math.trunc(pageSize * 0.75);
+  }, [pageSize]);
+
+  useEffect(() => {
     if (data) {
       loadedData.current = data;
       totalPages.current = calculateTotalPageCount();
       calculateRenderPageData();
       calculateRenderPages();
+      lastFulfilledPage.current++;
     } else {
       // if the component is loaded without data then request it
       onRequestPageData(1);
@@ -61,7 +69,27 @@ const ItemScroller = ({
   }, [scrollingElement]);
 
   const intersectionCallback = (entries: Array<IntersectionObserverEntry>) => {
-    console.log('intersection entries', entries);
+    const intersectingEntries = entries.filter((entry) => entry.isIntersecting);
+    const mainPage = intersectingEntries
+      .filter((page) => (page.target as HTMLElement).dataset['name'] === 'page')
+      .sort((a, b) => a.intersectionRatio - b.intersectionRatio);
+    const requestDataMarker = intersectingEntries.filter(
+      (page) => (page.target as HTMLElement).dataset['name'] === 'marker'
+    );
+
+    if (mainPage.length > 0) {
+      const mainPageNumber = parseInt((mainPage[0].target as HTMLElement).dataset['page'] || '1');
+      if (mainPageNumber !== currentPage.current) {
+        currentPage.current = mainPageNumber;
+        calculateRenderPages();
+      }
+    }
+
+    if (requestDataMarker.length > 0) {
+      if (lastFulfilledPage.current === currentPage.current) {
+        onRequestPageData(lastFulfilledPage.current + 1);
+      }
+    }
   };
 
   const resizeCallback = useCallback((entries: Array<ResizeObserverEntry>) => {
@@ -126,7 +154,15 @@ const ItemScroller = ({
     const finalMarkup: Array<ReactNode> = [];
     for (let page = 1, length = totalPages.current; page <= length; page++) {
       const isRenderPage = pages.includes(page);
-      const height = isRenderPage ? pageHeights.current[page] : undefined;
+      const height = !isRenderPage ? pageHeights.current[page] : undefined;
+
+      let dataTop: Array<ReactNode> = [];
+      let dataBottom: Array<ReactNode> = [];
+      if (isRenderPage && nextPageIndex.current) {
+        const data = children(calculatedRenderPages.current[page], page);
+        dataTop = data.slice(0, nextPageIndex.current - 1);
+        dataBottom = data.slice(nextPageIndex.current, pageSize - 1);
+      }
 
       finalMarkup.push(
         <ItemScrollerPage
@@ -136,7 +172,13 @@ const ItemScroller = ({
           page={page}
           height={height}
         >
-          {isRenderPage && children(calculatedRenderPages.current[page], page)}
+          {isRenderPage && (
+            <>
+              {dataTop}
+              <ScrollerPageMarker intersectionObserver={intersectionObserver.current} page={page} />
+              {dataBottom}
+            </>
+          )}
         </ItemScrollerPage>
       );
     }
