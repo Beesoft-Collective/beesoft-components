@@ -40,7 +40,7 @@ const ItemScroller = ({
   }, []);
 
   useEffect(() => {
-    nextPageIndex.current = Math.trunc(pageSize * 0.75);
+    nextPageIndex.current = Math.trunc(pageSize * 0.6);
   }, [pageSize]);
 
   useEffect(() => {
