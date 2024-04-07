@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- Created a new item scroller component.
+
+## Changed
+
+- Upgraded to Storybook 8 and added the Chromatic plugin.
+
 ## [0.8.0] - 2024-03-29
 
 ### Added
