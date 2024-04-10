@@ -2,7 +2,7 @@ import { JsonData } from '@beesoft/common';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Checkbox } from '../../../form/checkboxes/checkbox/checkbox.component.tsx';
+import { Checkbox } from '../../../../form/checkboxes/checkbox/checkbox.component.tsx';
 import {
   data1,
   data10,
