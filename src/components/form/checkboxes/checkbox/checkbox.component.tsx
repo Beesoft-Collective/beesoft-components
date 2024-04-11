@@ -28,10 +28,10 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
-  console.log('checked property', JSON.stringify(checkedProperty));
+
   const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
-
+  console.log(id, 'checked property', JSON.stringify(checkedProperty));
   useEffect(() => {
     if (checkedState.initial) {
       setCheckedState({
@@ -39,10 +39,10 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         partial,
       });
     } else {
-      console.log('check changed', checkedProperty.changed, 'check property', checked);
+      console.log(id, 'check changed', checkedProperty.changed, 'check property', checked);
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
-      console.log('new checked', newChecked);
+      console.log(id, 'new checked', newChecked);
       setCheckedState({
         checked: newPartial ? true : newChecked,
         partial: newPartial,
@@ -125,7 +125,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
       'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
-  console.log('checked state', checkedState.value);
+  console.log(id, 'checked state', checkedState.value);
   return (
     <div className={wrapperStyles}>
       {label && labelLocation === SelectionLabelLocation.Left && (
