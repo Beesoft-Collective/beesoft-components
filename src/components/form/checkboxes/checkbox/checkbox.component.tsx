@@ -28,7 +28,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
-  console.log('checked property', checkedProperty);
+  console.log('checked property', JSON.stringify(checkedProperty));
   const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
 
