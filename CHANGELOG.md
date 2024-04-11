@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1-0] - 2024-04-11
+
 ## Added
 
 - Test statements
@@ -36,7 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.0...develop
+[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.1-0...develop
+[0.9.1-0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.1-0
 [0.9.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0
 [0.9.0-0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0-0
 [0.8.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.8.0
