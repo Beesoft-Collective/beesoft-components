@@ -28,7 +28,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
-
+  console.log('checked property', checkedProperty, 'partial property', partialProperty);
   const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
 
@@ -41,7 +41,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     } else {
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
-
+      console.log('new checked', newChecked, 'new partial', newPartial);
       setCheckedState({
         checked: newPartial ? true : newChecked,
         partial: newPartial,
@@ -124,7 +124,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
       'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
-
+  console.log('checked state', checkedState.value);
   return (
     <div className={wrapperStyles}>
       {label && labelLocation === SelectionLabelLocation.Left && (
