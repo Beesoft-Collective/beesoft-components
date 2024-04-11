@@ -1,11 +1,11 @@
 import cx from 'classnames';
-import { ChangeEvent, useEffect, useId, useState } from 'react';
+import { ChangeEvent, memo, useEffect, useId, useState } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { ToggleProps } from './toggle.props.ts';
 
-const Toggle = ({
+const ToggleComponent = ({
   name,
   label,
   value,
@@ -78,4 +78,5 @@ const Toggle = ({
   );
 };
 
+const Toggle = memo(ToggleComponent);
 export { Toggle };

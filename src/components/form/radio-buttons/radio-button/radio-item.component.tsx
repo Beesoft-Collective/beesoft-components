@@ -1,11 +1,11 @@
 import cx from 'classnames';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, memo, useCallback } from 'react';
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { RadioItemProps } from './radio-item.props.ts';
 
-const RadioItem = ({
+const RadioItemComponent = ({
   id,
   name,
   label,
@@ -18,9 +18,9 @@ const RadioItem = ({
 }: RadioItemProps) => {
   const useAnimationState = useShouldAnimate(useAnimation);
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange?.(event);
-  };
+  }, [onChange]);
 
   const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center *:bsc-cursor-pointer', {
     'bc-read-only': readOnly,
@@ -56,4 +56,5 @@ const RadioItem = ({
   );
 };
 
+const RadioItem = memo(RadioItemComponent);
 export { RadioItem };

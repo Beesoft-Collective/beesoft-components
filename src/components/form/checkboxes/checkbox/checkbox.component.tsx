@@ -1,6 +1,6 @@
 import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
-import { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { ChangeEvent, forwardRef, memo, Ref, useEffect, useId, useImperativeHandle } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
@@ -154,5 +154,5 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 };
 
-const Checkbox = forwardRef(CheckboxComponent);
+const Checkbox = memo(forwardRef(CheckboxComponent));
 export { Checkbox };

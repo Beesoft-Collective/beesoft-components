@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 
 - Created a new item scroller component.
+- Exported the Group Button, Radio Button and Toggle components since they were not exported previously.
 
 ## Changed
 

@@ -1,14 +1,14 @@
 import { JsonData, JsonItem, TypeOrArray, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import dot from 'dot-object';
-import { ChangeEvent, ReactNode, useCallback, useEffect, useId, useState } from 'react';
+import { ChangeEvent, memo, ReactNode, useCallback, useEffect, useId, useState } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import TemplateOutlet from '../../../common/template-outlet/template-outlet.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { GroupButtonItemTemplateProps, GroupButtonProps } from './group-button.props.ts';
 
-const GroupButton = ({
+const GroupButtonComponent = ({
   name,
   label,
   value,
@@ -203,4 +203,5 @@ const GroupButton = ({
   );
 };
 
+const GroupButton = memo(GroupButtonComponent);
 export { GroupButton };
