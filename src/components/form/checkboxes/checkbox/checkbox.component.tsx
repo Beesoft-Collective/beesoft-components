@@ -28,7 +28,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
-  console.log('checked property', checkedProperty, 'partial property', partialProperty);
+  console.log('checked property', checkedProperty);
   const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
 
@@ -39,9 +39,10 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         partial,
       });
     } else {
+      console.log('check changed', checkedProperty.changed, 'check property', checked);
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
-      console.log('new checked', newChecked, 'new partial', newPartial);
+      console.log('new checked', newChecked);
       setCheckedState({
         checked: newPartial ? true : newChecked,
         partial: newPartial,
