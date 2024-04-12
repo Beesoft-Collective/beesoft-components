@@ -39,7 +39,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         partial,
       });
     } else {
-      console.log(id, 'check changed', checkedProperty.changed, 'check property', checked);
+      console.log(id, 'check changed', JSON.stringify(checkedProperty), 'check property', checked);
       const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
       const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
       console.log(id, 'new checked', newChecked);
