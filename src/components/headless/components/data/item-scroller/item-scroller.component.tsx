@@ -1,4 +1,4 @@
-import { JsonData } from '@beesoft/common';
+import { JsonData, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import { ReactNode, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ItemScrollerPage } from './item-scroller-page.component.tsx';
@@ -16,6 +16,11 @@ const ItemScroller = ({
   children,
 }: ItemScrollerProps) => {
   const [renderPages, setRenderPages] = useState<Array<number>>();
+  const [recordModificationFlag, setRecordModificationFlag] = useState(false);
+  const finalData = useDeepMemo(() => {
+    console.log('memoizing data', data);
+    return data;
+  }, [data]);
 
   const currentPage = useRef(1);
   const totalPages = useRef(0);
@@ -44,17 +49,26 @@ const ItemScroller = ({
   }, [pageSize]);
 
   useEffect(() => {
-    if (data) {
-      loadedData.current = data;
-      totalPages.current = calculateTotalPageCount();
-      calculateRenderPageData();
-      calculateRenderPages();
-      lastFulfilledPage.current++;
+    if (finalData && finalData.length > 0) {
+      if (loadedData.current.length !== finalData.length) {
+        loadedData.current = finalData;
+        totalPages.current = calculateTotalPageCount();
+        calculateRenderPageData();
+        calculateRenderPages();
+        lastFulfilledPage.current++;
+      } else {
+        // the data was updated, so we need to fire a change
+        loadedData.current = finalData;
+        totalPages.current = calculateTotalPageCount();
+        calculateRenderPageData();
+        calculateRenderPages();
+        setRecordModificationFlag(!recordModificationFlag);
+      }
     } else {
       // if the component is loaded without data then request it
       onRequestPageData(1);
     }
-  }, [data]);
+  }, [finalData]);
 
   useEffect(() => {
     if (scrollingElement) {

@@ -1,3 +1,7 @@
+
+[![twitter](https://img.shields.io/twitter/follow/bsoft_collectiv)](https://twitter.com/bsoft_collectiv)
+[![twitter](https://img.shields.io/twitter/follow/brandon_trabon)](https://twitter.com/brandon_trabon)
+
 # BeeSoft Components
 
 A library of components for the React framework. This library is currently a beta so please report any issues found or make suggestions.
