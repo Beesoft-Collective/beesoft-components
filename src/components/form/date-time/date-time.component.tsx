@@ -392,13 +392,12 @@ const DateTime = ({
                     />
                   </div>
                 )}
-                <div className="bsc-ml-2">
+                <div className="bsc-ml-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
                   {icon || (
                     <BeeSoftIcon
                       icon="calendar"
                       size={IconSize.Small}
                       className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                      onClick={!readOnly ? onCalendarIconClick : undefined}
                     />
                   )}
                 </div>
@@ -409,13 +408,12 @@ const DateTime = ({
         : {
             leftElement: (
               <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
-                <div className="bsc-mr-2">
+                <div className="bsc-mr-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
                   {icon || (
                     <BeeSoftIcon
                       icon="calendar"
                       size={IconSize.Small}
                       className={!readOnly ? 'bsc-cursor-pointer' : undefined}
-                      onClick={!readOnly ? onCalendarIconClick : undefined}
                     />
                   )}
                 </div>
