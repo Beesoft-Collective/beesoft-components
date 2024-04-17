@@ -1,13 +1,13 @@
 import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import dot from 'dot-object';
-import { ChangeEvent, useId, useState } from 'react';
+import { ChangeEvent, memo, useCallback, useId, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { RadioButtonProps } from './radio-button.props.ts';
 import { RadioItem } from './radio-item.component.tsx';
 
-const RadioButton = ({
+const RadioButtonComponent = ({
   name,
   label,
   value,
@@ -26,7 +26,7 @@ const RadioButton = ({
 
   const baseId = useId();
 
-  const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEvent = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const radioValue = event.target.value;
     setSelectedValue(radioValue);
 
@@ -35,7 +35,7 @@ const RadioButton = ({
       value: radioValue,
       originalEvent: event,
     });
-  };
+  }, [name]);
 
   const renderRadioButton = (item: JsonItem, index: number) => {
     const radioId = `${baseId}_radio_${index}`;
@@ -75,4 +75,5 @@ const RadioButton = ({
   );
 };
 
+const RadioButton = memo(RadioButtonComponent);
 export { RadioButton };
