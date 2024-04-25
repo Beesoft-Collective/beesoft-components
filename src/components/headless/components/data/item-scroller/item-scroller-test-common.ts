@@ -182,14 +182,16 @@ export function generateRandomNames(amount: number) {
 
 export function generatePagedData(totalCount: number, pageSize: number) {
   const nameObjects = generateRandomNames(totalCount);
-  let currentPage = 0;
 
-  return (pageNumber: number) => {
-    if (currentPage < pageNumber) {
-      currentPage = pageNumber;
-      const startIndex = (pageNumber - 1) * pageSize;
-      const endIndex = pageNumber * pageSize;
-      return nameObjects.slice(startIndex, endIndex);
-    }
+  const getPageData = (pageNumber: number) => {
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = pageNumber * pageSize;
+    return nameObjects.slice(startIndex, endIndex);
   };
+
+  const getAllData = () => {
+    return nameObjects;
+  };
+
+  return { getPageData, getAllData };
 }
