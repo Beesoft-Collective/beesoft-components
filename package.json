@@ -34,7 +34,7 @@
     "chromatic": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
-    "@beesoft/common": "^0.1.6",
+    "@beesoft/common": "^0.1.8",
     "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
@@ -59,7 +59,7 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.5.1",
-    "@types/bun": "^1.0.4",
+    "@types/bun": "^1.0.12",
     "@types/dot-object": "^2.1.6",
     "@types/lodash-es": "^4.17.11",
     "@types/react": "^18.2.15",

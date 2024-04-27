@@ -1,7 +1,13 @@
-import { CSSProperties, useEffect, useRef } from 'react';
+import { CSSProperties, memo, useEffect, useRef } from 'react';
 import { ItemScrollerPageProps } from './item-scroller-page.props.ts';
 
-const ItemScrollerPage = ({ intersectionObserver, resizeObserver, page, height, children }: ItemScrollerPageProps) => {
+const ItemScrollerPageComponent = ({
+  intersectionObserver,
+  resizeObserver,
+  page,
+  height,
+  children,
+}: ItemScrollerPageProps) => {
   const observedPage = useRef<Element>();
 
   useEffect(() => {
@@ -12,6 +18,18 @@ const ItemScrollerPage = ({ intersectionObserver, resizeObserver, page, height, 
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (observedPage.current) {
+      intersectionObserver?.observe(observedPage.current);
+    }
+
+    return () => {
+      if (observedPage.current && intersectionObserver) {
+        intersectionObserver.unobserve(observedPage.current);
+      }
+    };
+  }, [intersectionObserver]);
 
   const onPageElementCreated = (element: Element) => {
     if (observedPage.current) {
@@ -39,4 +57,5 @@ const ItemScrollerPage = ({ intersectionObserver, resizeObserver, page, height, 
   );
 };
 
+const ItemScrollerPage = memo(ItemScrollerPageComponent);
 export { ItemScrollerPage };

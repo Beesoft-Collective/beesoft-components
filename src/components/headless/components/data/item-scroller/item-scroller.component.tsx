@@ -1,4 +1,4 @@
-import { JsonData } from '@beesoft/common';
+import { JsonData, useDeepEffect } from '@beesoft/common';
 import cx from 'classnames';
 import { ReactNode, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ItemScrollerPage } from './item-scroller-page.component.tsx';
@@ -16,10 +16,10 @@ const ItemScroller = ({
   children,
 }: ItemScrollerProps) => {
   const [renderPages, setRenderPages] = useState<Array<number>>();
+  const [recordModificationFlag, setRecordModificationFlag] = useState(false);
 
   const currentPage = useRef(1);
   const totalPages = useRef(0);
-  const lastFulfilledPage = useRef(0);
   const nextPageIndex = useRef<number>();
   const loadedData = useRef<JsonData>([]);
   const calculatedRenderPages = useRef<Record<string, JsonData>>({});
@@ -43,13 +43,21 @@ const ItemScroller = ({
     nextPageIndex.current = Math.trunc(pageSize * 0.6);
   }, [pageSize]);
 
-  useEffect(() => {
-    if (data) {
-      loadedData.current = data;
-      totalPages.current = calculateTotalPageCount();
-      calculateRenderPageData();
-      calculateRenderPages();
-      lastFulfilledPage.current++;
+  useDeepEffect(() => {
+    if (data && data.length > 0) {
+      if (loadedData.current.length !== data.length) {
+        loadedData.current = data;
+        totalPages.current = calculateTotalPageCount();
+        calculateRenderPageData();
+        calculateRenderPages();
+      } else {
+        // the data was updated, so we need to fire a change
+        loadedData.current = data;
+        totalPages.current = calculateTotalPageCount();
+        calculateRenderPageData();
+        calculateRenderPages();
+        setRecordModificationFlag(!recordModificationFlag);
+      }
     } else {
       // if the component is loaded without data then request it
       onRequestPageData(1);
@@ -70,24 +78,27 @@ const ItemScroller = ({
 
   const intersectionCallback = (entries: Array<IntersectionObserverEntry>) => {
     const intersectingEntries = entries.filter((entry) => entry.isIntersecting);
-    const mainPage = intersectingEntries
-      .filter((page) => (page.target as HTMLElement).dataset['name'] === 'page')
-      .sort((a, b) => a.intersectionRatio - b.intersectionRatio);
-    const requestDataMarker = intersectingEntries.filter(
-      (page) => (page.target as HTMLElement).dataset['name'] === 'marker'
-    );
 
-    if (mainPage.length > 0) {
-      const mainPageNumber = parseInt((mainPage[0].target as HTMLElement).dataset['page'] || '1');
-      if (mainPageNumber !== currentPage.current) {
-        currentPage.current = mainPageNumber;
-        calculateRenderPages();
+    if (intersectingEntries.length) {
+      const mainPage = intersectingEntries
+        .filter((page) => (page.target as HTMLElement).dataset['name'] === 'page')
+        .sort((a, b) => a.intersectionRatio - b.intersectionRatio);
+      const requestDataMarker = intersectingEntries.filter(
+        (page) => (page.target as HTMLElement).dataset['name'] === 'marker'
+      );
+
+      if (mainPage.length > 0) {
+        const mainPageNumber = parseInt((mainPage[0].target as HTMLElement).dataset['page'] || '1');
+        if (mainPageNumber !== currentPage.current) {
+          currentPage.current = mainPageNumber;
+          calculateRenderPages();
+        }
       }
-    }
 
-    if (requestDataMarker.length > 0) {
-      if (lastFulfilledPage.current === currentPage.current) {
-        onRequestPageData(lastFulfilledPage.current + 1);
+      if (requestDataMarker.length > 0) {
+        if (totalPages.current === currentPage.current) {
+          onRequestPageData(totalPages.current + 1);
+        }
       }
     }
   };

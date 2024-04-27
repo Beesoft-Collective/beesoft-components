@@ -1,0 +1,197 @@
+import { JsonData } from '@beesoft/common';
+
+const firstNames = [
+  'John',
+  'Markus',
+  'Luke',
+  'Matthew',
+  'June',
+  'Jane',
+  'Jerry',
+  'Brandon',
+  'Kliv',
+  'Hellen',
+  'Harry',
+  'Robert',
+  'Derrick',
+  'Troy',
+  'Michelle',
+  'Denise',
+  'Michael',
+  'William',
+  'Joanne',
+  'Barry',
+  'Bernard',
+  'Paul',
+  'Bruce',
+  'George',
+  'Alice',
+  'Jennifer',
+  'Christina',
+  'Kimberly',
+  'Gerald',
+  'Jenine',
+  'Marcy',
+  'Albert',
+  'Peggy',
+  'Kelly',
+  'Nicholas',
+  'Coline',
+  'Candice',
+  'Marcia',
+  'Irene',
+  'Aubry',
+  'Anne',
+  'Harold',
+  'Maria',
+  'Marisol',
+  'Jay',
+  'Samuel',
+  'Jonathan',
+  'Jill',
+  'Roxanne',
+  'Dottie',
+  'Dorthy',
+  'Ewan',
+  'Goran',
+  'Ansel',
+  'James',
+  'Harrison',
+  'Henry',
+  'Amy',
+  'Steven',
+  'Edward',
+  'Jack',
+  'Mel',
+  'Madison',
+  'Julie',
+  'Amanda',
+  'Moe',
+  'Larry',
+  'Curly',
+  'Lucas',
+  'Ozzie',
+  'Lydon',
+  'Clark',
+  'Desmond',
+  'Joseph',
+  'Frank',
+  'Richard',
+  'Dick',
+  'Danny',
+  'Kevin',
+  'Bryan',
+  'Scott',
+  'Erik',
+  'Suzy',
+  'Carmen',
+  'Kerry',
+  'Carol',
+  'Phil',
+  'Geoffrey',
+  'Victor',
+];
+
+const lastNames = [
+  'Jones',
+  'Smith',
+  'Trabon',
+  'Pitt',
+  'Anniston',
+  'Crowley',
+  'Cransten',
+  'Locksley',
+  'Campbell',
+  'Billingsworth',
+  'Noble',
+  'McNevin',
+  'Alda',
+  "O'Kelley",
+  'McNevin',
+  "O'Dare",
+  'McGucken',
+  'McKraken',
+  'Clay',
+  'Willis',
+  "O'Neal",
+  'Romano',
+  'Allen',
+  'Stanley',
+  'Anker',
+  'Elway',
+  'Wyman',
+  'Dunkelbarger',
+  'Scott',
+  'Pratt',
+  'Sheers',
+  'Zigler',
+  'Cortney',
+  'Worthington',
+  'Stallion',
+  'Brown',
+  'Taylor',
+  'Anderson',
+  'Thompson',
+  'Walker',
+  'Harris',
+  'Roberts',
+  'Davis',
+  'Edwards',
+  'Clarke',
+  'Moore',
+  'Turner',
+  'Watson',
+  'Murphy',
+  'Jackson',
+  'Bennett',
+  'Robertson',
+  'Ward',
+  'Phillips',
+  'Hughes',
+  'Adams',
+  'Parker',
+  'Graham',
+  'Simpson',
+  'Richards',
+  'Bailey',
+  'Ford',
+  'Gibson',
+  'Stow',
+  'Johnson',
+  'Smithe',
+  'Smitts',
+  'Nessbit',
+];
+
+export function generateRandomNames(amount: number) {
+  const fCount = firstNames.length - 1;
+  const lCount = lastNames.length - 1;
+  const nameObjects: JsonData = [];
+
+  for (let i = 0, length = amount; i < length; i++) {
+    const firstNameNumber = Math.floor(Math.random() * fCount);
+    const lastNameNumber = Math.floor(Math.random() * lCount);
+    nameObjects.push({
+      id: i + 1,
+      name: `${firstNames[firstNameNumber]} ${lastNames[lastNameNumber]}`,
+    });
+  }
+
+  return nameObjects;
+}
+
+export function generatePagedData(totalCount: number, pageSize: number) {
+  const nameObjects = generateRandomNames(totalCount);
+
+  const getPageData = (pageNumber: number) => {
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = pageNumber * pageSize;
+    return nameObjects.slice(startIndex, endIndex);
+  };
+
+  const getAllData = () => {
+    return nameObjects;
+  };
+
+  return { getPageData, getAllData };
+}
