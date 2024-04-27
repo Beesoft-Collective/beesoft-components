@@ -5,8 +5,9 @@ import { SideNavigationProps } from './side-navigation.props.ts';
 const SideNavigation = ({ menuItems, onMenuItemClick, className }: SideNavigationProps) => {
   return (
     <div className="bsc-bg-primary-3">
-      {menuItems.map((item) => (
+      {menuItems.map((item, index) => (
         <SideNavigationItem
+          key={`navigation_item_${index}`}
           displayText={item.text}
           urlPath={item.urlPath}
           itemValue={item.value}
