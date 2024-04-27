@@ -7,3 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- Created the item scroller component; this will request new pages when the end of the currently loaded data is reached and make scrolling performant by only rendering a certain amount of pages at a single time.
+
+## [0.9.1] - 2024-04-16
+
+## Changed
+
+- Changed where the onClick event is contained; this fixes the issue of custom icons not always triggering the selector.
+
+## [0.9.0] - 2024-04-11
+
+## Changed
+
+- Released Official 0.9.0 version.
+
+## [0.9.0-0] - 2024-04-11
+
+## Added
+
+- Created a new item scroller component.
+- Exported the Group Button, Radio Button and Toggle components since they were not exported previously.
+
+## Changed
+
+- Upgraded to Storybook 8 and added the Chromatic plugin.
+
+## [0.8.0] - 2024-03-29
+
+### Added
+
+- Created the new radio button component.
+- Added advanced features to the button component.
+
+
+[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.1...develop
+[0.9.1]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.1
+[0.9.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0
+[0.9.0-0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0-0
+[0.8.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.8.0

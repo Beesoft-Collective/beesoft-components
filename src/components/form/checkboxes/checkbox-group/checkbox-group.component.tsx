@@ -1,13 +1,13 @@
 import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { Checkbox } from '../checkbox/checkbox.component.tsx';
 import { CheckboxChangeEvent } from '../checkboxes.interfaces.ts';
 import { CheckboxGroupProps } from './checkbox-group.props.ts';
 
-const CheckboxGroup = ({
+const CheckboxGroupComponent = ({
   name,
   label,
   value,
@@ -71,4 +71,5 @@ const CheckboxGroup = ({
   );
 };
 
+const CheckboxGroup = memo(CheckboxGroupComponent);
 export { CheckboxGroup };
