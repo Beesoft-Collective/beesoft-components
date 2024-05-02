@@ -2,8 +2,8 @@ import { JsonData, useStateRef } from '@beesoft/common';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { JSX, useRef, useState } from 'react';
-import { Checkbox } from '../../../../form/checkboxes/checkbox/checkbox.component.tsx';
-import { Button } from '../../../../navigation/buttons/button/button.component.tsx';
+import { Checkbox } from '../../../../components/form/checkboxes/checkbox/checkbox.component.tsx';
+import { Button } from '../../../../components/navigation/buttons/button/button.component.tsx';
 import { generatePagedData } from './item-scroller-test-common.ts';
 import { ItemScroller } from './item-scroller.component.tsx';
 
