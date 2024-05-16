@@ -1,89 +1,18 @@
-import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
 import cx from 'classnames';
-import { ChangeEvent, forwardRef, memo, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { forwardRef, memo, Ref } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
+import { HeadlessGroup } from '../../../../headless/components/common/group/headless-group.component.tsx';
+import { HeadlessCheckbox } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.component.tsx';
+import { HeadlessCheckboxRef } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.props.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
-import { CheckboxCheckState, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
+import { CheckboxProps } from './checkbox.props.ts';
 
-const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
-  const {
-    name,
-    label,
-    value,
-    readOnly = false,
-    checked = false,
-    partial = false,
-    labelLocation = SelectionLabelLocation.Right,
-    className,
-    useAnimation,
-    onChange,
-  } = props;
+const CheckboxComponent = (props: CheckboxProps, ref: Ref<HeadlessCheckboxRef>) => {
+  const { label, readOnly = false, labelLocation = SelectionLabelLocation.Right, className, useAnimation } = props;
 
-  const [checkedState, setCheckedState, checkedStateRef] = useStateRefInitial<CheckboxCheckState>({
-    checked: false,
-    partial: false,
-  });
-
-  const checkedProperty = usePropertyChanged(checked);
-  const partialProperty = usePropertyChanged(partial);
-
-  const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
-
-  useEffect(() => {
-    if (checkedState.initial) {
-      setCheckedState({
-        checked: partial ? true : checked,
-        partial,
-      });
-    } else {
-      const newChecked = !checkedProperty.changed ? checkedState.value.checked : checked;
-      const newPartial = !partialProperty.changed ? checkedState.value.partial : partial;
-
-      setCheckedState({
-        checked: newPartial ? true : newChecked,
-        partial: newPartial,
-      });
-    }
-  }, [checked, partial]);
-
-  const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    const checkedValue = checkedStateRef.current?.value.partial === true ? true : event.target.checked;
-    setCheckedState({
-      checked: checkedValue,
-      partial: false,
-    });
-
-    onChange?.({
-      originalEvent: event,
-      name: name || event.target.name,
-      value,
-      checked: checkedValue,
-    });
-  };
-
-  const setPartiallyChecked = (partiallyChecked: boolean) => {
-    const state: CheckboxCheckState = {
-      checked: partiallyChecked ? true : checkedStateRef.current?.value.checked || false,
-      partial: partiallyChecked,
-    };
-
-    setCheckedState(state);
-  };
-
-  const setChecked = (checked: boolean) => {
-    setCheckedState({
-      checked,
-      partial: false,
-    });
-  };
-
-  useImperativeHandle(ref, () => ({
-    setPartiallyChecked,
-    setChecked,
-  }));
 
   const wrapperStyles = cx(
     'bc-checkbox-wrapper bsc-flex bsc-items-center',
@@ -126,31 +55,23 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 
   return (
-    <div className={wrapperStyles}>
-      {label && labelLocation === SelectionLabelLocation.Left && (
-        <Label label={label} htmlFor={id} readOnly={readOnly} className={labelStyles} />
-      )}
-      <label className={checkboxStyles}>
-        <input
-          id={id}
-          name={name}
-          type="checkbox"
-          checked={checkedState.value.checked}
-          onChange={handleChangeEvent}
-          className={innerCheckboxStyles}
-        />
-        <svg viewBox="0 0 21 21" className={svgStyles}>
-          {!checkedState.value.partial ? (
-            <polyline points="5 10.75 8.5 14.25 16 6" />
-          ) : (
-            <polyline points="6 10.5 16 10.5" />
+    <HeadlessGroup>
+      <div className={wrapperStyles}>
+        {label && labelLocation === SelectionLabelLocation.Left && (
+          <Label label={label} readOnly={readOnly} className={labelStyles} />
+        )}
+        <HeadlessCheckbox {...props} className={innerCheckboxStyles} labelStyles={checkboxStyles} ref={ref}>
+          {({ partial }) => (
+            <svg viewBox="0 0 21 21" className={svgStyles}>
+              {!partial ? <polyline points="5 10.75 8.5 14.25 16 6" /> : <polyline points="6 10.5 16 10.5" />}
+            </svg>
           )}
-        </svg>
-      </label>
-      {label && labelLocation === SelectionLabelLocation.Right && (
-        <Label label={label} htmlFor={id} readOnly={readOnly} className={labelStyles} />
-      )}
-    </div>
+        </HeadlessCheckbox>
+        {label && labelLocation === SelectionLabelLocation.Right && (
+          <Label label={label} readOnly={readOnly} className={labelStyles} />
+        )}
+      </div>
+    </HeadlessGroup>
   );
 };
 

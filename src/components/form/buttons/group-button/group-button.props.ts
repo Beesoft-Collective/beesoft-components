@@ -1,6 +1,6 @@
 import { JsonItem, MakeRequired, TypeOrArray } from '@beesoft/common';
 import { TemplateFunction } from '../../../common/template-outlet/template-outlet.component.tsx';
-import { FormInputControlData } from '../../form-control.interface.ts';
+import { FormInputControlData } from '../../../../headless/components/form/form-control.interface.ts';
 import { FormGroupItemOrientation, GroupChangeEvent } from '../../form-generic.interfaces.ts';
 
 export interface GroupButtonProps

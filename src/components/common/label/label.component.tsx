@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { HeadlessLabel } from '../../../headless/components/common/label/headless-label.component.tsx';
 import { LabelProps } from './label.props.ts';
 
 const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
@@ -11,11 +12,7 @@ const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
     className
   );
 
-  return (
-    <label htmlFor={htmlFor} className={labelStyles}>
-      {label}
-    </label>
-  );
+  return <HeadlessLabel label={label} htmlFor={htmlFor} className={labelStyles} />;
 };
 
 export { Label };

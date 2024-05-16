@@ -1,7 +1,7 @@
 import { TypeOrArray } from '@beesoft/common';
 import React from 'react';
 import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
-import { FormInputControl } from '../form-control.interface.ts';
+import { FormInputControl } from '../../../headless/components/form/form-control.interface.ts';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component.tsx';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types.ts';

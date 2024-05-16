@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { Checkbox } from '../checkbox/checkbox.component.tsx';
-import { CheckboxChangeEvent } from '../checkboxes.interfaces.ts';
+import { HeadlessCheckboxChangeEvent } from '../../../../headless/components/form/checkboxes/headless-checkboxes.interfaces.ts';
 import { CheckboxGroupProps } from './checkbox-group.props.ts';
 
 const CheckboxGroupComponent = ({
@@ -26,7 +26,7 @@ const CheckboxGroupComponent = ({
     setSelectedValues(value ?? []);
   }, [value]);
 
-  const handleOnChange = (event: CheckboxChangeEvent) => {
+  const handleOnChange = (event: HeadlessCheckboxChangeEvent) => {
     const { value, checked } = event;
 
     let updatedValues: Array<unknown>;
