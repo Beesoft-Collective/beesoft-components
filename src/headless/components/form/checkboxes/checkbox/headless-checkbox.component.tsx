@@ -1,5 +1,5 @@
-import { useDeepMemo, usePropertyChanged, useStateRefInitial } from '@beesoft/common';
-import React, { ChangeEvent, forwardRef, Ref, useEffect, useId, useImperativeHandle } from 'react';
+import { usePropertyChanged, useStateRefInitial } from '@beesoft/common';
+import React, { ChangeEvent, forwardRef, memo, Ref, useEffect, useId, useImperativeHandle } from 'react';
 import { forceAssert } from '../../../../../components/common-functions.ts';
 import { HeadlessBase } from '../../../../architecture/components/headless-base.component.tsx';
 import { useHeadlessGroupContext } from '../../../../architecture/hooks/use-headless-group-context.ts';
@@ -19,12 +19,11 @@ const HeadlessCheckboxComponent = (props: HeadlessCheckboxProps, ref: Ref<Headle
   const checkedProperty = usePropertyChanged(checked);
   const partialProperty = usePropertyChanged(partial);
 
-  const finalProps = useDeepMemo<HeadlessCheckboxProps>(() => {
-    return {
-      id: groupContext?.sharedId || props.id || internalId,
-      ...props,
-    };
-  }, [props, groupContext?.sharedId]);
+  const finalProps: HeadlessCheckboxProps = {
+    id: groupContext?.sharedId || props.id || internalId,
+    ...props,
+    ...checkedState.value,
+  };
 
   useEffect(() => {
     if (checkedState.initial) {
@@ -98,5 +97,5 @@ const HeadlessCheckboxComponent = (props: HeadlessCheckboxProps, ref: Ref<Headle
   );
 };
 
-const HeadlessCheckbox = forwardRef(HeadlessCheckboxComponent);
+const HeadlessCheckbox = memo(forwardRef(HeadlessCheckboxComponent));
 export { HeadlessCheckbox };

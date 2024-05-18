@@ -4,4 +4,5 @@ import { FormInputControl } from '../../components/form/form-control.interface.t
 
 export interface HeadlessFieldProps extends MakeRequired<FormInputControl, 'id' | 'name'> {
   type: HTMLInputTypeAttribute;
+  checked?: boolean;
 }

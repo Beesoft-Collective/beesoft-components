@@ -10,7 +10,18 @@ import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { CheckboxProps } from './checkbox.props.ts';
 
 const CheckboxComponent = (props: CheckboxProps, ref: Ref<HeadlessCheckboxRef>) => {
-  const { label, readOnly = false, labelLocation = SelectionLabelLocation.Right, className, useAnimation } = props;
+  const {
+    name,
+    label,
+    value,
+    readOnly = false,
+    checked = false,
+    partial = false,
+    labelLocation = SelectionLabelLocation.Right,
+    className,
+    useAnimation,
+    onChange,
+  } = props;
 
   const useAnimationState = useShouldAnimate(useAnimation);
 
@@ -53,14 +64,24 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<HeadlessCheckboxRef>) 
       'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
-
+  console.log('checkbox render');
   return (
     <HeadlessGroup>
       <div className={wrapperStyles}>
         {label && labelLocation === SelectionLabelLocation.Left && (
           <Label label={label} readOnly={readOnly} className={labelStyles} />
         )}
-        <HeadlessCheckbox {...props} className={innerCheckboxStyles} labelStyles={checkboxStyles} ref={ref}>
+        <HeadlessCheckbox
+          ref={ref}
+          name={name}
+          value={value}
+          checked={checked}
+          partial={partial}
+          readOnly={readOnly}
+          className={innerCheckboxStyles}
+          labelStyles={checkboxStyles}
+          onChange={onChange}
+        >
           {({ partial }) => (
             <svg viewBox="0 0 21 21" className={svgStyles}>
               {!partial ? <polyline points="5 10.75 8.5 14.25 16 6" /> : <polyline points="6 10.5 16 10.5" />}
