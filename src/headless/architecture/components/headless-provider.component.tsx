@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { HeadlessProviderProps } from './headless-provider.props.ts';
-import { HeadlessContext } from './use-headless-context.ts';
+import { HeadlessContext } from '../hooks/use-headless-context.ts';
 
 /**
  * This component contains the code to pass context information to child headless components. For our framework the data

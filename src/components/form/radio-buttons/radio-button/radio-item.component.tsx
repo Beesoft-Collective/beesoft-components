@@ -18,9 +18,12 @@ const RadioItemComponent = ({
 }: RadioItemProps) => {
   const useAnimationState = useShouldAnimate(useAnimation);
 
-  const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(event);
-  }, [onChange]);
+  const handleOnChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+    },
+    [onChange]
+  );
 
   const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center *:bsc-cursor-pointer', {
     'bc-read-only': readOnly,

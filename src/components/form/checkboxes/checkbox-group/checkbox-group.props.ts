@@ -1,5 +1,5 @@
 import { MakeRequired } from '@beesoft/common';
-import { FormInputControlData } from '../../form-control.interface.ts';
+import { FormInputControlData } from '../../../../headless/components/form/form-control.interface.ts';
 import { FormGroupItemOrientation, GroupChangeEvent } from '../../form-generic.interfaces.ts';
 
 export interface CheckboxGroupProps

@@ -1,7 +1,7 @@
 import { MakeRequired } from '@beesoft/common';
 import { ChangeEvent } from 'react';
-import { ComponentAnimationProps } from '../../../component-interfaces.ts';
-import { FormInputControlData } from '../../form-control.interface.ts';
+import { ComponentAnimationProps } from '../../../../headless/components/component-interfaces.ts';
+import { FormInputControlData } from '../../../../headless/components/form/form-control.interface.ts';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 
 export interface RadioChangeEvent {

@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { ComponentAnimationProps } from '../../../component-interfaces.ts';
+import { ComponentAnimationProps } from '../../../../headless/components/component-interfaces.ts';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 
 export interface RadioItemProps extends ComponentAnimationProps {
