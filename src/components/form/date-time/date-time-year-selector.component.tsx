@@ -1,8 +1,8 @@
-import { addYears, setYear, subYears, Locale } from 'date-fns';
+import { addYears, Locale, setYear, subYears } from 'date-fns';
 import { Dispatch } from 'react';
 import { getTranslatedYearMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType } from './date-time-types';
+import { DateScrollerType, DateSelectorType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeYearSelectorProps {
@@ -33,7 +33,8 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const onYearClicked = (year: string) => {
     const yearNumber = parseInt(year);
     dispatcher({
-      type: DateTimeActionType.MonthSelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.MonthSelector,
       viewDate: setYear(viewDate, yearNumber),
     });
   };

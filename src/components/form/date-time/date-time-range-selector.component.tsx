@@ -1,12 +1,12 @@
 import { TypeOrArray } from '@beesoft/common';
-import { addMonths, subMonths, Locale } from 'date-fns';
+import { useMediaQuery } from '@react-hook/media-query';
+import { addMonths, Locale, subMonths } from 'date-fns';
 import { Dispatch } from 'react';
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
-import { CalendarSelectionMode, DateScrollerType } from './date-time-types';
+import { CalendarSelectionMode, DateScrollerType, DateSelectorType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
-import { useMediaQuery } from '@react-hook/media-query';
 
 export interface DateTimeRangeSelectorProps {
   viewDate: Date;
@@ -46,7 +46,8 @@ const DateTimeRangeSelector = ({
 
   const onMonthsClicked = () => {
     dispatcher({
-      type: DateTimeActionType.MonthSelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.MonthSelector,
     });
   };
 

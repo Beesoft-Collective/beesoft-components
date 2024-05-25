@@ -216,6 +216,30 @@ const OffScreenRightBottomTemplate = (args: DateTimeProps) => {
   );
 };
 
+const SwitchDateSelectorTemplate = (args: DateTimeProps) => {
+  // BTW this is to turn off dark mode
+  document.body.className = '';
+
+  const [dateSelectorState, setDateSelectorState] = useState(args.dateSelection);
+
+  const onSwitchClicked = () => {
+    setDateSelectorState(DateSelectionType.DateRange);
+  };
+
+  return (
+    <div className="bsc-flex bsc-w-full bsc-p-4">
+      <div className="bsc-flex-col">
+        <div className="bsc-w-full bsc-pb-2">
+          <Button onClick={onSwitchClicked}>Switch to Date Range</Button>
+        </div>
+        <div className="bsc-w-full">
+          <DateTime {...args} dateSelection={dateSelectorState} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Default: Story = {
   args: {
     label: 'Date',
@@ -629,4 +653,12 @@ export const OffScreenRightBottom: Story = {
     onChange: action('onChange'),
   },
   render: (args) => <OffScreenRightBottomTemplate {...args} />,
+};
+
+export const DateSelectorSwitch: Story = {
+  args: {
+    label: 'Selector Switch',
+    onChange: action('onChange'),
+  },
+  render: (args) => <SwitchDateSelectorTemplate {...args} />,
 };

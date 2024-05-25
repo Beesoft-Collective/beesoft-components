@@ -1,8 +1,8 @@
-import { addYears, setMonth, subYears, Locale } from 'date-fns';
+import { addYears, Locale, setMonth, subYears } from 'date-fns';
 import { Dispatch, useRef } from 'react';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType, DateSelectionType } from './date-time-types';
+import { DateScrollerType, DateSelectionType, DateSelectorType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeMonthSelectorProps {
@@ -38,10 +38,11 @@ const DateTimeMonthSelector = ({
 
   const onMonthClicked = (monthNumber: number) => {
     dispatcher({
-      type:
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector:
         dateSelection !== DateSelectionType.DateRange
-          ? DateTimeActionType.DaySelector
-          : DateTimeActionType.DateRangeSelector,
+          ? DateSelectorType.DaySelector
+          : DateSelectorType.DateRangeSelector,
       viewDate: setMonth(viewDate, monthNumber),
     });
   };
@@ -54,7 +55,8 @@ const DateTimeMonthSelector = ({
 
   const onYearClicked = () => {
     dispatcher({
-      type: DateTimeActionType.YearSelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.YearSelector,
     });
   };
 

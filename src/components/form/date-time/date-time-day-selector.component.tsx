@@ -1,10 +1,10 @@
 import { TypeOrArray } from '@beesoft/common';
-import { addMonths, subMonths, Locale } from 'date-fns';
+import { addMonths, Locale, subMonths } from 'date-fns';
 import { Dispatch } from 'react';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType } from './date-time-types';
+import { DateScrollerType, DateSelectorType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeDaySelectorProps {
@@ -48,13 +48,15 @@ const DateTimeDaySelector = ({
 
   const onMonthClicked = () => {
     dispatcher({
-      type: DateTimeActionType.MonthSelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.MonthSelector,
     });
   };
 
   const onTimeClicked = () => {
     dispatcher({
-      type: DateTimeActionType.TimeSelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.TimeSelector,
     });
   };
 
