@@ -217,7 +217,6 @@ const OffScreenRightBottomTemplate = (args: DateTimeProps) => {
 };
 
 const SwitchDateSelectorTemplate = (args: DateTimeProps) => {
-  // BTW this is to turn off dark mode
   document.body.className = '';
 
   const [dateSelectorState, setDateSelectorState] = useState(args.dateSelection);
