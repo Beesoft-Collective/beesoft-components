@@ -6,7 +6,7 @@ import { generateNumberArray } from '../../common-functions';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
-import { TimeConstraints, TimeFormatType } from './date-time-types';
+import { DateSelectorType, TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 
 export interface DateTimeTimeSelectorProps {
@@ -144,7 +144,8 @@ const DateTimeTimeSelector = ({
 
   const onDateClicked = () => {
     dispatcher({
-      type: DateTimeActionType.DaySelector,
+      type: DateTimeActionType.SetDateSelector,
+      dateSelector: DateSelectorType.DaySelector,
     });
   };
 

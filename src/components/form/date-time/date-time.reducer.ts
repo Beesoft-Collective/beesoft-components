@@ -1,11 +1,7 @@
-import { TimeFormatType } from './date-time-types';
+import { DateSelectorType, TimeFormatType } from './date-time-types';
 
 export enum DateTimeActionType {
-  DaySelector,
-  MonthSelector,
-  YearSelector,
-  TimeSelector,
-  DateRangeSelector,
+  SetDateSelector,
   SetViewDate,
   SetSelectedDate,
   SetSelectedDateRange,
@@ -17,7 +13,7 @@ export enum DateTimeActionType {
 }
 
 export interface DateTimeState {
-  currentSelector: DateTimeActionType;
+  currentSelector: DateSelectorType;
   currentViewDate: Date;
   selectedDate?: Date;
   selectedStartDate?: Date; // the start and end dates are used for the range selector
@@ -28,6 +24,7 @@ export interface DateTimeState {
 
 export interface DateTimeReducerAction {
   type: DateTimeActionType;
+  dateSelector?: DateSelectorType;
   viewDate?: Date;
   selectedDate?: Date;
   selectedStartDate?: Date;
@@ -38,34 +35,16 @@ export interface DateTimeReducerAction {
 
 const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeState => {
   switch (action.type) {
-    case DateTimeActionType.DaySelector:
-      return {
-        ...state,
-        currentSelector: DateTimeActionType.DaySelector,
-        currentViewDate: action.viewDate || state.currentViewDate,
-      };
-    case DateTimeActionType.MonthSelector:
-      return {
-        ...state,
-        currentSelector: DateTimeActionType.MonthSelector,
-        currentViewDate: action.viewDate || state.currentViewDate,
-      };
-    case DateTimeActionType.YearSelector:
-      return {
-        ...state,
-        currentSelector: DateTimeActionType.YearSelector,
-      };
-    case DateTimeActionType.TimeSelector:
-      return {
-        ...state,
-        currentSelector: DateTimeActionType.TimeSelector,
-      };
-    case DateTimeActionType.DateRangeSelector:
-      return {
-        ...state,
-        currentSelector: DateTimeActionType.DateRangeSelector,
-        currentViewDate: action.viewDate || state.currentViewDate,
-      };
+    case DateTimeActionType.SetDateSelector:
+      if (action.dateSelector !== undefined) {
+        return {
+          ...state,
+          currentSelector: action.dateSelector,
+          currentViewDate: action.viewDate || state.currentViewDate,
+        };
+      }
+
+      return { ...state };
     case DateTimeActionType.SetViewDate:
       return {
         ...state,
@@ -130,7 +109,7 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
     default:
       return {
         ...state,
-        currentSelector: DateTimeActionType.DaySelector,
+        currentSelector: DateSelectorType.DaySelector,
       };
   }
 };

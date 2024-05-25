@@ -17,6 +17,14 @@ export enum DateSelectionType {
   DateRange,
 }
 
+export enum DateSelectorType {
+  DaySelector,
+  MonthSelector,
+  YearSelector,
+  TimeSelector,
+  DateRangeSelector,
+}
+
 export enum DateScrollerType {
   Day,
   Month,
