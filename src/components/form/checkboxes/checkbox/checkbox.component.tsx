@@ -64,7 +64,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<HeadlessCheckboxRef>) 
       'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
     }
   );
-  console.log('checkbox render');
+
   return (
     <HeadlessGroup>
       <div className={wrapperStyles}>
