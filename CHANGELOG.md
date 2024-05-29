@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.2] - 2024-05-29
+
 ## Added
 
 - Created the item scroller component; this will request new pages when the end of the currently loaded data is reached and make scrolling performant by only rendering a certain amount of pages at a single time.
@@ -44,7 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.1...develop
+[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.2...develop
+[0.9.2]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.2
 [0.9.1]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.1
 [0.9.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0
 [0.9.0-0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0-0
