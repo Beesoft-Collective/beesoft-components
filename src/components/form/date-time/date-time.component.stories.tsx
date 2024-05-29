@@ -6,7 +6,7 @@ import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
 import { DateTime } from './date-time.component.tsx';
-import { DateTimeInputTemplateProps, DateTimeProps } from './date-time.props.ts';
+import { DateTimeInputTemplateProps, DateTimeProps, DateTimeWrapperTemplate } from './date-time.props.ts';
 
 const meta: Meta<typeof DateTime> = {
   title: 'Form/Date Time',
@@ -219,22 +219,19 @@ const OffScreenRightBottomTemplate = (args: DateTimeProps) => {
 const SwitchDateSelectorTemplate = (args: DateTimeProps) => {
   document.body.className = '';
 
-  const [dateSelectorState, setDateSelectorState] = useState(args.dateSelection);
-
-  const onSwitchClicked = () => {
-    setDateSelectorState(DateSelectionType.DateRange);
-  };
+  const wrapperTemplate: DateTimeWrapperTemplate = (props, children) => (
+    <div className="bsc-flex bsc-w-full bsc-flex-col">
+      <div className="bsc-w-full">
+        {/* eslint-disable-next-line react/prop-types */}
+        <Button onClick={() => props.setDateSelector(DateSelectionType.DateRange)}>Date Range</Button>
+      </div>
+      <div className="bsc-w-full">{children}</div>
+    </div>
+  );
 
   return (
     <div className="bsc-flex bsc-w-full bsc-p-4">
-      <div className="bsc-flex-col">
-        <div className="bsc-w-full bsc-pb-2">
-          <Button onClick={onSwitchClicked}>Switch to Date Range</Button>
-        </div>
-        <div className="bsc-w-full">
-          <DateTime {...args} dateSelection={dateSelectorState} />
-        </div>
-      </div>
+      <DateTime {...args} wrapperTemplate={wrapperTemplate} />
     </div>
   );
 };

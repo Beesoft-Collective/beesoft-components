@@ -1,6 +1,6 @@
-import { TypeOrArray } from '@beesoft/common';
+import { TypeOrArray, useStateRef } from '@beesoft/common';
 import cx from 'classnames';
-import { addMonths, endOfMonth, startOfMonth, Locale } from 'date-fns';
+import { addMonths, endOfMonth, Locale, startOfMonth } from 'date-fns';
 import { debounce } from 'lodash-es';
 import React, { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
@@ -27,7 +27,12 @@ import {
   TimeFormatType,
 } from './date-time-types';
 import DateTimeYearSelector from './date-time-year-selector.component';
-import { DateTimeInputTemplateProps, DateTimeProps } from './date-time.props.ts';
+import {
+  DateTimeInputTemplateProps,
+  DateTimeProps,
+  DateTimeWrapperTemplate,
+  DateTimeWrapperTemplateProps,
+} from './date-time.props.ts';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
@@ -53,10 +58,13 @@ const DateTime = ({
   calendarTemplate,
   dateScrollerTemplate,
   inputTemplate,
+  wrapperTemplate,
 }: DateTimeProps) => {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [localeCode, setLocaleCode] = useState<string>();
   const [dropDownTarget, setDropDownTarget] = useState<Element>();
+
+  const [dateSelectionState, setDateSelectionState, dateSelectionRef] = useStateRef(dateSelection);
 
   const isFormattedInput = useRef<boolean>();
   const inputElementChanged = useRef(false);
@@ -119,15 +127,16 @@ const DateTime = ({
       type: DateTimeActionType.SetDateSelector,
       dateSelector: getDateSelector(),
     });
-  }, [dateSelection]);
+  }, [dateSelectionState]);
 
   const getDateSelector = useCallback(() => {
-    return dateSelection === DateSelectionType.TimeOnly
+    return dateSelectionRef.current === DateSelectionType.TimeOnly
       ? DateSelectorType.TimeSelector
-      : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
+      : dateSelectionRef.current === DateSelectionType.DateTime ||
+          dateSelectionRef.current === DateSelectionType.DateOnly
         ? DateSelectorType.DaySelector
         : DateSelectorType.DateRangeSelector;
-  }, [dateSelection]);
+  }, []);
 
   const loadLocaleObject = (localeToLoad: string) => {
     loadLocale(localeToLoad)
@@ -157,7 +166,7 @@ const DateTime = ({
 
     return value
       ? typeof value === 'string'
-        ? dateSelection !== DateSelectionType.DateRange
+        ? dateSelectionRef.current !== DateSelectionType.DateRange
           ? parseDate(value, loadedLocale.current)
           : parseDateRange(value, loadedLocale.current)
         : value
@@ -201,10 +210,13 @@ const DateTime = ({
 
   const isValidFormatString = (value?: string) => {
     if (value) {
-      const dateValue = parseDate(value, loadedLocale.current);
+      const dateValue =
+        dateSelectionRef.current !== DateSelectionType.DateRange
+          ? parseDate(value, loadedLocale.current)
+          : parseDateRange(value, loadedLocale.current);
       if (dateValue) {
         if (isValidDate) {
-          return isValidDate(dateValue);
+          return !Array.isArray(dateValue) ? isValidDate(dateValue) : dateValue.every((date) => isValidDate(date));
         } else {
           return true;
         }
@@ -222,7 +234,7 @@ const DateTime = ({
 
   const onDateStringChange = (dateString: string) => {
     const inputDate =
-      dateSelection !== DateSelectionType.DateRange
+      dateSelectionRef.current !== DateSelectionType.DateRange
         ? parseDate(dateString, loadedLocale.current)
         : parseDateRange(dateString, loadedLocale.current);
 
@@ -265,7 +277,7 @@ const DateTime = ({
   };
 
   const onDateSelectorChange = (value?: TypeOrArray<Date>) => {
-    if (dateSelection === DateSelectionType.DateOnly && closeSelector === true) {
+    if (dateSelectionRef.current === DateSelectionType.DateOnly && closeSelector === true) {
       setSelectorOpen(false);
     }
 
@@ -326,7 +338,7 @@ const DateTime = ({
   const getValue = (): string => {
     const dateStyle = getDateTimeStyle();
 
-    switch (dateSelection) {
+    switch (dateSelectionRef.current) {
       case DateSelectionType.DateTime:
         return state.selectedDate
           ? dateStyle
@@ -380,12 +392,12 @@ const DateTime = ({
   };
 
   const canShowDateSelectors =
-    dateSelection === DateSelectionType.DateTime ||
-    dateSelection === DateSelectionType.DateOnly ||
-    dateSelection === DateSelectionType.DateRange;
+    dateSelectionState === DateSelectionType.DateTime ||
+    dateSelectionState === DateSelectionType.DateOnly ||
+    dateSelectionState === DateSelectionType.DateRange;
 
   const canShowTimeSelector =
-    dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly;
+    dateSelectionState === DateSelectionType.DateTime || dateSelectionState === DateSelectionType.TimeOnly;
 
   const inputProps =
     iconPosition === CalendarIconPosition.None
@@ -444,72 +456,84 @@ const DateTime = ({
             leftElementClassName: 'bsc-justify-center',
           };
 
+  const wrapperTemplateProps: DateTimeWrapperTemplateProps = {
+    setDateSelector: (selector) => setDateSelectionState(selector),
+  };
+
+  const defaultWrapperTemplate: DateTimeWrapperTemplate = (_props, children) => {
+    return <>{children}</>;
+  };
+
+  const finalWrapperTemplate = wrapperTemplate || defaultWrapperTemplate;
+
   const renderSelector = () => (
-    <>
-      {state.currentSelector === DateSelectorType.DaySelector &&
-        canShowDateSelectors &&
-        state.dateInitialized &&
-        loadedLocale.current && (
-          <DateTimeDaySelector
-            selectedDate={state.selectedDate}
-            viewDate={state.currentViewDate}
-            locale={loadedLocale.current}
-            showTimeSelector={dateSelection === DateSelectionType.DateTime}
-            selectableDate={selectableDate}
-            isValidDate={isValidDate}
-            dispatcher={dispatcher}
-            onChange={onDateSelectorChange}
-          />
-        )}
-      {state.currentSelector === DateSelectorType.MonthSelector &&
-        canShowDateSelectors &&
-        state.dateInitialized &&
-        loadedLocale.current && (
-          <DateTimeMonthSelector
-            viewDate={state.currentViewDate}
-            locale={loadedLocale.current}
-            dateSelection={dateSelection}
-            dispatcher={dispatcher}
-          />
-        )}
-      {state.currentSelector === DateSelectorType.YearSelector &&
-        canShowDateSelectors &&
-        state.dateInitialized &&
-        loadedLocale.current && (
-          <DateTimeYearSelector
-            viewDate={state.currentViewDate}
-            locale={loadedLocale.current}
-            dispatcher={dispatcher}
-          />
-        )}
-      {state.currentSelector === DateSelectorType.TimeSelector &&
-        canShowTimeSelector &&
-        state.dateInitialized &&
-        loadedLocale.current && (
-          <DateTimeTimeSelector
-            viewDate={state.currentViewDate}
-            showDateSelector={dateSelection === DateSelectionType.DateTime}
-            locale={loadedLocale.current}
-            timeFormat={state.timeFormat}
-            timeConstraints={timeConstraints}
-            onChange={onChange}
-            dispatcher={dispatcher}
-          />
-        )}
-      {state.currentSelector === DateSelectorType.DateRangeSelector &&
-        canShowDateSelectors &&
-        state.dateInitialized &&
-        loadedLocale.current && (
-          <DateTimeRangeSelector
-            viewDate={state.currentViewDate}
-            selectedStartDate={state.selectedStartDate}
-            selectedEndDate={state.selectedEndDate}
-            locale={loadedLocale.current}
-            onChange={onChange}
-            dispatcher={dispatcher}
-          />
-        )}
-    </>
+    <TemplateOutlet props={wrapperTemplateProps} template={finalWrapperTemplate}>
+      <>
+        {state.currentSelector === DateSelectorType.DaySelector &&
+          canShowDateSelectors &&
+          state.dateInitialized &&
+          loadedLocale.current && (
+            <DateTimeDaySelector
+              selectedDate={state.selectedDate}
+              viewDate={state.currentViewDate}
+              locale={loadedLocale.current}
+              showTimeSelector={dateSelectionRef.current === DateSelectionType.DateTime}
+              selectableDate={selectableDate}
+              isValidDate={isValidDate}
+              dispatcher={dispatcher}
+              onChange={onDateSelectorChange}
+            />
+          )}
+        {state.currentSelector === DateSelectorType.MonthSelector &&
+          canShowDateSelectors &&
+          state.dateInitialized &&
+          loadedLocale.current && (
+            <DateTimeMonthSelector
+              viewDate={state.currentViewDate}
+              locale={loadedLocale.current}
+              dateSelection={dateSelectionRef.current}
+              dispatcher={dispatcher}
+            />
+          )}
+        {state.currentSelector === DateSelectorType.YearSelector &&
+          canShowDateSelectors &&
+          state.dateInitialized &&
+          loadedLocale.current && (
+            <DateTimeYearSelector
+              viewDate={state.currentViewDate}
+              locale={loadedLocale.current}
+              dispatcher={dispatcher}
+            />
+          )}
+        {state.currentSelector === DateSelectorType.TimeSelector &&
+          canShowTimeSelector &&
+          state.dateInitialized &&
+          loadedLocale.current && (
+            <DateTimeTimeSelector
+              viewDate={state.currentViewDate}
+              showDateSelector={dateSelectionRef.current === DateSelectionType.DateTime}
+              locale={loadedLocale.current}
+              timeFormat={state.timeFormat}
+              timeConstraints={timeConstraints}
+              onChange={onChange}
+              dispatcher={dispatcher}
+            />
+          )}
+        {state.currentSelector === DateSelectorType.DateRangeSelector &&
+          canShowDateSelectors &&
+          state.dateInitialized &&
+          loadedLocale.current && (
+            <DateTimeRangeSelector
+              viewDate={state.currentViewDate}
+              selectedStartDate={state.selectedStartDate}
+              selectedEndDate={state.selectedEndDate}
+              locale={loadedLocale.current}
+              onChange={onChange}
+              dispatcher={dispatcher}
+            />
+          )}
+      </>
+    </TemplateOutlet>
   );
 
   const inputTemplateProps: DateTimeInputTemplateProps = {
@@ -523,11 +547,11 @@ const DateTime = ({
     iconElement: inputProps.rightElement || inputProps.leftElement,
   };
 
-  const defaultTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultInputTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <>{children}</>
   );
 
-  const template = inputTemplate || defaultTemplate;
+  const finalInputTemplate = inputTemplate || defaultInputTemplate;
 
   const inputStyles = cx(
     'bsc-text-left',
@@ -546,7 +570,7 @@ const DateTime = ({
         <MediaQuery
           mobileMarkup={
             <>
-              <TemplateOutlet props={inputTemplateProps} template={template}>
+              <TemplateOutlet props={inputTemplateProps} template={finalInputTemplate}>
                 <ContentEditableInput
                   value={getValue()}
                   readOnly={readOnly}
@@ -569,7 +593,7 @@ const DateTime = ({
           }
           aboveMobileMarkup={
             <>
-              <TemplateOutlet props={inputTemplateProps} template={template}>
+              <TemplateOutlet props={inputTemplateProps} template={finalInputTemplate}>
                 {useFormattedInput === false ? (
                   <ContentEditableInput
                     value={getValue()}

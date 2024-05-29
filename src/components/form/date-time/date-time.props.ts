@@ -1,7 +1,7 @@
 import { TypeOrArray } from '@beesoft/common';
 import React from 'react';
-import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
 import { FormInputControl } from '../../../headless/components/form/form-control.interface.ts';
+import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component.tsx';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types.ts';
@@ -37,6 +37,7 @@ export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Dat
   calendarTemplate?: DateTimeCalendarTemplate;
   dateScrollerTemplate?: DateTimeScrollerTemplate;
   inputTemplate?: DateTimeInputTemplate;
+  wrapperTemplate?: DateTimeWrapperTemplate;
 }
 
 export interface DateTimeInputTemplateProps {
@@ -51,3 +52,9 @@ export interface DateTimeInputTemplateProps {
 }
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
+
+export interface DateTimeWrapperTemplateProps {
+  setDateSelector: (selector: DateSelectionType) => void;
+}
+
+export type DateTimeWrapperTemplate = TemplateFunction<DateTimeWrapperTemplateProps>;
