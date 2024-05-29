@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 - Changed where the onClick event is contained; this fixes the issue of custom icons not always triggering the selector.
+- Added a new selector template for the date/time selector; this will allow custom markup to be added to the selector.
+- Converted the checkbox component to a headless component; this is the first component that has been converted and includes the headless architecture.
 
 ## [0.9.0] - 2024-04-11
 
