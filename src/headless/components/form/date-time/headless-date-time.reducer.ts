@@ -1,4 +1,4 @@
-import { DateSelectorType, TimeFormatType } from './date-time-types';
+import { DateSelectorType, TimeFormatType } from '../../../../components/form/date-time/date-time-types.ts';
 
 export enum DateTimeActionType {
   SetDateSelector,

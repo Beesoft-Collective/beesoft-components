@@ -3,7 +3,7 @@ import { Dispatch, useRef } from 'react';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
 import { DateScrollerType, DateSelectionType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeMonthSelectorProps {
   viewDate: Date;

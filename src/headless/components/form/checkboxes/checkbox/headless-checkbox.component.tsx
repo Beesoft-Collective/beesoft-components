@@ -84,7 +84,7 @@ const HeadlessCheckboxComponent = (props: HeadlessCheckboxProps, ref: Ref<Headle
       onChange={(event) => handleChangeEvent(forceAssert<ChangeEvent<HTMLInputElement>>(event))}
     >
       <HeadlessBase
-        id={internalId}
+        id={finalProps.id}
         name={name}
         type="checkbox"
         props={finalProps}

@@ -7,7 +7,7 @@ import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.ts
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateSelectorType, TimeConstraints, TimeFormatType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;

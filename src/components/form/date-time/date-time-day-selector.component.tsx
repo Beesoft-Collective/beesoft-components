@@ -5,7 +5,7 @@ import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
 import { DateScrollerType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeDaySelectorProps {
   selectedDate?: Date;

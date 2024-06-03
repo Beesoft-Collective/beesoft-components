@@ -6,7 +6,7 @@ import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/t
 import { DateTimeContext } from './date-time-context';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;

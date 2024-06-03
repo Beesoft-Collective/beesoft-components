@@ -6,7 +6,7 @@ import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
 import { CalendarSelectionMode, DateScrollerType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeRangeSelectorProps {
   viewDate: Date;

@@ -33,7 +33,7 @@ import {
   DateTimeWrapperTemplate,
   DateTimeWrapperTemplateProps,
 } from './date-time.props.ts';
-import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
+import reducer, { DateTimeActionType, DateTimeState } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
 const DateTime = ({
