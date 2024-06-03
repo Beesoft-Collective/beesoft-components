@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Added the `CheckboxChangeEvent` and `CheckboxRef` types back in.
+
 ## [0.9.2] - 2024-05-29
 
 ## Added
