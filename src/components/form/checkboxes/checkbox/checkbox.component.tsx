@@ -4,12 +4,11 @@ import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/styl
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
 import { HeadlessGroup } from '../../../../headless/components/common/group/headless-group.component.tsx';
 import { HeadlessCheckbox } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.component.tsx';
-import { HeadlessCheckboxRef } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.props.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
-import { CheckboxProps } from './checkbox.props.ts';
+import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
-const CheckboxComponent = (props: CheckboxProps, ref: Ref<HeadlessCheckboxRef>) => {
+const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const {
     name,
     label,

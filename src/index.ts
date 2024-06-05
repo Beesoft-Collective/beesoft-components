@@ -22,8 +22,8 @@ import { Toggle } from './components/form/checkboxes/toggle/toggle.component.tsx
 import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
-import { HeadlessCheckboxChangeEvent } from './headless/components/form/checkboxes/headless-checkboxes.interfaces.ts';
-import { HeadlessCheckboxRef } from './headless/components/form/checkboxes/checkbox/headless-checkbox.props.ts';
+import { CheckboxChangeEvent } from './components/form/checkboxes/checkbox/checkbox.props.ts';
+import { CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
 import { DateTimeScrollerTemplateProps } from './components/form/date-time/date-time-scroller.component';
@@ -61,12 +61,12 @@ export {
 };
 
 export type {
-  HeadlessCheckboxChangeEvent,
-  GroupChangeEvent,
-  HeadlessCheckboxRef,
+  CheckboxChangeEvent,
+  CheckboxRef,
   DateTimeInputTemplateProps,
   DateTimeScrollerTemplateProps,
   DateTimeCalendarTemplateProps,
   GroupButtonItemTemplateProps,
+  GroupChangeEvent,
   RadioChangeEvent,
 };

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.3] - 2024-06-03
+
+## Changed
+
+- Added the `CheckboxChangeEvent` and `CheckboxRef` types back in.
+
 ## [0.9.2] - 2024-05-29
 
 ## Added
@@ -46,7 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.2...develop
+[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.3...develop
+[0.9.3]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.3
 [0.9.2]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.2
 [0.9.1]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.1
 [0.9.0]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.0
