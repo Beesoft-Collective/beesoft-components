@@ -5,7 +5,7 @@ import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateTimeContext } from './date-time-context';
-import { DateScrollerType } from './date-time-types';
+import { DateScrollerType } from '../../../headless/components/form/date-time/date-time-types.ts';
 
 export interface DateTimeScrollerProps {
   title: string;

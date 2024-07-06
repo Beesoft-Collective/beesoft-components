@@ -1,19 +1,17 @@
-import { useStateRef, debounce, TypeOrArray } from '@beesoft/common';
+import { debounce, useDeepMemo, useStateRef } from '@beesoft/common';
+import { Signal, useSignal } from '@preact/signals-react';
 import { Locale } from 'date-fns';
 import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../../../components/common-functions.ts';
+import { Partial } from '../../../../components/form/checkboxes/checkbox/checkbox.component.stories.tsx';
 import { loadLocale, parseDate, parseDateRange } from '../../../../components/form/date-time/date-time-functions.ts';
-import {
-  CalendarIconPosition,
-  DateFormatType,
-  DateSelectionType,
-  DateSelectorType,
-  TimeFormatType,
-} from '../../../../components/form/date-time/date-time-types.ts';
 import useGetDateTimeFormat from '../../../../components/form/date-time/hooks/get-date-time-format.hook.ts';
 import { HeadlessBase } from '../../../architecture/components/headless-base.component.tsx';
-import { HeadlessDateTimeProps } from './headless-date-time.props.ts';
-import reducer, { DateTimeActionType, DateTimeState } from './headless-date-time.reducer.ts';
+import { HeadlessProvider } from '../../../architecture/components/headless-provider.component.tsx';
+import { DateFormatType, DateSelectionType, DateSelectorType, TimeFormatType } from './date-time-types.ts';
+import { HeadlessDateTimeSelectorProps } from './headless-date-time-selector.props.ts';
+import { HeadlessDateTimeProps, HeadlessDateTimeRenderProps } from './headless-date-time.props.ts';
+import reducer, { HeadlessDateTimeActionType, HeadlessDateTimeState } from './headless-date-time.reducer.ts';
 
 const HeadlessDateTimeComponent = ({
   value,
@@ -24,17 +22,15 @@ const HeadlessDateTimeComponent = ({
   dateSelection = DateSelectionType.DateTime,
   dateFormat,
   timeConstraints,
-  iconPosition = CalendarIconPosition.Right,
-  selectableDate,
-  isValidDate,
   onChange,
+  children,
 }: HeadlessDateTimeProps) => {
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [localeCode, setLocaleCode] = useState<string>();
-  const [dateSelectionState, setDateSelectionState, dateSelectionRef] = useStateRef(dateSelection);
+  const [loadedLocale, setLoadedLocale, loadedLocaleRef] = useStateRef<Locale>();
 
   const language = useRef<string>(locale || getBrowserLanguage());
-  const loadedLocale = useRef<Locale>();
+  // const loadedLocale = useRef<Locale>();
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
 
@@ -47,11 +43,25 @@ const HeadlessDateTimeComponent = ({
     dateSelection,
     dateFormat,
     timeConstraints,
-    iconPosition,
-    selectableDate,
-    isValidDate,
     onChange,
   };
+
+  const getDateSelector = useCallback(() => {
+    return dateSelection === DateSelectionType.TimeOnly
+      ? DateSelectorType.TimeSelector
+      : dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.DateOnly
+        ? DateSelectorType.DaySelector
+        : DateSelectorType.DateRangeSelector;
+  }, [dateSelection]);
+
+  const initialState: HeadlessDateTimeState = {
+    currentSelector: getDateSelector(),
+    currentViewDate: new Date(),
+    timeFormat: TimeFormatType.TwelveHour,
+    dateInitialized: false,
+  };
+
+  const [state, dispatcher] = useReducer(reducer, initialState);
 
   useEffect(() => {
     if (language.current) {
@@ -70,20 +80,20 @@ const HeadlessDateTimeComponent = ({
       const dateValue = getDateValue();
 
       dispatcher({
-        type: DateTimeActionType.InitializeDates,
+        type: HeadlessDateTimeActionType.InitializeDates,
         initialDate: dateValue,
       });
     } else {
       dispatcher({
-        type: DateTimeActionType.ClearDates,
+        type: HeadlessDateTimeActionType.ClearDates,
       });
     }
-  }, [value, loadedLocale.current]);
+  }, [value, loadedLocaleRef.current]);
 
   useEffect(() => {
     if (use24HourTime) {
       dispatcher({
-        type: DateTimeActionType.SetTimeFormat,
+        type: HeadlessDateTimeActionType.SetTimeFormat,
         timeFormat: use24HourTime ? TimeFormatType.TwentyFourHour : TimeFormatType.TwelveHour,
       });
     }
@@ -91,35 +101,26 @@ const HeadlessDateTimeComponent = ({
 
   useEffect(() => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: getDateSelector(),
     });
-  }, [dateSelectionState]);
-
-  const getDateSelector = useCallback(() => {
-    return dateSelectionRef.current === DateSelectionType.TimeOnly
-      ? DateSelectorType.TimeSelector
-      : dateSelectionRef.current === DateSelectionType.DateTime ||
-          dateSelectionRef.current === DateSelectionType.DateOnly
-        ? DateSelectorType.DaySelector
-        : DateSelectorType.DateRangeSelector;
-  }, []);
+  }, [dateSelection]);
 
   const loadLocaleObject = (localeToLoad: string) => {
     loadLocale(localeToLoad)
       .then((locale) => {
         setLocaleCode(locale.code);
-        loadedLocale.current = locale;
+        setLoadedLocale(locale);
         const defaultDate = getDateValue();
 
         if (value || useDefaultDateValue) {
           dispatcher({
-            type: DateTimeActionType.InitializeDates,
+            type: HeadlessDateTimeActionType.InitializeDates,
             initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         } else {
           dispatcher({
-            type: DateTimeActionType.SetViewDate,
+            type: HeadlessDateTimeActionType.SetViewDate,
             viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         }
@@ -127,62 +128,51 @@ const HeadlessDateTimeComponent = ({
       .catch((error) => console.error(error));
   };
 
-  const getDateValue = () => {
+  const getDateValue = useCallback(() => {
     const defaultDate = new Date();
     defaultDate.setHours(0, 0, 0, 0);
 
     return value
       ? typeof value === 'string'
-        ? dateSelectionRef.current !== DateSelectionType.DateRange
-          ? parseDate(value, loadedLocale.current)
-          : parseDateRange(value, loadedLocale.current)
+        ? dateSelection !== DateSelectionType.DateRange
+          ? parseDate(value, loadedLocaleRef.current)
+          : parseDateRange(value, loadedLocaleRef.current)
         : value
       : defaultDate;
-  };
-
-  const initialState: DateTimeState = {
-    currentSelector: getDateSelector(),
-    currentViewDate: new Date(),
-    timeFormat: TimeFormatType.TwelveHour,
-    dateInitialized: false,
-  };
-
-  const [state, dispatcher] = useReducer(reducer, initialState);
+  }, [value, dateSelection]);
 
   const onFocus = useCallback(() => {
     setSelectorOpen(true);
   }, []);
 
-  const onBlur = useMemo(() => debounce(() => setSelectorOpen(false), 250), []);
+  const onBlur = useCallback(
+    debounce(() => setSelectorOpen(false), 250),
+    []
+  );
 
-  const onCalendarClick = useCallback(() => debounce(() => onBlur.cancel(), 5), [onBlur]);
+  const onCalendarClick = useCallback(
+    debounce(() => onBlur.cancel(), 5),
+    [onBlur]
+  );
 
-  const onDateSelectorChange = (value?: TypeOrArray<Date>) => {
-    if (dateSelectionRef.current === DateSelectionType.DateOnly) {
-      setSelectorOpen(false);
-    }
-
-    onChange?.(value);
-  };
-
-  const onClearClick = () => {
+  const onClearClick = useCallback(() => {
     dispatcher({
-      type: DateTimeActionType.ClearDates,
+      type: HeadlessDateTimeActionType.ClearDates,
     });
     setSelectorOpen(false);
 
     onChange?.();
-  };
+  }, [onChange]);
 
-  const onDateTimeHidden = () => {
+  const onDateTimeHidden = useCallback(() => {
     setSelectorOpen(false);
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: getDateSelector(),
     });
-  };
+  }, []);
 
-  const getDateTimeStyle = () => {
+  const getDateTimeStyle = useCallback(() => {
     switch (dateFormat) {
       case DateFormatType.Short:
         return 'short';
@@ -193,38 +183,38 @@ const HeadlessDateTimeComponent = ({
       default:
         return undefined;
     }
-  };
+  }, [dateFormat]);
 
-  const getValue = (): string => {
+  const getValue = useCallback((): string => {
     const dateStyle = getDateTimeStyle();
 
-    switch (dateSelectionRef.current) {
+    switch (dateSelection) {
       case DateSelectionType.DateTime:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
+            ? state.selectedDate.toLocaleString(loadedLocaleRef.current?.code, {
                 dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleString(loadedLocaleRef.current?.code)
           : '';
       case DateSelectionType.DateOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleDateString(loadedLocale.current?.code, {
+            ? state.selectedDate.toLocaleDateString(loadedLocaleRef.current?.code, {
                 dateStyle,
               })
-            : state.selectedDate.toLocaleDateString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleDateString(loadedLocaleRef.current?.code)
           : '';
       case DateSelectionType.TimeOnly:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
+            ? state.selectedDate.toLocaleTimeString(loadedLocaleRef.current?.code, {
                 timeStyle: dateStyle,
                 hour12: state.timeFormat === TimeFormatType.TwelveHour,
                 hourCycle: state.timeFormat === TimeFormatType.TwentyFourHour ? 'h23' : undefined,
               })
-            : state.selectedDate.toLocaleTimeString(loadedLocale.current?.code, {
+            : state.selectedDate.toLocaleTimeString(loadedLocaleRef.current?.code, {
                 hour12: state.timeFormat === TimeFormatType.TwelveHour,
                 hourCycle: state.timeFormat === TimeFormatType.TwentyFourHour ? 'h23' : undefined,
               })
@@ -232,40 +222,104 @@ const HeadlessDateTimeComponent = ({
       case DateSelectionType.DateRange:
         return state.selectedStartDate && state.selectedEndDate
           ? dateStyle
-            ? `${state.selectedStartDate.toLocaleDateString(loadedLocale.current?.code, {
+            ? `${state.selectedStartDate.toLocaleDateString(loadedLocaleRef.current?.code, {
                 dateStyle,
-              })} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code, { dateStyle })}`
+              })} - ${state.selectedEndDate.toLocaleDateString(loadedLocaleRef.current?.code, { dateStyle })}`
             : `${state.selectedStartDate.toLocaleDateString(
-                loadedLocale.current?.code
-              )} - ${state.selectedEndDate.toLocaleDateString(loadedLocale.current?.code)}`
+                loadedLocaleRef.current?.code
+              )} - ${state.selectedEndDate.toLocaleDateString(loadedLocaleRef.current?.code)}`
           : '';
       default:
         return state.selectedDate
           ? dateStyle
-            ? state.selectedDate.toLocaleString(loadedLocale.current?.code, {
+            ? state.selectedDate.toLocaleString(loadedLocaleRef.current?.code, {
                 dateStyle,
                 timeStyle: dateStyle,
               })
-            : state.selectedDate.toLocaleString(loadedLocale.current?.code)
+            : state.selectedDate.toLocaleString(loadedLocaleRef.current?.code)
           : '';
     }
-  };
+  }, [getDateTimeStyle, dateSelection, state.selectedDate, state.selectedStartDate, state.selectedEndDate]);
 
   const canShowDateSelectors = useMemo(
     () =>
-      dateSelectionState === DateSelectionType.DateTime ||
-      dateSelectionState === DateSelectionType.DateOnly ||
-      dateSelectionState === DateSelectionType.DateRange,
-    []
+      dateSelection === DateSelectionType.DateTime ||
+      dateSelection === DateSelectionType.DateOnly ||
+      dateSelection === DateSelectionType.DateRange,
+    [dateSelection]
   );
 
   const canShowTimeSelector = useMemo(
-    () => dateSelectionState === DateSelectionType.DateTime || dateSelectionState === DateSelectionType.TimeOnly,
-    []
+    () => dateSelection === DateSelectionType.DateTime || dateSelection === DateSelectionType.TimeOnly,
+    [dateSelection]
   );
 
+  const renderProps = useDeepMemo<HeadlessDateTimeRenderProps>(() => {
+    return {
+      ...finalProps,
+      selectorOpen,
+      canShowDateSelectors,
+      canShowTimeSelector,
+      inputFormat,
+      onFocus,
+      onBlur,
+      onCalendarClick,
+      onClearClick,
+      onDateTimeHidden,
+      getValue,
+    };
+  }, [
+    finalProps,
+    selectorOpen,
+    canShowDateSelectors,
+    canShowTimeSelector,
+    inputFormat,
+    onCalendarClick,
+    onClearClick,
+    getValue,
+  ]);
+
+  const selectorDataSignal = useSignal<Partial<HeadlessDateTimeSelectorProps>>({});
+
+  const headlessContext: Record<string, Signal<unknown>> = useMemo(() => {
+    return {
+      selector: selectorDataSignal,
+    };
+  }, []);
+
+  useEffect(() => {
+    selectorDataSignal.value = {
+      selectedDate: state.selectedDate,
+      viewDate: state.currentViewDate,
+      selectedStartDate: state.selectedStartDate,
+      selectedEndDate: state.selectedEndDate,
+      locale: loadedLocale,
+      dateSelection,
+      timeFormat: state.timeFormat,
+      timeConstraints,
+      showDateSelector: canShowDateSelectors,
+      showTimeSelector: canShowTimeSelector,
+      onChange,
+    };
+  }, [
+    state.selectedDate,
+    state.currentViewDate,
+    state.selectedStartDate,
+    state.selectedEndDate,
+    loadedLocale,
+    dateSelection,
+    state.timeFormat,
+    timeConstraints,
+    canShowDateSelectors,
+    canShowTimeSelector,
+  ]);
+
   return (
-    <HeadlessBase props={finalProps} renderProps={}></HeadlessBase>
+    <HeadlessProvider props={headlessContext}>
+      <HeadlessBase props={finalProps} renderProps={renderProps}>
+        {children}
+      </HeadlessBase>
+    </HeadlessProvider>
   );
 };
 

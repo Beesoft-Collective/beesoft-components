@@ -6,8 +6,8 @@ import { generateNumberArray } from '../../common-functions';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
-import { DateSelectorType, TimeConstraints, TimeFormatType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { DateSelectorType, TimeConstraints, TimeFormatType } from '../../../headless/components/form/date-time/date-time-types.ts';
+import { HeadlessDateTimeActionType, HeadlessDateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
@@ -16,7 +16,7 @@ export interface DateTimeTimeSelectorProps {
   timeFormat?: TimeFormatType;
   timeConstraints?: TimeConstraints;
   onChange?: (value?: Date | Array<Date>) => void;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 const DateTimeTimeSelector = ({
@@ -135,7 +135,7 @@ const DateTimeTimeSelector = ({
     savedViewDate.current.setHours(correctHour, minute);
 
     dispatcher({
-      type: DateTimeActionType.SetSelectedDate,
+      type: HeadlessDateTimeActionType.SetSelectedDate,
       selectedDate: savedViewDate.current,
       viewDate: savedViewDate.current,
     });
@@ -144,7 +144,7 @@ const DateTimeTimeSelector = ({
 
   const onDateClicked = () => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.DaySelector,
     });
   };

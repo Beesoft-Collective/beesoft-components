@@ -70,7 +70,7 @@ These are the properties passed to the calendar template.
 | **onDateSelected** | **false** | `(date: Date, options?: Record<string, any>) => void` | Used to tell the component when a date has been selected. |
 | **selectableDate** | **false** | `(currentDate: Date) => boolean` | Determines if a date is allowed to be selected...if false is returned then the date will be disabled. |
 | **isValidDate** | **false** | `(selectedDate: Date) => boolean` | Determines if the passed date is a valid selectable date...if false is returned then the selection isn't made. |
-| **dispatcher** | **false** | `React.Dispatch<DateTimeReducerAction>` | Used to set values within the component like the selected and current view date. |
+| **dispatcher** | **false** | `React.Dispatch<HeadlessDateTimeReducerAction>` | Used to set values within the component like the selected and current view date. |
 
 #### Input Template Properties
 

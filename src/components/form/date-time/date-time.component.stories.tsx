@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { BeeSoftProvider } from '../../../common/contexts/beesoft.context.tsx';
 import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
-import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
+import { CalendarIconPosition, DateFormatType, DateSelectionType } from '../../../headless/components/form/date-time/date-time-types.ts';
 import { DateTime } from './date-time.component.tsx';
 import { DateTimeInputTemplateProps, DateTimeProps, DateTimeWrapperTemplate } from './date-time.props.ts';
 

@@ -1,5 +1,5 @@
 import { FormatPart, FormatValueType, InputFormat } from '../inputs/formatted-input/input-format.interfaces';
-import { DateSelectionType } from './date-time-types';
+import { DateSelectionType } from '../../../headless/components/form/date-time/date-time-types.ts';
 
 export class DateTimeFormatCreator {
   private readonly dateFormat: string;

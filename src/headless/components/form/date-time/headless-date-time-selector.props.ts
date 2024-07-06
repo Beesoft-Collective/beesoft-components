@@ -1,19 +1,14 @@
 import { TypeOrArray } from '@beesoft/common';
 import { Locale } from 'date-fns';
-import { Dispatch } from 'react';
-import {
-  DateSelectionType,
-  TimeConstraints,
-  TimeFormatType,
-} from '../../../../components/form/date-time/date-time-types.ts';
-import { DateTimeReducerAction } from './headless-date-time.reducer.ts';
+import React from 'react';
+import { DateSelectionType, TimeConstraints, TimeFormatType } from './date-time-types.ts';
 
 export interface HeadlessDateTimeSelectorProps {
   selectedDate?: Date;
   viewDate: Date;
   selectedStartDate?: Date;
   selectedEndDate?: Date;
-  locale: Locale;
+  locale?: Locale;
   dateSelection?: DateSelectionType;
   timeFormat?: TimeFormatType;
   timeConstraints?: TimeConstraints;
@@ -22,5 +17,5 @@ export interface HeadlessDateTimeSelectorProps {
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value?: TypeOrArray<Date>) => void;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  children?: (props: Omit<HeadlessDateTimeSelectorProps, 'children'>) => React.JSX.Element;
 }

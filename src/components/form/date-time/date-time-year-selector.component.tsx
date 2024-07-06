@@ -2,13 +2,13 @@ import { addYears, Locale, setYear, subYears } from 'date-fns';
 import { Dispatch } from 'react';
 import { getTranslatedYearMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { DateScrollerType, DateSelectorType } from '../../../headless/components/form/date-time/date-time-types.ts';
+import { HeadlessDateTimeActionType, HeadlessDateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeYearSelectorProps {
   viewDate: Date;
   locale: Locale;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSelectorProps) => {
@@ -17,7 +17,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const movePreviousDecade = () => {
     const previousDecade = subYears(viewDate, 10);
     dispatcher({
-      type: DateTimeActionType.SetViewDate,
+      type: HeadlessDateTimeActionType.SetViewDate,
       viewDate: previousDecade,
     });
   };
@@ -25,7 +25,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const moveNextDecade = () => {
     const nextDecade = addYears(viewDate, 10);
     dispatcher({
-      type: DateTimeActionType.SetViewDate,
+      type: HeadlessDateTimeActionType.SetViewDate,
       viewDate: nextDecade,
     });
   };
@@ -33,7 +33,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const onYearClicked = (year: string) => {
     const yearNumber = parseInt(year);
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.MonthSelector,
       viewDate: setYear(viewDate, yearNumber),
     });

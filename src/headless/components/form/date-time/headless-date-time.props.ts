@@ -1,11 +1,8 @@
-import { TypeOrArray } from '@beesoft/common';
-import {
-  CalendarIconPosition,
-  DateFormatType,
-  DateSelectionType,
-  TimeConstraints,
-} from '../../../../components/form/date-time/date-time-types.ts';
+import { DebouncedFunction, TypeOrArray } from '@beesoft/common';
+import React from 'react';
+import { InputFormat } from '../../../../components/form/inputs/formatted-input/input-format.interfaces.ts';
 import { FormInputControl } from '../form-control.interface.ts';
+import { DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types.ts';
 
 export interface HeadlessDateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;
@@ -14,21 +11,18 @@ export interface HeadlessDateTimeProps extends FormInputControl<string | TypeOrA
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
   timeConstraints?: TimeConstraints;
-  iconPosition?: CalendarIconPosition;
-  /**
-   * If the passed function returns false then that date will not be selectable and will be marked with the error style.
-   * @param {Date} currentDate - The date to test.
-   * @returns {boolean} false indicates the date should not be selectable.
-   */
-  selectableDate?: (currentDate: Date) => boolean;
-  /**
-   * If the passed function returns false then the date will not be selected in the input.
-   * @param {Date} selectedDate - The selected date to test.
-   * @returns {boolean} false indicates the date is not valid.
-   */
-  isValidDate?: (selectedDate: Date) => boolean;
+  children?: (props: HeadlessDateTimeRenderProps) => React.JSX.Element;
 }
 
 export interface HeadlessDateTimeRenderProps extends HeadlessDateTimeProps {
   selectorOpen: boolean;
+  canShowDateSelectors: boolean;
+  canShowTimeSelector: boolean;
+  inputFormat?: InputFormat;
+  onFocus: () => void;
+  onBlur: DebouncedFunction<() => void>;
+  onCalendarClick: DebouncedFunction<() => void>;
+  onClearClick: () => void;
+  onDateTimeHidden: () => void;
+  getValue: () => string;
 }

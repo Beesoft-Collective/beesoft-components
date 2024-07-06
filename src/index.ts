@@ -24,7 +24,7 @@ import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-funct
 // types
 import { CheckboxChangeEvent } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
-import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
+import { DateFormatType, DateSelectionType } from './headless/components/form/date-time/date-time-types.ts';
 import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
 import { DateTimeScrollerTemplateProps } from './components/form/date-time/date-time-scroller.component';
 import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-time-calendar.component';

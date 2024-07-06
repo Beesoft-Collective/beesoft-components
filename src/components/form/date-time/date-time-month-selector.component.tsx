@@ -2,14 +2,14 @@ import { addYears, Locale, setMonth, subYears } from 'date-fns';
 import { Dispatch, useRef } from 'react';
 import { getTranslatedMonthMatrix } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType, DateSelectionType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { DateScrollerType, DateSelectionType, DateSelectorType } from '../../../headless/components/form/date-time/date-time-types.ts';
+import { HeadlessDateTimeActionType, HeadlessDateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeMonthSelectorProps {
   viewDate: Date;
   locale: Locale;
   dateSelection?: DateSelectionType;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 const DateTimeMonthSelector = ({
@@ -23,7 +23,7 @@ const DateTimeMonthSelector = ({
   const movePreviousYear = () => {
     const previousYear = subYears(viewDate, 1);
     dispatcher({
-      type: DateTimeActionType.SetViewDate,
+      type: HeadlessDateTimeActionType.SetViewDate,
       viewDate: previousYear,
     });
   };
@@ -31,14 +31,14 @@ const DateTimeMonthSelector = ({
   const moveNextYear = () => {
     const nextYear = addYears(viewDate, 1);
     dispatcher({
-      type: DateTimeActionType.SetViewDate,
+      type: HeadlessDateTimeActionType.SetViewDate,
       viewDate: nextYear,
     });
   };
 
   const onMonthClicked = (monthNumber: number) => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector:
         dateSelection !== DateSelectionType.DateRange
           ? DateSelectorType.DaySelector
@@ -55,7 +55,7 @@ const DateTimeMonthSelector = ({
 
   const onYearClicked = () => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.YearSelector,
     });
   };

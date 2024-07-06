@@ -1,10 +1,10 @@
-import { Signal } from '@preact/signals';
+import { Signal } from '@preact/signals-react';
 import React, { HTMLInputTypeAttribute } from 'react';
 
 /**
  * This is a basic wrapper around the different core pieces of a headless component.
  */
-export interface HeadlessBaseProps<P, RP> {
+export interface HeadlessBaseProps<P, RP, SP = undefined> {
   /**
    * The id for the input type; this is used by the html for attribute.
    */
@@ -31,9 +31,9 @@ export interface HeadlessBaseProps<P, RP> {
   signalName?: string;
   /**
    * When the `signalName` is defined this will be called when the Signal object is received.
-   * @param {Signal} signal - The signal that belonged to the signal name.
+   * @param {Signal<SP extends undefined ? P : SP>} signal - The signal that belonged to the signal name.
    */
-  onSignalRetrieved?: (signal: Signal) => void;
+  onSignalRetrieved?: (signal: Signal<SP extends undefined ? P : SP>) => void;
   /**
    * The child render function called to render the visual part of the component.
    * @param {T} props - The properties to send through the render function.

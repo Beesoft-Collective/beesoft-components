@@ -5,7 +5,7 @@ import { useHeadlessContext } from '../hooks/use-headless-context.ts';
 import { HeadlessBaseProps } from './headless-base.props.ts';
 import { HeadlessField } from './headless-field.component.tsx';
 
-const HeadlessBase = <P, RP>({
+const HeadlessBase = <P, RP, SP = undefined>({
   type,
   props,
   renderProps,
@@ -13,8 +13,8 @@ const HeadlessBase = <P, RP>({
   onSignalRetrieved,
   children,
   className,
-}: HeadlessBaseProps<P, RP>) => {
-  const context = useHeadlessContext();
+}: HeadlessBaseProps<P, RP, SP>) => {
+  const context = useHeadlessContext<SP extends undefined ? P : SP>(signalName);
 
   const { id, name } = useDeepMemo<{ id?: string; name?: string }>(() => {
     const convertedProps = forceAssert<Record<string, unknown>>(props);
@@ -25,8 +25,8 @@ const HeadlessBase = <P, RP>({
   }, [props]);
 
   useEffect(() => {
-    if (context && signalName && context[signalName] && onSignalRetrieved) {
-      onSignalRetrieved(context[signalName]);
+    if (context && onSignalRetrieved) {
+      onSignalRetrieved(context);
     }
   }, [context]);
 

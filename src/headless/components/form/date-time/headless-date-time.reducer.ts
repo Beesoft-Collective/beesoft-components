@@ -1,6 +1,6 @@
-import { DateSelectorType, TimeFormatType } from '../../../../components/form/date-time/date-time-types.ts';
+import { DateSelectorType, TimeFormatType } from './date-time-types.ts';
 
-export enum DateTimeActionType {
+export enum HeadlessDateTimeActionType {
   SetDateSelector,
   SetViewDate,
   SetSelectedDate,
@@ -12,7 +12,7 @@ export enum DateTimeActionType {
   InitializeDates,
 }
 
-export interface DateTimeState {
+export interface HeadlessDateTimeState {
   currentSelector: DateSelectorType;
   currentViewDate: Date;
   selectedDate?: Date;
@@ -22,8 +22,8 @@ export interface DateTimeState {
   timeFormat: TimeFormatType;
 }
 
-export interface DateTimeReducerAction {
-  type: DateTimeActionType;
+export interface HeadlessDateTimeReducerAction {
+  type: HeadlessDateTimeActionType;
   dateSelector?: DateSelectorType;
   viewDate?: Date;
   selectedDate?: Date;
@@ -33,9 +33,9 @@ export interface DateTimeReducerAction {
   timeFormat?: TimeFormatType;
 }
 
-const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeState => {
+const reducer = (state: HeadlessDateTimeState, action: HeadlessDateTimeReducerAction): HeadlessDateTimeState => {
   switch (action.type) {
-    case DateTimeActionType.SetDateSelector:
+    case HeadlessDateTimeActionType.SetDateSelector:
       if (action.dateSelector !== undefined) {
         return {
           ...state,
@@ -45,48 +45,48 @@ const reducer = (state: DateTimeState, action: DateTimeReducerAction): DateTimeS
       }
 
       return { ...state };
-    case DateTimeActionType.SetViewDate:
+    case HeadlessDateTimeActionType.SetViewDate:
       return {
         ...state,
         currentViewDate: action.viewDate || new Date(),
         dateInitialized: true,
       };
-    case DateTimeActionType.SetSelectedDate:
+    case HeadlessDateTimeActionType.SetSelectedDate:
       return {
         ...state,
         selectedDate: action.selectedDate || state.selectedDate,
         currentViewDate: action.viewDate || state.currentViewDate,
       };
-    case DateTimeActionType.SetSelectedDateRange:
+    case HeadlessDateTimeActionType.SetSelectedDateRange:
       return {
         ...state,
         selectedStartDate: action.selectedStartDate || state.selectedStartDate,
         selectedEndDate: action.selectedEndDate || state.selectedEndDate,
       };
-    case DateTimeActionType.SetSelectedStartDate:
+    case HeadlessDateTimeActionType.SetSelectedStartDate:
       return {
         ...state,
         selectedStartDate: action.selectedStartDate,
         selectedEndDate: undefined,
       };
-    case DateTimeActionType.SetSelectedEndDate:
+    case HeadlessDateTimeActionType.SetSelectedEndDate:
       return {
         ...state,
         selectedEndDate: action.selectedEndDate,
       };
-    case DateTimeActionType.SetTimeFormat:
+    case HeadlessDateTimeActionType.SetTimeFormat:
       return {
         ...state,
         timeFormat: action.timeFormat || state.timeFormat,
       };
-    case DateTimeActionType.ClearDates:
+    case HeadlessDateTimeActionType.ClearDates:
       return {
         currentSelector: state.currentSelector,
         currentViewDate: state.currentViewDate,
         timeFormat: state.timeFormat,
         dateInitialized: true,
       };
-    case DateTimeActionType.InitializeDates: {
+    case HeadlessDateTimeActionType.InitializeDates: {
       const baseState = {
         ...state,
         currentViewDate: getInitialDate(action.initialDate),

@@ -4,7 +4,7 @@ import { FormInputControl } from '../../../headless/components/form/form-control
 import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
 import { DateTimeCalendarTemplate } from './date-time-calendar.component.tsx';
 import { DateTimeScrollerTemplate } from './date-time-scroller.component.tsx';
-import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types.ts';
+import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from '../../../headless/components/form/date-time/date-time-types.ts';
 
 export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;

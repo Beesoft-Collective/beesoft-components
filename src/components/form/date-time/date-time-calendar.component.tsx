@@ -5,8 +5,11 @@ import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
 import { DateTimeContext } from './date-time-context';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
-import { CalendarSelectionMode } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { CalendarSelectionMode } from '../../../headless/components/form/date-time/date-time-types.ts';
+import {
+  HeadlessDateTimeActionType,
+  HeadlessDateTimeReducerAction,
+} from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
@@ -18,7 +21,7 @@ export interface DateTimeCalendarProps {
   onDateSelected?: (date: Date, options?: Record<string, any>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  dispatcher?: Dispatch<DateTimeReducerAction>;
+  dispatcher?: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 export interface DateTimeCalendarTemplateProps {
@@ -142,7 +145,7 @@ const DateTimeCalendar = ({
   const onDateClicked = (date: Date) => {
     if (selectionMode === CalendarSelectionMode.Normal) {
       dispatcher?.({
-        type: DateTimeActionType.SetSelectedDate,
+        type: HeadlessDateTimeActionType.SetSelectedDate,
         selectedDate: date,
         viewDate: date,
       });

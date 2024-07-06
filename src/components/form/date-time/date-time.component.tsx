@@ -25,7 +25,7 @@ import {
   DateSelectionType,
   DateSelectorType,
   TimeFormatType,
-} from './date-time-types';
+} from '../../../headless/components/form/date-time/date-time-types.ts';
 import DateTimeYearSelector from './date-time-year-selector.component';
 import {
   DateTimeInputTemplateProps,
@@ -33,7 +33,10 @@ import {
   DateTimeWrapperTemplate,
   DateTimeWrapperTemplateProps,
 } from './date-time.props.ts';
-import reducer, { DateTimeActionType, DateTimeState } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import reducer, {
+  HeadlessDateTimeActionType,
+  HeadlessDateTimeState,
+} from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 
 const DateTime = ({
@@ -97,12 +100,12 @@ const DateTime = ({
       const dateValue = getDateValue();
 
       dispatcher({
-        type: DateTimeActionType.InitializeDates,
+        type: HeadlessDateTimeActionType.InitializeDates,
         initialDate: dateValue,
       });
     } else {
       dispatcher({
-        type: DateTimeActionType.ClearDates,
+        type: HeadlessDateTimeActionType.ClearDates,
       });
     }
   }, [value, loadedLocale.current]);
@@ -110,7 +113,7 @@ const DateTime = ({
   useEffect(() => {
     if (use24HourTime) {
       dispatcher({
-        type: DateTimeActionType.SetTimeFormat,
+        type: HeadlessDateTimeActionType.SetTimeFormat,
         timeFormat: use24HourTime ? TimeFormatType.TwentyFourHour : TimeFormatType.TwelveHour,
       });
     }
@@ -124,7 +127,7 @@ const DateTime = ({
 
   useEffect(() => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: getDateSelector(),
     });
   }, [dateSelectionState]);
@@ -147,12 +150,12 @@ const DateTime = ({
 
         if (value || useDefaultDateValue) {
           dispatcher({
-            type: DateTimeActionType.InitializeDates,
+            type: HeadlessDateTimeActionType.InitializeDates,
             initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         } else {
           dispatcher({
-            type: DateTimeActionType.SetViewDate,
+            type: HeadlessDateTimeActionType.SetViewDate,
             viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
           });
         }
@@ -173,7 +176,7 @@ const DateTime = ({
       : defaultDate;
   };
 
-  const initialState: DateTimeState = {
+  const initialState: HeadlessDateTimeState = {
     currentSelector: getDateSelector(),
     currentViewDate: new Date(),
     timeFormat: TimeFormatType.TwelveHour,
@@ -241,7 +244,7 @@ const DateTime = ({
     if (inputDate) {
       if (!Array.isArray(inputDate)) {
         dispatcher({
-          type: DateTimeActionType.SetSelectedDate,
+          type: HeadlessDateTimeActionType.SetSelectedDate,
           selectedDate: inputDate,
           viewDate: inputDate,
         });
@@ -254,13 +257,13 @@ const DateTime = ({
           )
         ) {
           dispatcher({
-            type: DateTimeActionType.SetViewDate,
+            type: HeadlessDateTimeActionType.SetViewDate,
             viewDate: inputDate[0],
           });
         }
 
         dispatcher({
-          type: DateTimeActionType.SetSelectedDateRange,
+          type: HeadlessDateTimeActionType.SetSelectedDateRange,
           selectedStartDate: inputDate[0],
           selectedEndDate: inputDate[1],
         });
@@ -269,7 +272,7 @@ const DateTime = ({
       onChange?.(inputDate);
     } else if (dateString === '') {
       dispatcher({
-        type: DateTimeActionType.ClearDates,
+        type: HeadlessDateTimeActionType.ClearDates,
       });
 
       onChange?.();
@@ -291,7 +294,7 @@ const DateTime = ({
 
   const onClearClick = () => {
     dispatcher({
-      type: DateTimeActionType.ClearDates,
+      type: HeadlessDateTimeActionType.ClearDates,
     });
     setSelectorOpen(false);
 
@@ -317,7 +320,7 @@ const DateTime = ({
   const onDateTimeHidden = () => {
     setSelectorOpen(false);
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: getDateSelector(),
     });
   };

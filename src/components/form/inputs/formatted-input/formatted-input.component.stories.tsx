@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { DateTimeFormatCreator } from '../../date-time/date-time-format-creator';
-import { DateSelectionType } from '../../date-time/date-time-types';
+import { DateSelectionType } from '../../../../headless/components/form/date-time/date-time-types.ts';
 import FormattedInput from './formatted-input.component';
 
 const meta: Meta<typeof FormattedInput> = {

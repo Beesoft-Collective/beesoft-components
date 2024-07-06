@@ -4,8 +4,11 @@ import { Dispatch } from 'react';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
-import { DateScrollerType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { DateScrollerType, DateSelectorType } from '../../../headless/components/form/date-time/date-time-types.ts';
+import {
+  HeadlessDateTimeActionType,
+  HeadlessDateTimeReducerAction,
+} from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeDaySelectorProps {
   selectedDate?: Date;
@@ -15,7 +18,7 @@ export interface DateTimeDaySelectorProps {
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   onChange?: (value?: TypeOrArray<Date>) => void;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 const DateTimeDaySelector = ({
@@ -31,7 +34,7 @@ const DateTimeDaySelector = ({
   const movePreviousMonth = () => {
     if (viewDate) {
       dispatcher({
-        type: DateTimeActionType.SetViewDate,
+        type: HeadlessDateTimeActionType.SetViewDate,
         viewDate: subMonths(viewDate, 1),
       });
     }
@@ -40,7 +43,7 @@ const DateTimeDaySelector = ({
   const moveNextMonth = () => {
     if (viewDate) {
       dispatcher({
-        type: DateTimeActionType.SetViewDate,
+        type: HeadlessDateTimeActionType.SetViewDate,
         viewDate: addMonths(viewDate, 1),
       });
     }
@@ -48,14 +51,14 @@ const DateTimeDaySelector = ({
 
   const onMonthClicked = () => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.MonthSelector,
     });
   };
 
   const onTimeClicked = () => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.TimeSelector,
     });
   };

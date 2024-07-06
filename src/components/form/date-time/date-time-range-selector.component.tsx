@@ -5,8 +5,8 @@ import { Dispatch } from 'react';
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import DateTimeCalendar from './date-time-calendar.component';
 import DateTimeScroller from './date-time-scroller.component';
-import { CalendarSelectionMode, DateScrollerType, DateSelectorType } from './date-time-types';
-import { DateTimeActionType, DateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
+import { CalendarSelectionMode, DateScrollerType, DateSelectorType } from '../../../headless/components/form/date-time/date-time-types.ts';
+import { HeadlessDateTimeActionType, HeadlessDateTimeReducerAction } from '../../../headless/components/form/date-time/headless-date-time.reducer.ts';
 
 export interface DateTimeRangeSelectorProps {
   viewDate: Date;
@@ -14,7 +14,7 @@ export interface DateTimeRangeSelectorProps {
   selectedEndDate?: Date;
   locale: Locale;
   onChange?: (value?: TypeOrArray<Date>) => void;
-  dispatcher: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<HeadlessDateTimeReducerAction>;
 }
 
 const DateTimeRangeSelector = ({
@@ -32,12 +32,12 @@ const DateTimeRangeSelector = ({
   const onDateSelected = (date: Date, options?: Record<string, unknown>) => {
     if (!options || !options.setEndDate) {
       dispatcher({
-        type: DateTimeActionType.SetSelectedStartDate,
+        type: HeadlessDateTimeActionType.SetSelectedStartDate,
         selectedStartDate: date,
       });
     } else {
       dispatcher({
-        type: DateTimeActionType.SetSelectedEndDate,
+        type: HeadlessDateTimeActionType.SetSelectedEndDate,
         selectedEndDate: date,
       });
       selectedStartDate && onChange?.([selectedStartDate, date]);
@@ -46,7 +46,7 @@ const DateTimeRangeSelector = ({
 
   const onMonthsClicked = () => {
     dispatcher({
-      type: DateTimeActionType.SetDateSelector,
+      type: HeadlessDateTimeActionType.SetDateSelector,
       dateSelector: DateSelectorType.MonthSelector,
     });
   };
@@ -65,7 +65,7 @@ const DateTimeRangeSelector = ({
   const movePreviousMonth = () => {
     if (viewDate) {
       dispatcher({
-        type: DateTimeActionType.SetViewDate,
+        type: HeadlessDateTimeActionType.SetViewDate,
         viewDate: subMonths(viewDate, 1),
       });
     }
@@ -74,7 +74,7 @@ const DateTimeRangeSelector = ({
   const moveNextMonth = () => {
     if (viewDate) {
       dispatcher({
-        type: DateTimeActionType.SetViewDate,
+        type: HeadlessDateTimeActionType.SetViewDate,
         viewDate: addMonths(viewDate, 1),
       });
     }
