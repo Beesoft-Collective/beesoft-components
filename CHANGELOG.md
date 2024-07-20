@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Added a feature to cause the input to gain focus when the date icon is clicked.
+
 ## [0.9.3] - 2024-06-03
 
 ## Changed
