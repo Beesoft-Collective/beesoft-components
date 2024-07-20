@@ -9,6 +9,7 @@ import useGetDateTimeFormat from '../../../../components/form/date-time/hooks/ge
 import { HeadlessBase } from '../../../architecture/components/headless-base.component.tsx';
 import { HeadlessProvider } from '../../../architecture/components/headless-provider.component.tsx';
 import { DateFormatType, DateSelectionType, DateSelectorType, TimeFormatType } from './date-time-types.ts';
+import { HeadlessDateTimeCalendarProps } from './headless-date-time-calendar.props.ts';
 import { HeadlessDateTimeSelectorProps } from './headless-date-time-selector.props.ts';
 import { HeadlessDateTimeProps, HeadlessDateTimeRenderProps } from './headless-date-time.props.ts';
 import reducer, { HeadlessDateTimeActionType, HeadlessDateTimeState } from './headless-date-time.reducer.ts';
@@ -30,7 +31,6 @@ const HeadlessDateTimeComponent = ({
   const [loadedLocale, setLoadedLocale, loadedLocaleRef] = useStateRef<Locale>();
 
   const language = useRef<string>(locale || getBrowserLanguage());
-  // const loadedLocale = useRef<Locale>();
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
 
@@ -279,11 +279,13 @@ const HeadlessDateTimeComponent = ({
     getValue,
   ]);
 
-  const selectorDataSignal = useSignal<Partial<HeadlessDateTimeSelectorProps>>({});
+  const selectorDataSignal = useSignal<Partial<Omit<HeadlessDateTimeSelectorProps, 'children'>>>({});
+  const calendarDataSignal = useSignal<Partial<Omit<HeadlessDateTimeCalendarProps, 'children' | 'selectionMode'>>>({});
 
   const headlessContext: Record<string, Signal<unknown>> = useMemo(() => {
     return {
       selector: selectorDataSignal,
+      calendar: calendarDataSignal,
     };
   }, []);
 
@@ -313,6 +315,16 @@ const HeadlessDateTimeComponent = ({
     canShowDateSelectors,
     canShowTimeSelector,
   ]);
+
+  useEffect(() => {
+    calendarDataSignal.value = {
+      viewDate: state.currentViewDate,
+      selectedDate: state.selectedDate,
+      selectedStartDate: state.selectedStartDate,
+      selectedEndDate: state.selectedEndDate,
+      locale: loadedLocale,
+    };
+  }, [state.currentViewDate, state.selectedDate, state.selectedStartDate, state.selectedEndDate, loadedLocale]);
 
   return (
     <HeadlessProvider props={headlessContext}>
