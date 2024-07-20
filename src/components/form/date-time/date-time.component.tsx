@@ -11,8 +11,10 @@ import TemplateOutlet from '../../common/template-outlet/template-outlet.compone
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import { MobileOverlayPanel } from '../../mobile/overlay/mobile-overlay-panel.component.tsx';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import ContentEditableInput from '../inputs/content-editable-input/content-editable-input.component';
-import FormattedInput from '../inputs/formatted-input/formatted-input.component';
+import ContentEditableInput, {
+  ContentEditableInputRef,
+} from '../inputs/content-editable-input/content-editable-input.component';
+import FormattedInput, { FormattedInputRef } from '../inputs/formatted-input/formatted-input.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
@@ -72,6 +74,8 @@ const DateTime = ({
   const loadedLocale = useRef<Locale>();
   const inputElementRef = useRef<HTMLElement>();
   const dropDownTargetRef = useRef<HTMLElement>();
+  const inputRef = useRef<ContentEditableInputRef>(null);
+  const formattedInputRef = useRef<FormattedInputRef>(null);
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
 
@@ -287,6 +291,12 @@ const DateTime = ({
   const onCalendarIconClick = () => {
     setDropDownElement();
     setSelectorOpen(!selectorOpen);
+
+    if (formattedInputRef.current) {
+      formattedInputRef.current.focus();
+    } else if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const onClearClick = () => {
@@ -572,6 +582,7 @@ const DateTime = ({
             <>
               <TemplateOutlet props={inputTemplateProps} template={finalInputTemplate}>
                 <ContentEditableInput
+                  ref={inputRef}
                   value={getValue()}
                   readOnly={readOnly}
                   inputMode="none"
@@ -596,6 +607,7 @@ const DateTime = ({
               <TemplateOutlet props={inputTemplateProps} template={finalInputTemplate}>
                 {useFormattedInput === false ? (
                   <ContentEditableInput
+                    ref={inputRef}
                     value={getValue()}
                     readOnly={readOnly}
                     className={inputStyles}
@@ -607,6 +619,7 @@ const DateTime = ({
                   />
                 ) : (
                   <FormattedInput
+                    ref={formattedInputRef}
                     value={getValue()}
                     readOnly={readOnly}
                     className={inputStyles}
