@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { RadioButton } from './radio-button.component.tsx';
-import { RadioButtonProps } from './radio-button.props.ts';
+import { HeadlessRadioButtonProps } from '../../../../headless/components/form/radio-buttons/radio-button/headless-radio-button.props.ts';
 
 const meta: Meta<typeof RadioButton> = {
   title: 'Form/Radio Button',
@@ -15,7 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof RadioButton>;
 
-const DarkTemplate = (args: RadioButtonProps) => {
+const DarkTemplate = (args: HeadlessRadioButtonProps) => {
   document.body.className = 'bsc-dark';
 
   return (

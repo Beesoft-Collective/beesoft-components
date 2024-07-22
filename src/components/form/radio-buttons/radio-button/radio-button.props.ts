@@ -1,8 +1,8 @@
-import { MakeRequired } from '@beesoft/common';
+import { ReplacePropertyType } from '@beesoft/common';
 import { ChangeEvent } from 'react';
 import { ComponentAnimationProps } from '../../../../headless/components/component-interfaces.ts';
-import { FormInputControlData } from '../../../../headless/components/form/form-control.interface.ts';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
+import { HeadlessRadioButtonProps } from '../../../../headless/components/form/radio-buttons/radio-button/headless-radio-button.props.tsx';
 
 export interface RadioChangeEvent {
   name: string;
@@ -11,7 +11,7 @@ export interface RadioChangeEvent {
 }
 
 export interface RadioButtonProps
-  extends MakeRequired<FormInputControlData<string, RadioChangeEvent>, 'name'>,
+  extends ReplacePropertyType<HeadlessRadioButtonProps, 'onChange', (value?: RadioChangeEvent) => void>,
     ComponentAnimationProps {
   labelLocation?: SelectionLabelLocation;
   orientation?: FormGroupItemOrientation;
