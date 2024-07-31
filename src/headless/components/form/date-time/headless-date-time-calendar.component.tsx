@@ -180,6 +180,7 @@ const HeadlessDateTimeCalendarComponent = (props: HeadlessDateTimeCalendarProps)
 
   const renderProps: HeadlessDateTimeCalendarRenderProps = {
     viewDate,
+    selectedDate,
     selectionMode,
     currentSelectedDate,
     monthMatrix,

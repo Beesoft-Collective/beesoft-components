@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { addMonths, endOfMonth, Locale, startOfMonth } from 'date-fns';
 import { debounce } from 'lodash-es';
 import React, { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { HeadlessDateTimeSelector } from '../../../headless/components/form/date-time/headless-date-time-selector.component.tsx';
 import { getBrowserLanguage } from '../../common-functions';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
@@ -481,6 +482,19 @@ const DateTime = ({
 
   const renderSelector = () => (
     <TemplateOutlet props={wrapperTemplateProps} template={finalWrapperTemplate}>
+      <HeadlessDateTimeSelector
+        selectedDate={state.selectedDate}
+        viewDate={state.currentViewDate}
+        locale={loadedLocale.current}
+        showDateSelector={canShowDateSelectors}
+        showTimeSelector={canShowTimeSelector}
+      >
+        {(props) => {
+          if (loadedLocale.current) {
+            
+          }
+        }}
+      </HeadlessDateTimeSelector>
       <>
         {state.currentSelector === DateSelectorType.DaySelector &&
           canShowDateSelectors &&

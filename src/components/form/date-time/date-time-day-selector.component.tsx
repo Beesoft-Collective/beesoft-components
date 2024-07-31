@@ -1,6 +1,7 @@
 import { TypeOrArray } from '@beesoft/common';
 import { addMonths, Locale, subMonths } from 'date-fns';
 import { Dispatch } from 'react';
+import { HeadlessDateTimeCalendar } from '../../../headless/components/form/date-time/headless-date-time-calendar.component.tsx';
 import DateTimeCalendar from './date-time-calendar.component';
 import { getDefaultTime } from './date-time-functions';
 import DateTimeScroller from './date-time-scroller.component';
@@ -83,15 +84,24 @@ const DateTimeDaySelector = ({
         onMovePrevious={movePreviousMonth}
         onMoveNext={moveNextMonth}
       />
-      <DateTimeCalendar
+      <HeadlessDateTimeCalendar
         viewDate={viewDate}
         selectedDate={selectedDate}
         locale={locale}
-        selectableDate={selectableDate}
-        isValidDate={isValidDate}
         onDateSelected={onChange}
-        dispatcher={dispatcher}
-      />
+      >
+        {(props) => (
+          <DateTimeCalendar
+            viewDate={props.viewDate}
+            selectedDate={props.selectedDate}
+            locale={props.loadedLocale}
+            selectableDate={selectableDate}
+            isValidDate={isValidDate}
+            onDateSelected={props.onDateSelected}
+            dispatcher={dispatcher}
+          />
+        )}
+      </HeadlessDateTimeCalendar>
       {showTimeSelector && (
         <div className="bc-dt-time-value-wrapper bsc-flex bsc-w-full bsc-flex-row bsc-justify-center bsc-p-2">
           <div

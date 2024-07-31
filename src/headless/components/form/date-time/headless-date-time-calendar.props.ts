@@ -16,6 +16,7 @@ export interface HeadlessDateTimeCalendarProps {
 
 export interface HeadlessDateTimeCalendarRenderProps {
   viewDate: Date;
+  selectedDate?: Date;
   selectionMode?: CalendarSelectionMode;
   currentSelectedDate?: Date;
   monthMatrix?: Array<Array<DayType>>;
