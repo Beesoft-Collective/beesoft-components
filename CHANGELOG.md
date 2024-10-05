@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Fixed an issue where theming the components wouldn't changed the colour of the focus ring.
+- Also added an `onChange` placeholder for the headless field component; this is to stop warnings being thrown when the component is used in react hook form.
+
 ## [0.9.4] - 2024-07-20
 
 ## Changed
