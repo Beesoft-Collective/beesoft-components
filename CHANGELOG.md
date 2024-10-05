@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.5] - 2024-10-05
+
 ## Changed
 
 - Fixed an issue where theming the components wouldn't changed the colour of the focus ring.
@@ -63,7 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beehive-Software-Consultants/beesoft-components/compare/v0.9.4...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.5...develop
+[0.9.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.5
 [0.9.4]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.4
 [0.9.3]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.3
 [0.9.2]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.2
