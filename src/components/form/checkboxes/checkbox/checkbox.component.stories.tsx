@@ -3,9 +3,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 import { BeeSoftProvider } from '../../../../common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
-import { HeadlessCheckboxChangeEvent } from '../../../../headless/components/form/checkboxes/headless-checkboxes.interfaces.ts';
 import { Checkbox } from './checkbox.component.tsx';
-import { HeadlessCheckboxProps, HeadlessCheckboxRef } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.props.ts';
+import { CheckboxChangeEvent, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Form/Checkbox',
@@ -19,24 +18,24 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
-const Template = (args: HeadlessCheckboxProps) => <Checkbox {...args} />;
+const Template = (args: CheckboxProps) => <Checkbox {...args} />;
 
-const ContextAnimationTemplate = (args: HeadlessCheckboxProps) => (
+const ContextAnimationTemplate = (args: CheckboxProps) => (
   <BeeSoftProvider useAnimations={true}>
     <Template {...args} />
   </BeeSoftProvider>
 );
 
-const ContextNoAnimationTemplate = (args: HeadlessCheckboxProps) => (
+const ContextNoAnimationTemplate = (args: CheckboxProps) => (
   <BeeSoftProvider useAnimations={false}>
     <Template {...args} />
   </BeeSoftProvider>
 );
 
-const PartialCheckedTemplate = (args: HeadlessCheckboxProps) => {
+const PartialCheckedTemplate = (args: CheckboxProps) => {
   document.body.className = '';
 
-  const checkboxRef = useRef<HeadlessCheckboxRef>(null);
+  const checkboxRef = useRef<CheckboxRef>(null);
 
   const onCheckedRefClicked = () => {
     checkboxRef.current?.setChecked(true);
@@ -67,10 +66,10 @@ const PartialCheckedTemplate = (args: HeadlessCheckboxProps) => {
   );
 };
 
-const StateTemplate = (args: HeadlessCheckboxProps) => {
+const StateTemplate = (args: CheckboxProps) => {
   const [checkedState, setCheckedState] = useState<{ checked: boolean }>();
 
-  const handleOnChange = (event?: HeadlessCheckboxChangeEvent) => {
+  const handleOnChange = (event?: CheckboxChangeEvent) => {
     setCheckedState(event);
     args.onChange?.(event);
   };
@@ -82,7 +81,7 @@ const StateTemplate = (args: HeadlessCheckboxProps) => {
   );
 };
 
-const PartialSetStateTemplate = (args: HeadlessCheckboxProps) => {
+const PartialSetStateTemplate = (args: CheckboxProps) => {
   const [partialState, setPartialState] = useState<{ checked: boolean; partial: boolean }>({
     checked: false,
     partial: false,
@@ -106,10 +105,14 @@ const PartialSetStateTemplate = (args: HeadlessCheckboxProps) => {
     <div className="bsc-w-full bsc-p-4">
       <div className="bsc-flex bsc-w-full bsc-pb-2">
         <div className="bsc-pr-2">
-          <Button onClick={setCheckboxState} buttonType="primary">Set State</Button>
+          <Button onClick={setCheckboxState} buttonType="primary">
+            Set State
+          </Button>
         </div>
         <div>
-          <Button onClick={resetState} buttonType="secondary">Reset State</Button>
+          <Button onClick={resetState} buttonType="secondary">
+            Reset State
+          </Button>
         </div>
       </div>
       <div>
@@ -119,7 +122,7 @@ const PartialSetStateTemplate = (args: HeadlessCheckboxProps) => {
   );
 };
 
-const DarkTemplate = (args: HeadlessCheckboxProps) => {
+const DarkTemplate = (args: CheckboxProps) => {
   document.body.className = 'bsc-dark';
 
   return (
