@@ -43,6 +43,7 @@ export default {
     extend: {
       keyframes: {
         bounce: {
+          '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.2)' },
           '75%': { transform: 'scale(0.9)' },
           '100%': { transform: 'scale(1)' },
