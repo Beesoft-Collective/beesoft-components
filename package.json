@@ -37,6 +37,7 @@
     "@beesoft/common": "^0.1.9",
     "@preact/signals": "^1.2.3",
     "@react-hook/media-query": "^1.1.1",
+    "caniuse-lite": "^1.0.30001674",
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
     "dot-object": "^2.1.4",
