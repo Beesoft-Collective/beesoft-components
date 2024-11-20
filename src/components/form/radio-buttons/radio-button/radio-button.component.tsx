@@ -1,11 +1,12 @@
-import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
-import dot from 'dot-object';
-import { ChangeEvent, memo, useCallback, useId, useState } from 'react';
-import { Label } from '../../../common/label/label.component.tsx';
+import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
+import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
+import { memo } from 'react';
 import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { RadioButtonProps } from './radio-button.props.ts';
-import { RadioItem } from './radio-item.component.tsx';
+import { HeadlessGroup } from '../../../../headless/components/common/group/headless-group.component.tsx';
+import { HeadlessRadioButton } from '../../../../headless/components/form/radio-buttons/radio-button/headless-radio-button.component.tsx';
+import { HeadlessLabel } from '../../../../headless/components/common/label/headless-label.component.tsx';
 
 const RadioButtonComponent = ({
   name,
@@ -16,62 +17,64 @@ const RadioButtonComponent = ({
   valueField,
   readOnly = false,
   labelLocation = SelectionLabelLocation.Right,
-  orientation = FormGroupItemOrientation.Vertical,
+  orientation = FormGroupItemOrientation.Horizontal,
   className,
   useAnimation,
   onChange,
 }: RadioButtonProps) => {
-  const [selectedValue, setSelectedValue] = useState(value);
-  const staticData = useDeepMemo(() => data, [data]);
+  const useAnimationState = useShouldAnimate(useAnimation);
 
-  const baseId = useId();
+  const wrapperStyles = cx(
+    'bc-radio-item-wrapper bsc-flex bsc-flex-col bsc-items-left *:bsc-cursor-pointer',
+    {
+      'bc-read-only': readOnly,
+    },
+    className
+  );
 
-  const handleChangeEvent = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const radioValue = event.target.value;
-    setSelectedValue(radioValue);
-
-    onChange?.({
-      name,
-      value: radioValue,
-      originalEvent: event,
-    });
-  }, [name]);
-
-  const renderRadioButton = (item: JsonItem, index: number) => {
-    const radioId = `${baseId}_radio_${index}`;
-    const itemValue = dot.pick(valueField, item);
-
-    return (
-      <RadioItem
-        key={radioId}
-        id={radioId}
-        name={name}
-        label={dot.pick(textField, item)}
-        value={itemValue}
-        checked={itemValue == selectedValue}
-        labelLocation={labelLocation}
-        readOnly={readOnly}
-        useAnimation={useAnimation}
-        onChange={handleChangeEvent}
-      />
-    );
-  };
-
-  const containerStyles = cx('bc-radio-container bsc-flex bsc-flex-col bsc-gap-1', className);
-  const radioButtonStyles = cx('bc-radio-wrapper bsc-flex bsc-gap-1', {
-    'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
-    '[&>*]:bsc-pr-2': orientation === FormGroupItemOrientation.Horizontal,
+  const labelStyles = cx('bc-radio-label bsc-cursor-pointer', {
+    'bsc-ml-2': labelLocation === SelectionLabelLocation.Right,
+    'bsc-mr-2': labelLocation === SelectionLabelLocation.Left,
   });
 
-  const renderItems = (finalData: JsonData) => (
-    <div className={radioButtonStyles}>{finalData.map(renderRadioButton)}</div>
+  const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
+
+  const radioButtonStyles = cx(
+    'bc-radio-wrapper bsc-flex bsc-gap-1',
+    {
+      'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
+      '[&>*]:bsc-pr-2': orientation === FormGroupItemOrientation.Horizontal,
+    },
+    focusStyles
+  );
+
+  const innerCheckboxStyles = cx(
+    'bc-radio-inner bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    {
+      '[transition:box-shadow_0.3s]': useAnimationState,
+      'bsc-radio': !readOnly,
+      'bc-read-only bsc-radio-read-only': readOnly,
+    }
   );
 
   return (
-    <div className={containerStyles}>
-      {label && <Label label={label} readOnly={readOnly} />}
-      {staticData && renderItems(staticData)}
-    </div>
+    <HeadlessGroup>
+      <div className={wrapperStyles}>
+        {label && <HeadlessLabel label={label} className={labelStyles} />}
+        <HeadlessRadioButton
+          name={name}
+          value={value}
+          textField={textField}
+          valueField={valueField}
+          data={data}
+          readOnly={readOnly}
+          className={innerCheckboxStyles}
+          labelLocation={labelLocation}
+          labelStyles={radioButtonStyles}
+          onChange={onChange}
+        ></HeadlessRadioButton>
+      </div>
+    </HeadlessGroup>
   );
 };
 
