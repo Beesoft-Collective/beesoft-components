@@ -94,6 +94,14 @@ export class InputRuleProcessor {
    * @private
    */
   private processEditRules(event: EditingKeyboardEvent): void {
+    if (!this.formatNavigator.isSelection) {
+      this.processNonSelectionEditRules(event);
+    } else {
+      this.processSelectionEditRules();
+    }
+  }
+
+  private processNonSelectionEditRules(event: EditingKeyboardEvent) {
     const inputSlot = this.inputSlotCollection.getSlot(this.formatNavigator.getCurrentPartIndex());
     if (!inputSlot) {
       return;
@@ -113,6 +121,7 @@ export class InputRuleProcessor {
             inputSlot.partText.substring(0, cursorPositionInSlot - 1) +
             inputSlot.partText.substring(cursorPositionInSlot);
 
+          // TODO: since the cursor is not at the beginning of the slot here we shouldn't shift the format parts
           if (deleteShiftsFormatPart) {
             this.shiftFormatParts(inputSlot);
           }
@@ -160,6 +169,43 @@ export class InputRuleProcessor {
         this.processSlotRules(inputSlot, true);
 
         break;
+    }
+  }
+
+  private processSelectionEditRules() {
+    const inputSlots = this.inputSlotCollection.getSlots(this.formatNavigator.getCurrentPartIndices());
+    if (inputSlots.length <= 0) {
+      return;
+    }
+
+    const cursorStartPosition = this.formatNavigator.getCursorStartPosition();
+    const cursorEndPosition = this.formatNavigator.getCursorEndPosition();
+    // const deleteShiftsFormatPart = this.format.deleteShiftsFormatPart || false;
+
+    for (let i = 0, length = inputSlots.length; i < length; i++) {
+      const inputSlot = inputSlots[i];
+      if (inputSlot.startPosition >= cursorStartPosition && inputSlot.endPosition <= cursorEndPosition) {
+        // the entire slot is selected, so clear out the value
+        inputSlot.partText = '';
+      } else if (inputSlot.startPosition >= cursorStartPosition && inputSlot.endPosition > cursorEndPosition) {
+        // the beginning of the slot is selected but not the end
+        inputSlot.partText = inputSlot.partText.substring(cursorEndPosition - inputSlot.startPosition);
+      } else if (inputSlot.startPosition < cursorStartPosition && inputSlot.endPosition <= cursorEndPosition) {
+        // the end of the slot is selected but not the beginning
+        inputSlot.partText = inputSlot.partText.substring(0, cursorStartPosition - inputSlot.startPosition);
+      } else if (inputSlot.startPosition < cursorStartPosition && inputSlot.endPosition > cursorEndPosition) {
+        // the selection is within the slot but not to the beginning or end
+        inputSlot.partText =
+          inputSlot.partText.substring(0, cursorStartPosition - inputSlot.startPosition) +
+          inputSlot.partText.substring(cursorEndPosition - inputSlot.startPosition);
+      }
+    }
+
+    this.formatRenderer.render();
+    this.formatNavigator.setCursorPosition(cursorStartPosition);
+
+    for (let i = 0, length = inputSlots.length; i < length; i++) {
+      this.processSlotRules(inputSlots[i]);
     }
   }
 

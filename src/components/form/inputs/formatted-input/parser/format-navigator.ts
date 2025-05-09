@@ -10,7 +10,10 @@ export class FormatNavigator {
   private readonly inputSlotCollection: InputSlotCollection;
 
   private currentPartIndex = 0;
+  private currentPartIndices: Array<number> = [];
   private currentCursorPosition = 0;
+  private currentCursorStartPosition = -1;
+  private currentCursorEndPosition = -1;
 
   private inputElement?: HTMLElement;
   private inputSelection: Selection | null = null;
@@ -23,12 +26,28 @@ export class FormatNavigator {
     this.inputSlotCollection = this.instanceCollection.getInputSlotInstance(instanceId, format);
   }
 
-  public getCursorPosition(): number {
+  public get isSelection() {
+    return this.inputRange !== undefined && this.inputRange.startOffset !== this.inputRange.endOffset;
+  }
+
+  public getCursorPosition() {
     return this.currentCursorPosition;
   }
 
-  public getCurrentPartIndex(): number {
+  public getCursorStartPosition() {
+    return this.currentCursorStartPosition;
+  }
+
+  public getCursorEndPosition() {
+    return this.currentCursorEndPosition;
+  }
+
+  public getCurrentPartIndex() {
     return this.currentPartIndex;
+  }
+
+  public getCurrentPartIndices() {
+    return this.currentPartIndices;
   }
 
   public setInputElement(element: HTMLElement) {
@@ -48,8 +67,25 @@ export class FormatNavigator {
     if (this.inputRange && this.textNode) {
       this.inputRange.setStart(this.textNode, start);
       this.inputRange.setEnd(this.textNode, end || start);
-      this.currentCursorPosition = end || start;
-      this.setPartIndexByCursorPosition();
+
+      this.currentPartIndices = [];
+      if (end === undefined || start === end) {
+        this.currentCursorPosition = end || start;
+        this.currentCursorStartPosition = -1;
+        this.currentCursorEndPosition = -1;
+        this.setPartIndexByCursorPosition();
+      } else {
+        if (start < end) {
+          this.currentCursorStartPosition = start;
+          this.currentCursorEndPosition = end;
+        } else {
+          this.currentCursorStartPosition = end;
+          this.currentCursorEndPosition = start;
+        }
+
+        this.currentCursorPosition = -1;
+        this.setPartIndicesByCursorPositions();
+      }
     }
   }
 
@@ -79,7 +115,12 @@ export class FormatNavigator {
 
       const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
       const maximumLength = lastDataSlot.startPosition + lastDataSlot.partText.length;
-      this.setCursorSelection(cursorPosition > maximumLength ? maximumLength : cursorPosition);
+
+      if (range.startOffset === range.endOffset) {
+        this.setCursorSelection(cursorPosition > maximumLength ? maximumLength : cursorPosition);
+      } else {
+        this.setCursorSelection(range.startOffset, range.endOffset);
+      }
     }
   }
 
@@ -193,6 +234,27 @@ export class FormatNavigator {
 
         this.currentPartIndex = i;
         break;
+      }
+    }
+  }
+
+  private setPartIndicesByCursorPositions() {
+    for (let i = 0, length = this.formatPartList.length; i < length; i++) {
+      const formatPart = this.formatPartList[i];
+
+      if (formatPart.isSeparator) {
+        continue;
+      }
+
+      if (
+        (formatPart.startPosition >= this.currentCursorStartPosition &&
+          formatPart.startPosition <= this.currentCursorEndPosition) ||
+        (formatPart.endPosition >= this.currentCursorStartPosition &&
+          formatPart.endPosition <= this.currentCursorEndPosition) ||
+        (formatPart.startPosition < this.currentCursorStartPosition &&
+          formatPart.endPosition > this.currentCursorEndPosition)
+      ) {
+        this.currentPartIndices.push(i);
       }
     }
   }

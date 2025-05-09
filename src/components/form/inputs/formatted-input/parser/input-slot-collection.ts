@@ -32,6 +32,15 @@ export class InputSlotCollection {
   }
 
   /**
+   * Returns all slots contained within the part index array.
+   * @param partIndices - The part indices to retrieve.
+   * @returns {Array<FormatPartSlot>} - The slots with the given part indices.
+   */
+  public getSlots(partIndices: Array<number>) {
+    return this.inputSlots.filter((slot) => partIndices.includes(slot.partIndex));
+  }
+
+  /**
    * Returns the first inputs slot in the collection.
    * @returns {FormatPartSlot} The first slot in the collection.
    */
