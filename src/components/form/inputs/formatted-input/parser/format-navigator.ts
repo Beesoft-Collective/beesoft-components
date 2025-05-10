@@ -128,6 +128,9 @@ export class FormatNavigator {
     return this.currentPartIndex === this.formatPartList.length - 1;
   }
 
+  /**
+   * Moves the cursor to the first position that can accept input.
+   */
   public moveHome(): void {
     // instead of moving the cursor to the beginning of the inputs element, we move the cursor to the start position of
     // the first inputs slot. this is useful in cases where the first format part is a separator.
@@ -135,14 +138,22 @@ export class FormatNavigator {
     this.setCursorSelection(firstSlot.startPosition);
   }
 
+  /**
+   * Moves the cursor to the end of the entered text.
+   */
   public moveEnd(): void {
     const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
     const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
     this.setCursorSelection(lastCursorPosition);
   }
 
+  /**
+   * Moves the cursor one position to the left skipping over any placeholders.
+   */
   public moveCursorLeft() {
-    if (this.currentCursorPosition > 0) {
+    this.updateCursorPosition();
+
+    if (this.currentCursorPosition > 0 && !this.isSelection) {
       const newCursorPosition = this.currentCursorPosition - 1;
       let currentPartEntry = this.formatPartList[this.currentPartIndex];
       if (newCursorPosition >= currentPartEntry.startPosition && newCursorPosition <= currentPartEntry.endPosition) {
@@ -159,16 +170,31 @@ export class FormatNavigator {
             } else {
               this.setCursorSelection(newCursorPosition);
             }
+
+            break;
           }
         }
+      }
+    } else {
+      if (!this.isSelection) {
+        // this is done in the case where text is highlighted all the way to the start, the cursor position still needs
+        // to be set to make the highlight disappear
+        this.moveHome();
+      } else {
+        this.setCursorSelection(this.currentCursorPosition);
       }
     }
   }
 
+  /**
+   * Moves the cursor one position to the right skipping over any placeholders.
+   */
   public moveCursorRight() {
+    this.updateCursorPosition(false);
+
     const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
     const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
-    if (this.currentCursorPosition < lastCursorPosition) {
+    if (this.currentCursorPosition < lastCursorPosition && !this.isSelection) {
       const newCursorPosition = this.currentCursorPosition + 1;
       let currentPartEntry = this.formatPartList[this.currentPartIndex];
       if (newCursorPosition >= currentPartEntry.startPosition && newCursorPosition <= currentPartEntry.endPosition) {
@@ -185,9 +211,15 @@ export class FormatNavigator {
             } else {
               this.setCursorSelection(newCursorPosition);
             }
+
+            break;
           }
         }
       }
+    } else {
+      // this is done in the case where text is highlighted all the way to the end, the cursor position still needs to
+      // be set to make the highlight disappear
+      this.setCursorSelection(this.currentCursorPosition);
     }
   }
 
@@ -207,6 +239,120 @@ export class FormatNavigator {
       if (partEntry) {
         this.currentPartIndex = partEntry.partIndex;
         this.setCursorSelection(partEntry.endPosition);
+      }
+    }
+  }
+
+  /**
+   * Highlights everything in the input.
+   */
+  public highlightAll() {
+    const endPosition = this.formatPartList[this.formatPartList.length - 1].endPosition;
+    this.setCursorSelection(0, endPosition);
+  }
+
+  /**
+   * Either starts or makes the highlight grow to the left.
+   */
+  public moveHighlightLeft() {
+    this.updateHighlightPositions();
+
+    if (this.currentCursorStartPosition > 0) {
+      const newStartCursorPosition = this.currentCursorStartPosition - 1;
+      let currentPartEntry = this.formatPartList[this.currentPartIndex];
+      if (
+        newStartCursorPosition >= currentPartEntry.startPosition &&
+        newStartCursorPosition <= currentPartEntry.endPosition
+      ) {
+        this.setCursorSelection(newStartCursorPosition, this.currentCursorEndPosition);
+      } else {
+        for (let i = this.currentPartIndex - 1; i >= 0; i--) {
+          currentPartEntry = this.formatPartList[i];
+          if (
+            newStartCursorPosition >= currentPartEntry.startPosition &&
+            newStartCursorPosition <= currentPartEntry.endPosition
+          ) {
+            if (currentPartEntry.isSeparator) {
+              this.setCursorSelection(this.formatPartList[i - 1].endPosition - 1, this.currentCursorEndPosition);
+            } else {
+              this.setCursorSelection(newStartCursorPosition, this.currentCursorEndPosition);
+            }
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Either starts or makes the highlight grow to the right.
+   */
+  public moveHighlightRight() {
+    this.updateHighlightPositions();
+
+    const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
+    const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
+    if (this.currentCursorEndPosition < lastCursorPosition) {
+      const newEndCursorPosition = this.currentCursorEndPosition + 1;
+      let currentPartEntry = this.formatPartList[this.currentPartIndex];
+      if (
+        newEndCursorPosition >= currentPartEntry.startPosition &&
+        newEndCursorPosition <= currentPartEntry.endPosition
+      ) {
+        this.setCursorSelection(this.currentCursorStartPosition, newEndCursorPosition);
+      } else {
+        for (let i = this.currentPartIndex + 1, length = this.formatPartList.length; i < length; i++) {
+          currentPartEntry = this.formatPartList[i];
+          if (
+            newEndCursorPosition >= currentPartEntry.startPosition &&
+            newEndCursorPosition <= currentPartEntry.endPosition
+          ) {
+            if (currentPartEntry.isSeparator) {
+              this.setCursorSelection(this.currentCursorStartPosition, this.formatPartList[i + 1].startPosition + 1);
+            } else {
+              this.setCursorSelection(this.currentCursorStartPosition, newEndCursorPosition);
+            }
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * When starting a highlight operation this method will transfer the current cursor position to the cursor start and
+   * end positions.
+   * @private
+   */
+  private updateHighlightPositions() {
+    if (
+      this.currentCursorStartPosition === -1 &&
+      this.currentCursorEndPosition === -1 &&
+      this.currentCursorPosition > -1
+    ) {
+      this.currentCursorStartPosition = this.currentCursorPosition;
+      this.currentCursorEndPosition = this.currentCursorPosition;
+    }
+  }
+
+  /**
+   * When leaving a highlight operation this method will transfer either the highlight start or end position to the
+   * current cursor position.
+   * @param startPosition - Determines if the start or end position is transferred to the cursor position (default: true).
+   * @private
+   */
+  private updateCursorPosition(startPosition = true) {
+    if (
+      this.currentCursorPosition === -1 &&
+      this.currentCursorStartPosition > -1 &&
+      this.currentCursorEndPosition > -1
+    ) {
+      if (startPosition) {
+        this.currentCursorPosition = this.currentCursorStartPosition;
+      } else {
+        this.currentCursorPosition = this.currentCursorEndPosition;
       }
     }
   }

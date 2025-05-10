@@ -97,7 +97,7 @@ export class InputRuleProcessor {
     if (!this.formatNavigator.isSelection) {
       this.processNonSelectionEditRules(event);
     } else {
-      this.processSelectionEditRules();
+      this.processSelectionEditRules(event);
     }
   }
 
@@ -172,7 +172,7 @@ export class InputRuleProcessor {
     }
   }
 
-  private processSelectionEditRules() {
+  private processSelectionEditRules(event: EditingKeyboardEvent) {
     const inputSlots = this.inputSlotCollection.getSlots(this.formatNavigator.getCurrentPartIndices());
     if (inputSlots.length <= 0) {
       return;
@@ -202,7 +202,11 @@ export class InputRuleProcessor {
     }
 
     this.formatRenderer.render();
-    this.formatNavigator.setCursorPosition(cursorStartPosition);
+    if (event.key === 'Backspace') {
+      this.formatNavigator.setCursorPosition(cursorStartPosition);
+    } else {
+      this.formatNavigator.setCursorPosition(cursorEndPosition);
+    }
 
     for (let i = 0, length = inputSlots.length; i < length; i++) {
       this.processSlotRules(inputSlots[i]);

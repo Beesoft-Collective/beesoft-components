@@ -37,25 +37,35 @@ export class KeyProcessor {
    * @param {MovementKeyboardEvent} event - A specific movement key event.
    */
   public processMovementKey(event: MovementKeyboardEvent) {
-    const { key, metaKey } = event;
+    const { key, metaKey, ctrlKey, shiftKey } = event;
     switch (key) {
       case 'ArrowLeft':
-        if (!metaKey) {
-          // move the cursor to the left
-          this.formatNavigator.moveCursorLeft();
+        if (!shiftKey) {
+          if (!metaKey) {
+            // move the cursor to the left
+            this.formatNavigator.moveCursorLeft();
+          } else {
+            // on Mac home is a combination of the command key and the left arrow key
+            this.formatNavigator.moveHome();
+          }
         } else {
-          // on Mac home is a combination of the command key and the left arrow key
-          this.formatNavigator.moveHome();
+          // the shift key is used to highlight text
+          this.formatNavigator.moveHighlightLeft();
         }
 
         break;
       case 'ArrowRight':
-        if (!metaKey) {
-          // move the cursor to the right
-          this.formatNavigator.moveCursorRight();
+        if (!shiftKey) {
+          if (!metaKey) {
+            // move the cursor to the right
+            this.formatNavigator.moveCursorRight();
+          } else {
+            // on Mac end is a combination of the command key and the right arrow key
+            this.formatNavigator.moveEnd();
+          }
         } else {
-          // on Mac end is a combination of the command key and the right arrow key
-          this.formatNavigator.moveEnd();
+          // the shift key is used to highlight text
+          this.formatNavigator.moveHighlightRight();
         }
 
         break;
@@ -64,6 +74,12 @@ export class KeyProcessor {
         break;
       case 'End':
         this.formatNavigator.moveEnd();
+        break;
+      case 'a':
+        if (metaKey || ctrlKey) {
+          // mac command or windows control key + a is used to select all text
+          this.formatNavigator.highlightAll();
+        }
         break;
     }
   }
