@@ -12,6 +12,7 @@ export class FormatNavigator {
   private currentPartIndex = 0;
   private currentPartIndices: Array<number> = [];
   private currentCursorPosition = 0;
+  private highlightCursorPosition = 0;
   private currentCursorStartPosition = -1;
   private currentCursorEndPosition = -1;
 
@@ -71,19 +72,33 @@ export class FormatNavigator {
       this.currentPartIndices = [];
       if (end === undefined || start === end) {
         this.currentCursorPosition = end || start;
+        this.highlightCursorPosition = end || start;
         this.currentCursorStartPosition = -1;
         this.currentCursorEndPosition = -1;
         this.setPartIndexByCursorPosition();
       } else {
         if (start < end) {
+          if (this.currentCursorStartPosition !== start) {
+            this.highlightCursorPosition = start;
+          } else if (this.currentCursorEndPosition !== end) {
+            this.highlightCursorPosition = end;
+          }
+
           this.currentCursorStartPosition = start;
           this.currentCursorEndPosition = end;
         } else {
+          if (this.currentCursorStartPosition !== end) {
+            this.highlightCursorPosition = end;
+          } else if (this.currentCursorEndPosition !== start) {
+            this.highlightCursorPosition = start;
+          }
+
           this.currentCursorStartPosition = end;
           this.currentCursorEndPosition = start;
         }
 
         this.currentCursorPosition = -1;
+        this.setPartIndexByHighlightPosition();
         this.setPartIndicesByCursorPositions();
       }
     }
@@ -252,30 +267,49 @@ export class FormatNavigator {
   }
 
   /**
-   * Either starts or makes the highlight grow to the left.
+   * Either starts or makes the highlight grow to the left or decreases the highlight from the right.
    */
   public moveHighlightLeft() {
     this.updateHighlightPositions();
 
-    if (this.currentCursorStartPosition > 0) {
-      const newStartCursorPosition = this.currentCursorStartPosition - 1;
+    const shouldDecreaseHighlight = this.highlightCursorPosition > this.currentCursorStartPosition;
+
+    if (this.currentCursorStartPosition > 0 || shouldDecreaseHighlight) {
+      let newStartCursorPosition = !shouldDecreaseHighlight
+        ? this.currentCursorStartPosition - 1
+        : this.currentCursorStartPosition;
+      let newEndCursorPosition = shouldDecreaseHighlight
+        ? this.highlightCursorPosition - 1
+        : this.currentCursorEndPosition;
       let currentPartEntry = this.formatPartList[this.currentPartIndex];
       if (
-        newStartCursorPosition >= currentPartEntry.startPosition &&
-        newStartCursorPosition <= currentPartEntry.endPosition
+        (newStartCursorPosition >= currentPartEntry.startPosition &&
+          newStartCursorPosition <= currentPartEntry.endPosition) ||
+        (shouldDecreaseHighlight &&
+          newEndCursorPosition >= currentPartEntry.startPosition &&
+          newEndCursorPosition <= currentPartEntry.endPosition)
       ) {
-        this.setCursorSelection(newStartCursorPosition, this.currentCursorEndPosition);
+        this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
       } else {
         for (let i = this.currentPartIndex - 1; i >= 0; i--) {
           currentPartEntry = this.formatPartList[i];
           if (
-            newStartCursorPosition >= currentPartEntry.startPosition &&
-            newStartCursorPosition <= currentPartEntry.endPosition
+            (newStartCursorPosition >= currentPartEntry.startPosition &&
+              newStartCursorPosition <= currentPartEntry.endPosition) ||
+            (shouldDecreaseHighlight &&
+              newEndCursorPosition >= currentPartEntry.startPosition &&
+              newEndCursorPosition <= currentPartEntry.endPosition)
           ) {
             if (currentPartEntry.isSeparator) {
-              this.setCursorSelection(this.formatPartList[i - 1].endPosition - 1, this.currentCursorEndPosition);
+              if (!shouldDecreaseHighlight) {
+                newStartCursorPosition = this.formatPartList[i - 1].endPosition - 1;
+              } else {
+                newEndCursorPosition = this.formatPartList[i - 1].endPosition - 1;
+              }
+
+              this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
             } else {
-              this.setCursorSelection(newStartCursorPosition, this.currentCursorEndPosition);
+              this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
             }
 
             break;
@@ -286,32 +320,51 @@ export class FormatNavigator {
   }
 
   /**
-   * Either starts or makes the highlight grow to the right.
+   * Either starts or makes the highlight grow to the right or decreases the highlight from the left.
    */
   public moveHighlightRight() {
     this.updateHighlightPositions();
 
     const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
     const lastCursorPosition = lastDataSlot.startPosition + lastDataSlot.partText.length;
-    if (this.currentCursorEndPosition < lastCursorPosition) {
-      const newEndCursorPosition = this.currentCursorEndPosition + 1;
+    const shouldDecreaseHighlight = this.highlightCursorPosition < this.currentCursorEndPosition;
+
+    if (this.currentCursorEndPosition < lastCursorPosition || shouldDecreaseHighlight) {
+      let newStartCursorPosition = shouldDecreaseHighlight
+        ? this.highlightCursorPosition + 1
+        : this.currentCursorStartPosition;
+      let newEndCursorPosition = !shouldDecreaseHighlight
+        ? this.currentCursorEndPosition + 1
+        : this.currentCursorEndPosition;
       let currentPartEntry = this.formatPartList[this.currentPartIndex];
       if (
-        newEndCursorPosition >= currentPartEntry.startPosition &&
-        newEndCursorPosition <= currentPartEntry.endPosition
+        (newEndCursorPosition >= currentPartEntry.startPosition &&
+          newEndCursorPosition <= currentPartEntry.endPosition) ||
+        (shouldDecreaseHighlight &&
+          newStartCursorPosition >= currentPartEntry.startPosition &&
+          newStartCursorPosition <= currentPartEntry.endPosition)
       ) {
-        this.setCursorSelection(this.currentCursorStartPosition, newEndCursorPosition);
+        this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
       } else {
         for (let i = this.currentPartIndex + 1, length = this.formatPartList.length; i < length; i++) {
           currentPartEntry = this.formatPartList[i];
           if (
-            newEndCursorPosition >= currentPartEntry.startPosition &&
-            newEndCursorPosition <= currentPartEntry.endPosition
+            (newEndCursorPosition >= currentPartEntry.startPosition &&
+              newEndCursorPosition <= currentPartEntry.endPosition) ||
+            (shouldDecreaseHighlight &&
+              newStartCursorPosition >= currentPartEntry.startPosition &&
+              newStartCursorPosition <= currentPartEntry.endPosition)
           ) {
             if (currentPartEntry.isSeparator) {
-              this.setCursorSelection(this.currentCursorStartPosition, this.formatPartList[i + 1].startPosition + 1);
+              if (!shouldDecreaseHighlight) {
+                newEndCursorPosition = this.formatPartList[i + 1].startPosition + 1;
+              } else {
+                newStartCursorPosition = this.formatPartList[i + 1].startPosition + 1;
+              }
+
+              this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
             } else {
-              this.setCursorSelection(this.currentCursorStartPosition, newEndCursorPosition);
+              this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
             }
 
             break;
@@ -334,6 +387,7 @@ export class FormatNavigator {
     ) {
       this.currentCursorStartPosition = this.currentCursorPosition;
       this.currentCursorEndPosition = this.currentCursorPosition;
+      this.highlightCursorPosition = this.currentCursorPosition;
     }
   }
 
@@ -374,6 +428,25 @@ export class FormatNavigator {
       ) {
         if (formatPart.isSeparator) {
           this.currentCursorPosition = this.formatPartList[i + 1].startPosition;
+          this.currentPartIndex = i + 1;
+          break;
+        }
+
+        this.currentPartIndex = i;
+        break;
+      }
+    }
+  }
+
+  private setPartIndexByHighlightPosition() {
+    for (let i = 0; i < this.formatPartList.length; i++) {
+      const formatPart = this.formatPartList[i];
+      if (
+        this.highlightCursorPosition >= formatPart.startPosition &&
+        this.highlightCursorPosition <= formatPart.endPosition
+      ) {
+        if (formatPart.isSeparator) {
+          this.highlightCursorPosition = this.formatPartList[i + 1].startPosition;
           this.currentPartIndex = i + 1;
           break;
         }
