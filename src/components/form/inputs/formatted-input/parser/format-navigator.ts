@@ -31,6 +31,11 @@ export class FormatNavigator {
     return this.inputRange !== undefined && this.inputRange.startOffset !== this.inputRange.endOffset;
   }
 
+  public get isAllSelected() {
+    const lastSlot = this.inputSlotCollection.getLastSlot();
+    return this.isSelection && this.inputRange?.startOffset === 0 && this.inputRange.endOffset === lastSlot.endPosition;
+  }
+
   public getCursorPosition() {
     return this.currentCursorPosition;
   }
