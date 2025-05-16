@@ -100,34 +100,43 @@ export class InputRuleProcessor {
     const dataSlots = this.inputSlotCollection.getSlotsFromCursorPosition(cursorPosition);
 
     if (dataSlots) {
-      const separators = this.partEntryList.getUniqueSeparators();
-      let cleanValue = value;
-
-      for (let i = 0, length = separators.length; i < length; i++) {
-        const separator = separators[i];
-        cleanValue = cleanValue.replace(separator, '');
-      }
-
+      // gets the data before and after the cursor location, this will be used to determine where the pasted data
+      // should be inserted
       const endLocation = cursorPosition - dataSlots[0].startPosition;
       const dataBefore = dataSlots[0].partText.substring(0, endLocation);
       let dataAfter = dataSlots[0].partText.substring(endLocation);
       dataSlots[0].partText = '';
 
-      for (let j = 1, jLength = dataSlots.length; j < jLength; j++) {
-        dataAfter += dataSlots[j].partText;
-        dataSlots[j].partText = '';
+      for (let i = 1, length = dataSlots.length; i < length; i++) {
+        dataAfter += dataSlots[i].partText;
+        dataSlots[i].partText = '';
       }
 
-      let startLocation = 0;
+      // this will create the new value without the separators
+      const cleanValue = this.removeSeparatorsFromValue(value);
       const newValue = dataBefore + cleanValue + dataAfter;
 
-      for (let k = 0, kLength = dataSlots.length; k < kLength; k++) {
-        const slot = dataSlots[k];
+      // slicing up the new value and putting it back into the slots...if the new value is longer than the available
+      // slots then the remaining text will be truncated
+      let startLocation = 0;
+      for (let j = 0, jLength = dataSlots.length; j < jLength; j++) {
+        const slot = dataSlots[j];
         slot.partText = newValue.substring(startLocation, slot.characterCount + startLocation);
         startLocation += slot.characterCount;
         this.processSlotRules(slot);
       }
     }
+  }
+
+  private removeSeparatorsFromValue(value: string) {
+    let cleanedValue = value;
+    const separators = this.partEntryList.getUniqueSeparators();
+    for (let i = 0, length = separators.length; i < length; i++) {
+      const separator = separators[i];
+      cleanedValue = cleanedValue.replace(separator, '');
+    }
+
+    return cleanedValue;
   }
 
   /**
