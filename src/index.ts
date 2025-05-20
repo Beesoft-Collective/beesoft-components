@@ -24,10 +24,11 @@ import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-funct
 // types
 import { CheckboxChangeEvent } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import { CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
-import { DateFormatType, DateSelectionType } from './components/form/date-time/date-time-types';
-import { DateTimeInputTemplateProps } from './components/form/date-time/date-time.props.ts';
-import { DateTimeScrollerTemplateProps } from './components/form/date-time/date-time-scroller.component';
-import { DateTimeCalendarTemplateProps } from './components/form/date-time/date-time-calendar.component';
+import { DateFormatType, DateSelectionType, DateSelectorType } from './components/form/date-time/date-time-types';
+import {
+  DateTimeCalendarTemplateProps,
+  DateTimeInputTemplateProps, DateTimeScrollerTemplateProps
+} from './components/form/date-time/date-time.props.ts';
 import { GroupButtonItemTemplateProps } from './components/form/buttons/group-button/group-button.props.ts';
 import { RadioChangeEvent } from './components/form/radio-buttons/radio-button/radio-button.props.ts';
 
@@ -63,6 +64,7 @@ export {
 export type {
   CheckboxChangeEvent,
   CheckboxRef,
+  DateSelectorType,
   DateTimeInputTemplateProps,
   DateTimeScrollerTemplateProps,
   DateTimeCalendarTemplateProps,

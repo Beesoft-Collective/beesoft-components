@@ -48,6 +48,8 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
         scrollerType={DateScrollerType.Year}
         onMovePrevious={movePreviousDecade}
         onMoveNext={moveNextDecade}
+        viewDate={viewDate}
+        dispatcher={dispatcher}
       />
       <div className="bc-dt-year-wrapper bsc-w-full">
         <div className="bc-dt-year-grid bsc-grid bsc-grid-cols-4 bsc-gap-4">

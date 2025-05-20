@@ -79,6 +79,8 @@ const DateTimeDaySelector = ({
         onTitleClicked={onMonthClicked}
         onMovePrevious={movePreviousMonth}
         onMoveNext={moveNextMonth}
+        viewDate={viewDate}
+        dispatcher={dispatcher}
       />
       <DateTimeCalendar
         viewDate={viewDate}

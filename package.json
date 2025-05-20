@@ -34,9 +34,10 @@
     "chromatic": "chromatic --project-token $CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
-    "@beesoft/common": "^0.1.9",
+    "@beesoft/common": "^0.1.11",
     "@preact/signals": "^1.2.3",
     "@react-hook/media-query": "^1.1.1",
+    "caniuse-lite": "^1.0.30001718",
     "classnames": "^2.3.2",
     "date-fns": "^3.3.1",
     "dot-object": "^2.1.4",
@@ -82,8 +83,8 @@
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "release-it": "^17.1.1",
     "rollup-plugin-gzip": "^3.1.0",
     "storybook": "^8.0.6",
@@ -93,8 +94,8 @@
     "vite-plugin-dts": "^3.6.3"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   },
   "publishConfig": {
     "access": "public",
@@ -103,6 +104,6 @@
   "bugs": {
     "url": "https://github.com/Beehive-Software-Consultants/beesoft-components/issues"
   },
-  "readme": "ERROR: No README data found!",
-  "homepage": "https://github.com/Beehive-Software-Consultants/beesoft-components#readme"
+  "readme": "https://github.com/Beehive-Software-Consultants/beesoft-components#readme",
+  "homepage": "https://github.com/Beehive-Software-Consultants/beesoft-components"
 }

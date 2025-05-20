@@ -37,6 +37,7 @@ import {
 } from './date-time.props.ts';
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
+import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
 
 const DateTime = ({
   value,
@@ -546,16 +547,20 @@ const DateTime = ({
     </TemplateOutlet>
   );
 
-  const inputTemplateProps: DateTimeInputTemplateProps = {
-    label,
-    readOnly,
-    allowClear,
-    getValue,
-    onFocus,
-    onInput,
-    iconPosition,
-    iconElement: inputProps.rightElement || inputProps.leftElement,
-  };
+  const inputTemplateProps = useAddDateTimeBaseTemplateProps<DateTimeInputTemplateProps>(
+    {
+      label,
+      readOnly,
+      allowClear,
+      getValue,
+      onFocus,
+      onInput,
+      iconPosition,
+      iconElement: inputProps.rightElement || inputProps.leftElement,
+    },
+    state.currentViewDate,
+    dispatcher
+  );
 
   const defaultInputTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
     <>{children}</>

@@ -68,6 +68,8 @@ const DateTimeMonthSelector = ({
         onTitleClicked={onYearClicked}
         onMovePrevious={movePreviousYear}
         onMoveNext={moveNextYear}
+        viewDate={viewDate}
+        dispatcher={dispatcher}
       />
       <div className="bc-dt-month-grid bsc-grid bsc-w-full bsc-grid-cols-4 bsc-gap-4">
         {monthMatrix.current.map((row, rIndex) =>
