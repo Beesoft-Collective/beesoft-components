@@ -75,7 +75,7 @@ export class FormatParser implements IDisposable {
    * When an inputs value is passed this is called to load the value into the formatter.
    * @param {string} inputValue - The value to load into the formatter.
    */
-  public inputValuePassed(inputValue: string): void {
+  public inputValuePassed(inputValue: string) {
     this.inputValue = inputValue;
     if (this.inputElementSet) {
       if (this.inputValue.length > 0) {
@@ -85,18 +85,27 @@ export class FormatParser implements IDisposable {
         this.previousOutputValue = undefined;
       }
 
-      // setTimeout is used because this is usually called after the inputs element has been created. This is a good
-      // article to explain why this is necessary https://web.dev/rendering-performance/.
-      setTimeout(() => {
-        this.formatRenderer.render();
-        if (this.isInputFocused) {
-          this.formatNavigator.setCursorToCurrentPosition();
-        }
+      this.renderFormat();
+    }
+  }
 
-        if (this.inputValue.length > 0) {
-          this.previousOutputValue = this.inputElement?.innerHTML;
+  public pastedValue(value: string) {
+    if (value.length > 0) {
+      if (!this.formatNavigator.isSelection) {
+        if (this.inputValue.length === 0) {
+          this.inputValuePassed(value);
+        } else {
+          this.inputRuleProcessor.processPastedValue(value);
         }
-      });
+      } else {
+        if (this.formatNavigator.isAllSelected) {
+          this.inputValuePassed(value);
+        } else {
+          this.inputRuleProcessor.processPastedValue(value, true);
+        }
+      }
+
+      this.renderFormat(true);
     }
   }
 
@@ -121,8 +130,14 @@ export class FormatParser implements IDisposable {
       return;
     }
 
-    event.preventDefault();
-    event.stopPropagation();
+    // this will allow the value in the formatted input to be copied
+    if (
+      !(event.key === 'c' && (event.ctrlKey || event.metaKey)) &&
+      !(event.key === 'v' && (event.ctrlKey || event.metaKey))
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     if (this.keyProcessor.processKeyPress(event)) {
       if (this.inputElement && this.onFormatChange) {
@@ -143,5 +158,24 @@ export class FormatParser implements IDisposable {
   public dispose(): void {
     // dispose of static class instances
     this.instanceCollection.removeInstances(this.instanceId);
+  }
+
+  private renderFormat(fireOnChange = false) {
+    // setTimeout is used because this is usually called after the inputs element has been created. This is a good
+    // article to explain why this is necessary https://web.dev/rendering-performance/.
+    setTimeout(() => {
+      this.formatRenderer.render();
+      if (this.isInputFocused) {
+        this.formatNavigator.setCursorToCurrentPosition();
+      }
+
+      if (this.inputValue.length > 0) {
+        this.previousOutputValue = this.inputElement?.innerHTML;
+      }
+
+      if (fireOnChange && this.inputElement?.innerHTML && this.onFormatChange) {
+        this.onFormatChange(this.inputElement.innerHTML);
+      }
+    });
   }
 }
