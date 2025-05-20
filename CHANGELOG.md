@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6-2] - 2025-05-20
+
 ## Changed
 
 - Moved `DateScrollerType` to a value export.
@@ -82,7 +84,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-1...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-2...develop
+[0.9.6-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-2
 [0.9.6-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-1
 [0.9.6-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-0
 [0.9.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.5
