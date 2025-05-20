@@ -10,33 +10,45 @@ import { DateSelectorType } from '../date-time-types.ts';
  * @param dispatcher - This is the object that sets the value in the reducer.
  */
 const useAddDateTimeBaseTemplateProps = <T>(props: T, date: Date, dispatcher: Dispatch<DateTimeReducerAction>): T => {
-  const incrementViewMonths = useCallback((months: number) => {
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: addMonths(date, months),
-    });
-  }, []);
+  const incrementViewMonths = useCallback(
+    (months: number) => {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: addMonths(date, months),
+      });
+    },
+    [date]
+  );
 
-  const decrementViewMonths = useCallback((months: number) => {
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: subMonths(date, months),
-    });
-  }, []);
+  const decrementViewMonths = useCallback(
+    (months: number) => {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: subMonths(date, months),
+      });
+    },
+    [date]
+  );
 
-  const incrementViewYears = useCallback((years: number) => {
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: addYears(date, years),
-    });
-  }, []);
+  const incrementViewYears = useCallback(
+    (years: number) => {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: addYears(date, years),
+      });
+    },
+    [date]
+  );
 
-  const decrementViewYears = useCallback((years: number) => {
-    dispatcher({
-      type: DateTimeActionType.SetViewDate,
-      viewDate: subYears(date, years),
-    });
-  }, []);
+  const decrementViewYears = useCallback(
+    (years: number) => {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: subYears(date, years),
+      });
+    },
+    [date]
+  );
 
   const setDateSelector = useCallback((selector: DateSelectorType) => {
     dispatcher({
