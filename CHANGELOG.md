@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Moved `DateScrollerType` to a value export.
+
 ## [0.9.6-1] - 2025-05-20
 
 ## Changed

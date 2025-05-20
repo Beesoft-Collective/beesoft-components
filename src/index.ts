@@ -61,16 +61,16 @@ export {
   createBeeSoftTheme,
 
   // types to be used as values
+  DateFormatType,
+  DateScrollerType,
+  DateSelectionType,
   FormGroupItemOrientation,
   SelectionLabelLocation,
-  DateFormatType,
-  DateSelectionType,
 };
 
 export type {
   CheckboxChangeEvent,
   CheckboxRef,
-  DateScrollerType,
   DateSelectorType,
   DateTimeInputTemplateProps,
   DateTimeScrollerTemplateProps,
