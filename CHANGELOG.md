@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6-0] - 2025-05-20
+
 ## Added
 
 - Added a feature to allow text to be highlighted and removed. Highlighting can be done with the mouse or certain key press operations.
@@ -70,7 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.5...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-0...develop
+[0.9.6-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-0
 [0.9.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.5
 [0.9.4]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.4
 [0.9.3]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.3
