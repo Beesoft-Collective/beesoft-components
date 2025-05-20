@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6-1] - 2025-05-20
+
 ## Changed
 
 - Added the `DateScrollerType` to the exported types.
@@ -76,7 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-0...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-1...develop
+[0.9.6-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-1
 [0.9.6-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-0
 [0.9.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.5
 [0.9.4]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.4
