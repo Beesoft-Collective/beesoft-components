@@ -51,7 +51,11 @@ const TestComponent = () => {
       const item = data[index];
       pageMarkup.push(
         <div key={`item_${page}_${index}`} className="bsc-px-1">
-          <Checkbox value={item['id']} label={item['name'] as string} />
+          <Checkbox
+            value={item['id']}
+            label={item['name'] as string}
+            onChange={(event) => console.log('Checkbox Event', event)}
+          />
         </div>
       );
     }
@@ -108,7 +112,11 @@ const AllDataTestComponent = () => {
       const item = data[index];
       pageMarkup.push(
         <div key={`item_${page}_${index}`} className="bsc-px-1">
-          <Checkbox value={item['id']} label={item['name'] as string} />
+          <Checkbox
+            value={item['id']}
+            label={item['name'] as string}
+            onChange={(event) => console.log('Checkbox Event', event)}
+          />
         </div>
       );
     }

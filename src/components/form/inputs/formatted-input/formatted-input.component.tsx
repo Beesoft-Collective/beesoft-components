@@ -109,13 +109,25 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     formatParser.current?.keyDownHandler(event);
   }, []);
 
+  const onPasteHandler = useCallback((event: ClipboardEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const pastedData = event.clipboardData?.getData('text/plain');
+    if (pastedData) {
+      formatParser.current?.pastedValue(pastedData);
+    }
+  }, []);
+
   const onInputRefCreated = useCallback((ref: ContentEditableInputRef) => {
     inputRef.current?.inputElement?.removeEventListener('keydown', onKeyDownHandler);
     inputRef.current?.inputElement?.removeEventListener('mouseup', onMouseUpHandler);
+    inputRef.current?.inputElement?.removeEventListener('paste', onPasteHandler);
 
     inputRef.current = ref;
     inputRef.current?.inputElement?.addEventListener('keydown', onKeyDownHandler);
     inputRef.current?.inputElement?.addEventListener('mouseup', onMouseUpHandler);
+    inputRef.current?.inputElement?.addEventListener('paste', onPasteHandler);
     inputElementRef.current = inputRef.current?.inputElement;
   }, []);
 

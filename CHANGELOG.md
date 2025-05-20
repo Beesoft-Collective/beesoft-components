@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- Added a feature to allow text to be highlighted and removed. Highlighting can be done with the mouse or certain key press operations.
+- Added the ability to paste a value in the formatted input.
+
 ## [0.9.5] - 2024-10-05
 
 ## Changed

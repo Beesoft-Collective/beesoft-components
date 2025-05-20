@@ -6,6 +6,7 @@ import { InputSlotCollection } from './input-slot-collection';
 import { KeyTypeChecker } from './key-type-checker';
 import { EditingKeyboardEvent, FormatPartSlot } from './parser.interfaces';
 import { PartEntryIterator } from './part-entry-iterator';
+import { PartEntryList } from './part-entry-list';
 
 /**
  * Takes inputs either in the form of a passed value or as a key press and run that inputs against the rules of the
@@ -18,6 +19,7 @@ export class InputRuleProcessor {
   private readonly keyTypeChecker: KeyTypeChecker;
   private readonly formatRenderer: FormatRenderer;
   private readonly formatPartList: PartEntryIterator;
+  private readonly partEntryList: PartEntryList;
 
   constructor(
     private format: InputFormat,
@@ -29,6 +31,7 @@ export class InputRuleProcessor {
     this.keyTypeChecker = new KeyTypeChecker();
     this.formatRenderer = new FormatRenderer(format, instanceId);
     this.formatPartList = new PartEntryIterator(format);
+    this.partEntryList = new PartEntryList(format);
   }
 
   public setInputElement(element: HTMLElement): void {
@@ -88,12 +91,68 @@ export class InputRuleProcessor {
     }
   }
 
+  public processPastedValue(value: string, isSelection = false) {
+    if (isSelection) {
+      this.processSelectionEditRules();
+    }
+
+    const cursorPosition = this.formatNavigator.getCursorPosition();
+    const dataSlots = this.inputSlotCollection.getSlotsFromCursorPosition(cursorPosition);
+
+    if (dataSlots) {
+      // gets the data before and after the cursor location, this will be used to determine where the pasted data
+      // should be inserted
+      const endLocation = cursorPosition - dataSlots[0].startPosition;
+      const dataBefore = dataSlots[0].partText.substring(0, endLocation);
+      let dataAfter = dataSlots[0].partText.substring(endLocation);
+      dataSlots[0].partText = '';
+
+      for (let i = 1, length = dataSlots.length; i < length; i++) {
+        dataAfter += dataSlots[i].partText;
+        dataSlots[i].partText = '';
+      }
+
+      // this will create the new value without the separators
+      const cleanValue = this.removeSeparatorsFromValue(value);
+      const newValue = dataBefore + cleanValue + dataAfter;
+
+      // slicing up the new value and putting it back into the slots...if the new value is longer than the available
+      // slots then the remaining text will be truncated
+      let startLocation = 0;
+      for (let j = 0, jLength = dataSlots.length; j < jLength; j++) {
+        const slot = dataSlots[j];
+        slot.partText = newValue.substring(startLocation, slot.characterCount + startLocation);
+        startLocation += slot.characterCount;
+        this.processSlotRules(slot);
+      }
+    }
+  }
+
+  private removeSeparatorsFromValue(value: string) {
+    let cleanedValue = value;
+    const separators = this.partEntryList.getUniqueSeparators();
+    for (let i = 0, length = separators.length; i < length; i++) {
+      const separator = separators[i];
+      cleanedValue = cleanedValue.replace(separator, '');
+    }
+
+    return cleanedValue;
+  }
+
   /**
    * If a key press is performing an edit on the data (deleting data) then this method will be called.
    * @param {EditingKeyboardEvent} event - A special key press event that restricts the key property to only "Backspace" or "Delete".
    * @private
    */
   private processEditRules(event: EditingKeyboardEvent): void {
+    if (!this.formatNavigator.isSelection) {
+      this.processNonSelectionEditRules(event);
+    } else {
+      this.processSelectionEditRules(event);
+    }
+  }
+
+  private processNonSelectionEditRules(event: EditingKeyboardEvent) {
     const inputSlot = this.inputSlotCollection.getSlot(this.formatNavigator.getCurrentPartIndex());
     if (!inputSlot) {
       return;
@@ -113,6 +172,7 @@ export class InputRuleProcessor {
             inputSlot.partText.substring(0, cursorPositionInSlot - 1) +
             inputSlot.partText.substring(cursorPositionInSlot);
 
+          // TODO: since the cursor is not at the beginning of the slot here we shouldn't shift the format parts
           if (deleteShiftsFormatPart) {
             this.shiftFormatParts(inputSlot);
           }
@@ -160,6 +220,47 @@ export class InputRuleProcessor {
         this.processSlotRules(inputSlot, true);
 
         break;
+    }
+  }
+
+  private processSelectionEditRules(event?: EditingKeyboardEvent) {
+    const inputSlots = this.inputSlotCollection.getSlots(this.formatNavigator.getCurrentPartIndices());
+    if (inputSlots.length <= 0) {
+      return;
+    }
+
+    const cursorStartPosition = this.formatNavigator.getCursorStartPosition();
+    const cursorEndPosition = this.formatNavigator.getCursorEndPosition();
+    // const deleteShiftsFormatPart = this.format.deleteShiftsFormatPart || false;
+
+    for (let i = 0, length = inputSlots.length; i < length; i++) {
+      const inputSlot = inputSlots[i];
+      if (inputSlot.startPosition >= cursorStartPosition && inputSlot.endPosition <= cursorEndPosition) {
+        // the entire slot is selected, so clear out the value
+        inputSlot.partText = '';
+      } else if (inputSlot.startPosition >= cursorStartPosition && inputSlot.endPosition > cursorEndPosition) {
+        // the beginning of the slot is selected but not the end
+        inputSlot.partText = inputSlot.partText.substring(cursorEndPosition - inputSlot.startPosition);
+      } else if (inputSlot.startPosition < cursorStartPosition && inputSlot.endPosition <= cursorEndPosition) {
+        // the end of the slot is selected but not the beginning
+        inputSlot.partText = inputSlot.partText.substring(0, cursorStartPosition - inputSlot.startPosition);
+      } else if (inputSlot.startPosition < cursorStartPosition && inputSlot.endPosition > cursorEndPosition) {
+        // the selection is within the slot but not to the beginning or end
+        inputSlot.partText =
+          inputSlot.partText.substring(0, cursorStartPosition - inputSlot.startPosition) +
+          inputSlot.partText.substring(cursorEndPosition - inputSlot.startPosition);
+      }
+    }
+
+    this.formatRenderer.render();
+    if (!event || event.key === 'Backspace') {
+      this.formatNavigator.setCursorPosition(cursorEndPosition);
+    } else {
+      this.formatNavigator.setCursorPosition(cursorStartPosition);
+    }
+
+    for (let i = 0, length = inputSlots.length; i < length; i++) {
+      this.processSlotRules(inputSlots[i]);
     }
   }
 
@@ -316,7 +417,7 @@ export class InputRuleProcessor {
   }
 
   /**
-   * Called when the data in a slot is deleted or when a value is passed into the formmatter.
+   * Called when the data in a slot is deleted or when a value is passed into the formater.
    * @param {FormatPartSlot} inputSlot - The slot the process the rules for.
    * @param {boolean} isEditing - When true the code will not process the pad with zeros setting.
    * @private

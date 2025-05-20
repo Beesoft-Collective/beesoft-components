@@ -15,6 +15,7 @@ export class PartEntryIterator implements IIterator<FormatPartEntry> {
   constructor(format: InputFormat) {
     this.formatParts = PartEntryCreator.create(format);
   }
+
   hasNext(): boolean {
     return this.index < this.formatParts.length;
   }

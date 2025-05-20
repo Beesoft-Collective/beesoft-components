@@ -32,11 +32,41 @@ export class InputSlotCollection {
   }
 
   /**
+   * Returns all slots contained within the part index array.
+   * @param partIndices - The part indices to retrieve.
+   * @returns {Array<FormatPartSlot>} - The slots with the given part indices.
+   */
+  public getSlots(partIndices: Array<number>) {
+    return this.inputSlots.filter((slot) => partIndices.includes(slot.partIndex));
+  }
+
+  public getSlotsFromCursorPosition(cursorPosition: number) {
+    let slotPosition = -1;
+
+    // TODO: This logic has a flaw where it possibly wouldn't return a value when it should...in the case where a format
+    //  would have a separator that is longer than 1 character the cursor could be in the middle of the separator. We
+    //  need to add some logic to handle that possibility, currently it will just return undefined.
+    for (let i = 0, length = this.inputSlots.length; i < length; i++) {
+      const slot = this.inputSlots[i];
+      if (cursorPosition >= slot.startPosition && cursorPosition <= slot.endPosition) {
+        slotPosition = i;
+        break;
+      }
+    }
+
+    return slotPosition > -1 ? this.inputSlots.filter((slot) => slot.partIndex >= slotPosition) : undefined;
+  }
+
+  /**
    * Returns the first inputs slot in the collection.
    * @returns {FormatPartSlot} The first slot in the collection.
    */
   public getFirstSlot() {
     return this.inputSlots[0];
+  }
+
+  public getLastSlot() {
+    return this.inputSlots[this.inputSlots.length - 1];
   }
 
   /**
@@ -65,7 +95,7 @@ export class InputSlotCollection {
 
   /**
    * Returns the next slot that is not completed.
-   * @returns {FormatPartSlot | undefined} The next slot that is not completed or undefined if all are completed.
+   * @returns {FormatPartSlot} The next slot that is not completed or undefined if all are completed.
    */
   public getLastSlotWithData() {
     const incompleteSlotIndex = this.inputSlots.findIndex((slot) => !slot.isComplete);
