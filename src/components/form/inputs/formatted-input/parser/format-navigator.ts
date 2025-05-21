@@ -61,7 +61,9 @@ export class FormatNavigator {
   }
 
   public setCursorToCurrentPosition() {
-    this.setCursorSelection(this.currentCursorPosition);
+    this.setCursorSelection(
+      this.currentCursorPosition > -1 ? this.currentCursorPosition : this.highlightCursorPosition
+    );
   }
 
   public setCursorPosition(position: number) {

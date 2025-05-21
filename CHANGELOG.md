@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Fixes issues with the formatted input found during testing.
+
 ## [0.9.6-3] - 2025-05-20
 
 ## Changed

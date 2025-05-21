@@ -133,7 +133,7 @@ export class InputRuleProcessor {
     const separators = this.partEntryList.getUniqueSeparators();
     for (let i = 0, length = separators.length; i < length; i++) {
       const separator = separators[i];
-      cleanedValue = cleanedValue.replace(separator, '');
+      cleanedValue = cleanedValue.replaceAll(separator, '');
     }
 
     return cleanedValue;
@@ -148,7 +148,7 @@ export class InputRuleProcessor {
     if (!this.formatNavigator.isSelection) {
       this.processNonSelectionEditRules(event);
     } else {
-      this.processSelectionEditRules(event);
+      this.processSelectionEditRules();
     }
   }
 
@@ -223,7 +223,7 @@ export class InputRuleProcessor {
     }
   }
 
-  private processSelectionEditRules(event?: EditingKeyboardEvent) {
+  private processSelectionEditRules() {
     const inputSlots = this.inputSlotCollection.getSlots(this.formatNavigator.getCurrentPartIndices());
     if (inputSlots.length <= 0) {
       return;
@@ -253,11 +253,7 @@ export class InputRuleProcessor {
     }
 
     this.formatRenderer.render();
-    if (!event || event.key === 'Backspace') {
-      this.formatNavigator.setCursorPosition(cursorEndPosition);
-    } else {
-      this.formatNavigator.setCursorPosition(cursorStartPosition);
-    }
+    this.formatNavigator.setCursorPosition(cursorStartPosition);
 
     for (let i = 0, length = inputSlots.length; i < length; i++) {
       this.processSlotRules(inputSlots[i]);
