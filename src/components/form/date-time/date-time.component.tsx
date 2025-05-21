@@ -562,7 +562,7 @@ const DateTime = ({
     dispatcher
   );
 
-  const defaultInputTemplate = (_props: DateTimeInputTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultInputTemplate = (_props: DateTimeInputTemplateProps, children: TypeOrArray<ReactNode>) => (
     <>{children}</>
   );
 

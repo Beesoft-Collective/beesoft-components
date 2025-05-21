@@ -9,6 +9,7 @@ import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 import { DateTimeCalendarTemplateProps } from './date-time.props.ts';
 import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
+import { TypeOrArray } from '@beesoft/common';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
@@ -177,7 +178,7 @@ const DateTimeCalendar = ({
     dispatcher
   );
 
-  const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bc-dt-calendar bsc-w-full">{children}</div>
   );
 

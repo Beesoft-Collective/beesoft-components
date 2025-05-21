@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Changed a couple of types to the proper wrapper type and prepared the final release.
+
 ## [0.9.6-4] - 2025-05-21
 
 ## Changed
