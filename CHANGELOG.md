@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6-4] - 2025-05-21
+
 ## Changed
 
 - Fixes issues with the formatted input found during testing.
@@ -94,7 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-3...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-4...develop
+[0.9.6-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-4
 [0.9.6-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-3
 [0.9.6-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-2
 [0.9.6-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-1
