@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Changed a couple of types to the proper wrapper type and prepared the final release.
+
+## [0.9.6-4] - 2025-05-21
+
+## Changed
+
+- Fixes issues with the formatted input found during testing.
+
+## [0.9.6-3] - 2025-05-20
+
+## Changed
+
+- Added date parameter as a dependency to the `useCallback` hooks in `useAddDateTimeBaseTemplateProps`.
+
+## [0.9.6-2] - 2025-05-20
+
+## Changed
+
+- Moved `DateScrollerType` to a value export.
+
+## [0.9.6-1] - 2025-05-20
+
+## Changed
+
+- Added the `DateScrollerType` to the exported types.
+
+## [0.9.6-0] - 2025-05-20
+
 ## Added
 
 - Added a feature to allow text to be highlighted and removed. Highlighting can be done with the mouse or certain key press operations.
@@ -70,7 +100,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.5...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.9.6-4...develop
+[0.9.6-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-4
+[0.9.6-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-3
+[0.9.6-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-2
+[0.9.6-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-1
+[0.9.6-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-0
 [0.9.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.5
 [0.9.4]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.4
 [0.9.3]: https://github.com/Beehive-Software-Consultants/beesoft-components/releases/tag/v0.9.3

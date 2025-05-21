@@ -89,6 +89,8 @@ const DateTimeRangeSelector = ({
           onTitleClicked={onMonthsClicked}
           onMovePrevious={movePreviousMonth}
           onMoveNext={moveNextMonth}
+          viewDate={viewDate}
+          dispatcher={dispatcher}
         />
       </div>
       <div className="bsc-flex-grow">

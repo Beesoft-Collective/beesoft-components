@@ -2,9 +2,52 @@ import { TypeOrArray } from '@beesoft/common';
 import React from 'react';
 import { FormInputControl } from '../../../headless/components/form/form-control.interface.ts';
 import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
-import { DateTimeCalendarTemplate } from './date-time-calendar.component.tsx';
-import { DateTimeScrollerTemplate } from './date-time-scroller.component.tsx';
-import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeConstraints } from './date-time-types.ts';
+import {
+  CalendarIconPosition,
+  CalendarSelectionMode,
+  DateFormatType,
+  DateScrollerType,
+  DateSelectionType,
+  TimeConstraints,
+} from './date-time-types.ts';
+import { Locale } from 'date-fns';
+import { DayType } from './date-time-functions.ts';
+
+export interface DateTimeBaseTemplateProps {
+  incrementViewMonths?: (months: number) => void;
+  decrementViewMonths?: (months: number) => void;
+  incrementViewYears?: (years: number) => void;
+  decrementViewYears?: (years: number) => void;
+  setDateSelector?: (selector: DateSelectionType) => void;
+}
+
+export interface DateTimeCalendarTemplateProps extends DateTimeBaseTemplateProps {
+  viewDate: Date;
+  selectedDate?: Date;
+  selectedStartDate?: Date;
+  selectedEndDate?: Date;
+  selectionMode?: CalendarSelectionMode;
+  locale?: Locale;
+  weekDays?: Array<string>;
+  monthMatrix?: Array<Array<DayType>>;
+  selectableDate?: (currentDate: Date) => boolean;
+  isValidDate?: (selectedDate: Date) => boolean;
+  onDateClicked: (date: Date) => void;
+  isSelectedDate: (currentDate: Date) => boolean;
+  isInSelectedDateRange: (currentDate: Date) => boolean;
+}
+
+export type DateTimeCalendarTemplate = TemplateFunction<DateTimeCalendarTemplateProps>;
+
+export interface DateTimeScrollerTemplateProps extends DateTimeBaseTemplateProps {
+  title: string;
+  scrollerType: DateScrollerType;
+  onTitleClicked?: () => void;
+  onMovePrevious: () => void;
+  onMoveNext: () => void;
+}
+
+export type DateTimeScrollerTemplate = TemplateFunction<DateTimeScrollerTemplateProps>;
 
 export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Date>, TypeOrArray<Date>> {
   useDefaultDateValue?: boolean;
@@ -40,7 +83,7 @@ export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Dat
   wrapperTemplate?: DateTimeWrapperTemplate;
 }
 
-export interface DateTimeInputTemplateProps {
+export interface DateTimeInputTemplateProps extends DateTimeBaseTemplateProps {
   label?: string;
   readOnly: boolean;
   allowClear: boolean;
@@ -53,7 +96,7 @@ export interface DateTimeInputTemplateProps {
 
 export type DateTimeInputTemplate = TemplateFunction<DateTimeInputTemplateProps>;
 
-export interface DateTimeWrapperTemplateProps {
+export interface DateTimeWrapperTemplateProps extends DateTimeBaseTemplateProps {
   setDateSelector: (selector: DateSelectionType) => void;
 }
 

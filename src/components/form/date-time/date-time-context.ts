@@ -1,6 +1,5 @@
 import { createContext } from 'react';
-import { DateTimeCalendarTemplate } from './date-time-calendar.component';
-import { DateTimeScrollerTemplate } from './date-time-scroller.component';
+import {DateTimeCalendarTemplate, DateTimeScrollerTemplate} from "./date-time.props.ts";
 
 export interface DateTimeContextProps {
   calendarTemplate?: DateTimeCalendarTemplate;

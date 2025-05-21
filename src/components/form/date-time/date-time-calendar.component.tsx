@@ -2,11 +2,14 @@ import cx from 'classnames';
 import { isBefore, isSameDay, isToday, Locale } from 'date-fns';
 import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getBrowserLanguage } from '../../common-functions';
-import TemplateOutlet, { TemplateFunction } from '../../common/template-outlet/template-outlet.component';
+import TemplateOutlet from '../../common/template-outlet/template-outlet.component';
 import { DateTimeContext } from './date-time-context';
 import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { DateTimeCalendarTemplateProps } from './date-time.props.ts';
+import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
+import { TypeOrArray } from '@beesoft/common';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
@@ -18,26 +21,8 @@ export interface DateTimeCalendarProps {
   onDateSelected?: (date: Date, options?: Record<string, any>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
-  dispatcher?: Dispatch<DateTimeReducerAction>;
+  dispatcher: Dispatch<DateTimeReducerAction>;
 }
-
-export interface DateTimeCalendarTemplateProps {
-  viewDate: Date;
-  selectedDate?: Date;
-  selectedStartDate?: Date;
-  selectedEndDate?: Date;
-  selectionMode?: CalendarSelectionMode;
-  locale?: Locale;
-  weekDays?: Array<string>;
-  monthMatrix?: Array<Array<DayType>>;
-  selectableDate?: (currentDate: Date) => boolean;
-  isValidDate?: (selectedDate: Date) => boolean;
-  onDateClicked: (date: Date) => void;
-  isSelectedDate: (currentDate: Date) => boolean;
-  isInSelectedDateRange: (currentDate: Date) => boolean;
-}
-
-export type DateTimeCalendarTemplate = TemplateFunction<DateTimeCalendarTemplateProps>;
 
 const DateTimeCalendar = ({
   viewDate,
@@ -173,23 +158,27 @@ const DateTimeCalendar = ({
     return false;
   };
 
-  const templateProps: DateTimeCalendarTemplateProps = {
+  const templateProps = useAddDateTimeBaseTemplateProps<DateTimeCalendarTemplateProps>(
+    {
+      viewDate,
+      selectedDate,
+      selectedStartDate,
+      selectedEndDate,
+      selectionMode,
+      locale,
+      weekDays: weekDaysRef.current,
+      monthMatrix,
+      selectableDate,
+      isValidDate,
+      onDateClicked,
+      isSelectedDate,
+      isInSelectedDateRange,
+    },
     viewDate,
-    selectedDate,
-    selectedStartDate,
-    selectedEndDate,
-    selectionMode,
-    locale,
-    weekDays: weekDaysRef.current,
-    monthMatrix,
-    selectableDate,
-    isValidDate,
-    onDateClicked,
-    isSelectedDate,
-    isInSelectedDateRange,
-  };
+    dispatcher
+  );
 
-  const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: ReactNode | Array<ReactNode>) => (
+  const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bc-dt-calendar bsc-w-full">{children}</div>
   );
 
