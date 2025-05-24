@@ -26,16 +26,19 @@ const RadioButtonComponent = ({
 
   const baseId = useId();
 
-  const handleChangeEvent = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const radioValue = event.target.value;
-    setSelectedValue(radioValue);
+  const handleChangeEvent = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const radioValue = event.target.value;
+      setSelectedValue(radioValue);
 
-    onChange?.({
-      name,
-      value: radioValue,
-      originalEvent: event,
-    });
-  }, [name]);
+      onChange?.({
+        name,
+        value: radioValue,
+        originalEvent: event,
+      });
+    },
+    [name]
+  );
 
   const renderRadioButton = (item: JsonItem, index: number) => {
     const radioId = `${baseId}_radio_${index}`;

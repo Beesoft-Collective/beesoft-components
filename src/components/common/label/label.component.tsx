@@ -1,6 +1,6 @@
 import cx from 'classnames';
-import { HeadlessLabel } from '../../../headless/components/common/label/headless-label.component.tsx';
 import { LabelProps } from './label.props.ts';
+import { HeadlessLabel } from '@beesoft/headless-ui';
 
 const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
   const labelStyles = cx(
