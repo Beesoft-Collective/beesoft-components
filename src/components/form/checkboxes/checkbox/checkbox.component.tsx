@@ -1,9 +1,8 @@
+import { HeadlessCheckbox, HeadlessGroup } from '@beesoft/headless-ui';
 import cx from 'classnames';
 import { forwardRef, memo, Ref } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
 import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
-import { HeadlessGroup } from '../../../../headless/components/common/group/headless-group.component.tsx';
-import { HeadlessCheckbox } from '../../../../headless/components/form/checkboxes/checkbox/headless-checkbox.component.tsx';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
