@@ -73,37 +73,59 @@ export class FormatNavigator {
   public setCursorSelection(start: number, end?: number): void {
     this.createInputRangeSelection();
     if (this.inputRange && this.textNode) {
-      this.inputRange.setStart(this.textNode, start);
-      this.inputRange.setEnd(this.textNode, end || start);
+      let finalStart: number;
+      let finalEnd: number;
+      let isForwardSelection = true;
+
+      if (end === undefined) {
+        finalStart = start;
+        finalEnd = start;
+      } else {
+        if (start < end) {
+          finalStart = start;
+          finalEnd = end;
+        } else {
+          isForwardSelection = false;
+          finalStart = end;
+          finalEnd = start;
+        }
+      }
+
+      this.inputRange.setStart(this.textNode, finalStart);
+      this.inputRange.setEnd(this.textNode, finalEnd);
 
       this.currentPartIndices = [];
-      if (end === undefined || start === end) {
-        this.currentCursorPosition = end || start;
-        this.highlightCursorPosition = end || start;
+      if (finalStart === finalEnd) {
+        this.currentCursorPosition = finalEnd;
+        this.highlightCursorPosition = finalEnd;
         this.currentCursorStartPosition = -1;
         this.currentCursorEndPosition = -1;
         this.setPartIndexByCursorPosition();
       } else {
-        if (start < end) {
-          if (this.currentCursorStartPosition !== start) {
-            this.highlightCursorPosition = start;
-          } else if (this.currentCursorEndPosition !== end) {
-            this.highlightCursorPosition = end;
+        if (isForwardSelection) {
+          if (!(this.currentCursorStartPosition === -1 && this.currentCursorEndPosition === -1)) {
+            if (this.currentCursorStartPosition !== finalStart) {
+              this.highlightCursorPosition = finalStart;
+            } else if (this.currentCursorEndPosition !== finalEnd) {
+              this.highlightCursorPosition = finalEnd;
+            }
+          } else {
+            this.highlightCursorPosition = finalEnd;
           }
-
-          this.currentCursorStartPosition = start;
-          this.currentCursorEndPosition = end;
         } else {
-          if (this.currentCursorStartPosition !== end) {
-            this.highlightCursorPosition = end;
-          } else if (this.currentCursorEndPosition !== start) {
-            this.highlightCursorPosition = start;
+          if (!(this.currentCursorStartPosition === -1 && this.currentCursorEndPosition === -1)) {
+            if (this.currentCursorStartPosition !== finalEnd) {
+              this.highlightCursorPosition = finalEnd;
+            } else if (this.currentCursorEndPosition !== finalStart) {
+              this.highlightCursorPosition = finalStart;
+            }
+          } else {
+            this.highlightCursorPosition = finalStart;
           }
-
-          this.currentCursorStartPosition = end;
-          this.currentCursorEndPosition = start;
         }
 
+        this.currentCursorStartPosition = finalStart;
+        this.currentCursorEndPosition = finalEnd;
         this.currentCursorPosition = -1;
         this.setPartIndexByHighlightPosition();
         this.setPartIndicesByCursorPositions();
@@ -116,8 +138,9 @@ export class FormatNavigator {
    * clicked, or the last typed character.
    */
   public findCursorPosition() {
-    const range = window.getSelection()?.getRangeAt(0);
-    if (this.inputElement && range) {
+    const selection = window.getSelection();
+    const range = selection?.getRangeAt(0);
+    if (this.inputElement && selection && range) {
       const treeWalker = document.createTreeWalker(this.inputElement, NodeFilter.SHOW_TEXT, (node) => {
         const nodeRange = document.createRange();
         nodeRange.selectNodeContents(node);
@@ -138,10 +161,10 @@ export class FormatNavigator {
       const lastDataSlot = this.inputSlotCollection.getLastSlotWithData();
       const maximumLength = lastDataSlot.startPosition + lastDataSlot.partText.length;
 
-      if (range.startOffset === range.endOffset) {
+      if (selection.anchorOffset === selection.focusOffset) {
         this.setCursorSelection(cursorPosition > maximumLength ? maximumLength : cursorPosition);
       } else {
-        this.setCursorSelection(range.startOffset, range.endOffset);
+        this.setCursorSelection(selection.anchorOffset, selection.focusOffset);
       }
     }
   }
@@ -309,9 +332,9 @@ export class FormatNavigator {
           ) {
             if (currentPartEntry.isSeparator) {
               if (!shouldDecreaseHighlight) {
-                newStartCursorPosition = this.formatPartList[i - 1].endPosition - 1;
+                newStartCursorPosition = this.formatPartList[i - 1].endPosition;
               } else {
-                newEndCursorPosition = this.formatPartList[i - 1].endPosition - 1;
+                newEndCursorPosition = this.formatPartList[i - 1].endPosition;
               }
 
               this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
@@ -364,9 +387,9 @@ export class FormatNavigator {
           ) {
             if (currentPartEntry.isSeparator) {
               if (!shouldDecreaseHighlight) {
-                newEndCursorPosition = this.formatPartList[i + 1].startPosition + 1;
+                newEndCursorPosition = this.formatPartList[i + 1].startPosition;
               } else {
-                newStartCursorPosition = this.formatPartList[i + 1].startPosition + 1;
+                newStartCursorPosition = this.formatPartList[i + 1].startPosition;
               }
 
               this.setCursorSelection(newStartCursorPosition, newEndCursorPosition);
