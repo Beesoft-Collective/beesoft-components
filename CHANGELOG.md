@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Fixed an issue in the formatted input where highlighted text would not be correctly identified if the mouse leaves the input while highlighting.
+- Fixed an issue in the formatted input where typing once text has been highlighted wouldn't overwrite it correctly.
+- Moved the headless components into their own library, so they can be used independently.
+
 ## [0.9.6] - 2025-05-21
 
 ## Changed

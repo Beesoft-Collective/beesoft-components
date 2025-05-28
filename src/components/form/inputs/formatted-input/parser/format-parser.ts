@@ -133,10 +133,13 @@ export class FormatParser implements IDisposable {
     // this will allow the value in the formatted input to be copied
     if (
       !(event.key === 'c' && (event.ctrlKey || event.metaKey)) &&
+      !(event.key === 'x' && (event.ctrlKey || event.metaKey)) &&
       !(event.key === 'v' && (event.ctrlKey || event.metaKey))
     ) {
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      return;
     }
 
     if (this.keyProcessor.processKeyPress(event)) {

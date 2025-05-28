@@ -44,10 +44,14 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const inputRef = useRef<ContentEditableInputRef>();
   const inputElementRef = useRef<HTMLElement>();
   const formatParser = useRef<FormatParser>();
+  const isMouseDown = useRef(false);
 
   useEffect(() => {
+    document.addEventListener('mouseup', onDocumentMouseUpHandler);
+
     return () => {
       formatParser.current?.dispose();
+      document.removeEventListener('mouseup', onDocumentMouseUpHandler);
     };
   }, []);
 
@@ -101,8 +105,26 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     [onBlur]
   );
 
+  const onMouseDownHandler = useCallback(() => {
+    isMouseDown.current = true;
+  }, []);
+
   const onMouseUpHandler = useCallback(() => {
-    formatParser.current?.mouseUpHandler();
+    if (isMouseDown.current) {
+      isMouseDown.current = false;
+      formatParser.current?.mouseUpHandler();
+    } else {
+      // this is for the case where a user starts a highlight in one input and finishes it in another
+      const event = new MouseEvent('mouseup');
+      document.dispatchEvent(event);
+    }
+  }, []);
+
+  const onDocumentMouseUpHandler = useCallback(() => {
+    if (isMouseDown.current) {
+      isMouseDown.current = false;
+      formatParser.current?.mouseUpHandler();
+    }
   }, []);
 
   const onKeyDownHandler = useCallback((event: KeyboardEvent) => {
@@ -121,11 +143,13 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   const onInputRefCreated = useCallback((ref: ContentEditableInputRef) => {
     inputRef.current?.inputElement?.removeEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.removeEventListener('mousedown', onMouseDownHandler);
     inputRef.current?.inputElement?.removeEventListener('mouseup', onMouseUpHandler);
     inputRef.current?.inputElement?.removeEventListener('paste', onPasteHandler);
 
     inputRef.current = ref;
     inputRef.current?.inputElement?.addEventListener('keydown', onKeyDownHandler);
+    inputRef.current?.inputElement?.addEventListener('mousedown', onMouseDownHandler);
     inputRef.current?.inputElement?.addEventListener('mouseup', onMouseUpHandler);
     inputRef.current?.inputElement?.addEventListener('paste', onPasteHandler);
     inputElementRef.current = inputRef.current?.inputElement;

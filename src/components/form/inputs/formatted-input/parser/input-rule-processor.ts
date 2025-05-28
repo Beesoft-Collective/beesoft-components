@@ -48,7 +48,12 @@ export class InputRuleProcessor {
       return;
     }
 
-    this.processInputRules(event);
+    if (this.formatNavigator.isSelection) {
+      this.processSelectionEditRules();
+      setTimeout(() => this.processInputRules(event));
+    } else {
+      this.processInputRules(event);
+    }
   }
 
   /**
@@ -357,7 +362,7 @@ export class InputRuleProcessor {
         this.formatNavigator.moveCursorRight();
       }
     } else {
-      // non-numeric inputs is more simple than numeric inputs, either we've filled the inputs slow or we haven't.
+      // non-numeric inputs is more simple than numeric inputs, either we've filled the inputs slot or we haven't.
       if (currentValue.length + 1 === characterCount) {
         this.addToInputSlot(key);
         inputSlot.isComplete = true;

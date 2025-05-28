@@ -49,7 +49,7 @@ export class InputSlotCollection {
     for (let i = 0, length = this.inputSlots.length; i < length; i++) {
       const slot = this.inputSlots[i];
       if (cursorPosition >= slot.startPosition && cursorPosition <= slot.endPosition) {
-        slotPosition = i;
+        slotPosition = slot.partIndex;
         break;
       }
     }
