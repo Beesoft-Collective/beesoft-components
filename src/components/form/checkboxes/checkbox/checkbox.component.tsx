@@ -24,21 +24,22 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const useAnimationState = useShouldAnimate(useAnimation);
 
   const wrapperStyles = cx(
-    'bc-checkbox-wrapper bsc-flex bsc-items-center',
+    'bc-checkbox-wrapper bsc:flex bsc:items-center',
     {
-      'bc-read-only bsc-pointer-events-none bsc-text-gray-2 dark:bsc-text-mono-light-3': readOnly,
+      'bc-read-only bsc:pointer-events-none bsc:text-gray-2 bsc:dark:text-mono-light-3': readOnly,
+      'bc-checked': checked,
     },
     className
   );
 
-  const labelStyles = cx('bc-checkbox-label bsc-cursor-pointer', {
-    'bsc-ml-2': labelLocation === SelectionLabelLocation.Right,
-    'bsc-mr-2': labelLocation === SelectionLabelLocation.Left,
+  const labelStyles = cx('bc-checkbox-label bsc:cursor-pointer', {
+    'bsc:ml-2': labelLocation === SelectionLabelLocation.Right,
+    'bsc:mr-2': labelLocation === SelectionLabelLocation.Left,
   });
 
   const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const checkboxStyles = cx(
-    'bc-checkbox-outer bsc-relative bsc-rounded *:bsc-block *:bsc-size-[21px]',
+    'bc-checkbox-outer bsc:relative bsc:rounded bsc:*:block bsc:*:size-[21px]',
     {
       'bsc-checkbox-animate': !readOnly && useAnimationState,
       'bc-read-only bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
@@ -47,19 +48,19 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 
   const innerCheckboxStyles = cx(
-    'bc-checkbox-inner bsc-relative bsc-m-0 bsc-cursor-pointer bsc-appearance-none bsc-rounded bsc-border-none bsc-bg-mono-light-1 bsc-p-0 bsc-outline-none dark:bsc-bg-mono-dark-1 dark:checked:bsc-bg-mono-light-1',
+    'bc-checkbox-inner bsc:relative bsc:m-0 bsc:cursor-pointer bsc:appearance-none bsc:rounded bsc:border-none bsc:bg-mono-light-1 bsc:p-0 bsc:outline-hidden bsc:dark:bg-mono-dark-1 bsc:dark:checked:bg-mono-light-1',
     {
-      '[transition:box-shadow_0.3s]': useAnimationState,
+      'bsc:[transition:box-shadow_0.3s]': useAnimationState,
       'bsc-checkbox': !readOnly,
       'bc-read-only bsc-checkbox-read-only': readOnly,
     }
   );
 
   const svgStyles = cx(
-    'bc-checkbox-svg bsc-pointer-events-none bsc-absolute bsc-left-0 bsc-top-0 bsc-stroke-mono-light-1 bsc-stroke-2 [stroke-linecap:round] [stroke-linejoin:round] [transform:scale(0)_translateZ(0)] dark:bsc-stroke-mono-dark-3',
+    'bc-checkbox-svg bsc:pointer-events-none bsc:absolute bsc:left-0 bsc:top-0 bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round] bsc:[stroke-linejoin:round] bsc:[transform:scale(0)_translateZ(0)] bsc:dark:stroke-mono-dark-3',
     {
-      'bsc-fill-primary-1 dark:bsc-fill-mono-light-1': !readOnly,
-      'bc-read-only bsc-fill-primary-4 dark:bsc-fill-mono-light-3': readOnly,
+      'bsc:fill-primary-1 bsc:dark:fill-mono-light-1': !readOnly,
+      'bc-read-only bsc:fill-primary-4 bsc:dark:fill-mono-light-3': readOnly,
     }
   );
 

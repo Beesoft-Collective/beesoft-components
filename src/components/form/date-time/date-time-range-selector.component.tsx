@@ -81,8 +81,8 @@ const DateTimeRangeSelector = ({
   };
 
   return (
-    <div className="bc-dt-range-selector bsc-flex bsc-flex-col">
-      <div className="bc-dt-range-scroller-wrapper bsc-flex-shrink">
+    <div className="bc-dt-range-selector bsc:flex bsc:flex-col">
+      <div className="bc-dt-range-scroller-wrapper bsc:shrink">
         <DateTimeScroller
           title={getSelectorTitle()}
           scrollerType={DateScrollerType.Range}
@@ -96,7 +96,7 @@ const DateTimeRangeSelector = ({
       <div className="bsc-flex-grow">
         <MediaQuery
           mobileMarkup={
-            <div className="bc-dt-range-calendar bsc-px-2 bsc-py-1">
+            <div className="bc-dt-range-calendar bsc:px-2 bsc:py-1">
               <DateTimeCalendar
                 viewDate={viewDate}
                 selectedStartDate={selectedStartDate}
@@ -109,8 +109,8 @@ const DateTimeRangeSelector = ({
             </div>
           }
           aboveMobileMarkup={
-            <div className="bc-dt-range-wrapper bsc-flex bsc-flex-row bsc-px-2 bsc-py-1">
-              <div className="bc-dt-range-calendar-1 bsc-border-r bsc-border-solid bsc-border-gray-3 bsc-pr-4">
+            <div className="bc-dt-range-wrapper bsc:flex bsc:flex-row bsc:px-2 bsc:py-1">
+              <div className="bc-dt-range-calendar-1 bsc:border-r bsc:border-solid bsc:border-gray-3 bsc:pr-4">
                 <DateTimeCalendar
                   viewDate={viewDate}
                   selectedStartDate={selectedStartDate}
@@ -121,7 +121,7 @@ const DateTimeRangeSelector = ({
                   dispatcher={dispatcher}
                 />
               </div>
-              <div className="bc-dt-range-calendar-2 bsc-pl-4">
+              <div className="bc-dt-range-calendar-2 bsc:pl-4">
                 <DateTimeCalendar
                   viewDate={nextMonth}
                   selectedStartDate={selectedStartDate}

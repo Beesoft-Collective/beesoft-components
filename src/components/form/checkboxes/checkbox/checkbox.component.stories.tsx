@@ -46,20 +46,20 @@ const PartialCheckedTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-w-full">
-      <div className="bsc-mb-2 bsc-flex bsc-w-full">
-        <div className="bsc-flex-1">
+    <div className="bsc:w-full">
+      <div className="bsc:mb-2 bsc:flex bsc:w-full">
+        <div className="bsc:flex-1">
           <Button buttonType="primary" onClick={onCheckedRefClicked}>
             Set Checked with Ref
           </Button>
         </div>
-        <div className="bsc-flex-1">
+        <div className="bsc:flex-1">
           <Button buttonType="secondary" onClick={onPartialRefClicked}>
             Set Partial with Ref
           </Button>
         </div>
       </div>
-      <div className="bsc-p-2">
+      <div className="bsc:p-2">
         <Checkbox ref={checkboxRef} {...args} />
       </div>
     </div>
@@ -75,7 +75,7 @@ const StateTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-p-4">
+    <div className="bsc:p-4">
       <Checkbox {...args} checked={checkedState?.checked} onChange={handleOnChange} />
     </div>
   );
@@ -102,9 +102,9 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-w-full bsc-p-4">
-      <div className="bsc-flex bsc-w-full bsc-pb-2">
-        <div className="bsc-pr-2">
+    <div className="bsc:w-full bsc:p-4">
+      <div className="bsc:flex bsc:w-full bsc:pb-2">
+        <div className="bsc:pr-2">
           <Button onClick={setCheckboxState} buttonType="primary">
             Set State
           </Button>
@@ -123,10 +123,10 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
 };
 
 const DarkTemplate = (args: CheckboxProps) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <Checkbox {...args} />
     </div>
   );

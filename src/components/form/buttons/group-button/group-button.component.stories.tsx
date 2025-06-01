@@ -19,10 +19,10 @@ export default meta;
 type Story = StoryObj<typeof GroupButton>;
 
 const DarkTemplate = (args: GroupButtonProps) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <GroupButton {...args} />
     </div>
   );

@@ -19,6 +19,6 @@ export const Icon: Story = {
 export const IconColor: Story = {
   args: {
     icon: 'calendar',
-    className: 'bsc-text-primary-1 bsc-bg-primary-5',
+    className: 'bsc:text-primary-1 bsc:bg-primary-5',
   },
 };

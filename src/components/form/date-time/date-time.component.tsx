@@ -416,39 +416,39 @@ const DateTime = ({
       : iconPosition === CalendarIconPosition.Right
         ? {
             rightElement: (
-              <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
+              <div className="bsc:flex bsc:text-black bsc:dark:text-mono-light-1">
                 {allowClear && !readOnly && (
                   <div>
                     <BeeSoftIcon
                       icon="close"
                       size={IconSize.Small}
-                      className="bsc-cursor-pointer bsc-text-sm"
+                      className="bsc:cursor-pointer bsc:text-sm"
                       onClick={onClearClick}
                     />
                   </div>
                 )}
-                <div className="bsc-ml-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
+                <div className="bsc:ml-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
                   {icon || (
                     <BeeSoftIcon
                       icon="calendar"
                       size={IconSize.Small}
-                      className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                      className={!readOnly ? 'bsc:cursor-pointer' : undefined}
                     />
                   )}
                 </div>
               </div>
             ),
-            rightElementClassName: 'bsc-justify-center',
+            rightElementClassName: 'bsc:justify-center',
           }
         : {
             leftElement: (
-              <div className="bsc-flex bsc-text-black dark:bsc-text-mono-light-1">
-                <div className="bsc-mr-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
+              <div className="bsc:flex bsc:text-black bsc:dark:text-mono-light-1">
+                <div className="bsc:mr-2" onClick={!readOnly ? onCalendarIconClick : undefined}>
                   {icon || (
                     <BeeSoftIcon
                       icon="calendar"
                       size={IconSize.Small}
-                      className={!readOnly ? 'bsc-cursor-pointer' : undefined}
+                      className={!readOnly ? 'bsc:cursor-pointer' : undefined}
                     />
                   )}
                 </div>
@@ -457,14 +457,14 @@ const DateTime = ({
                     <BeeSoftIcon
                       icon="close"
                       size={IconSize.Small}
-                      className="bsc-cursor-pointer bsc-text-sm"
+                      className="bsc:cursor-pointer bsc:text-sm"
                       onClick={onClearClick}
                     />
                   </div>
                 )}
               </div>
             ),
-            leftElementClassName: 'bsc-justify-center',
+            leftElementClassName: 'bsc:justify-center',
           };
 
   const wrapperTemplateProps: DateTimeWrapperTemplateProps = {
@@ -569,10 +569,10 @@ const DateTime = ({
   const finalInputTemplate = inputTemplate || defaultInputTemplate;
 
   const inputStyles = cx(
-    'bsc-text-left',
+    'bsc:text-left',
     {
-      'bc-read-only bsc-bg-gray-4 dark:bsc-bg-mono-dark-3': readOnly,
-      'bsc-bg-white dark:bsc-bg-mono-dark-1': !readOnly,
+      'bc-read-only bsc:bg-gray-4 bsc:dark:bg-mono-dark-3': readOnly,
+      'bsc:bg-white bsc:dark:bg-mono-dark-1': !readOnly,
     },
     `bc-dt-input`,
     className

@@ -72,7 +72,7 @@ const DateTimeDaySelector = ({
   };
 
   return (
-    <div className="bc-dt-day-selector bsc-p-2">
+    <div className="bc-dt-day-selector bsc:p-2">
       <DateTimeScroller
         title={getCurrentMonthYear()}
         scrollerType={DateScrollerType.Day}
@@ -92,9 +92,9 @@ const DateTimeDaySelector = ({
         dispatcher={dispatcher}
       />
       {showTimeSelector && (
-        <div className="bc-dt-time-value-wrapper bsc-flex bsc-w-full bsc-flex-row bsc-justify-center bsc-p-2">
+        <div className="bc-dt-time-value-wrapper bsc:flex bsc:w-full bsc:flex-row bsc:justify-center bsc:p-2">
           <div
-            className="bc-dt-time-value bsc-cursor-pointer bsc-p-2 hover:bsc-bg-gray-4 dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1 dark:hover:bsc-bg-mono-light-2 dark:hover:bsc-text-mono-dark-2"
+            className="bc-dt-time-value bsc:cursor-pointer bsc:p-2 bsc:hover:bg-gray-4 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1 bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-2"
             onClick={onTimeClicked}
           >
             {selectedDate?.toLocaleTimeString(locale.code) || getDefaultTime(locale)}

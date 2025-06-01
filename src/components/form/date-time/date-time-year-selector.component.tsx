@@ -51,14 +51,14 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
         viewDate={viewDate}
         dispatcher={dispatcher}
       />
-      <div className="bc-dt-year-wrapper bsc-w-full">
-        <div className="bc-dt-year-grid bsc-grid bsc-grid-cols-4 bsc-gap-4">
+      <div className="bc-dt-year-wrapper bsc:w-full">
+        <div className="bc-dt-year-grid bsc:grid bsc:grid-cols-4 bsc:gap-4">
           {yearMatrix.map((row, rIndex) =>
             row.map((column, cIndex) => {
               return column.length > 0 ? (
                 <div
                   key={rIndex.toString() + cIndex.toString()}
-                  className="bc-dt-year-cell bsc-cursor-pointer bsc-text-center"
+                  className="bc-dt-year-cell bsc:cursor-pointer bsc:text-center"
                   onClick={() => onYearClicked(column)}
                 >
                   {column}

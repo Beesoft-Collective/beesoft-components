@@ -179,16 +179,16 @@ const DateTimeCalendar = ({
   );
 
   const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: TypeOrArray<ReactNode>) => (
-    <div className="bc-dt-calendar bsc-w-full">{children}</div>
+    <div className="bc-dt-calendar bsc:w-full">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="bc-dt-day-row bsc-grid bsc-min-w-[329px] bsc-grid-cols-7 bsc-gap-3">
+      <div className="bc-dt-day-row bsc:grid bsc:min-w-[329px] bsc:grid-cols-7 bsc:gap-3">
         {weekDaysRef.current?.map((day, index) => (
-          <div key={index} className="bc-dt-day-cell bsc-text-center bsc-font-bold">
+          <div key={index} className="bc-dt-day-cell bsc:text-center bsc:font-bold">
             {day}
           </div>
         ))}
@@ -197,10 +197,10 @@ const DateTimeCalendar = ({
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
             const dayStyles = cx(
-              'bsc-text-center bsc-py-1',
+              'bsc:text-center bsc:py-1',
               {
-                'bsc-text-gray-3': !column.isCurrent,
-                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1':
+                'bsc:text-gray-3': !column.isCurrent,
+                'bsc:bg-primary-3 bsc:dark:bg-mono-light-1 bsc:dark:text-mono-dark-1':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
@@ -208,9 +208,9 @@ const DateTimeCalendar = ({
                       !selectedEndComparison &&
                       isSameDay(selectedStartComparison, column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
-                'bsc-cursor-pointer': isSelectable,
-                'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
-                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1':
+                'bsc:cursor-pointer': isSelectable,
+                'bsc:text-error bsc:cursor-not-allowed': !isSelectable,
+                'bsc:bg-primary-5 bsc:dark:bg-mono-light-3 bsc:dark:text-mono-dark-1':
                   column.dayValue &&
                   isToday(column.dayValue) &&
                   !(isSelectedDate(column.dayValue) || isInSelectedDateRange(column.dayValue)),

@@ -36,26 +36,26 @@ const ToggleComponent = ({
     });
   };
 
-  const wrapperStyles = cx('bc-toggle-wrapper bsc-flex bsc-flex-col', className);
+  const wrapperStyles = cx('bc-toggle-wrapper bsc:flex bsc:flex-col', className);
 
   const focusRingStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const switchContainerStyles = cx(
-    'bc-toggle-container bsc-toggle-switch bsc-flex bsc-mt-0.5 bsc-relative bsc-w-[70px] bsc-h-[30px] bsc-rounded-full [transition:background-color_1s]',
+    'bc-toggle-container bsc-toggle-switch bsc:flex bsc:mt-0.5 bsc:relative bsc:w-[60px] bsc:h-[26px] bsc:rounded-full bsc:[transition:background-color_1s]',
     {
-      'bsc-cursor-pointer bsc-bg-gray-3 dark:bsc-bg-mono-dark-3 has-[:checked]:bsc-bg-primary-1 has-[:checked]:dark:bsc-bg-mono-light-2':
+      'bsc:cursor-pointer bsc:bg-gray-3 bsc:dark:bg-mono-dark-3 bsc:has-checked:bg-primary-1 bsc:dark:has-checked:bg-mono-light-2':
         !readOnly,
-      'bc-read-only bsc-pointer-events-none bsc-bg-gray-4 dark:bsc-bg-mono-dark-2 has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3':
+      'bc-read-only bsc:pointer-events-none bsc:bg-gray-4 bsc:dark:bg-mono-dark-2 bsc:has-checked:bg-primary-4 bsc:dark:has-checked:bg-mono-light-3':
         readOnly,
     },
     focusRingStyles
   );
 
   const switchStyles = cx(
-    'bc-toggle-switch bsc-absolute bsc-rounded-full dark:bsc-border dark:bsc-border-solid dark:bsc-border-mono-dark-1 bsc-w-[22px] bsc-h-[22px] bsc-top-[4px] bsc-left-[4px]',
+    'bc-toggle-switch bsc:absolute bsc:rounded-full bsc:dark:border bsc:dark:border-solid bsc:dark:border-mono-dark-1 bsc:w-[18px] bsc:h-[18px] bsc:top-[4px] bsc:left-[4px]',
     {
-      'bsc-bg-white bsc-cursor-pointer': !readOnly,
-      'bc-read-only bsc-bg-gray-5 bsc-pointer-events-none': readOnly,
-      '[transition:0.3s]': !readOnly && useAnimationState,
+      'bsc:bg-white bsc:cursor-pointer': !readOnly,
+      'bc-read-only bsc:bg-gray-5 bsc:pointer-events-none': readOnly,
+      'bsc:[transition:0.3s]': !readOnly && useAnimationState,
     }
   );
 
@@ -70,7 +70,7 @@ const ToggleComponent = ({
           type="checkbox"
           checked={checkedState}
           onChange={handleChangeEvent}
-          className="bsc-appearance-none"
+          className="bsc:appearance-none"
         />
         <div id="switch" className={switchStyles} />
       </label>

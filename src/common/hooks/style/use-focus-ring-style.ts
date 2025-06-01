@@ -8,10 +8,10 @@ export enum FocusRingStyle {
 
 const useFocusRingStyle = (focusStyle = FocusRingStyle.FocusWithin) => {
   return useMemo(() => {
-    return cx('dark:bsc-ring-mono-light-2 dark:bsc-ring-offset-mono-dark-1', {
-      'focus-within:bsc-ring focus-within:bsc-ring-primary-2 focus-within:bsc-ring-offset-2 focus-within:bsc-ring-opacity-50':
+    return cx('bsc:dark:ring-mono-light-2 bsc:dark:ring-offset-mono-dark-1', {
+      'bsc:focus-within:ring bsc:focus-within:ring-primary-2 bsc:focus-within:ring-offset-2 focus-within:bsc-ring-opacity-50':
         focusStyle === FocusRingStyle.FocusWithin,
-      'focus:bsc-ring focus:bsc-ring-primary-2 focus:bsc-ring-offset-2 focus:bsc-ring-opacity-50':
+      'bsc:focus:ring bsc:focus:ring-primary-2 bsc:focus:ring-offset-2 focus:bsc-ring-opacity-50':
         focusStyle === FocusRingStyle.Focus,
     });
   }, [focusStyle]);
