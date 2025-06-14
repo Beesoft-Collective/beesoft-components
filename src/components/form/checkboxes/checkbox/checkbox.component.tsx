@@ -1,4 +1,4 @@
-import { HeadlessCheckbox, HeadlessGroup } from '@beesoft/headless-ui';
+import { Checkbox as HeadlessCheckbox, Field } from '@beesoft/headless-ui';
 import cx from 'classnames';
 import { forwardRef, memo, Ref } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
@@ -39,7 +39,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
 
   const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const checkboxStyles = cx(
-    'bc-checkbox-outer bsc:relative bsc:rounded bsc:*:block bsc:*:size-[21px]',
+    'bc-checkbox-outer bsc:group bsc:relative bsc:cursor-pointer bsc:rounded bsc:*:block bsc:*:size-[21px]',
     {
       'bsc-checkbox-animate': !readOnly && useAnimationState,
       'bc-read-only bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
@@ -47,17 +47,17 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     focusStyles
   );
 
-  const innerCheckboxStyles = cx(
-    'bc-checkbox-inner bsc:relative bsc:m-0 bsc:cursor-pointer bsc:appearance-none bsc:rounded bsc:border-none bsc:bg-mono-light-1 bsc:p-0 bsc:outline-hidden bsc:dark:bg-mono-dark-1 bsc:dark:checked:bg-mono-light-1',
-    {
-      'bsc:[transition:box-shadow_0.3s]': useAnimationState,
-      'bsc-checkbox': !readOnly,
-      'bc-read-only bsc-checkbox-read-only': readOnly,
-    }
-  );
+  // const innerCheckboxStyles = cx(
+  //   'bc-checkbox-inner bsc:relative bsc:m-0 bsc:cursor-pointer bsc:appearance-none bsc:rounded bsc:border-none bsc:bg-mono-light-1 bsc:p-0 bsc:outline-hidden bsc:dark:bg-mono-dark-1 bsc:dark:checked:bg-mono-light-1',
+  //   {
+  //     'bsc:[transition:box-shadow_0.3s]': useAnimationState,
+  //     'bsc-checkbox': !readOnly,
+  //     'bc-read-only bsc-checkbox-read-only': readOnly,
+  //   }
+  // );
 
   const svgStyles = cx(
-    'bc-checkbox-svg bsc:pointer-events-none bsc:absolute bsc:left-0 bsc:top-0 bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round] bsc:[stroke-linejoin:round] bsc:[transform:scale(0)_translateZ(0)] bsc:dark:stroke-mono-dark-3',
+    'bc-checkbox-svg bsc:cursor-pointer bsc:absolute bsc:left-0 bsc:top-0 bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round] bsc:[stroke-linejoin:round] bsc:[transform:scale(0)_translateZ(0)] bsc:dark:stroke-mono-dark-3',
     {
       'bsc:fill-primary-1 bsc:dark:fill-mono-light-1': !readOnly,
       'bc-read-only bsc:fill-primary-4 bsc:dark:fill-mono-light-3': readOnly,
@@ -65,33 +65,35 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   );
 
   return (
-    <HeadlessGroup>
-      <div className={wrapperStyles}>
-        {label && labelLocation === SelectionLabelLocation.Left && (
-          <Label label={label} readOnly={readOnly} className={labelStyles} />
-        )}
-        <HeadlessCheckbox
-          ref={ref}
-          name={name}
-          value={value}
-          checked={checked}
-          partial={partial}
-          readOnly={readOnly}
-          className={innerCheckboxStyles}
-          labelStyles={checkboxStyles}
-          onChange={onChange}
-        >
-          {({ partial }) => (
-            <svg viewBox="0 0 21 21" className={svgStyles}>
-              {!partial ? <polyline points="5 10.75 8.5 14.25 16 6" /> : <polyline points="6 10.5 16 10.5" />}
-            </svg>
-          )}
-        </HeadlessCheckbox>
-        {label && labelLocation === SelectionLabelLocation.Right && (
-          <Label label={label} readOnly={readOnly} className={labelStyles} />
-        )}
-      </div>
-    </HeadlessGroup>
+    <Field className={wrapperStyles}>
+      {label && labelLocation === SelectionLabelLocation.Left && (
+        <Label label={label} readOnly={readOnly} className={labelStyles} />
+      )}
+      <HeadlessCheckbox
+        ref={ref}
+        name={name}
+        value={value}
+        checked={checked}
+        partial={partial}
+        readOnly={readOnly}
+        className="bsc:group bsc:relative bsc:cursor-pointer bsc:rounded bsc:*:size-[21px]"
+        onChange={onChange}
+      >
+        <svg viewBox="0 0 21 21" className={svgStyles}>
+          <polyline
+            className="bsc:[visibility:hidden] bsc:group-data-checked:visible"
+            points="5 10.75 8.5 14.25 16 6"
+          />
+          <polyline
+            className="bsc:[visibility:hidden] bsc:group-data-partial:visible"
+            points="6 10.5 16 10.5"
+          />
+        </svg>
+      </HeadlessCheckbox>
+      {label && labelLocation === SelectionLabelLocation.Right && (
+        <Label label={label} readOnly={readOnly} className={labelStyles} />
+      )}
+    </Field>
   );
 };
 

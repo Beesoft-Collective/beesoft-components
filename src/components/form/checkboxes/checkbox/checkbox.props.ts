@@ -1,7 +1,7 @@
 import { ReplacePropertyType } from '@beesoft/common';
 import { ChangeEvent } from 'react';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
-import { ComponentAnimationProps, HeadlessCheckboxProps } from '@beesoft/headless-ui';
+import { ComponentAnimationProps, type CheckboxProps as HeadlessCheckboxProps } from '@beesoft/headless-ui';
 
 export interface CheckboxChangeEvent {
   name?: string;

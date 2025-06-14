@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { debounce } from 'lodash-es';
 import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
-import { FormInputControl } from '@beesoft/headless-ui';
+import { FormInputControl } from '@beesoft/common';
 
 export interface ContentEditableInputProps extends FormInputControl<string> {
   debounceTime?: number;

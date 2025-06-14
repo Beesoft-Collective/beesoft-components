@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { LabelProps } from './label.props.ts';
-import { HeadlessLabel } from '@beesoft/headless-ui';
+import { Label as HeadlessLabel } from '@beesoft/headless-ui';
 
 const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
   const labelStyles = cx(
@@ -12,7 +12,11 @@ const Label = ({ label, htmlFor, readOnly = false, className }: LabelProps) => {
     className
   );
 
-  return <HeadlessLabel label={label} htmlFor={htmlFor} className={labelStyles} />;
+  return (
+    <HeadlessLabel htmlFor={htmlFor} className={labelStyles}>
+      {label}
+    </HeadlessLabel>
+  );
 };
 
 export { Label };

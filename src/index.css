@@ -1,5 +1,5 @@
 @import 'tailwindcss' prefix(bsc);
-@import './components/components.css' layer(components);
+/*@import './components/components.css' layer(components);*/
 
 @custom-variant dark (&:is(.dark *));
 

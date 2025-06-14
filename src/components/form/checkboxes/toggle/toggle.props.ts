@@ -1,7 +1,8 @@
-import { ComponentAnimationProps, FormInputControl, HeadlessCheckboxChangeEvent } from '@beesoft/headless-ui';
+import { ComponentAnimationProps, CheckboxChangeEvent } from '@beesoft/headless-ui';
+import type { FormInputControl } from '@beesoft/common';
 
 export interface ToggleProps
-  extends FormInputControl<string | number, HeadlessCheckboxChangeEvent>,
+  extends FormInputControl<string | number, CheckboxChangeEvent>,
     ComponentAnimationProps {
   checked?: boolean;
 }

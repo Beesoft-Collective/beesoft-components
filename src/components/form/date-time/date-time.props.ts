@@ -11,7 +11,7 @@ import {
 } from './date-time-types.ts';
 import { Locale } from 'date-fns';
 import { DayType } from './date-time-functions.ts';
-import { FormInputControl } from '@beesoft/headless-ui';
+import { FormInputControl } from '@beesoft/common';
 
 export interface DateTimeBaseTemplateProps {
   incrementViewMonths?: (months: number) => void;

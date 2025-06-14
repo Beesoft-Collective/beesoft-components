@@ -39,6 +39,7 @@ import { GroupButtonItemTemplateProps } from './components/form/buttons/group-bu
 import { RadioChangeEvent } from './components/form/radio-buttons/radio-button/radio-button.props.ts';
 
 // styles
+import '../node_modules/@beesoft/headless-ui/dist/headless-ui.css';
 import './index.css';
 
 export {

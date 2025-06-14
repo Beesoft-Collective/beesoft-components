@@ -89,7 +89,7 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
 
   const setCheckboxState = () => {
     setPartialState({
-      checked: true,
+      checked: false,
       partial: true,
     });
   };
