@@ -4,8 +4,6 @@ const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
     "@storybook/addon-a11y",
     "@chromatic-com/storybook"
   ],
@@ -19,9 +17,6 @@ const config: StorybookConfig = {
         viteConfigPath: 'vite.config.ts',
       },
     },
-  },
-  docs: {
-    autodocs: "tag",
   },
   viteFinal(config) {
     config.plugins = (config.plugins ?? []).filter(

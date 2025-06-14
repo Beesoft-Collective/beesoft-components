@@ -1,5 +1,7 @@
-import type { Preview } from "@storybook/react";
-import Layout from './layout';
+import type { Preview } from "@storybook/react-vite";
+
+import '../node_modules/@beesoft/headless-ui/dist/headless-ui.css';
+import '../src/index.css';
 
 const preview: Preview = {
   parameters: {
@@ -9,14 +11,8 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    layout: 'centered',
   },
-  decorators: [
-    (Story) => (
-      <Layout>
-        <Story />
-      </Layout>
-    ),
-  ],
 };
 
 export default preview;
