@@ -1,10 +1,10 @@
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
-import { BeeSoftProvider } from '../../../../common/contexts/beesoft.context.tsx';
+import { BeeSoftProvider } from 'common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './checkbox.component.tsx';
 import { CheckboxChangeEvent, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
+import { action } from "storybook/actions";
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Form/Checkbox',
@@ -18,19 +18,31 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
-const Template = (args: CheckboxProps) => <Checkbox {...args} />;
+const Template = (args: CheckboxProps) => {
+  document.body.className = '';
 
-const ContextAnimationTemplate = (args: CheckboxProps) => (
-  <BeeSoftProvider useAnimations={true}>
-    <Template {...args} />
-  </BeeSoftProvider>
-);
+  return <Checkbox {...args} />;
+}
 
-const ContextNoAnimationTemplate = (args: CheckboxProps) => (
-  <BeeSoftProvider useAnimations={false}>
-    <Template {...args} />
-  </BeeSoftProvider>
-);
+const ContextAnimationTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
+  return (
+    <BeeSoftProvider useAnimations={true}>
+      <Template {...args} />
+    </BeeSoftProvider>
+  );
+};
+
+const ContextNoAnimationTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
+  return (
+    <BeeSoftProvider useAnimations={false}>
+      <Template {...args} />
+    </BeeSoftProvider>
+  );
+};
 
 const PartialCheckedTemplate = (args: CheckboxProps) => {
   document.body.className = '';
@@ -67,6 +79,8 @@ const PartialCheckedTemplate = (args: CheckboxProps) => {
 };
 
 const StateTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
   const [checkedState, setCheckedState] = useState<{ checked: boolean }>();
 
   const handleOnChange = (event?: CheckboxChangeEvent) => {
@@ -82,6 +96,8 @@ const StateTemplate = (args: CheckboxProps) => {
 };
 
 const PartialSetStateTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
   const [partialState, setPartialState] = useState<{ checked: boolean; partial: boolean }>({
     checked: false,
     partial: false,

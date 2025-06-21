@@ -20,7 +20,11 @@
     "skipLibCheck": true,
     "composite": true,
     "downlevelIteration": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+
+    "paths": {
+      "common/*": ["./src/common/*"],
+    },
   },
   "include": ["src/**/*", "./.storybook/**/*", "vite.config.ts"],
   "exclude": ["node_modules", "dist", "types", "public"],

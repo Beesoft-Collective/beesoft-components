@@ -29,7 +29,7 @@ export default defineConfig([
     rules: {
       '@stylistic/object-curly-spacing': ['warn', 'always'],
       '@stylistic/array-bracket-spacing': ['warn', 'never'],
-      '@stylistic/max-len': ['warn', { code: 120, tabWidth: 2, ignoreComments: true }],
+      '@stylistic/max-len': ['warn', { code: 120, tabWidth: 2, ignoreComments: true, ignoreStrings: true }],
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'off',
       'react-refresh/only-export-components': [

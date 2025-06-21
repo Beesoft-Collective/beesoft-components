@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { CheckboxGroup } from './checkbox-group.component.tsx';

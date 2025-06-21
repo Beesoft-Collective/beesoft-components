@@ -3,11 +3,13 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'node:path';
 import dts from 'vite-plugin-dts';
 import compression from 'vite-plugin-compression';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    tsconfigPaths(),
     dts({
       tsconfigPath: 'tsconfig.json',
       rollupTypes: true,
@@ -15,16 +17,6 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
     compression(),
-    // {
-    //   name: 'remove-bg-transparent',
-    //   transform(src, id) {
-    //     if (id.includes('beesoft-components/src/index.css')) {
-    //       return {
-    //         code: src.replace(/(background-color:\s?transparent;)/, '/* $1 */ '),
-    //       };
-    //     }
-    //   },
-    // },
   ],
   build: {
     lib: {

@@ -1,8 +1,8 @@
 import { Checkbox as HeadlessCheckbox, Field } from '@beesoft/headless-ui';
 import cx from 'classnames';
 import { forwardRef, memo, Ref } from 'react';
-import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
-import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
+import { FocusRingStyle, useFocusRingStyle } from 'common/hooks/style/use-focus-ring-style.ts';
+import { useShouldAnimate } from 'common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
@@ -24,7 +24,7 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const useAnimationState = useShouldAnimate(useAnimation);
 
   const wrapperStyles = cx(
-    'bc-checkbox-wrapper bsc:flex bsc:items-center',
+    'bc-checkbox-wrapper bsc:flex bsc:items-center bsc:group/wrapper',
     {
       'bc-read-only bsc:pointer-events-none bsc:text-gray-2 bsc:dark:text-mono-light-3': readOnly,
       'bc-checked': checked,
@@ -37,13 +37,13 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
     'bsc:mr-2': labelLocation === SelectionLabelLocation.Left,
   });
 
+  // bsc:dark:bg-mono-dark-1 bsc:dark:data-checked:bg-mono-light-1
   const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const checkboxStyles = cx(
-    'bc-checkbox-outer bsc:group bsc:relative bsc:cursor-pointer bsc:rounded bsc:*:block bsc:*:size-[21px]',
-    {
-      'bsc-checkbox-animate': !readOnly && useAnimationState,
-      'bc-read-only bsc-checkbox-no-animate': readOnly || (!readOnly && !useAnimationState),
-    },
+    'bc-checkbox-outer bsc:group/checkbox bsc:cursor-pointer bsc:rounded bsc:*:block bsc:*:size-[21px]',
+    'bsc:inset-shadow-[0_0_0_1px] bsc:inset-shadow-gray-2 bsc:dark:inset-shadow-[0_0_0_1px] bsc:dark:inset-shadow-mono-light-2',
+    'bsc:group-hover/wrapper:not-data-checked:inset-shadow-[0_0_0_2px] bsc:group-hover/wrapper:not-data-checked:inset-shadow-gray-4',
+    'bsc:dark:group-hover/wrapper:not-data-checked:inset-shadow-[0_0_0_2px]',
     focusStyles
   );
 
@@ -56,11 +56,16 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   //   }
   // );
 
+  // bsc:[transform:scale(0)_translateZ(0)] add this back in when you want to get the bounce working again
   const svgStyles = cx(
-    'bc-checkbox-svg bsc:cursor-pointer bsc:absolute bsc:left-0 bsc:top-0 bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round] bsc:[stroke-linejoin:round] bsc:[transform:scale(0)_translateZ(0)] bsc:dark:stroke-mono-dark-3',
+    'bc-checkbox-svg bsc:cursor-pointer bsc:rounded bsc:group-data-checked/checkbox:bg-primary-1',
+    'bsc:group-data-partial/checkbox:bg-primary-1 bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round]',
+    'bsc:[stroke-linejoin:round] bsc:dark:stroke-mono-dark-3 bsc:dark:group-data-checked/checkbox:bg-mono-light-1',
+    'bsc:dark:group-data-partial/checkbox:bg-mono-light-1',
     {
-      'bsc:fill-primary-1 bsc:dark:fill-mono-light-1': !readOnly,
-      'bc-read-only bsc:fill-primary-4 bsc:dark:fill-mono-light-3': readOnly,
+      // 'bsc:bg-primary-1 bsc:dark:fill-mono-light-1': !readOnly,
+      'bc-read-only bsc:bg-primary-4 bsc:dark:fill-mono-light-3': readOnly,
+      'bsc:group-data-checked/checkbox:bounce': !readOnly && useAnimationState,
     }
   );
 
@@ -76,16 +81,19 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
         checked={checked}
         partial={partial}
         readOnly={readOnly}
-        className="bsc:group bsc:relative bsc:cursor-pointer bsc:rounded bsc:*:size-[21px]"
+        className={checkboxStyles}
         onChange={onChange}
       >
-        <svg viewBox="0 0 21 21" className={svgStyles}>
+        <svg
+          viewBox="0 0 21 21"
+          className={svgStyles}
+        >
           <polyline
-            className="bsc:[visibility:hidden] bsc:group-data-checked:visible"
+            className="bsc:[visibility:hidden] bsc:group-data-checked/checkbox:visible"
             points="5 10.75 8.5 14.25 16 6"
           />
           <polyline
-            className="bsc:[visibility:hidden] bsc:group-data-partial:visible"
+            className="bsc:[visibility:hidden] bsc:group-data-partial/checkbox:visible"
             points="6 10.5 16 10.5"
           />
         </svg>
