@@ -40,7 +40,10 @@ const DateTimeRangeSelector = ({
         type: DateTimeActionType.SetSelectedEndDate,
         selectedEndDate: date,
       });
-      selectedStartDate && onChange?.([selectedStartDate, date]);
+
+      if (selectedStartDate && onChange) {
+        onChange([selectedStartDate, date]);
+      }
     }
   };
 

@@ -44,6 +44,8 @@ const DateTimeScroller = ({
     dispatcher
   );
 
+  const buttonStyles = 'bsc:bg-transparent bsc:focus:outline-hidden bsc:hover:bg-primary-1 bsc:hover:text-white bsc:dark:hover:bg-mono-light-1 bsc:dark:hover:text-mono-dark-1';
+
   const defaultTemplate = (_props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bc-dt-scroller bsc:flex bsc:w-full bsc:flex-row bsc:items-center bsc:px-2 bsc:py-1">{children}</div>
   );
@@ -53,15 +55,15 @@ const DateTimeScroller = ({
   return (
     <TemplateOutlet props={templateProps} template={template}>
       <div className="bc-dt-scroller-left bsc:shrink bsc:cursor-pointer">
-        <Button className="bsc:bg-transparent bsc:focus:outline-hidden" onClick={onMovePrevious}>
+        <Button className={buttonStyles} onClick={onMovePrevious}>
           <BeeSoftIcon icon="chevronLeft" size={IconSize.Regular} />
         </Button>
       </div>
-      <div className="bc-dt-scroller-title bsc:grow bsc:cursor-pointer bsc:text-center" onClick={onTitleClicked}>
+      <div className="bc-dt-scroller-title bsc:grow bsc:cursor-pointer bsc:text-center bsc:hover:text-primary-2 bsc:dark:hover-text-mono-light-2" onClick={onTitleClicked}>
         {title}
       </div>
       <div className="bc-dt-scroller-right bsc:shrink bsc:cursor-pointer">
-        <Button className="bsc:bg-transparent bsc:focus:outline-hidden" onClick={onMoveNext}>
+        <Button className={buttonStyles} onClick={onMoveNext}>
           <BeeSoftIcon icon="chevronRight" size={IconSize.Regular} />
         </Button>
       </div>

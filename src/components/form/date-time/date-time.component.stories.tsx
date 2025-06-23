@@ -1,7 +1,7 @@
 import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { BeeSoftProvider } from '../../../common/contexts/beesoft.context.tsx';
+import { BeeSoftProvider } from 'common/contexts/beesoft.context.tsx';
 import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';

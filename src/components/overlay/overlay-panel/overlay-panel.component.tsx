@@ -1,7 +1,7 @@
 import { TypeOrArray } from '@beesoft/common';
 import { throttle, debounce } from 'lodash-es';
 import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { useBeeSoftContext } from '../../../common/hooks/use-beesoft-context.ts';
+import { useBeeSoftContext } from 'common/hooks/use-beesoft-context.ts';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';

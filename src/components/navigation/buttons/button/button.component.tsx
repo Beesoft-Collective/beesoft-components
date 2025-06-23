@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { forwardRef, Ref, useImperativeHandle, useRef } from 'react';
-import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
+import { FocusRingStyle, useFocusRingStyle } from 'common/hooks/style/use-focus-ring-style.ts';
 import { ButtonProps, ButtonRef } from './button.props.ts';
 
 const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {

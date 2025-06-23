@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { ChangeEvent, memo, useCallback } from 'react';
-import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
+import { useShouldAnimate } from 'common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { RadioItemProps } from './radio-item.props.ts';

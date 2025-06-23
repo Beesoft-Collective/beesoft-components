@@ -1,5 +1,5 @@
 @import 'tailwindcss' prefix(bsc);
-/*@import './components/components.css' layer(components);*/
+@import './components/components.css' layer(components);
 
 @custom-variant dark (&:is(.dark *));
 
@@ -36,7 +36,6 @@
   --color-error: var(--theme-bsc-error);
 
   --animate-bounce: bounce 0.4s ease-in-out forwards 0.2s;
-  --animate-no-bounce: bounce 0s ease-in-out forwards 0s;
 
   @keyframes bounce {
     50% {

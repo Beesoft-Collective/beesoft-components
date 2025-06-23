@@ -1,3 +1,4 @@
+import { TypeOrArray } from '@beesoft/common';
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday, Locale } from 'date-fns';
 import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -9,7 +10,6 @@ import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 import { DateTimeCalendarTemplateProps } from './date-time.props.ts';
 import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
-import { TypeOrArray } from '@beesoft/common';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
@@ -18,7 +18,7 @@ export interface DateTimeCalendarProps {
   selectedEndDate?: Date;
   selectionMode?: CalendarSelectionMode;
   locale?: Locale;
-  onDateSelected?: (date: Date, options?: Record<string, any>) => void;
+  onDateSelected?: (date: Date, options?: Record<string, unknown>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   dispatcher: Dispatch<DateTimeReducerAction>;
@@ -197,10 +197,10 @@ const DateTimeCalendar = ({
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
             const dayStyles = cx(
-              'bsc:text-center bsc:py-1',
+              'bsc:text-center bsc:py-1 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1',
               {
                 'bsc:text-gray-3': !column.isCurrent,
-                'bsc:bg-primary-3 bsc:dark:bg-mono-light-1 bsc:dark:text-mono-dark-1':
+                'bsc:bg-primary-1 bsc:text-white bsc:dark:bg-mono-light-1 bsc:dark:text-mono-dark-1':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
