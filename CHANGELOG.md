@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Changed
 
-- Added some final styling to the checkbox and date components.
+- Creating a test build to make sure everything still works.
 
 ## [0.10.0] - 2025-05-28
 
