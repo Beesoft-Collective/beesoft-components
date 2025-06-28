@@ -1,4 +1,7 @@
-@import 'tailwindcss' prefix(bsc);
+@layer bsc-theme, bsc-base, bsc-components, bsc-utilities;
+@import 'tailwindcss/theme.css' layer(bsc-theme) prefix(bsc);
+@import 'tailwindcss/preflight.css' layer(bsc-base) prefix(bsc);
+@import 'tailwindcss/utilities.css' layer(bsc-utilities) prefix(bsc);
 @import './components/components.css' layer(components);
 
 @custom-variant dark (&:is(.dark *));
@@ -58,7 +61,7 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-@layer base {
+@layer bsc-base {
   *,
   ::after,
   ::before,

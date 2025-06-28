@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Previous release caused an issue in a component library using Tailwind v3, so I've made a couple of changes to see if they fix the issue.
+
 ## [0.10.1-0] - 2025-06-27
 
 ## Changed
