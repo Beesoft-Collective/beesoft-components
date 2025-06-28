@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1-3] - 2025-06-28
+
 ## Changed
 
 - Forgot to change the name of the components layer to bsc-components.
@@ -132,7 +134,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-2...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-3...develop
+[0.10.1-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-3
 [0.10.1-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-2
 [0.10.1-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-1
 [0.10.1-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-0
