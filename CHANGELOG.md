@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Made the same Tailwind import change to the headless-ui library to see if this fixes the Tailwind v3 issue.
+
 ## [0.10.1-1] - 2025-06-28
 
 ## Changed
