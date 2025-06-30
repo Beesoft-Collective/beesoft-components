@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1-5] - 2025-06-30
+
 ## Changed
 
 - Setting the important flag on a couple of classes; this should fix a styling issue when the library is implemented in a project still using Tailwind 3.
@@ -144,7 +146,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-4...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-5...develop
+[0.10.1-5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-5
 [0.10.1-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-4
 [0.10.1-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-3
 [0.10.1-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-2
