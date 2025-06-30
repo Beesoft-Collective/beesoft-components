@@ -294,7 +294,7 @@ const OverlayPanel = ({
     >
       {({ state, defaultStyle, transitionStyles }) => (
         <div
-          className="bsc:fixed bsc:border bsc:border-solid bsc:border-black bsc:bg-white bsc:shadow bsc:dark:border-mono-light-1 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
+          className="bsc:fixed bsc:border! bsc:border-solid! bsc:border-black bsc:bg-white bsc:shadow bsc:dark:border-mono-light-1 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
           style={{
             ...baseStyles,
             ...defaultStyle,

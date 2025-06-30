@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Setting the important flag on a couple of classes; this should fix a styling issue when the library is implemented in a project still using Tailwind 3.
+
 ## [0.10.1-4] - 2025-06-28
 
 ## Changed
