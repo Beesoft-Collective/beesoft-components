@@ -76,7 +76,7 @@ const DateTimeMonthSelector = ({
           row.map((column, cIndex) => (
             <div
               key={rIndex.toString() + cIndex.toString()}
-              className="bc-dt-month-cell bsc:cursor-pointer bsc:text-center"
+              className="bc-dt-month-cell bsc:cursor-pointer bsc:text-center bsc:py-2 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1"
               onClick={() => onMonthClicked(column.monthNumber)}
             >
               {column.monthName}

@@ -58,7 +58,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
               return column.length > 0 ? (
                 <div
                   key={rIndex.toString() + cIndex.toString()}
-                  className="bc-dt-year-cell bsc:cursor-pointer bsc:text-center"
+                  className="bc-dt-year-cell bsc:cursor-pointer bsc:text-center bsc:py-2 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1"
                   onClick={() => onYearClicked(column)}
                 >
                   {column}
