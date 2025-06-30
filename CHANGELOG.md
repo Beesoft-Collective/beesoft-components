@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1-6] - 2025-06-30
+
 ## Changed
 
 - Added some missed styles.
@@ -150,7 +152,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-5...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-6...develop
+[0.10.1-6]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-6
 [0.10.1-5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-5
 [0.10.1-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-4
 [0.10.1-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-3
