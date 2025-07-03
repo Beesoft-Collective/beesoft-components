@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1-7] - 2025-07-03
+
 ## Changed
 
 - Added a missing style to the year selector.
@@ -156,7 +158,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-6...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-7...develop
+[0.10.1-7]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-7
 [0.10.1-6]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-6
 [0.10.1-5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-5
 [0.10.1-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-4
