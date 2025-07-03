@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Added a missing style to the year selector.
+
 ## [0.10.1-6] - 2025-06-30
 
 ## Changed
