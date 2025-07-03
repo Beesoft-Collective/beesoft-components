@@ -42,7 +42,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const getCurrentDecade = () => `${yearMatrix[0][0].toString()} - ${yearMatrix[2][1].toString()}`;
 
   return (
-    <div className="bc-dt-year-selector" style={{ minWidth: '20rem' }}>
+    <div className="bc-dt-year-selector bsc:p-2" style={{ minWidth: '20rem' }}>
       <DateTimeScroller
         title={getCurrentDecade()}
         scrollerType={DateScrollerType.Year}
