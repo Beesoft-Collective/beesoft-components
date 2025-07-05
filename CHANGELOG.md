@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2025-07-05
+
 ## Changed
 
 - Upgraded the majority of the library's dependencies most notably Tailwind to version 4. This brings better styling capabilities to the components.
@@ -168,7 +170,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-8...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1...develop
+[0.10.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1
 [0.10.1-8]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-8
 [0.10.1-7]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-7
 [0.10.1-6]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-6
