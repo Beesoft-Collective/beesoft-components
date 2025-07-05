@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Upgraded the majority of the library's dependencies most notably Tailwind to version 4. This brings better styling capabilities to the components.
+
 ## [0.10.1-8] - 2025-07-05
 
 ## Changed
