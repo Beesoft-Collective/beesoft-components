@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Added the important flag to the hover button styles, this is to allow these styles to override Tailwind 3's preflight button styles.
+
 ## [0.10.1-7] - 2025-07-03
 
 ## Changed
