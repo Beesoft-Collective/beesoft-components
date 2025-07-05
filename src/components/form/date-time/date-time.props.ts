@@ -1,4 +1,4 @@
-import { TypeOrArray } from '@beesoft/common';
+import { FormInputControl, TypeOrArray } from '@beesoft/common';
 import React from 'react';
 import { TemplateFunction } from '../../common/template-outlet/template-outlet.component.tsx';
 import {
@@ -11,7 +11,6 @@ import {
 } from './date-time-types.ts';
 import { Locale } from 'date-fns';
 import { DayType } from './date-time-functions.ts';
-import { FormInputControl } from '@beesoft/headless-ui';
 
 export interface DateTimeBaseTemplateProps {
   incrementViewMonths?: (months: number) => void;

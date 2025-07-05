@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { ChangeEvent, memo, useCallback } from 'react';
-import { useShouldAnimate } from '../../../../common/hooks/use-animation.ts';
+import { useShouldAnimate } from 'common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { SelectionLabelLocation } from '../../form-generic.interfaces.ts';
 import { RadioItemProps } from './radio-item.props.ts';
@@ -25,12 +25,12 @@ const RadioItemComponent = ({
     [onChange]
   );
 
-  const wrapperStyles = cx('bc-radio-item-wrapper bsc-flex bsc-items-center *:bsc-cursor-pointer', {
+  const wrapperStyles = cx('bc-radio-item-wrapper bsc:flex bsc:items-center bsc:*:cursor-pointer', {
     'bc-read-only': readOnly,
   });
-  const radioStyles = cx('bc-radio-item-outer bsc-relative *:bsc-size-[21px]', {
-    'bsc-pl-1': labelLocation === SelectionLabelLocation.Left,
-    'bsc-pr-1': labelLocation === SelectionLabelLocation.Right,
+  const radioStyles = cx('bc-radio-item-outer bsc:relative bsc:*:size-[21px]', {
+    'bsc:pl-1': labelLocation === SelectionLabelLocation.Left,
+    'bsc:pr-1': labelLocation === SelectionLabelLocation.Right,
     'bsc-radio-item-animate': !readOnly && useAnimationState,
     'bsc-radio-item': !readOnly,
     'bc-read-only bsc-radio-item-read-only': readOnly,
@@ -47,7 +47,7 @@ const RadioItemComponent = ({
           type="radio"
           checked={checked}
           onChange={handleOnChange}
-          className="bc-radio-item-input-hidden bsc-hidden"
+          className="bc-radio-item-input-hidden bsc:hidden"
         />
         <svg viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet" className="bc-radio-item-svg">
           <circle cx={15} cy={15} r={13} />

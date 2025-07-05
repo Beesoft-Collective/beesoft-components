@@ -61,7 +61,7 @@ const DateTimeMonthSelector = ({
   };
 
   return (
-    <div className="bc-dt-month-selector bsc-p-2" style={{ minWidth: '20rem' }}>
+    <div className="bc-dt-month-selector bsc:p-2" style={{ minWidth: '20rem' }}>
       <DateTimeScroller
         title={getCurrentYear()}
         scrollerType={DateScrollerType.Month}
@@ -71,12 +71,12 @@ const DateTimeMonthSelector = ({
         viewDate={viewDate}
         dispatcher={dispatcher}
       />
-      <div className="bc-dt-month-grid bsc-grid bsc-w-full bsc-grid-cols-4 bsc-gap-4">
+      <div className="bc-dt-month-grid bsc:grid bsc:w-full bsc:grid-cols-4 bsc:gap-4">
         {monthMatrix.current.map((row, rIndex) =>
           row.map((column, cIndex) => (
             <div
               key={rIndex.toString() + cIndex.toString()}
-              className="bc-dt-month-cell bsc-cursor-pointer bsc-text-center"
+              className="bc-dt-month-cell bsc:cursor-pointer bsc:text-center bsc:py-2 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1"
               onClick={() => onMonthClicked(column.monthNumber)}
             >
               {column.monthName}

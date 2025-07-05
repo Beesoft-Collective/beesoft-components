@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { applyBeeSoftTheme, createBeeSoftTheme } from '../src/components/common-functions';
 
+import '../node_modules/@beesoft/headless-ui/dist/headless-ui.css';
 import '../src/index.css';
 
-// @ts-ignore
-const Layout = ({children}) => {
+// @ts-expect-error needed to allow children below
+const Layout = ({ children }) => {
   useEffect(() => {
     applyBeeSoftTheme(
       createBeeSoftTheme({
@@ -18,7 +19,7 @@ const Layout = ({children}) => {
   }, []);
 
   return (
-    <div className="bsc-p-10">
+    <div className="bsc:p-10">
       {children}
     </div>
   );

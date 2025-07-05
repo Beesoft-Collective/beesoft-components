@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { IconProps } from './icon.props.ts';
 
 const ChevronRightIcon: FC<IconProps> = ({ className }) => {
-  const svgStyles = cx('bsc-h-6 bsc-w-6', className);
+  const svgStyles = cx('bsc:h-6 bsc:w-6', className);
 
   return (
     <svg

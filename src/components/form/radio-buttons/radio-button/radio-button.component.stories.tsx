@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { RadioButton } from './radio-button.component.tsx';
 import { RadioButtonProps } from './radio-button.props.ts';
@@ -16,10 +16,10 @@ export default meta;
 type Story = StoryObj<typeof RadioButton>;
 
 const DarkTemplate = (args: RadioButtonProps) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <RadioButton {...args} />
     </div>
   );

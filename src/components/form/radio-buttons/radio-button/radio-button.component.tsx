@@ -60,10 +60,10 @@ const RadioButtonComponent = ({
     );
   };
 
-  const containerStyles = cx('bc-radio-container bsc-flex bsc-flex-col bsc-gap-1', className);
-  const radioButtonStyles = cx('bc-radio-wrapper bsc-flex bsc-gap-1', {
-    'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
-    '[&>*]:bsc-pr-2': orientation === FormGroupItemOrientation.Horizontal,
+  const containerStyles = cx('bc-radio-container bsc:flex bsc:flex-col bsc:gap-1', className);
+  const radioButtonStyles = cx('bc-radio-wrapper bsc:flex bsc:gap-1', {
+    'bsc:flex-col': orientation === FormGroupItemOrientation.Vertical,
+    'bsc:*:pr-2': orientation === FormGroupItemOrientation.Horizontal,
   });
 
   const renderItems = (finalData: JsonData) => (

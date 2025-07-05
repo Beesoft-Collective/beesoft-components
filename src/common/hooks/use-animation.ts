@@ -7,10 +7,10 @@ const useShouldAnimate = (animationProperty?: boolean) => {
   const beeSoftContext = useBeeSoftContext();
 
   useEffect(() => {
-    if (animationProperty !== undefined) {
-      setAnimationState(animationProperty);
-    } else if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
+    if (beeSoftContext && beeSoftContext.useAnimations !== undefined) {
       setAnimationState(beeSoftContext.useAnimations);
+    } else if (animationProperty !== undefined) {
+      setAnimationState(animationProperty);
     }
   }, [beeSoftContext, animationProperty]);
 

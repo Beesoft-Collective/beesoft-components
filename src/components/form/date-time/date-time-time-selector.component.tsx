@@ -149,22 +149,24 @@ const DateTimeTimeSelector = ({
     });
   };
 
-  const gridWrapperStyle = cx('bsc-w-full bsc-grid bsc-grid-rows-3 bsc-gap-4 bc-dt-time-grid', {
-    'bsc-grid-cols-4': timeFormat === TimeFormatType.TwelveHour,
-    'bsc-grid-cols-3': timeFormat === TimeFormatType.TwentyFourHour,
+  const gridWrapperStyle = cx('bsc:w-full bsc:grid bsc:grid-rows-3 bsc:gap-4 bsc:items-center bc-dt-time-grid', {
+    'bsc:grid-cols-4': timeFormat === TimeFormatType.TwelveHour,
+    'bsc:grid-cols-3': timeFormat === TimeFormatType.TwentyFourHour,
   });
 
   const dateSelectorStyle = cx(
-    'bsc-text-center bsc-cursor-pointer hover:bsc-bg-gray-4 dark:bsc-text-mono-light-1 dark:hover:bsc-bg-mono-light-1 dark:hover:bsc-text-mono-dark-1 bc-dt-time-date-value',
+    'bsc:text-center bsc:cursor-pointer bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:text-mono-light-1 bsc:dark:hover:bg-mono-light-1 bsc:dark:hover:text-mono-dark-1 bc-dt-time-date-value',
     {
-      'bsc-col-span-4': timeFormat === TimeFormatType.TwelveHour,
-      'bsc-col-span-3': timeFormat === TimeFormatType.TwentyFourHour,
+      'bsc:col-span-4': timeFormat === TimeFormatType.TwelveHour,
+      'bsc:col-span-3': timeFormat === TimeFormatType.TwentyFourHour,
     }
   );
 
+  const buttonStyles = 'bsc-bg-transparent bsc:p-2 bsc:cursor-pointer bsc:focus:outline-hidden bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-1 bsc:dark:hover:text-mono-dark-1';
+
   return (
     <div
-      className="bc-dt-time-selector bsc-flex bsc-flex-row bsc-justify-center bsc-p-2"
+      className="bc-dt-time-selector bsc:flex bsc:flex-row bsc:justify-center bsc:p-2"
       style={{ minWidth: timeFormat === TimeFormatType.TwelveHour ? '15rem' : '11rem' }}
     >
       <div className={gridWrapperStyle}>
@@ -173,44 +175,44 @@ const DateTimeTimeSelector = ({
             {dateString.current}
           </div>
         )}
-        <div className="bc-dt-time-hour-increase bsc-cursor-pointer bsc-text-center">
-          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseHour}>
+        <div className="bc-dt-time-hour-increase bsc:cursor-pointer bsc:text-center">
+          <Button className={buttonStyles} onClick={increaseHour}>
             <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
           </Button>
         </div>
         <div></div>
-        <div className="bc-dt-time-minute-increase bsc-cursor-pointer bsc-text-center">
-          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={increaseMinute}>
+        <div className="bc-dt-time-minute-increase bsc:cursor-pointer bsc:text-center">
+          <Button className={buttonStyles} onClick={increaseMinute}>
             <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
           </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bc-dt-time-meridian-increase bsc-cursor-pointer bsc-text-center">
-            <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
+          <div className="bc-dt-time-meridian-increase bsc:cursor-pointer bsc:text-center">
+            <Button className={buttonStyles} onClick={changeMeridian}>
               <BeeSoftIcon icon="chevronUp" size={IconSize.Regular} />
             </Button>
           </div>
         )}
-        <div className="bc-dt-time-hour-value bsc-text-center">{hours.current[currentHour]}</div>
-        <div className="bc-dt-time-separator bsc-text-center">:</div>
-        <div className="bc-dt-time-minute-value bsc-text-center">{minutes.current[currentMinute]}</div>
+        <div className="bc-dt-time-hour-value bsc:text-center">{hours.current[currentHour]}</div>
+        <div className="bc-dt-time-separator bsc:text-center">:</div>
+        <div className="bc-dt-time-minute-value bsc:text-center">{minutes.current[currentMinute]}</div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bc-dt-time-meridian-value bsc-text-center">{ampm.current[currentMeridian]}</div>
+          <div className="bc-dt-time-meridian-value bsc:text-center">{ampm.current[currentMeridian]}</div>
         )}
-        <div className="bc-dt-time-hour-decrease bsc-cursor-pointer bsc-text-center">
-          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseHour}>
+        <div className="bc-dt-time-hour-decrease bsc:cursor-pointer bsc:text-center">
+          <Button className={buttonStyles} onClick={decreaseHour}>
             <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
           </Button>
         </div>
         <div></div>
-        <div className="bc-dt-time-minute-decrease bsc-cursor-pointer bsc-text-center">
-          <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={decreaseMinute}>
+        <div className="bc-dt-time-minute-decrease bsc:cursor-pointer bsc:text-center">
+          <Button className={buttonStyles} onClick={decreaseMinute}>
             <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
           </Button>
         </div>
         {timeFormat === TimeFormatType.TwelveHour && (
-          <div className="bc-dt-time-meridian-decrease bsc-cursor-pointer bsc-text-center">
-            <Button className="bsc-bg-transparent bsc-p-2 focus:bsc-outline-none" onClick={changeMeridian}>
+          <div className="bc-dt-time-meridian-decrease bsc:cursor-pointer bsc:text-center">
+            <Button className={buttonStyles} onClick={changeMeridian}>
               <BeeSoftIcon icon="chevronDown" size={IconSize.Regular} />
             </Button>
           </div>

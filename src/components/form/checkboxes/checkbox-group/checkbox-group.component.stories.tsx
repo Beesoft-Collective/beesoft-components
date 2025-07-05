@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { CheckboxGroup } from './checkbox-group.component.tsx';
@@ -17,10 +17,10 @@ export default meta;
 type Story = StoryObj<typeof CheckboxGroup>;
 
 const DarkTemplate = (args: CheckboxGroupProps) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <CheckboxGroup {...args} />
     </div>
   );

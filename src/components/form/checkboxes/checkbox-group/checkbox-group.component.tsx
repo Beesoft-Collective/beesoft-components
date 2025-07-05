@@ -52,13 +52,13 @@ const CheckboxGroupComponent = ({
       checked={selectedValues.some((value) => value === item[valueField])}
       readOnly={readOnly}
       onChange={(value) => value && handleOnChange(value)}
-      className="bsc-mr-3"
+      className="bsc:mr-3"
     />
   );
 
-  const containerStyles = cx('bsc-flex bsc-flex-col bsc-gap-1', className);
-  const checkboxStyles = cx('bsc-flex bsc-gap-1', {
-    'bsc-flex-col': orientation === FormGroupItemOrientation.Vertical,
+  const containerStyles = cx('bsc:flex bsc:flex-col bsc:gap-1', className);
+  const checkboxStyles = cx('bsc:flex bsc:gap-1', {
+    'bsc:flex-col': orientation === FormGroupItemOrientation.Vertical,
   });
 
   const renderItems = (finalData: JsonData) => <div className={checkboxStyles}>{finalData.map(renderCheckbox)}</div>;

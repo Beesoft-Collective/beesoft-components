@@ -1,10 +1,10 @@
-import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
-import { BeeSoftProvider } from '../../../../common/contexts/beesoft.context.tsx';
+import { BeeSoftProvider } from 'common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './checkbox.component.tsx';
 import { CheckboxChangeEvent, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
+import { action } from "storybook/actions";
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Form/Checkbox',
@@ -18,19 +18,31 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
-const Template = (args: CheckboxProps) => <Checkbox {...args} />;
+const Template = (args: CheckboxProps) => {
+  document.body.className = '';
 
-const ContextAnimationTemplate = (args: CheckboxProps) => (
-  <BeeSoftProvider useAnimations={true}>
-    <Template {...args} />
-  </BeeSoftProvider>
-);
+  return <Checkbox {...args} />;
+}
 
-const ContextNoAnimationTemplate = (args: CheckboxProps) => (
-  <BeeSoftProvider useAnimations={false}>
-    <Template {...args} />
-  </BeeSoftProvider>
-);
+const ContextAnimationTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
+  return (
+    <BeeSoftProvider useAnimations={true}>
+      <Template {...args} />
+    </BeeSoftProvider>
+  );
+};
+
+const ContextNoAnimationTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
+  return (
+    <BeeSoftProvider useAnimations={false}>
+      <Template {...args} />
+    </BeeSoftProvider>
+  );
+};
 
 const PartialCheckedTemplate = (args: CheckboxProps) => {
   document.body.className = '';
@@ -46,20 +58,20 @@ const PartialCheckedTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-w-full">
-      <div className="bsc-mb-2 bsc-flex bsc-w-full">
-        <div className="bsc-flex-1">
+    <div className="bsc:w-full">
+      <div className="bsc:mb-2 bsc:flex bsc:w-full">
+        <div className="bsc:flex-1">
           <Button buttonType="primary" onClick={onCheckedRefClicked}>
             Set Checked with Ref
           </Button>
         </div>
-        <div className="bsc-flex-1">
+        <div className="bsc:flex-1">
           <Button buttonType="secondary" onClick={onPartialRefClicked}>
             Set Partial with Ref
           </Button>
         </div>
       </div>
-      <div className="bsc-p-2">
+      <div className="bsc:p-2">
         <Checkbox ref={checkboxRef} {...args} />
       </div>
     </div>
@@ -67,6 +79,8 @@ const PartialCheckedTemplate = (args: CheckboxProps) => {
 };
 
 const StateTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
   const [checkedState, setCheckedState] = useState<{ checked: boolean }>();
 
   const handleOnChange = (event?: CheckboxChangeEvent) => {
@@ -75,13 +89,15 @@ const StateTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-p-4">
+    <div className="bsc:p-4">
       <Checkbox {...args} checked={checkedState?.checked} onChange={handleOnChange} />
     </div>
   );
 };
 
 const PartialSetStateTemplate = (args: CheckboxProps) => {
+  document.body.className = '';
+
   const [partialState, setPartialState] = useState<{ checked: boolean; partial: boolean }>({
     checked: false,
     partial: false,
@@ -89,7 +105,7 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
 
   const setCheckboxState = () => {
     setPartialState({
-      checked: true,
+      checked: false,
       partial: true,
     });
   };
@@ -102,9 +118,9 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
   };
 
   return (
-    <div className="bsc-w-full bsc-p-4">
-      <div className="bsc-flex bsc-w-full bsc-pb-2">
-        <div className="bsc-pr-2">
+    <div className="bsc:w-full bsc:p-4">
+      <div className="bsc:flex bsc:w-full bsc:pb-2">
+        <div className="bsc:pr-2">
           <Button onClick={setCheckboxState} buttonType="primary">
             Set State
           </Button>
@@ -123,10 +139,10 @@ const PartialSetStateTemplate = (args: CheckboxProps) => {
 };
 
 const DarkTemplate = (args: CheckboxProps) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <Checkbox {...args} />
     </div>
   );

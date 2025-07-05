@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { debounce } from 'lodash-es';
 import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
-import { FormInputControl } from '@beesoft/headless-ui';
+import { FormInputControl } from '@beesoft/common';
 
 export interface ContentEditableInputProps extends FormInputControl<string> {
   debounceTime?: number;
@@ -52,8 +52,8 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
     onRightElementClick,
   } = props;
 
-  const textStyles = useRef('bsc-flex-grow focus:bsc-outline-none');
-  const placeHolderStyles = useRef('bsc-text-gray-4');
+  const textStyles = useRef('bsc:grow bsc:focus:outline-hidden');
+  const placeHolderStyles = useRef('bsc:text-gray-4');
   const inputRef = useRef<HTMLElement>();
 
   const focusListener = useCallback(
@@ -161,16 +161,16 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   }
 
   const classNames = cx(
-    { 'bsc-w-full ': fillContainer },
-    'bsc-flex bsc-flex-row bsc-items-center bsc-shadow-sm bsc-border bsc-border-solid bsc-border-gray-3 dark:bsc-border-white dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1 bsc-rounded-md bsc-p-2',
+    { 'bsc:w-full ': fillContainer },
+    'bsc:flex bsc:flex-row bsc:items-center bsc:shadow-sm bsc:border bsc:border-solid bsc:border-gray-3 bsc:dark:border-white bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1 bsc:rounded-md bsc:p-2',
     {
-      'bsc-overflow-x-auto bsc-overflow-y-hidden bsc-whitespace-pre': isSingleLine && allowSingleLineScroll,
-      'bsc-overflow-hidden bsc-whitespace-pre': isSingleLine && !allowSingleLineScroll,
+      'bsc:overflow-x-auto bsc:overflow-y-hidden bsc:whitespace-pre': isSingleLine && allowSingleLineScroll,
+      'bsc:overflow-hidden bsc:whitespace-pre': isSingleLine && !allowSingleLineScroll,
     },
     className
   );
-  const leftElementClasses = cx('bsc-flex-shrink', { 'bsc-mr-2': leftElement }, leftElementClassName);
-  const rightElementClasses = cx('bsc-flex-shrink', { 'bsc-ml-2': rightElement }, rightElementClassName);
+  const leftElementClasses = cx('bsc:shrink', { 'bsc:mr-2': leftElement }, leftElementClassName);
+  const rightElementClasses = cx('bsc:shrink', { 'bsc:ml-2': rightElement }, rightElementClassName);
 
   return (
     <div className={classNames} ref={(element) => element && onElementCreated(element)}>

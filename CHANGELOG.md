@@ -7,6 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Upgraded the majority of the library's dependencies most notably Tailwind to version 4. This brings better styling capabilities to the components.
+
+## [0.10.1-8] - 2025-07-05
+
+## Changed
+
+- Added the important flag to the hover button styles, this is to allow these styles to override Tailwind 3's preflight button styles.
+
+## [0.10.1-7] - 2025-07-03
+
+## Changed
+
+- Added a missing style to the year selector.
+
+## [0.10.1-6] - 2025-06-30
+
+## Changed
+
+- Added some missed styles.
+
+## [0.10.1-5] - 2025-06-30
+
+## Changed
+
+- Setting the important flag on a couple of classes; this should fix a styling issue when the library is implemented in a project still using Tailwind 3.
+
+## [0.10.1-4] - 2025-06-28
+
+## Changed
+
+- Fixed a couple of styling issues found while testing in another library.
+
+## [0.10.1-3] - 2025-06-28
+
+## Changed
+
+- Forgot to change the name of the components layer to bsc-components.
+
+## [0.10.1-2] - 2025-06-28
+
+## Changed
+
+- Made the same Tailwind import change to the headless-ui library to see if this fixes the Tailwind v3 issue.
+
+## [0.10.1-1] - 2025-06-28
+
+## Changed
+
+- Previous release caused an issue in a component library using Tailwind v3, so I've made a couple of changes to see if they fix the issue.
+
+## [0.10.1-0] - 2025-06-27
+
+## Changed
+
+- Creating a test build to make sure everything still works.
+
 ## [0.10.0] - 2025-05-28
 
 ## Changed
@@ -110,7 +168,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.0...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.1-8...develop
+[0.10.1-8]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-8
+[0.10.1-7]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-7
+[0.10.1-6]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-6
+[0.10.1-5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-5
+[0.10.1-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-4
+[0.10.1-3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-3
+[0.10.1-2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-2
+[0.10.1-1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-1
+[0.10.1-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-0
 [0.10.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.0
 [0.9.6]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6
 [0.9.6-4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.9.6-4

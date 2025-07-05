@@ -164,7 +164,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   }));
 
   const finalClassName = cx(className, {
-    '!bsc-border-error': !isValidInput,
+    'bsc:border-error!': !isValidInput,
   });
 
   return (

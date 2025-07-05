@@ -2,7 +2,7 @@ import { JsonData, JsonItem, TypeOrArray, useDeepMemo } from '@beesoft/common';
 import cx from 'classnames';
 import dot from 'dot-object';
 import { ChangeEvent, memo, ReactNode, useCallback, useEffect, useId, useState } from 'react';
-import { FocusRingStyle, useFocusRingStyle } from '../../../../common/hooks/style/use-focus-ring-style.ts';
+import { FocusRingStyle, useFocusRingStyle } from 'common/hooks/style/use-focus-ring-style.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import TemplateOutlet from '../../../common/template-outlet/template-outlet.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
@@ -105,7 +105,7 @@ const GroupButtonComponent = ({
         type="checkbox"
         onChange={onMultiChange}
         checked={isChecked(itemValue)}
-        className="bsc-appearance-none"
+        className="bsc:appearance-none"
       />
       {itemText}
     </label>
@@ -120,7 +120,7 @@ const GroupButtonComponent = ({
         type="radio"
         onChange={onSingleChange}
         checked={isChecked(itemValue)}
-        className="bsc-appearance-none"
+        className="bsc:appearance-none"
       />
       {itemText}
     </label>
@@ -143,22 +143,22 @@ const GroupButtonComponent = ({
     const isLastItem = index === array.length - 1;
 
     const itemStyles = cx(
-      'bc-group-button-item bsc-cursor-pointer bsc-border-solid bsc-p-2 bsc-font-medium',
+      'bc-group-button-item bsc:cursor-pointer bsc:border-solid bsc:p-2 bsc:font-medium',
       {
-        'has-[:checked]:bsc-bg-primary-1 has-[:checked]:dark:bsc-bg-mono-light-1 has-[:checked]:bsc-text-white has-[:checked]:dark:bsc-text-mono-dark-1 dark:bsc-text-mono-light-1 bsc-text-gray-2 bsc-border-gray-3 dark:bsc-border-mono-light-2':
+        'bsc:has-checked:bg-primary-1 bsc:dark:has-checked:bg-mono-light-1 bsc:has-checked:text-white bsc:dark:has-checked:text-mono-dark-1 bsc:dark:text-mono-light-1 bsc:text-gray-2 bsc:border-gray-3 bsc:dark:border-mono-light-2':
           !readOnly,
-        'bc-read-only has-[:checked]:bsc-bg-primary-4 has-[:checked]:dark:bsc-bg-mono-light-3 has-[:checked]:bsc-text-gray-5 has-[:checked]:dark:bsc-text-mono-dark-3 dark:bsc-text-mono-light-3 bsc-text-gray-3 bsc-border-gray-4 dark:bsc-border-mono-light-3 bsc-pointer-events-none':
+        'bc-read-only bsc:has-checked:bg-primary-4 bsc:dark:has-checked:bg-mono-light-3 bsc:has-checked:text-gray-5 bsc:dark:has-checked:text-mono-dark-3 bsc:dark:text-mono-light-3 bsc:text-gray-3 bsc:border-gray-4 bsc:dark:border-mono-light-3 bsc:pointer-events-none':
           readOnly,
-        'bsc-border-t bsc-border-l bsc-border-b bsc-rounded-l-md bsc-pl-2':
+        'bsc:border-t bsc:border-l bsc:border-b bsc:rounded-l-md bsc:pl-2':
           isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
-        'bsc-border-t bsc-border-r bsc-border-l bsc-border-b bsc-rounded-r-md bsc-pr-2':
+        'bsc:border-t bsc:border-r bsc:border-l bsc:border-b bsc:rounded-r-md bsc:pr-2':
           isLastItem && orientation === FormGroupItemOrientation.Horizontal,
-        'bsc-border-t bsc-border-b': !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Horizontal,
-        'bsc-border-l': !isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
-        'bsc-border-l bsc-border-r bsc-border-t bsc-rounded-t-md':
+        'bsc:border-t bsc:border-b': !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc:border-l': !isFirstItem && orientation === FormGroupItemOrientation.Horizontal,
+        'bsc:border-l bsc:border-r bsc:border-t bsc:rounded-t-md':
           isFirstItem && orientation === FormGroupItemOrientation.Vertical,
-        'bsc-border bsc-rounded-b-md': isLastItem && orientation === FormGroupItemOrientation.Vertical,
-        'bsc-border-t bsc-border-l bsc-border-r':
+        'bsc:border bsc:rounded-b-md': isLastItem && orientation === FormGroupItemOrientation.Vertical,
+        'bsc:border-t bsc:border-l bsc:border-r':
           !isFirstItem && !isLastItem && orientation === FormGroupItemOrientation.Vertical,
       },
       focusStyles
@@ -188,9 +188,9 @@ const GroupButtonComponent = ({
     );
   };
 
-  const containerStyles = cx('bsc-flex bsc-flex-col bsc-gap-2', className);
-  const buttonWrapperStyles = cx('bsc-flex', {
-    'bsc-flex-col [width:max-content]': orientation === FormGroupItemOrientation.Vertical,
+  const containerStyles = cx('bsc:flex bsc:flex-col bsc:gap-2', className);
+  const buttonWrapperStyles = cx('bsc:flex', {
+    'bsc:flex-col bsc:w-max': orientation === FormGroupItemOrientation.Vertical,
   });
 
   const renderData = (finalData: JsonData) => <div className={buttonWrapperStyles}>{finalData.map(renderItems)}</div>;

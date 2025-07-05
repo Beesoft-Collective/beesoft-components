@@ -42,7 +42,7 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
   const getCurrentDecade = () => `${yearMatrix[0][0].toString()} - ${yearMatrix[2][1].toString()}`;
 
   return (
-    <div className="bc-dt-year-selector" style={{ minWidth: '20rem' }}>
+    <div className="bc-dt-year-selector bsc:p-2" style={{ minWidth: '20rem' }}>
       <DateTimeScroller
         title={getCurrentDecade()}
         scrollerType={DateScrollerType.Year}
@@ -51,14 +51,14 @@ const DateTimeYearSelector = ({ viewDate, locale, dispatcher }: DateTimeYearSele
         viewDate={viewDate}
         dispatcher={dispatcher}
       />
-      <div className="bc-dt-year-wrapper bsc-w-full">
-        <div className="bc-dt-year-grid bsc-grid bsc-grid-cols-4 bsc-gap-4">
+      <div className="bc-dt-year-wrapper bsc:w-full">
+        <div className="bc-dt-year-grid bsc:grid bsc:grid-cols-4 bsc:gap-4">
           {yearMatrix.map((row, rIndex) =>
             row.map((column, cIndex) => {
               return column.length > 0 ? (
                 <div
                   key={rIndex.toString() + cIndex.toString()}
-                  className="bc-dt-year-cell bsc-cursor-pointer bsc-text-center"
+                  className="bc-dt-year-cell bsc:cursor-pointer bsc:text-center bsc:py-2 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1"
                   onClick={() => onYearClicked(column)}
                 >
                   {column}

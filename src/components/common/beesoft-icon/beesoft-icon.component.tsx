@@ -21,8 +21,8 @@ const BeeSoftIcon = ({ icon, size = IconSize.Regular, onClick, className }: BeeS
 
   const iconStyles = cx(
     {
-      'bsc-h-[24px] bsc-w-[24px]': size === IconSize.Regular,
-      'bsc-h-[20px] bsc-w-[20px]': size === IconSize.Small,
+      'bsc:h-[24px] bsc:w-[24px]': size === IconSize.Regular,
+      'bsc:h-[20px] bsc:w-[20px]': size === IconSize.Small,
     },
     className
   );

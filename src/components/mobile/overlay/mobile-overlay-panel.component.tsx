@@ -114,7 +114,7 @@ const MobileOverlayPanel = ({
       {({ state, defaultStyle, transitionStyles }) => (
         <div ref={(element) => element && onPanelCreated(element)}>
           <div
-            className="bsc-fixed bsc-left-0 bsc-top-0 bsc-h-full bsc-w-full bsc-bg-mono-dark-1"
+            className="bsc:fixed bsc:left-0 bsc:top-0 bsc:h-full bsc:w-full bsc:bg-mono-dark-1"
             style={{
               zIndex: underlayZIndex,
               ...transitionStyles[state],
@@ -122,16 +122,16 @@ const MobileOverlayPanel = ({
             }}
           />
           <div
-            className="dark:bsck-border-mono-light-1 bsc-fixed bsc-bottom-0 bsc-left-0 bsc-w-full bsc-bg-white dark:bsc-border-t dark:bsc-border-solid dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1"
+            className="dark:bsck-border-mono-light-1 bsc:fixed bsc:bottom-0 bsc:left-0 bsc:w-full bsc:bg-white bsc:dark:border-t bsc:dark:border-solid bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
             style={{ zIndex, ...defaultStyle, ...transitionStyles[state] }}
           >
-            <div className="bsc-w-full">{children}</div>
+            <div className="bsc:w-full">{children}</div>
             <>
               <Button
                 buttonType="primary"
                 fullWidth={true}
                 onClick={() => setVisibility(false)}
-                className="bsc-text-xs bsc-font-bold"
+                className="bsc:text-xs bsc:font-bold"
               >
                 {approveText}
               </Button>

@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof ContentEditableInput>;
 
 const ValueTitleTemplate = (args: ContentEditableInputProps) => (
-  <div className="bsc-w-24">
+  <div className="bsc:w-24">
     <ContentEditableInput {...args} />
   </div>
 );

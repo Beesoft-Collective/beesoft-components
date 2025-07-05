@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Button } from './button.component.tsx';
 import { ButtonProps } from './button.props.ts';
@@ -18,10 +18,10 @@ type Story = StoryObj<typeof Button>;
 const Template = (args: Omit<ButtonProps, 'children'>) => <Button {...args}>Test Text</Button>;
 
 const DarkTemplate = (args: Omit<ButtonProps, 'children'>) => {
-  document.body.className = 'bsc-dark';
+  document.body.className = 'dark';
 
   return (
-    <div className="bsc-bg-mono-dark-1 bsc-p-4" style={{ height: '40rem' }}>
+    <div className="bsc:bg-mono-dark-1 bsc:p-4" style={{ height: '40rem' }}>
       <Button {...args}>Test Text</Button>
     </div>
   );
@@ -29,7 +29,7 @@ const DarkTemplate = (args: Omit<ButtonProps, 'children'>) => {
 
 export const Default: Story = {
   args: {
-    className: 'bsc-bg-gray-2 bsc-text-white',
+    className: 'bsc:bg-gray-2 bsc:text-white',
   },
   render: (args) => <Template {...args} />,
 };

@@ -1,7 +1,7 @@
 import { TypeOrArray } from '@beesoft/common';
 import { throttle, debounce } from 'lodash-es';
 import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { useBeeSoftContext } from '../../../common/hooks/use-beesoft-context.ts';
+import { useBeeSoftContext } from 'common/hooks/use-beesoft-context.ts';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
@@ -294,7 +294,7 @@ const OverlayPanel = ({
     >
       {({ state, defaultStyle, transitionStyles }) => (
         <div
-          className="bsc-fixed bsc-border bsc-border-solid bsc-bg-white bsc-shadow dark:bsc-border-mono-light-1 dark:bsc-bg-mono-dark-1 dark:bsc-text-mono-light-1"
+          className="bsc:fixed bsc:border! bsc:border-solid! bsc:border-black bsc:bg-white bsc:shadow bsc:dark:border-mono-light-1 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
           style={{
             ...baseStyles,
             ...defaultStyle,

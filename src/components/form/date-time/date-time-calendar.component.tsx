@@ -1,3 +1,4 @@
+import { TypeOrArray } from '@beesoft/common';
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday, Locale } from 'date-fns';
 import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -9,7 +10,6 @@ import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 import { DateTimeCalendarTemplateProps } from './date-time.props.ts';
 import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
-import { TypeOrArray } from '@beesoft/common';
 
 export interface DateTimeCalendarProps {
   viewDate: Date;
@@ -18,7 +18,7 @@ export interface DateTimeCalendarProps {
   selectedEndDate?: Date;
   selectionMode?: CalendarSelectionMode;
   locale?: Locale;
-  onDateSelected?: (date: Date, options?: Record<string, any>) => void;
+  onDateSelected?: (date: Date, options?: Record<string, unknown>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
   dispatcher: Dispatch<DateTimeReducerAction>;
@@ -179,16 +179,16 @@ const DateTimeCalendar = ({
   );
 
   const defaultTemplate = (_props: DateTimeCalendarTemplateProps, children: TypeOrArray<ReactNode>) => (
-    <div className="bc-dt-calendar bsc-w-full">{children}</div>
+    <div className="bc-dt-calendar bsc:w-full">{children}</div>
   );
 
   const template = viewTemplate || defaultTemplate;
 
   return (
     <TemplateOutlet props={templateProps} template={template}>
-      <div className="bc-dt-day-row bsc-grid bsc-min-w-[329px] bsc-grid-cols-7 bsc-gap-3">
+      <div className="bc-dt-day-row bsc:grid bsc:min-w-[329px] bsc:grid-cols-7 bsc:gap-3">
         {weekDaysRef.current?.map((day, index) => (
-          <div key={index} className="bc-dt-day-cell bsc-text-center bsc-font-bold">
+          <div key={index} className="bc-dt-day-cell bsc:text-center bsc:font-bold">
             {day}
           </div>
         ))}
@@ -197,10 +197,10 @@ const DateTimeCalendar = ({
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
             const dayStyles = cx(
-              'bsc-text-center bsc-py-1',
+              'bsc:text-center bsc:py-1 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1',
               {
-                'bsc-text-gray-3': !column.isCurrent,
-                'bsc-bg-primary-3 dark:bsc-bg-mono-light-1 dark:bsc-text-mono-dark-1':
+                'bsc:text-gray-3': !column.isCurrent,
+                'bsc:bg-primary-1 bsc:text-white bsc:dark:bg-mono-light-1 bsc:dark:text-mono-dark-1':
                   column &&
                   column.dayValue &&
                   ((currentSelectedDate && isSelectedDate(column.dayValue)) ||
@@ -208,9 +208,9 @@ const DateTimeCalendar = ({
                       !selectedEndComparison &&
                       isSameDay(selectedStartComparison, column.dayValue)) ||
                     (selectedStartComparison && selectedEndComparison && isInSelectedDateRange(column.dayValue))),
-                'bsc-cursor-pointer': isSelectable,
-                'bsc-text-error bsc-cursor-not-allowed': !isSelectable,
-                'bsc-bg-primary-5 dark:bsc-bg-mono-light-3 dark:bsc-text-mono-dark-1':
+                'bsc:cursor-pointer': isSelectable,
+                'bsc:text-error bsc:cursor-not-allowed': !isSelectable,
+                'bsc:bg-primary-5 bsc:dark:bg-mono-light-3 bsc:dark:text-mono-dark-1':
                   column.dayValue &&
                   isToday(column.dayValue) &&
                   !(isSelectedDate(column.dayValue) || isInSelectedDateRange(column.dayValue)),

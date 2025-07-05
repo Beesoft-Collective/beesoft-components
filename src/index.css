@@ -1,7 +1,75 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "components/components.css";
-@import "tailwindcss/utilities";
+@layer bsc-theme, bsc-base, bsc-components, bsc-utilities;
+@import 'tailwindcss/theme.css' layer(bsc-theme) prefix(bsc);
+@import 'tailwindcss/preflight.css' layer(bsc-base) prefix(bsc);
+@import 'tailwindcss/utilities.css' layer(bsc-utilities) prefix(bsc);
+@import './components/components.css' layer(bsc-components);
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: var(--theme-bsc-white);
+  --color-black: var(--theme-bsc-black);
+
+  --color-primary-1: var(--theme-bsc-primary-1);
+  --color-primary-2: var(--theme-bsc-primary-2);
+  --color-primary-3: var(--theme-bsc-primary-3);
+  --color-primary-4: var(--theme-bsc-primary-4);
+  --color-primary-5: var(--theme-bsc-primary-5);
+
+  --color-gray-1: var(--theme-bsc-gray-1);
+  --color-gray-2: var(--theme-bsc-gray-2);
+  --color-gray-3: var(--theme-bsc-gray-3);
+  --color-gray-4: var(--theme-bsc-gray-4);
+  --color-gray-5: var(--theme-bsc-gray-5);
+
+  --color-mono-dark-1: var(--theme-bsc-mono-dark-1);
+  --color-mono-dark-2: var(--theme-bsc-mono-dark-2);
+  --color-mono-dark-3: var(--theme-bsc-mono-dark-3);
+
+  --color-mono-light-1: var(--theme-bsc-mono-light-1);
+  --color-mono-light-2: var(--theme-bsc-mono-light-2);
+  --color-mono-light-3: var(--theme-bsc-mono-light-3);
+
+  --color-info: var(--theme-bsc-info);
+  --color-success: var(--theme-bsc-success);
+  --color-warning: var(--theme-bsc-warning);
+  --color-error: var(--theme-bsc-error);
+
+  --animate-bounce: bounce 0.4s ease-in-out forwards 0.2s;
+
+  @keyframes bounce {
+    50% {
+      transform: scale(1.2);
+    }
+    75% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer bsc-base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 :root {
   --theme-bsc-primary-1: #2f54ff;

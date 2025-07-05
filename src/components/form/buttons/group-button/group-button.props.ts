@@ -1,7 +1,7 @@
 import { JsonItem, MakeRequired, TypeOrArray } from '@beesoft/common';
 import { TemplateFunction } from '../../../common/template-outlet/template-outlet.component.tsx';
 import { FormGroupItemOrientation, GroupChangeEvent } from '../../form-generic.interfaces.ts';
-import { FormInputControlData } from '@beesoft/headless-ui';
+import { FormInputControlData } from '@beesoft/common';
 
 export interface GroupButtonProps
   extends MakeRequired<FormInputControlData<TypeOrArray<string | number>, GroupChangeEvent>, 'name'> {
