@@ -1,11 +1,10 @@
-import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
-import cx from 'classnames';
-import dot from 'dot-object';
-import { ChangeEvent, memo, useCallback, useId, useState } from 'react';
-import { Label } from '../../../common/label/label.component.tsx';
-import { FormGroupItemOrientation, SelectionLabelLocation } from '../../form-generic.interfaces.ts';
-import { RadioButtonProps } from './radio-button.props.ts';
-import { RadioItem } from './radio-item.component.tsx';
+import { Field, RadioChangeEvent, RadioGroup, RadioItem } from '@beesoft/headless-ui';
+import { FormGroupItemOrientation, SelectionLabelLocation } from "../../form-generic.interfaces.ts";
+import { RadioButtonProps } from "./radio-button.props.ts";
+import { memo, useId, useState } from "react";
+import { JsonItem, useDeepMemo, useEvent } from "@beesoft/common";
+import cx from "classnames";
+import { Label } from "../../../common/label/label.component.tsx";
 
 const RadioButtonComponent = ({
   name,
@@ -26,54 +25,48 @@ const RadioButtonComponent = ({
 
   const baseId = useId();
 
-  const handleChangeEvent = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const radioValue = event.target.value;
+  const handleChangeEvent = useEvent(
+    (event?: RadioChangeEvent) => {
+      const radioValue = event?.value as string | number | undefined
       setSelectedValue(radioValue);
 
-      onChange?.({
-        name,
-        value: radioValue,
-        originalEvent: event,
-      });
-    },
-    [name]
-  );
-
-  const renderRadioButton = (item: JsonItem, index: number) => {
-    const radioId = `${baseId}_radio_${index}`;
-    const itemValue = dot.pick(valueField, item);
-
-    return (
-      <RadioItem
-        key={radioId}
-        id={radioId}
-        name={name}
-        label={dot.pick(textField, item)}
-        value={itemValue}
-        checked={itemValue == selectedValue}
-        labelLocation={labelLocation}
-        readOnly={readOnly}
-        useAnimation={useAnimation}
-        onChange={handleChangeEvent}
-      />
-    );
-  };
+      onChange?.(event);
+    });
 
   const containerStyles = cx('bc-radio-container bsc:flex bsc:flex-col bsc:gap-1', className);
   const radioButtonStyles = cx('bc-radio-wrapper bsc:flex bsc:gap-1', {
     'bsc:flex-col': orientation === FormGroupItemOrientation.Vertical,
     'bsc:*:pr-2': orientation === FormGroupItemOrientation.Horizontal,
   });
+  const wrapperStyles = cx('bc-radio-item-wrapper bsc:flex bsc:items-center bsc:*:cursor-pointer', {
+    'bc-read-only': readOnly,
+  });
 
-  const renderItems = (finalData: JsonData) => (
-    <div className={radioButtonStyles}>{finalData.map(renderRadioButton)}</div>
-  );
+  const renderItem = (item: JsonItem, index: number) => {
+    const text = item[textField] as string;
+    const value = item[valueField];
+
+    return (
+      <Field key={`radio_${baseId}_item${index}`} className={wrapperStyles}>
+        {labelLocation === SelectionLabelLocation.Left && <Label label={text} readOnly={readOnly} />}
+        <RadioItem value={value}></RadioItem>
+        {labelLocation === SelectionLabelLocation.Right && <Label label={text} readOnly={readOnly} />}
+      </Field>
+    );
+  };
 
   return (
     <div className={containerStyles}>
       {label && <Label label={label} readOnly={readOnly} />}
-      {staticData && renderItems(staticData)}
+      <RadioGroup
+        name={name}
+        value={selectedValue}
+        comparator={valueField}
+        onChange={handleChangeEvent}
+        className={radioButtonStyles}
+      >
+        {staticData && staticData.map(renderItem)}
+      </RadioGroup>
     </div>
   );
 };

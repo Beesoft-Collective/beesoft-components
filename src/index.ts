@@ -15,7 +15,7 @@ import { GroupButton } from './components/form/buttons/group-button/group-button
 import { MediaQuery } from './components/mobile/media-query/media-query.component.tsx';
 import { MobileOverlayPanel } from './components/mobile/overlay/mobile-overlay-panel.component.tsx';
 import OverlayPanel from './components/overlay/overlay-panel/overlay-panel.component';
-import { RadioButton } from './components/form/radio-buttons/radio-button/radio-button.component.tsx';
+import { RadioButton } from './components/form/radio-buttons/radio-button-old/radio-button.component.tsx';
 import { Toggle } from './components/form/checkboxes/toggle/toggle.component.tsx';
 
 // functions

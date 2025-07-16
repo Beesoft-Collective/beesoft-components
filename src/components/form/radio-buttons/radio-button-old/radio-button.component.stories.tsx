@@ -1,7 +1,7 @@
 import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { RadioButton } from './radio-button.component.tsx';
-import { RadioButtonProps } from './radio-button.props.ts';
+import { RadioButtonProps } from '../radio-button/radio-button.props.ts';
 
 const meta: Meta<typeof RadioButton> = {
   title: 'Form/Radio Button',
