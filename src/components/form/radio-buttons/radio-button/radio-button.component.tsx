@@ -5,6 +5,7 @@ import { memo, useId, useState } from "react";
 import { JsonItem, useDeepMemo, useEvent } from "@beesoft/common";
 import cx from "classnames";
 import { Label } from "../../../common/label/label.component.tsx";
+import { useShouldAnimate } from "common/hooks/use-animation.ts";
 
 const RadioButtonComponent = ({
   name,
@@ -24,6 +25,7 @@ const RadioButtonComponent = ({
   const staticData = useDeepMemo(() => data, [data]);
 
   const baseId = useId();
+  const useAnimationState = useShouldAnimate(useAnimation);
 
   const handleChangeEvent = useEvent(
     (event?: RadioChangeEvent) => {
@@ -38,9 +40,28 @@ const RadioButtonComponent = ({
     'bsc:flex-col': orientation === FormGroupItemOrientation.Vertical,
     'bsc:*:pr-2': orientation === FormGroupItemOrientation.Horizontal,
   });
+
   const wrapperStyles = cx('bc-radio-item-wrapper bsc:flex bsc:items-center bsc:*:cursor-pointer', {
     'bc-read-only': readOnly,
   });
+  const radioItemStyles = cx('bc-radio-item bsc:group bsc:relative bsc:*:size-[21px]', {
+    'bsc:pl-1': labelLocation === SelectionLabelLocation.Left,
+    'bsc:pr-1': labelLocation === SelectionLabelLocation.Right,
+    'bsc-radio-item': !readOnly,
+    'bc-read-only bsc-radio-item-read-only': readOnly,
+  });
+  const svgStyles = cx('bc-radio-item-svg bsc:stroke-1 bsc:fill-none', {
+    'bsc:stroke-gray-2 bsc:dark:stroke-mono-light-2': !readOnly,
+  });
+  const circle1Styles = cx('', {
+    'bsc:group-data-checked:fill-primary-1 bsc:dark:group-data-checked:fill-mono-light-2': !readOnly,
+    'bsc:group-data-checked:fill-primary-4 bsc:dark:group-data-checked:fill-mono-light-3': readOnly,
+  });
+  const circle2Styles = cx(
+    'bsc:invisible bsc:group-data-checked:visible bsc:group-data-checked:fill-white bsc:dark:group-data-checked:fill-mono-dark-1', {
+      'bsc:group-data-checked:animate-bounce': !readOnly && useAnimationState,
+    }
+  );
 
   const renderItem = (item: JsonItem, index: number) => {
     const text = item[textField] as string;
@@ -49,7 +70,12 @@ const RadioButtonComponent = ({
     return (
       <Field key={`radio_${baseId}_item${index}`} className={wrapperStyles}>
         {labelLocation === SelectionLabelLocation.Left && <Label label={text} readOnly={readOnly} />}
-        <RadioItem value={value}></RadioItem>
+        <RadioItem value={value} className={radioItemStyles}>
+          <svg viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet" className={svgStyles}>
+            <circle cx={15} cy={15} r={13} className={circle1Styles} />
+            <circle cx="50%" cy="50%" r={7} className={circle2Styles} />
+          </svg>
+        </RadioItem>
         {labelLocation === SelectionLabelLocation.Right && <Label label={text} readOnly={readOnly} />}
       </Field>
     );
@@ -61,7 +87,6 @@ const RadioButtonComponent = ({
       <RadioGroup
         name={name}
         value={selectedValue}
-        comparator={valueField}
         onChange={handleChangeEvent}
         className={radioButtonStyles}
       >
