@@ -1,9 +1,10 @@
 import cx from 'classnames';
-import { ChangeEvent, memo, useEffect, useId, useState } from 'react';
+import { memo } from 'react';
 import { FocusRingStyle, useFocusRingStyle } from 'common/hooks/style/use-focus-ring-style.ts';
 import { useShouldAnimate } from 'common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { ToggleProps } from './toggle.props.ts';
+import { Field, Toggle as HeadlessToggle } from "@beesoft/headless-ui";
 
 const ToggleComponent = ({
   name,
@@ -15,32 +16,13 @@ const ToggleComponent = ({
   className,
   onChange,
 }: ToggleProps) => {
-  const [checkedState, setCheckedState] = useState(false);
-
-  const id = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
-
-  useEffect(() => {
-    setCheckedState(checked);
-  }, [checked]);
-
-  const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    const { checked } = event.target;
-
-    setCheckedState(checked);
-    onChange?.({
-      originalEvent: event,
-      name: name || event.target.name,
-      value: value || event.target.value,
-      checked,
-    });
-  };
 
   const wrapperStyles = cx('bc-toggle-wrapper bsc:flex bsc:flex-col', className);
 
   const focusRingStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const switchContainerStyles = cx(
-    'bc-toggle-container bsc-toggle-switch bsc:flex bsc:mt-0.5 bsc:relative bsc:w-[60px] bsc:h-[26px] bsc:rounded-full bsc:[transition:background-color_1s]',
+    'bc-toggle-container bsc:group bsc:flex bsc:mt-0.5 bsc:relative bsc:w-[60px] bsc:h-[26px] bsc:rounded-full bsc:[transition:background-color_1s]',
     {
       'bsc:cursor-pointer bsc:bg-gray-3 bsc:dark:bg-mono-dark-3 bsc:has-checked:bg-primary-1 bsc:dark:has-checked:bg-mono-light-2':
         !readOnly,
@@ -51,7 +33,7 @@ const ToggleComponent = ({
   );
 
   const switchStyles = cx(
-    'bc-toggle-switch bsc:absolute bsc:rounded-full bsc:dark:border bsc:dark:border-solid bsc:dark:border-mono-dark-1 bsc:w-[18px] bsc:h-[18px] bsc:top-[4px] bsc:left-[4px]',
+    'bc-toggle-switch bsc:absolute bsc:rounded-full bsc:dark:border bsc:dark:border-solid bsc:dark:border-mono-dark-1 bsc:group-data-toggled:translate-x-[35px] bsc:w-[18px] bsc:h-[18px] bsc:top-[4px] bsc:left-[4px]',
     {
       'bsc:bg-white bsc:cursor-pointer': !readOnly,
       'bc-read-only bsc:bg-gray-5 bsc:pointer-events-none': readOnly,
@@ -60,21 +42,12 @@ const ToggleComponent = ({
   );
 
   return (
-    <div className={wrapperStyles}>
-      {label && <Label label={label} htmlFor={id} readOnly={readOnly} />}
-      <label className={switchContainerStyles}>
-        <input
-          id={id}
-          name={name}
-          value={value}
-          type="checkbox"
-          checked={checkedState}
-          onChange={handleChangeEvent}
-          className="bsc:appearance-none"
-        />
-        <div id="switch" className={switchStyles} />
-      </label>
-    </div>
+    <Field className={wrapperStyles}>
+      {label && <Label label={label} readOnly={readOnly} />}
+      <HeadlessToggle name={name} value={value} toggled={checked} onChange={onChange} className={switchContainerStyles}>
+        <div className={switchStyles} />
+      </HeadlessToggle>
+    </Field>
   );
 };
 

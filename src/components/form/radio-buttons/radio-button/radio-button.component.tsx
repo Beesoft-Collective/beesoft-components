@@ -1,11 +1,12 @@
-import { Field, RadioChangeEvent, RadioGroup, RadioItem } from '@beesoft/headless-ui';
+import { Field, RadioGroup, RadioItem } from '@beesoft/headless-ui';
 import { FormGroupItemOrientation, SelectionLabelLocation } from "../../form-generic.interfaces.ts";
 import { RadioButtonProps } from "./radio-button.props.ts";
-import { memo, useId, useState } from "react";
-import { JsonItem, useDeepMemo, useEvent } from "@beesoft/common";
+import { memo, useId } from "react";
+import { JsonItem, useDeepMemo } from "@beesoft/common";
 import cx from "classnames";
 import { Label } from "../../../common/label/label.component.tsx";
 import { useShouldAnimate } from "common/hooks/use-animation.ts";
+import { FocusRingStyle, useFocusRingStyle } from "common/hooks/style/use-focus-ring-style.ts";
 
 const RadioButtonComponent = ({
   name,
@@ -21,19 +22,11 @@ const RadioButtonComponent = ({
   useAnimation,
   onChange,
 }: RadioButtonProps) => {
-  const [selectedValue, setSelectedValue] = useState(value);
   const staticData = useDeepMemo(() => data, [data]);
 
   const baseId = useId();
   const useAnimationState = useShouldAnimate(useAnimation);
-
-  const handleChangeEvent = useEvent(
-    (event?: RadioChangeEvent) => {
-      const radioValue = event?.value as string | number | undefined
-      setSelectedValue(radioValue);
-
-      onChange?.(event);
-    });
+  const focusRingStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
 
   const containerStyles = cx('bc-radio-container bsc:flex bsc:flex-col bsc:gap-1', className);
   const radioButtonStyles = cx('bc-radio-wrapper bsc:flex bsc:gap-1', {
@@ -44,19 +37,15 @@ const RadioButtonComponent = ({
   const wrapperStyles = cx('bc-radio-item-wrapper bsc:flex bsc:items-center bsc:*:cursor-pointer', {
     'bc-read-only': readOnly,
   });
-  const radioItemStyles = cx('bc-radio-item bsc:group bsc:relative bsc:*:size-[21px]', {
-    'bsc:pl-1': labelLocation === SelectionLabelLocation.Left,
-    'bsc:pr-1': labelLocation === SelectionLabelLocation.Right,
-    'bsc-radio-item': !readOnly,
-    'bc-read-only bsc-radio-item-read-only': readOnly,
-  });
-  const svgStyles = cx('bc-radio-item-svg bsc:stroke-2 bsc:fill-none bsc:rounded-full', {
-    'bsc:stroke-gray-1 bsc:dark:stroke-mono-light-2': !readOnly,
-    'bsc:stroke-gray-4 bsc:dark:stroke-mono-light-3': readOnly,
-  });
-  const circle1Styles = cx('', {
-    'bsc:group-data-checked:fill-primary-1 bsc:dark:group-data-checked:fill-mono-light-2': !readOnly,
-    'bsc:group-data-checked:fill-primary-4 bsc:dark:group-data-checked:fill-mono-light-3': readOnly,
+  const radioItemStyles = cx('bc-radio-item bsc:group bsc:relative bsc:*:size-[21px] bsc:rounded-full', {
+    'bsc:ml-2': labelLocation === SelectionLabelLocation.Left,
+    'bsc:mr-2': labelLocation === SelectionLabelLocation.Right,
+    'bc-read-only': readOnly,
+  }, focusRingStyles);
+  const svgStyles = cx(
+    'bc-radio-item-svg bsc:stroke-2 bsc:fill-none bsc:rounded-full bsc:stroke-gray-1 bsc:dark:stroke-mono-light-2 bsc:group-data-read-only:stroke-gray-4 bsc:dark:group-data-read-only:stroke-mono-light-3'
+  );
+  const circle1Styles = cx('bsc:group-data-checked:fill-primary-1 bsc:dark:group-data-checked:fill-mono-light-2 bsc:group-data-checked:group-data-read-only:fill-primary-4 bsc:dark:group-data-checked:group-data-read-only:fill-mono-light-3', {
     'bsc:group-data-checked:animate-bounce': !readOnly && useAnimationState,
   });
   const circle2Styles = cx(
@@ -88,8 +77,9 @@ const RadioButtonComponent = ({
       {label && <Label label={label} readOnly={readOnly} />}
       <RadioGroup
         name={name}
-        value={selectedValue}
-        onChange={handleChangeEvent}
+        value={value}
+        readOnly={readOnly}
+        onChange={onChange}
         className={radioButtonStyles}
       >
         {staticData && staticData.map(renderItem)}
