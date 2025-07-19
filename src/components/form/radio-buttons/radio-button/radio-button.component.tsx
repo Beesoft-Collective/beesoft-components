@@ -50,12 +50,14 @@ const RadioButtonComponent = ({
     'bsc-radio-item': !readOnly,
     'bc-read-only bsc-radio-item-read-only': readOnly,
   });
-  const svgStyles = cx('bc-radio-item-svg bsc:stroke-1 bsc:fill-none', {
-    'bsc:stroke-gray-2 bsc:dark:stroke-mono-light-2': !readOnly,
+  const svgStyles = cx('bc-radio-item-svg bsc:stroke-2 bsc:fill-none bsc:rounded-full', {
+    'bsc:stroke-gray-1 bsc:dark:stroke-mono-light-2': !readOnly,
+    'bsc:stroke-gray-4 bsc:dark:stroke-mono-light-3': readOnly,
   });
   const circle1Styles = cx('', {
     'bsc:group-data-checked:fill-primary-1 bsc:dark:group-data-checked:fill-mono-light-2': !readOnly,
     'bsc:group-data-checked:fill-primary-4 bsc:dark:group-data-checked:fill-mono-light-3': readOnly,
+    'bsc:group-data-checked:animate-bounce': !readOnly && useAnimationState,
   });
   const circle2Styles = cx(
     'bsc:invisible bsc:group-data-checked:visible bsc:group-data-checked:fill-white bsc:dark:group-data-checked:fill-mono-dark-1', {
@@ -72,7 +74,7 @@ const RadioButtonComponent = ({
         {labelLocation === SelectionLabelLocation.Left && <Label label={text} readOnly={readOnly} />}
         <RadioItem value={value} className={radioItemStyles}>
           <svg viewBox="0 0 30 30" preserveAspectRatio="xMidYMid meet" className={svgStyles}>
-            <circle cx={15} cy={15} r={13} className={circle1Styles} />
+            <circle cx={15} cy={15} r={15} className={circle1Styles} />
             <circle cx="50%" cy="50%" r={7} className={circle2Styles} />
           </svg>
         </RadioItem>
