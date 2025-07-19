@@ -1,8 +1,8 @@
 import { ComponentAnimationProps, CheckboxChangeEvent } from '@beesoft/headless-ui';
-import type { FormInputControl } from '@beesoft/common';
+import type { FormInputControl, MakeRequired } from '@beesoft/common';
 
 export interface ToggleProps
-  extends FormInputControl<string | number, CheckboxChangeEvent>,
+  extends MakeRequired<FormInputControl<string | number, CheckboxChangeEvent>, 'name'>,
     ComponentAnimationProps {
   checked?: boolean;
 }

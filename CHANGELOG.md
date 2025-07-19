@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 - Updated the radio button to use the new headless radio group component.
+- Updated the toggle to use the new headless toggle component.
 
 ## [0.10.1] - 2025-07-05
 
