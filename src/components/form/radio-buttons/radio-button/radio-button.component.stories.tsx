@@ -38,6 +38,7 @@ export const Default: Story = {
     label: 'Test Items',
     valueField: 'id',
     textField: 'caption',
+    readOnly: false,
     data,
   },
 };
@@ -48,6 +49,7 @@ export const Dark: Story = {
     label: 'Test Items',
     valueField: 'id',
     textField: 'caption',
+    readOnly: false,
     data,
   },
   render: (args) => <DarkTemplate {...args} />,

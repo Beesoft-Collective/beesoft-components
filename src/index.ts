@@ -36,7 +36,7 @@ import {
   DateTimeScrollerTemplateProps,
 } from './components/form/date-time/date-time.props.ts';
 import { GroupButtonItemTemplateProps } from './components/form/buttons/group-button/group-button.props.ts';
-import { RadioChangeEvent } from './components/form/radio-buttons/radio-button/radio-button.props.ts';
+import { RadioChangeEvent } from "@beesoft/headless-ui";
 
 // styles
 import '../node_modules/@beesoft/headless-ui/dist/headless-ui.css';
