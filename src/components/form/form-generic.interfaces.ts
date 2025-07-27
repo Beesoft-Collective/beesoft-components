@@ -7,7 +7,7 @@ export enum FormGroupItemOrientation {
 
 export interface GroupChangeEvent {
   name: string;
-  value: TypeOrArray<unknown>;
+  value?: TypeOrArray<unknown>;
 }
 
 export enum SelectionLabelLocation {
