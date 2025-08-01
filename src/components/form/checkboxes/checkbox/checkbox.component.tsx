@@ -24,22 +24,18 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const useAnimationState = useShouldAnimate(useAnimation);
 
   const wrapperStyles = cx(
-    'bc-checkbox-wrapper bsc:flex bsc:items-center bsc:group/wrapper bsc:*:cursor-pointer',
-    {
-      'bc-read-only bsc:pointer-events-none bsc:text-gray-2 bsc:dark:text-mono-light-3': readOnly,
-      'bc-checked': checked,
-    },
+    'bc-checkbox-wrapper bsc:flex bsc:items-center bsc:group/wrapper bsc:*:cursor-pointer bsc:has-data-read-only:text-gray-4 bsc:dark:has-data-read-only:text-mono-light-3 bsc:has-data-read-only:pointer-events-none',
     className
   );
 
-  const labelStyles = cx('bc-checkbox-label', {
+  const labelStyles = cx('bc-checkbox-label bsc:peer-data-read-only:text-gray-4 bsc:dark:peer-data-read-only:text-mono-light-3', {
     'bsc:ml-2': labelLocation === SelectionLabelLocation.Right,
     'bsc:mr-2': labelLocation === SelectionLabelLocation.Left,
   });
 
   const focusStyles = useFocusRingStyle(FocusRingStyle.FocusWithin);
   const checkboxStyles = cx(
-    'bc-checkbox-outer bsc:group/checkbox bsc:rounded bsc:*:block bsc:*:size-[21px]',
+    'bc-checkbox-outer bsc:group/checkbox bsc:peer bsc:rounded bsc:*:block bsc:*:size-[21px]',
     'bsc:inset-shadow-[0_0_0_1px] bsc:inset-shadow-gray-2 bsc:dark:inset-shadow-[0_0_0_1px] bsc:dark:inset-shadow-mono-light-2',
     'bsc:group-hover/wrapper:not-data-checked:inset-shadow-[0_0_0_2px] bsc:group-hover/wrapper:not-data-checked:inset-shadow-gray-4',
     'bsc:dark:group-hover/wrapper:not-data-checked:inset-shadow-[0_0_0_2px] bsc:[transition:box-shadow_0.3s]',
@@ -49,11 +45,11 @@ const CheckboxComponent = (props: CheckboxProps, ref: Ref<CheckboxRef>) => {
   const svgStyles = cx(
     'bc-checkbox-svg bsc:rounded bsc:stroke-mono-light-1 bsc:stroke-2 bsc:[stroke-linecap:round]',
     'bsc:[stroke-linejoin:round] bsc:dark:stroke-mono-dark-3 bsc:[transform:scale(0)]',
+    'bsc:group-data-checked/checkbox:group-data-read-only/checkbox:bg-primary-4 bsc:group-data-checked/checkbox:group-data-read-only/checkbox:fill-primary-4 bsc:group-data-partial/checkbox:group-data-read-only/checkbox:bg-primary-4 bsc:group-data-partial/checkbox:group-data-read-only/checkbox:fill-primary-4 bsc:dark:group-data-checked/checkbox:group-data-read-only/checkbox:bg-mono-light-3 bsc:dark:group-data-checked/checkbox:group-data-read-only/checkbox:fill-mono-light-3 bsc:dark:group-data-partial/checkbox:group-data-read-only/checkbox:bg-mono-light-3 bsc:dark:group-data-partial/checkbox:group-data-read-only/checkbox:fill-mono-light-3',
+    'bsc:group-data-checked/checkbox:group-not-data-read-only/checkbox:bg-primary-1 bsc:group-data-checked/checkbox:group-not-data-read-only/checkbox:fill-primary-1 bsc:group-data-partial/checkbox:bg-primary-1 bsc:group-data-partial/checkbox:fill-primary-1 bsc:dark:group-data-checked/checkbox:bg-mono-light-1 bsc:dark:group-data-checked/checkbox:fill-mono-light-1 bsc:dark:group-data-partial/checkbox:bg-mono-light-1 bsc:dark:group-data-partial/checkbox:fill-mono-light-1',
     {
-      'bc-read-only bsc:group-data-checked/checkbox:bg-primary-4 bsc:group-data-checked/checkbox:fill-primary-4 bsc:group-data-partial/checkbox:bg-primary-4 bsc:group-data-partial/checkbox:fill-primary-4 bsc:dark:group-data-checked/checkbox:bg-mono-light-3 bsc:dark:group-data-checked/checkbox:fill-mono-light-3 bsc:dark:group-data-partial/checkbox:bg-mono-light-3 bsc:dark:group-data-partial/checkbox:fill-mono-light-3': readOnly,
-      'bsc:group-data-checked/checkbox:bg-primary-1 bsc:group-data-checked/checkbox:fill-primary-1 bsc:group-data-partial/checkbox:bg-primary-1 bsc:group-data-partial/checkbox:fill-primary-1 bsc:dark:group-data-checked/checkbox:bg-mono-light-1 bsc:dark:group-data-checked/checkbox:fill-mono-light-1 bsc:dark:group-data-partial/checkbox:bg-mono-light-1 bsc:dark:group-data-partial/checkbox:fill-mono-light-1': !readOnly,
-      'bsc:group-data-checked/checkbox:animate-bounce bsc:group-data-partial/checkbox:animate-bounce': !readOnly && useAnimationState,
-      'bsc:group-data-checked/checkbox:[transform:scale(1)] bsc:group-data-partial/checkbox:[transform:scale(1)]': readOnly || !useAnimationState,
+      'bsc:group-data-checked/checkbox:group-not-data-read-only/checkbox:animate-bounce bsc:group-data-partial/checkbox:group-not-data-read-only/checkbox:animate-bounce bsc:group-data-checked/checkbox:group-data-read-only/checkbox:[transform:scale(1)] bsc:group-data-partial/checkbox:group-data-read-only/checkbox:[transform:scale(1)]': useAnimationState,
+      'bsc:group-data-checked/checkbox:[transform:scale(1)] bsc:group-data-partial/checkbox:[transform:scale(1)]': !useAnimationState,
     }
   );
 
