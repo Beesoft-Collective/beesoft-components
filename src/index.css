@@ -1,8 +1,7 @@
-@layer bsc-theme, bsc-base, bsc-components, bsc-utilities;
+@layer bsc-theme, bsc-base, bsc-utilities;
 @import 'tailwindcss/theme.css' layer(bsc-theme) prefix(bsc);
 @import 'tailwindcss/preflight.css' layer(bsc-base) prefix(bsc);
 @import 'tailwindcss/utilities.css' layer(bsc-utilities) prefix(bsc);
-@import './components/components.css' layer(bsc-components);
 
 @custom-variant dark (&:is(.dark *));
 

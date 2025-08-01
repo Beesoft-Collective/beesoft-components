@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Updated the checkbox group to use the new headless checkbox group instead of implementing the logic itself.
+
 ## [0.10.2] - 2025-07-27
 
 ## Changed

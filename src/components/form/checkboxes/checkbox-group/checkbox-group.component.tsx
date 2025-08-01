@@ -1,11 +1,11 @@
 import { JsonData, JsonItem, useDeepMemo } from '@beesoft/common';
+import { CheckboxGroup as HeadlessCheckboxGroup, CheckboxGroupChangeEvent } from "@beesoft/headless-ui";
 import cx from 'classnames';
 import { memo, useEffect, useState } from 'react';
 import { Label } from '../../../common/label/label.component.tsx';
 import { FormGroupItemOrientation } from '../../form-generic.interfaces.ts';
 import { Checkbox } from '../checkbox/checkbox.component.tsx';
 import { CheckboxGroupProps } from './checkbox-group.props.ts';
-import { CheckboxChangeEvent } from '../checkbox/checkbox.props.ts';
 
 const CheckboxGroupComponent = ({
   name,
@@ -26,32 +26,23 @@ const CheckboxGroupComponent = ({
     setSelectedValues(value ?? []);
   }, [value]);
 
-  const handleOnChange = (event: CheckboxChangeEvent) => {
-    const { value, checked } = event;
+  const handleOnChange = (event?: CheckboxGroupChangeEvent) => {
+    if (event) {
+      const { value } = event;
 
-    let updatedValues: Array<unknown>;
-    if (checked) {
-      updatedValues = [...selectedValues, value];
-    } else {
-      updatedValues = selectedValues.filter((item) => item !== value);
+      setSelectedValues(value ?? []);
+      onChange?.({
+        name,
+        value,
+      });
     }
-
-    setSelectedValues(updatedValues);
-    onChange?.({
-      name,
-      value: updatedValues,
-    });
   };
 
   const renderCheckbox = (item: JsonItem, index: number) => (
     <Checkbox
       key={`${name}_checkbox_${index}`}
-      name={name}
       label={item[textField] as string}
       value={item[valueField] as string}
-      checked={selectedValues.some((value) => value === item[valueField])}
-      readOnly={readOnly}
-      onChange={(value) => value && handleOnChange(value)}
       className="bsc:mr-3"
     />
   );
@@ -61,7 +52,19 @@ const CheckboxGroupComponent = ({
     'bsc:flex-col': orientation === FormGroupItemOrientation.Vertical,
   });
 
-  const renderItems = (finalData: JsonData) => <div className={checkboxStyles}>{finalData.map(renderCheckbox)}</div>;
+  const renderItems = (
+    finalData: JsonData
+  ) => (
+    <HeadlessCheckboxGroup
+      name={name}
+      value={selectedValues}
+      readOnly={readOnly}
+      onChange={handleOnChange}
+      className={checkboxStyles}
+    >
+      {finalData.map(renderCheckbox)}
+    </HeadlessCheckboxGroup>
+  );
 
   return (
     <div className={containerStyles}>

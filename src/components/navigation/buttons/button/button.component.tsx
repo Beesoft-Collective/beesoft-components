@@ -8,7 +8,7 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
 
   const {
     buttonType,
-    buttonStyle = 'flat',
+    buttonStyle = 'curved',
     type = 'button',
     disabled = false,
     form,
@@ -17,10 +17,6 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
     className,
     children,
   } = props;
-
-  const handleOnClick = () => {
-    onClick?.();
-  };
 
   const click = () => {
     buttonRef.current?.click();
@@ -53,7 +49,7 @@ const ButtonComponent = (props: ButtonProps, ref: Ref<ButtonRef>) => {
     <button
       ref={buttonRef}
       type={type}
-      onClick={handleOnClick}
+      onClick={onClick}
       disabled={disabled}
       form={form}
       className={buttonStyles}
