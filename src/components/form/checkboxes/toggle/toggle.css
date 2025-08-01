@@ -1,3 +1,0 @@
-.bsc-toggle-switch input:checked + #switch {
-  transform: translateX(35px);
-}
