@@ -14,6 +14,7 @@ import {
   parseISO,
   parse,
 } from 'date-fns';
+import { forceAssert } from "@beesoft/common";
 
 export type DayType = { dayValue: Date | null; isCurrent: boolean };
 
@@ -93,7 +94,7 @@ function createDefaultMatrix<T>(rows: number, columns: number, defaultValue: T):
  * @param value
  * @returns {boolean}
  */
-function valueIsPrimitive(value: any) {
+function valueIsPrimitive(value: unknown) {
   const valueType = typeof value;
   return valueType === 'string' || valueType === 'number' || valueType === 'boolean' || value instanceof Date;
 }
@@ -187,243 +188,359 @@ export function isDateBetween(checkDate: Date, startComparisonDate: Date, endCom
   return checkDate.getTime() >= startComparisonDate.getTime() && checkDate.getTime() <= endComparisonDate.getTime();
 }
 
-export async function loadLocale(localeToLoad: string) {
-  const importedFromEsmSh: Locale = (
-    await import(/* @vite-ignore */ `/node_modules/date-fns/locale/${getLocaleName(localeToLoad)}`)
-  ).default;
-
-  return importedFromEsmSh;
+export interface LocaleExport {
+  default: Locale;
 }
 
-function getLocaleName(localeToLoad: string) {
+export async function loadLocale(localeToLoad: string) {
   const [language, locale] = localeToLoad.split('-');
 
+  let localeInfo: Locale;
   switch (language) {
     case 'af':
-      return 'af';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/af')).default;
+      break;
     case 'ar':
       switch (locale) {
         case 'DZ':
-          return 'ar-DZ';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar-DZ')).default;
+          break;
         case 'EG':
-          return 'ar-EG';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar-EG')).default;
+          break;
         case 'MA':
-          return 'ar-MA';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar-MA')).default;
+          break;
         case 'SA':
-          return 'ar-SA';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar-SA')).default;
+          break;
         case 'TN':
-          return 'ar-TN';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar-TN')).default;
+          break;
         default:
-          return 'ar';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ar')).default;
+          break;
       }
+
+      break;
     case 'az':
-      return 'az';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/az')).default;
+      break;
     case 'be':
       switch (locale) {
         case 'tarask':
-          return 'be-tarask';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/be-tarask')).default;
+          break;
         default:
-          return 'be';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/be')).default;
+          break;
       }
+
+      break;
     case 'bg':
-      return 'bg';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/bg')).default;
+      break;
     case 'bn':
-      return 'bn';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/bn')).default;
+      break;
     case 'bs':
-      return 'bs';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/bs')).default;
+      break;
     case 'ca':
-      return 'ca';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ca')).default;
+      break;
     case 'cs':
-      return 'cs';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/cs')).default;
+      break;
     case 'cy':
-      return 'cy';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/cy')).default;
+      break;
     case 'da':
-      return 'da';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/da')).default;
+      break;
     case 'de':
       switch (locale) {
         case 'AT':
-          return 'de-AT';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/de-AT')).default;
+          break;
         default:
-          return 'de';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/de')).default;
+          break;
       }
+
+      break;
     case 'el':
-      return 'el';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/el')).default;
+      break;
     case 'en':
       switch (locale) {
         case 'AU':
-          return 'en-AU';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-AU')).default;
+          break;
         case 'CA':
-          return 'en-CA';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-CA')).default;
+          break;
         case 'GB':
-          return 'en-GB';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-GB')).default;
+          break;
         case 'IE':
-          return 'en-IE';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-IE')).default;
+          break;
         case 'IN':
-          return 'en-IN';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-IN')).default;
+          break;
         case 'NZ':
-          return 'en-NZ';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-NZ')).default;
+          break;
         case 'US':
-          return 'en-US';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-US')).default;
+          break;
         default:
-          return 'en-ZA';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-ZA')).default;
+          break;
       }
+
+      break;
     case 'eo':
-      return 'eo';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/eo')).default;
+      break;
     case 'es':
-      return 'es';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/es')).default;
+      break;
     case 'et':
-      return 'et';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/et')).default;
+      break;
     case 'eu':
-      return 'eu';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/eu')).default;
+      break;
     case 'fa':
-      return 'fa-IR';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fa-IR')).default;
+      break;
     case 'fi':
-      return 'fi';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fi')).default;
+      break;
     case 'fr':
       switch (locale) {
         case 'CA':
-          return 'fr-CA';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fr-CA')).default;
+          break;
         case 'CH':
-          return 'fr-CH';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fr-CH')).default;
+          break;
         default:
-          return 'fr';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fr')).default;
+          break;
       }
+
+      break;
     case 'fy':
-      return 'fy';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/fy')).default;
+      break;
     case 'gd':
-      return 'gd';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/gd')).default;
+      break;
     case 'gl':
-      return 'gl';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/gl')).default;
+      break;
     case 'gu':
-      return 'gu';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/gu')).default;
+      break;
     case 'he':
-      return 'he';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/he')).default;
+      break;
     case 'hi':
-      return 'hi';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/hi')).default;
+      break;
     case 'hr':
-      return 'hr';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/hr')).default;
+      break;
     case 'ht':
-      return 'ht';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ht')).default;
+      break;
     case 'hu':
-      return 'hu';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/hu')).default;
+      break;
     case 'hy':
-      return 'hy';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/hy')).default;
+      break;
     case 'id':
-      return 'id';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/id')).default;
+      break;
     case 'is':
-      return 'is';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/is')).default;
+      break;
     case 'it':
       switch (locale) {
         case 'CH':
-          return 'it-CH';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/it-CH')).default;
+          break;
         default:
-          return 'it';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/it')).default;
+          break;
       }
+
+      break;
     case 'ja':
       switch (locale) {
         case 'Hira':
-          return 'ja-Hira';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ja-Hira')).default;
+          break;
         default:
-          return 'ja';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ja')).default;
+          break;
       }
+
+      break;
     case 'ka':
-      return 'ka';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ka')).default;
+      break;
     case 'kk':
-      return 'kk';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/kk')).default;
+      break;
     case 'km':
-      return 'km';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/km')).default;
+      break;
     case 'kn':
-      return 'kn';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/kn')).default;
+      break;
     case 'ko':
-      return 'ko';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ko')).default;
+      break;
     case 'lb':
-      return 'lb';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/lb')).default;
+      break;
     case 'lt':
-      return 'lt';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/lt')).default;
+      break;
     case 'lv':
-      return 'lv';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/lv')).default;
+      break;
     case 'mk':
-      return 'mk';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/mk')).default;
+      break;
     case 'mn':
-      return 'mn';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/mn')).default;
+      break;
     case 'ms':
-      return 'ms';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ms')).default;
+      break;
     case 'mt':
-      return 'mt';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/mt')).default;
+      break;
     case 'nb':
-      return 'nb';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/nb')).default;
+      break;
     case 'nl':
       switch (locale) {
         case 'BE':
-          return 'nl-BE';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/nl-BE')).default;
+          break;
         default:
-          return 'nl';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/nl')).default;
+          break;
       }
+
+      break;
     case 'nn':
-      return 'nn';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/nn')).default;
+      break;
     case 'oc':
-      return 'oc';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/oc')).default;
+      break;
     case 'pl':
-      return 'pl';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/pl')).default;
+      break;
     case 'pt':
       switch (locale) {
         case 'BR':
-          return 'pt-BR';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/pt-BR')).default;
+          break;
         default:
-          return 'pt';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/pt')).default;
+          break;
       }
+
+      break;
     case 'ro':
-      return 'ro';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ro')).default;
+      break;
     case 'ru':
-      return 'ru';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ru')).default;
+      break;
     case 'sk':
-      return 'sk';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sk')).default;
+      break;
     case 'sl':
-      return 'sl';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sl')).default;
+      break;
     case 'sq':
-      return 'sq';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sq')).default;
+      break;
     case 'sr':
       switch (locale) {
         case 'Latn':
-          return 'sr-Latn';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sr-Latn')).default;
+          break;
         default:
-          return 'sr';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sr')).default;
+          break;
       }
+
+      break;
     case 'sv':
-      return 'sv';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/sv')).default;
+      break;
     case 'ta':
-      return 'ta';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ta')).default;
+      break;
     case 'te':
-      return 'te';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/te')).default;
+      break;
     case 'th':
-      return 'th';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/th')).default;
+      break;
     case 'tr':
-      return 'tr';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/tr')).default;
+      break;
     case 'ug':
-      return 'ug';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/ug')).default;
+      break;
     case 'uk':
-      return 'uk';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/uk')).default;
+      break;
     case 'uz':
       switch (locale) {
         case 'Cyrl':
-          return 'uz-Cyrl';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/uz-Cyrl')).default;
+          break;
         default:
-          return 'uz';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/uz')).default;
+          break;
       }
+
+      break;
     case 'vi':
-      return 'vi';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/vi')).default;
+      break;
     case 'zh':
       switch (locale) {
         case 'CN':
-          return 'zh-CN';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/zh-CN')).default;
+          break;
         case 'HK':
-          return 'zh-HK';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/zh-HK')).default;
+          break;
         default:
-          return 'zh-TW';
+          localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/zh-TW')).default;
+          break;
       }
+
+      break;
     default:
-      return 'en-AU';
+      localeInfo = forceAssert<LocaleExport>(await import(/* @vite-ignore */ 'date-fns/locale/en-AU')).default;
   }
+
+  return localeInfo;
 }
 
 export function parseDate(dateValue: string, locale?: Locale) {
