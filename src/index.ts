@@ -22,7 +22,7 @@ import { Toggle } from './components/form/checkboxes/toggle/toggle.component.tsx
 import { createBeeSoftTheme, applyBeeSoftTheme } from './components/common-functions';
 
 // types
-import { CheckboxChangeEvent } from './components/form/checkboxes/checkbox/checkbox.props.ts';
+import { CheckboxChangeEvent } from '@beesoft/headless-ui';
 import { CheckboxRef } from './components/form/checkboxes/checkbox/checkbox.props.ts';
 import {
   DateFormatType,
