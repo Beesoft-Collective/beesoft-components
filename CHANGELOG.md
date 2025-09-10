@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.3] - 2025-09-10
+
 ## Changed
 
 - Updated the checkbox group to use the new headless checkbox group instead of implementing the logic itself.
@@ -181,7 +183,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.2...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.3...develop
+[0.10.3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.3
 [0.10.2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.2
 [0.10.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1
 [0.10.1-8]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1-8
