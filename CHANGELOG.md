@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Moved the locale code into a separate library, so it can be included as a peer dependency. This is to allow the locale features to work without compiling them directly into the library.
+
 ## [0.10.3] - 2025-09-10
 
 ## Changed
