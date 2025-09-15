@@ -2,10 +2,9 @@ import { TypeOrArray } from '@beesoft/common';
 import cx from 'classnames';
 import { isBefore, isSameDay, isToday, Locale } from 'date-fns';
 import { Dispatch, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { getBrowserLanguage } from '../../common-functions';
 import TemplateOutlet from '../../common/template-outlet/template-outlet.component';
 import { DateTimeContext } from './date-time-context';
-import { DayType, getMonthMatrix, getTranslatedDays, loadLocale } from './date-time-functions';
+import { DayType, getMonthMatrix, getTranslatedDays } from './date-time-functions';
 import { CalendarSelectionMode } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 import { DateTimeCalendarTemplateProps } from './date-time.props.ts';
@@ -17,7 +16,7 @@ export interface DateTimeCalendarProps {
   selectedStartDate?: Date;
   selectedEndDate?: Date;
   selectionMode?: CalendarSelectionMode;
-  locale?: Locale;
+  locale: Locale;
   onDateSelected?: (date: Date, options?: Record<string, unknown>) => void;
   selectableDate?: (currentDate: Date) => boolean;
   isValidDate?: (selectedDate: Date) => boolean;
@@ -48,21 +47,13 @@ const DateTimeCalendar = ({
   const context = useContext(DateTimeContext);
   const viewTemplate = useMemo(() => context.calendarTemplate, [context.calendarTemplate]);
 
-  const loadLocaleObject = async () => {
-    return locale || (await loadLocale(getBrowserLanguage()));
-  };
-
   /**
    * When the component first loads set up the locale either from the passed in property or load it from date-fns.
    */
   useEffect(() => {
-    loadLocaleObject()
-      .then((localeObject) => {
-        loadedLocale.current = localeObject;
-        weekDaysRef.current = getTranslatedDays(loadedLocale.current);
-        setIsLocaleLoaded(true);
-      })
-      .catch((error) => console.error(error));
+    loadedLocale.current = locale;
+    weekDaysRef.current = getTranslatedDays(loadedLocale.current);
+    setIsLocaleLoaded(true);
   }, []);
 
   /**

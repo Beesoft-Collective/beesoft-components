@@ -39,13 +39,13 @@
     "@preact/signals": "^1.2.3",
     "@react-hook/media-query": "^1.1.1",
     "classnames": "^2.3.2",
-    "date-fns": "^3.3.1",
     "dot-object": "^2.1.4",
     "lodash": "^4.17.21",
     "react-transition-group": "^4.4.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@beesoft/locale": "^0.0.3",
     "@chromatic-com/storybook": "^4.0.0",
     "@eslint/js": "^9.29.0",
     "@release-it/bumper": "^7.0.5",
@@ -74,6 +74,7 @@
     "ajv": "^8.17.1",
     "caniuse-lite": "^1.0.30001718",
     "chromatic": "^11.3.0",
+    "date-fns": "^3.3.1",
     "eslint": "^9.29.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -94,6 +95,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
+    "@beesoft/locale": "^0.0.3",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },
