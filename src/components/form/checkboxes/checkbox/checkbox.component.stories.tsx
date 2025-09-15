@@ -1,9 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
+import { CheckboxChangeEvent } from '@beesoft/headless-ui';
 import { BeeSoftProvider } from 'common/contexts/beesoft.context.tsx';
 import { Button } from '../../../navigation/buttons/button/button.component.tsx';
 import { Checkbox } from './checkbox.component.tsx';
-import { CheckboxChangeEvent, CheckboxProps, CheckboxRef } from './checkbox.props.ts';
+import { CheckboxProps, CheckboxRef } from './checkbox.props.ts';
 import { action } from "storybook/actions";
 
 const meta: Meta<typeof Checkbox> = {

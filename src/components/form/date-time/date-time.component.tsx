@@ -1,4 +1,5 @@
 import { TypeOrArray, useStateRef } from '@beesoft/common';
+import { useDateLocale } from '@beesoft/locale';
 import cx from 'classnames';
 import { addMonths, endOfMonth, Locale, startOfMonth } from 'date-fns';
 import { debounce } from 'lodash-es';
@@ -17,7 +18,7 @@ import ContentEditableInput, {
 import FormattedInput, { FormattedInputRef } from '../inputs/formatted-input/formatted-input.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
-import { isDateBetween, loadLocale, parseDate, parseDateRange } from './date-time-functions';
+import { isDateBetween, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
 import DateTimeTimeSelector from './date-time-time-selector.component';
@@ -79,6 +80,7 @@ const DateTime = ({
   const formattedInputRef = useRef<FormattedInputRef>(null);
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
+  const dateLocale = useDateLocale(language.current);
 
   const contextProps = useRef<DateTimeContextProps>({
     calendarTemplate,
@@ -86,16 +88,22 @@ const DateTime = ({
   });
 
   useEffect(() => {
-    if (language.current) {
-      loadLocaleObject(language.current);
-    }
-  }, [language]);
+    setLocaleCode(dateLocale.code);
+    loadedLocale.current = dateLocale;
+    const defaultDate = getDateValue();
 
-  useEffect(() => {
-    if (locale) {
-      loadLocaleObject(locale);
+    if (value || useDefaultDateValue) {
+      dispatcher({
+        type: DateTimeActionType.InitializeDates,
+        initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
+      });
+    } else {
+      dispatcher({
+        type: DateTimeActionType.SetViewDate,
+        viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
+      });
     }
-  }, [locale]);
+  }, [dateLocale]);
 
   useEffect(() => {
     if (value) {
@@ -142,28 +150,6 @@ const DateTime = ({
         ? DateSelectorType.DaySelector
         : DateSelectorType.DateRangeSelector;
   }, []);
-
-  const loadLocaleObject = (localeToLoad: string) => {
-    loadLocale(localeToLoad)
-      .then((locale) => {
-        setLocaleCode(locale.code);
-        loadedLocale.current = locale;
-        const defaultDate = getDateValue();
-
-        if (value || useDefaultDateValue) {
-          dispatcher({
-            type: DateTimeActionType.InitializeDates,
-            initialDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
-          });
-        } else {
-          dispatcher({
-            type: DateTimeActionType.SetViewDate,
-            viewDate: !Array.isArray(defaultDate) ? defaultDate : defaultDate[0],
-          });
-        }
-      })
-      .catch((error) => console.error(error));
-  };
 
   const getDateValue = () => {
     const defaultDate = new Date();
