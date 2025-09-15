@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.4] - 2025-09-15
+
 ## Changed
 
 - Moved the locale code into a separate library.
@@ -187,7 +189,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.3...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.4...develop
+[0.10.4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.4
 [0.10.3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.3
 [0.10.2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.2
 [0.10.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.1
