@@ -574,6 +574,19 @@ export const IsValidSelectedDate: Story = {
   render: (args) => <Template {...args} />,
 };
 
+export const IsValidSelectedFormattedDate: Story = {
+  args: {
+    label: 'Date',
+    useFormattedInput: true,
+    dateSelection: DateSelectionType.DateOnly,
+    selectableDate: (date: Date) => date.getDay() !== 0,
+    isValidDate: (date: Date) => date.getDay() !== 0,
+    onChange: action('onChange'),
+    onError: action('onError'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
 export const IsValidInputDate: Story = {
   args: {
     label: 'Date (Sunday is invalid)',

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Added the new `onError` event to the date component and call it when the manual date entry is invalid.
+
 ## [0.10.4] - 2025-09-15
 
 ## Changed

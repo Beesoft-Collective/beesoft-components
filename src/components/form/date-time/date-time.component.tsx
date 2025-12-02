@@ -59,6 +59,7 @@ const DateTime = ({
   selectableDate,
   isValidDate,
   onChange,
+  onError,
   calendarTemplate,
   dateScrollerTemplate,
   inputTemplate,
@@ -207,7 +208,14 @@ const DateTime = ({
           : parseDateRange(value, loadedLocale.current);
       if (dateValue) {
         if (isValidDate) {
-          return !Array.isArray(dateValue) ? isValidDate(dateValue) : dateValue.every((date) => isValidDate(date));
+          const isValid = !Array.isArray(dateValue)
+            ? isValidDate(dateValue)
+            : dateValue.every((date) => isValidDate(date));
+          if (!isValid && onError) {
+            onError(dateValue);
+          }
+
+          return isValid;
         } else {
           return true;
         }
