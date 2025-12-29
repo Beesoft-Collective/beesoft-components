@@ -66,8 +66,8 @@
     "@types/bun": "^1.2.15",
     "@types/dot-object": "^2.1.6",
     "@types/lodash-es": "^4.17.11",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.9",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/parser": "^8.31.1",
@@ -81,8 +81,8 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-storybook": "^9.0.9",
     "globals": "^16.2.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "release-it": "^19.0.3",
     "rimraf": "^6.0.1",
     "storybook": "^9.0.9",
@@ -96,8 +96,8 @@
   },
   "peerDependencies": {
     "@beesoft/locale": "^0.0.3",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react": ">=17.0.1 || ^18.0.0 || ^19.0.0",
+    "react-dom": ">=17.0.1 || ^18.0.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public",

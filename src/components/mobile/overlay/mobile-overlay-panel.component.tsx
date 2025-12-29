@@ -27,9 +27,9 @@ const MobileOverlayPanel = ({
 
   const underlayDisplayZIndex = useRef(100);
   const displayZIndex = useRef(101);
-  const finalTarget = useRef<HTMLElement>();
-  const panelRef = useRef<HTMLElement>();
-  const listenerRef = useRef<(event: MouseEvent) => void>();
+  const finalTarget = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const listenerRef = useRef<(event: MouseEvent) => void>(null);
 
   useEffect(() => {
     if (target) {
@@ -112,7 +112,9 @@ const MobileOverlayPanel = ({
       unmountOnExit={unmountWhenHidden}
     >
       {({ state, defaultStyle, transitionStyles }) => (
-        <div ref={(element) => element && onPanelCreated(element)}>
+        <div ref={(element) => {
+          if (element) onPanelCreated(element);
+        }}>
           <div
             className="bsc:fixed bsc:left-0 bsc:top-0 bsc:h-full bsc:w-full bsc:bg-mono-dark-1"
             style={{

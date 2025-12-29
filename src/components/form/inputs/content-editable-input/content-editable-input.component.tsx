@@ -54,7 +54,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
 
   const textStyles = useRef('bsc:grow bsc:focus:outline-hidden');
   const placeHolderStyles = useRef('bsc:text-gray-4');
-  const inputRef = useRef<HTMLElement>();
+  const inputRef = useRef<HTMLElement>(null);
 
   const focusListener = useCallback(
     (event: FocusEvent) => {
@@ -148,7 +148,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   }, []);
 
   useImperativeHandle(ref, () => ({
-    inputElement: inputRef.current,
+    inputElement: inputRef.current ?? undefined,
     setInnerText,
     setInnerHTML,
     focus,
@@ -173,14 +173,18 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   const rightElementClasses = cx('bsc:shrink', { 'bsc:ml-2': rightElement }, rightElementClassName);
 
   return (
-    <div className={classNames} ref={(element) => element && onElementCreated(element)}>
+    <div className={classNames} ref={(element) => {
+      if (element) onElementCreated(element);
+    }}>
       {leftElement && (
         <div className={leftElementClasses} onClick={onLeftElementClicked}>
           {leftElement}
         </div>
       )}
       <div
-        ref={(element) => element && onInputElementCreated(element)}
+        ref={(element) => {
+          if (element) onInputElementCreated(element);
+        }}
         className={textStyles.current}
         contentEditable={!readOnly}
         suppressContentEditableWarning={true}

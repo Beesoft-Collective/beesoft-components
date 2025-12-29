@@ -41,9 +41,9 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   const [isValidInput, setIsValidInput] = useState(true);
 
-  const inputRef = useRef<ContentEditableInputRef>();
-  const inputElementRef = useRef<HTMLElement>();
-  const formatParser = useRef<FormatParser>();
+  const inputRef = useRef<ContentEditableInputRef>(null);
+  const inputElementRef = useRef<HTMLElement>(null);
+  const formatParser = useRef<FormatParser>(null);
   const isMouseDown = useRef(false);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     inputRef.current?.inputElement?.addEventListener('mousedown', onMouseDownHandler);
     inputRef.current?.inputElement?.addEventListener('mouseup', onMouseUpHandler);
     inputRef.current?.inputElement?.addEventListener('paste', onPasteHandler);
-    inputElementRef.current = inputRef.current?.inputElement;
+    inputElementRef.current = inputRef.current?.inputElement ?? null;
   }, []);
 
   const focus = useCallback(() => {
@@ -169,7 +169,9 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   return (
     <ContentEditableInput
-      ref={(refElement) => refElement && onInputRefCreated(refElement)}
+      ref={(refElement) => {
+        if (refElement) onInputRefCreated(refElement);
+      }}
       readOnly={readOnly}
       debounceTime={debounceTime}
       fillContainer={fillContainer}

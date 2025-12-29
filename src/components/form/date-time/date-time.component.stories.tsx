@@ -166,7 +166,9 @@ const OverrideInputTemplate = (args: DateTimeProps) => {
       {props.label && <label>{props.label}</label>}
       <div>
         <input
-          ref={(element) => element && setInputRef(element)}
+          ref={(element) => {
+            if (element) setInputRef(element);
+          }}
           className="bsc:border bsc:border-solid bsc:border-black"
           onFocus={(event) => props.onFocus(forceAssert<FocusEvent>(event))}
           value={props.getValue()}

@@ -70,12 +70,12 @@ const OverlayPanel = ({
     top: 0,
     width: 0,
   });
-  const finalTarget = useRef<HTMLElement>();
-  const panelRef = useRef<HTMLElement>();
-  const scrollerPanelRef = useRef<HTMLElement | Document>();
-  const listenerRef = useRef<(event: MouseEvent) => void>();
-  const scrollListenerRef = useRef<(event: Event) => void>();
-  const resizeObserver = useRef<ResizeObserver>();
+  const finalTarget = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const scrollerPanelRef = useRef<HTMLElement | Document>(null);
+  const listenerRef = useRef<(event: MouseEvent) => void>(null);
+  const scrollListenerRef = useRef<(event: Event) => void>(null);
+  const resizeObserver = useRef<ResizeObserver>(null);
 
   const beeSoftContext = useBeeSoftContext();
 
@@ -221,7 +221,7 @@ const OverlayPanel = ({
   const onExit = () => {
     if (scrollerPanelRef.current && scrollListenerRef.current) {
       scrollerPanelRef.current.removeEventListener('scroll', scrollListenerRef.current);
-      scrollListenerRef.current = undefined;
+      scrollListenerRef.current = null;
     }
 
     if (listenerRef.current) {
@@ -300,7 +300,9 @@ const OverlayPanel = ({
             ...defaultStyle,
             ...transitionStyles[state],
           }}
-          ref={(element) => element && onMarkupCreated(element as HTMLElement)}
+          ref={(element) => {
+            if (element) onMarkupCreated(element as HTMLElement);
+          }}
         >
           {children}
         </div>
