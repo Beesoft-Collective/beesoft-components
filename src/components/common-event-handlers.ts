@@ -16,9 +16,9 @@ export function bindDocumentClickListener(
       !isClickedInOtherElements(otherElements, targetElement)
     ) {
       callback(false);
+    } else {
+      callback(true);
     }
-
-    callback(true);
   };
 
   const isClickedInOtherElements = (elements: Array<HTMLElement> | undefined, targetElement: HTMLElement) => {

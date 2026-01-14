@@ -41,8 +41,8 @@ const DateTimeCalendar = ({
   const [monthMatrix, setMonthMatrix] = useState<Array<Array<DayType>>>();
   const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>();
 
-  const loadedLocale = useRef<Locale>();
-  const weekDaysRef = useRef<Array<string>>();
+  const loadedLocale = useRef<Locale>(undefined);
+  const weekDaysRef = useRef<Array<string>>(undefined);
 
   const context = useContext(DateTimeContext);
   const viewTemplate = useMemo(() => context.calendarTemplate, [context.calendarTemplate]);

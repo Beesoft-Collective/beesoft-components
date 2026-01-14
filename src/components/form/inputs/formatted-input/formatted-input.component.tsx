@@ -41,9 +41,9 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   const [isValidInput, setIsValidInput] = useState(true);
 
-  const inputRef = useRef<ContentEditableInputRef>();
-  const inputElementRef = useRef<HTMLElement>();
-  const formatParser = useRef<FormatParser>();
+  const inputRef = useRef<ContentEditableInputRef>(undefined);
+  const inputElementRef = useRef<HTMLElement>(undefined);
+  const formatParser = useRef<FormatParser>(undefined);
   const isMouseDown = useRef(false);
 
   useEffect(() => {
@@ -169,7 +169,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   return (
     <ContentEditableInput
-      ref={(refElement) => refElement && onInputRefCreated(refElement)}
+      ref={(refElement) => { if (refElement) onInputRefCreated(refElement) }}
       readOnly={readOnly}
       debounceTime={debounceTime}
       fillContainer={fillContainer}

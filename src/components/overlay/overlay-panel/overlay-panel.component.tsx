@@ -1,11 +1,10 @@
-import { TypeOrArray } from '@beesoft/common';
+import { TypeOrArray, useEvent } from '@beesoft/common';
 import { throttle, debounce } from 'lodash-es';
 import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useBeeSoftContext } from 'common/hooks/use-beesoft-context.ts';
 import { bindDocumentClickListener, unbindDocumentClickListener } from '../../common-event-handlers';
 import { getAllElementStyleValues, getElementByCssStylesRecursive, isEventOutsideTarget } from '../../common-functions';
 import { MarkupEvents } from '../../common-interfaces';
-import BeeSoftTransition from '../../common/beesoft-transition/beesoft-transition.component';
 import { DomElementAlignment, DomHandler, DomTargetPosition } from '../../dom-handler';
 import { getTargetElement } from '../overlay-functions.ts';
 
@@ -70,12 +69,13 @@ const OverlayPanel = ({
     top: 0,
     width: 0,
   });
-  const finalTarget = useRef<HTMLElement>();
-  const panelRef = useRef<HTMLElement>();
-  const scrollerPanelRef = useRef<HTMLElement | Document>();
-  const listenerRef = useRef<(event: MouseEvent) => void>();
-  const scrollListenerRef = useRef<(event: Event) => void>();
-  const resizeObserver = useRef<ResizeObserver>();
+  const finalTarget = useRef<HTMLElement>(undefined);
+  const panelRef = useRef<HTMLElement>(undefined);
+  const scrollerPanelRef = useRef<HTMLElement | Document>(undefined);
+  const listenerRef = useRef<(event: MouseEvent) => void>(undefined);
+  const scrollListenerRef = useRef<(event: Event) => void>(undefined);
+  const resizeObserver = useRef<ResizeObserver>(undefined);
+  const hasOpened = useRef(false);
 
   const beeSoftContext = useBeeSoftContext();
 
@@ -216,6 +216,8 @@ const OverlayPanel = ({
         scrollerPanelRef.current.addEventListener('scroll', scrollListenerRef.current);
       }
     }
+
+    hasOpened.current = true;
   };
 
   const onExit = () => {
@@ -266,7 +268,37 @@ const OverlayPanel = ({
     }
   };
 
-  const baseStyles: CSSProperties = useMemo(() => {
+  const onAnimationStart = useEvent(() => {
+    if (visibility) {
+      onEntering();
+    } else {
+      onExit();
+    }
+  });
+
+  const onAnimationEnd = useEvent(() => {
+    if (visibility) {
+      onEntered();
+    } else {
+      onExited();
+    }
+  });
+
+  const transitionStyles = useMemo<CSSProperties>(() => {
+    return !visibility ?
+      {
+        transition: `opacity ${transitionDuration}ms ${hideTransitionOptions}`,
+        pointerEvents: 'none',
+        opacity: 0,
+      } :
+      {
+        transition: `opacity ${transitionDuration}ms ${showTransitionOptions}`,
+        pointerEvents: 'auto',
+        opacity: 1,
+      }
+  }, [visibility]);
+
+  const baseStyles = useMemo<CSSProperties>(() => {
     const styles: CSSProperties = {
       top: `${panelDimensions.current.top}px`,
       left: `${panelDimensions.current.left}px`,
@@ -280,32 +312,19 @@ const OverlayPanel = ({
     return styles;
   }, [dimensionsChangedFlag, zIndex, shouldMatchTargetWidth]);
 
-  return (
-    <BeeSoftTransition
-      start={visibility}
-      timeout={transitionDuration}
-      showTransitionOptions={showTransitionOptions}
-      hideTransitionOptions={hideTransitionOptions}
-      onEntering={onEntering}
-      onEntered={onEntered}
-      onExit={onExit}
-      onExited={onExited}
-      unmountOnExit={unmountWhenHidden}
-    >
-      {({ state, defaultStyle, transitionStyles }) => (
-        <div
-          className="bsc:fixed bsc:border! bsc:border-solid! bsc:border-black bsc:bg-white bsc:shadow bsc:dark:border-mono-light-1 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
-          style={{
-            ...baseStyles,
-            ...defaultStyle,
-            ...transitionStyles[state],
-          }}
-          ref={(element) => element && onMarkupCreated(element as HTMLElement)}
-        >
-          {children}
-        </div>
-      )}
-    </BeeSoftTransition>
+  return hasOpened.current && !visibility && unmountWhenHidden === true ? null : (
+    <div onTransitionStart={onAnimationStart} onTransitionEnd={onAnimationEnd}>
+      <div
+        className="bsc:fixed bsc:border! bsc:border-solid! bsc:border-black bsc:bg-white bsc:shadow bsc:dark:border-mono-light-1 bsc:dark:bg-mono-dark-1 bsc:dark:text-mono-light-1"
+        style={{
+          ...baseStyles,
+          ...transitionStyles
+        }}
+        ref={(element) => { if (element) onMarkupCreated(element as HTMLElement) }}
+      >
+        {children}
+      </div>
+    </div>
   );
 };
 
