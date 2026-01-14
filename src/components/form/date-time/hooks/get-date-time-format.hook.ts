@@ -8,7 +8,7 @@ const useGetDateTimeFormat = (
   localeCode?: string
 ): [InputFormat | undefined, boolean | undefined] => {
   const [inputFormat, setInputFormat] = useState<InputFormat>();
-  const formatCreator = useRef<DateTimeFormatCreator>();
+  const formatCreator = useRef<DateTimeFormatCreator>(undefined);
 
   useEffect(() => {
     if (localeCode && !inputFormat) {

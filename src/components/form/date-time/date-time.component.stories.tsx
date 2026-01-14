@@ -160,13 +160,12 @@ const OverrideInputTemplate = (args: DateTimeProps) => {
 
   const [inputRef, setInputRef] = useState<HTMLInputElement>();
 
-  /* eslint-disable react/prop-types */
   const inputTemplate = (props: DateTimeInputTemplateProps) => (
     <>
       {props.label && <label>{props.label}</label>}
       <div>
         <input
-          ref={(element) => element && setInputRef(element)}
+          ref={(element) => { if (element) setInputRef(element) }}
           className="bsc:border bsc:border-solid bsc:border-black"
           onFocus={(event) => props.onFocus(forceAssert<FocusEvent>(event))}
           value={props.getValue()}
@@ -174,7 +173,6 @@ const OverrideInputTemplate = (args: DateTimeProps) => {
       </div>
     </>
   );
-  /* eslint-enable react/prop-types */
 
   return (
     <div className="bsc:p-4">
@@ -222,7 +220,6 @@ const SwitchDateSelectorTemplate = (args: DateTimeProps) => {
   const wrapperTemplate: DateTimeWrapperTemplate = (props, children) => (
     <div className="bsc:flex bsc:w-full bsc:flex-col">
       <div className="bsc:w-full">
-        {/* eslint-disable-next-line react/prop-types */}
         <Button onClick={() => props.setDateSelector(DateSelectionType.DateRange)}>Date Range</Button>
       </div>
       <div className="bsc:w-full">{children}</div>

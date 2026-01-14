@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Upgraded to React 19 and removed the old react transition group library.
+
 ## [0.10.5] - 2025-12-02
 
 ## Changed

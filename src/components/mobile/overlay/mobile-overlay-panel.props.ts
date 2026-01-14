@@ -1,5 +1,6 @@
 import { TypeOrArray } from '@beesoft/common';
 import React, { ReactNode } from 'react';
+import { Easing } from "motion";
 
 export interface MobileOverlayPanelProps {
   visible: boolean;
@@ -7,8 +8,8 @@ export interface MobileOverlayPanelProps {
   appendTo?: HTMLElement;
   unmountWhenHidden?: boolean;
   transitionDuration?: number;
-  showTransitionOptions?: string;
-  hideTransitionOptions?: string;
+  showTransitionOptions?: Easing;
+  hideTransitionOptions?: Easing;
   approveText?: string;
   shown?: () => void;
   hidden?: () => void;

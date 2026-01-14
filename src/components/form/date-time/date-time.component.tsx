@@ -71,12 +71,12 @@ const DateTime = ({
 
   const [dateSelectionState, setDateSelectionState, dateSelectionRef] = useStateRef(dateSelection);
 
-  const isFormattedInput = useRef<boolean>();
+  const isFormattedInput = useRef<boolean>(undefined);
   const inputElementChanged = useRef(false);
   const language = useRef<string>(locale || getBrowserLanguage());
-  const loadedLocale = useRef<Locale>();
-  const inputElementRef = useRef<HTMLElement>();
-  const dropDownTargetRef = useRef<HTMLElement>();
+  const loadedLocale = useRef<Locale>(undefined);
+  const inputElementRef = useRef<HTMLElement>(undefined);
+  const dropDownTargetRef = useRef<HTMLElement>(undefined);
   const inputRef = useRef<ContentEditableInputRef>(null);
   const formattedInputRef = useRef<FormattedInputRef>(null);
 
@@ -641,7 +641,7 @@ const DateTime = ({
                 shouldRemainOnScreen={true}
                 hidden={onDateTimeHidden}
                 isClickedWithin={onCalendarClick}
-                unmountWhenHidden={true}
+                unmountWhenHidden={false}
               >
                 {renderSelector()}
               </OverlayPanel>
