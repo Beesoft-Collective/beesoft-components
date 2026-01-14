@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-01-14
+
 ## Changed
 
 - Upgraded to React 19 and removed the old react transition group library.
@@ -199,7 +201,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.10.5...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.11.0...develop
+[0.11.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.11.0
 [0.10.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.5
 [0.10.4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.4
 [0.10.3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.3
