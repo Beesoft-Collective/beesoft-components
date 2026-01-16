@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- Created an avatar editor component; this is a simple version that will need to be completed later.
+
 ## [0.11.0] - 2026-01-14
 
 ## Changed
