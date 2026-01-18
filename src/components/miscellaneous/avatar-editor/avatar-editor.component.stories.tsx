@@ -36,7 +36,6 @@ const Template = (args: AvatarEditorProps) => {
 export const Default: Story = {
   args: {
     height: 250,
-    label: 'Click to Upload File',
   },
   render: (args) => <Template {...args} />,
 };

@@ -12,11 +12,15 @@ export interface AvatarEditorProps {
   /**
    * The text to display when no file is loaded.
    */
-  label: string;
+  label?: string;
   /**
    * The base64 encoded image to show in the editor.
    */
   source?: string;
+  /**
+   * When true (the default) a preview cropped image is created when the file first loads.
+   */
+  showPreviewOnFileLoad?: boolean;
   /**
    * The default size of the crop radius circle.
    */

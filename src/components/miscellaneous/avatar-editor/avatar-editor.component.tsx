@@ -4,12 +4,14 @@ import { AvatarEditorProps } from "./avatar-editor.props.ts";
 import { ChangeEvent, useEffect, useId, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { fileToBase64 } from "@beesoft/common";
+import Vector2d = Konva.Vector2d;
 
 const AvatarEditor = ({
   width,
   height,
-  label,
+  label = 'Click to Choose a File',
   source,
+  showPreviewOnFileLoad = true,
   cropRadius = 30,
   cropColor = 'white',
   closeColor = 'white',
@@ -20,6 +22,7 @@ const AvatarEditor = ({
 }: AvatarEditorProps) => {
   const [imageWidth, setImageWidth] = useState<number>(width || height || 0);
   const [imageHeight, setImageHeight] = useState<number>(height || width || 0)
+  const [defaultDimensions, setDefaultDimensions] = useState(0);
   const [imageScale, setImageScale] = useState<number>(1);
   const [imageCropRadius, setImageCropRadius] = useState(cropRadius);
   const [showFileLoader, setShowFileLoader] = useState(true);
@@ -29,6 +32,7 @@ const AvatarEditor = ({
   const lastMouseY = useRef(0);
   const halfImageWidth = useRef(0);
   const halfImageHeight = useRef(0);
+  const lastFillPatternOffset = useRef<Vector2d>(undefined);
   const stageRef = useRef<Konva.Stage>(null);
   const cropRef = useRef<Konva.Circle>(null);
   const cropStrokeRef = useRef<Konva.Circle>(null);
@@ -43,6 +47,13 @@ const AvatarEditor = ({
     } else if (width && height) {
       throw new Error('Both width and height cannot be set together, set one or the other.');
     }
+
+    if (height) {
+      setDefaultDimensions(height);
+    } else {
+      // @ts-expect-error width in this case would not be undefined
+      setDefaultDimensions(width);
+    }
   }, [width, height]);
 
   useEffect(() => {
@@ -51,7 +62,11 @@ const AvatarEditor = ({
     }
   }, [source]);
 
-  const half = (value: number) => value / 2;
+  useEffect(() => {
+    if (!showFileLoader && showPreviewOnFileLoad) {
+      onEdit?.(createPreviewImage());
+    }
+  }, [showFileLoader]);
 
   const loadImage = (imageData: string) => {
     const image = new Image();
@@ -105,11 +120,14 @@ const AvatarEditor = ({
 
     const finalCropRadius = Math.max(cropRadius, Math.min(finalWidth, finalHeight) / 3);
 
+    const finalScale = finalHeight / originalImageHeight;
     halfImageWidth.current = finalWidth / 2;
     halfImageHeight.current = finalHeight / 2;
+    lastFillPatternOffset.current = { x: halfImageWidth.current / finalScale, y: halfImageWidth.current / finalScale };
+
     setShowFileLoader(false);
     setImageCropRadius(finalCropRadius);
-    setImageScale(finalHeight / originalImageHeight);
+    setImageScale(finalScale);
     setImageWidth(finalWidth);
     setImageHeight(finalHeight);
     setLoadedImage(image);
@@ -120,7 +138,7 @@ const AvatarEditor = ({
       return cropRef.current.radius() - scale;
     }
 
-    return imageCropRadius;
+    return imageCropRadius - scale;
   };
 
   const isLeftCorner = (scale?: number) => {
@@ -141,7 +159,7 @@ const AvatarEditor = ({
 
   const isRightCorner = (scale?: number) => {
     if (cropRef.current && stageRef.current) {
-      return cropRef.current.y() + scaledRadius(scale) > stageRef.current.width();
+      return cropRef.current.x() + scaledRadius(scale) > stageRef.current.width();
     }
     return false;
   };
@@ -160,7 +178,7 @@ const AvatarEditor = ({
     !isBottomCorner(scale) &&
     !isTopCorner(scale);
 
-  const calcScaleRadius = (scale: number) => {
+  const calculateScaleRadius = (scale: number) => {
     if (cropRef.current) {
       return scaledRadius(scale) >= cropRadius ? scale : cropRef.current.radius() - cropRadius;
     }
@@ -223,7 +241,8 @@ const AvatarEditor = ({
       const y = isTopCorner() ? calculateLeftTop() : isBottomCorner() ? calculateBottom() : cropRef.current.y();
 
       moveResizer(x, y);
-      cropRef.current.fillPatternOffset({ x: x / imageScale, y: y / imageScale });
+      lastFillPatternOffset.current = { x: x / imageScale, y: y / imageScale };
+      cropRef.current.fillPatternOffset(lastFillPatternOffset.current);
       cropRef.current.x(x);
       cropStrokeRef.current.x(x);
       cropRef.current.y(y);
@@ -234,13 +253,13 @@ const AvatarEditor = ({
   const onScaleCallback = (scaleY: number) => {
     if (cropStrokeRef.current && cropRef.current && resizeRef.current) {
       const scale = scaleY > 0 || isNotOutOfScale(scaleY) ? scaleY : 0;
-      cropStrokeRef.current.radius(cropStrokeRef.current.radius() - calcScaleRadius(scale));
-      cropRef.current.radius(cropRef.current.radius() - calcScaleRadius(scale));
+      cropStrokeRef.current.radius(cropStrokeRef.current.radius() - calculateScaleRadius(scale));
+      cropRef.current.radius(cropRef.current.radius() - calculateScaleRadius(scale));
       calculateCropImage();
     }
   };
 
-  const onDragStart = (event: KonvaEventObject<DragEvent>) => {
+  const onResizeDragStart = (event: KonvaEventObject<DragEvent>) => {
     if (stageRef.current) {
       stageRef.current.container().style.cursor = 'nesw-resize';
     }
@@ -248,7 +267,7 @@ const AvatarEditor = ({
     lastMouseY.current = event.evt.y;
   };
 
-  const onDragMove = (event: KonvaEventObject<DragEvent>) => {
+  const onResizeDragMove = (event: KonvaEventObject<DragEvent>) => {
     const newMouseY = event.evt.y;
     const ieScaleFactor = newMouseY ? newMouseY - lastMouseY.current : undefined;
     const scaleY = event.evt.movementY || ieScaleFactor || 0;
@@ -261,18 +280,15 @@ const AvatarEditor = ({
     }
   };
 
-  const onDragEnd = (event: KonvaEventObject<DragEvent> )=> {
+  const onResizeDragEnd = ()=> {
     if (stageRef.current) {
       stageRef.current.container().style.cursor = 'default';
     }
 
-    event.evt.preventDefault();
-    event.evt.stopPropagation();
-
     onEdit?.(createPreviewImage());
   };
 
-  const cropOnDragEnd = () => {
+  const onCropDragEnd = () => {
     onEdit?.(createPreviewImage())
   };
 
@@ -294,15 +310,20 @@ const AvatarEditor = ({
   return (
     <div>
       {showFileLoader ? (
-        <div>
-          <input
-            type="file"
-            name={fileLoaderId}
-            id={fileLoaderId}
-            onChange={onFileSelected}
-            className="bsc:appearance-none bsc:absolute bsc:left-[-1000px]"
-          />
-          <label htmlFor={fileLoaderId} className="bsc:cursor-pointer bsc:[line-height:200px]">{label}</label>
+        <div
+          style={{ width: defaultDimensions, height: defaultDimensions }}
+          className="bsc:relative bsc:border-solid bsc:border-2"
+        >
+          <div className="bsc:absolute bsc:max-w-[80%] bsc:w-full bsc:top-1/2 bsc:left-1/2 bsc:-translate-1/2 bsc:text-center">
+            <input
+              type="file"
+              name={fileLoaderId}
+              id={fileLoaderId}
+              onChange={onFileSelected}
+              className="bsc:invisible bsc:absolute bsc:pointer-events-none"
+            />
+            <label htmlFor={fileLoaderId} className="bsc:cursor-pointer">{label}</label>
+          </div>
         </div>
       ) : (
         <Stage ref={stageRef} width={imageWidth} height={imageHeight}>
@@ -321,8 +342,8 @@ const AvatarEditor = ({
             </Group>
             <Circle
               ref={cropStrokeRef}
-              x={half(imageWidth)}
-              y={half(imageHeight)}
+              x={halfImageWidth.current}
+              y={halfImageHeight.current}
               radius={imageCropRadius}
               stroke={cropColor}
               strokeWidth={4}
@@ -338,11 +359,11 @@ const AvatarEditor = ({
               draggable={true}
               fillPatternImage={loadedImage}
               fillPatternScale={{ x: imageScale, y: imageScale }}
-              fillPatternOffset={{ x: halfImageWidth.current / imageScale, y: halfImageWidth.current / imageScale }}
+              fillPatternOffset={lastFillPatternOffset.current}
               onDragMove={calculateCropImage}
               onMouseEnter={() => { if (stageRef.current) stageRef.current.container().style.cursor = 'move' }}
               onMouseLeave={() => { if (stageRef.current) stageRef.current.container().style.cursor = 'default' }}
-              onDragEnd={cropOnDragEnd}
+              onDragEnd={onCropDragEnd}
             />
             <Rect
               ref={resizeRef}
@@ -353,9 +374,9 @@ const AvatarEditor = ({
               draggable={true}
               onMouseEnter={() => { if (stageRef.current) stageRef.current.container().style.cursor = 'nesw-resize' }}
               onMouseLeave={() => { if (stageRef.current) stageRef.current.container().style.cursor = 'default' }}
-              onDragStart={onDragStart}
-              onDragMove={onDragMove}
-              onDragEnd={onDragEnd}
+              onDragStart={onResizeDragStart}
+              onDragMove={onResizeDragMove}
+              onDragEnd={onResizeDragEnd}
             />
             <Path
               ref={resizeIconRef}
