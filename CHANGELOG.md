@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-01-19
+
 ## Added
 
 - Finalised the basic features of the avatar editor.
@@ -212,6 +214,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 [unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.0...develop
+[0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0-0
 [0.11.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.11.0
