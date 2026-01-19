@@ -1,4 +1,5 @@
 // components
+import { AvatarEditor } from "./components/miscellaneous/avatar-editor/avatar-editor.component.tsx";
 import { BeeSoftProvider } from './common/contexts/beesoft.context.tsx';
 import {
   SelectionLabelLocation,
@@ -43,6 +44,7 @@ import '../node_modules/@beesoft/headless-ui/dist/headless-ui.css';
 import './index.css';
 
 export {
+  AvatarEditor,
   BeeSoftProvider,
   Button,
   Checkbox,
