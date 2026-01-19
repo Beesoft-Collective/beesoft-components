@@ -211,7 +211,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.0-0...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.0...develop
+[0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0-0
 [0.11.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.11.0
 [0.10.5]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.10.5
