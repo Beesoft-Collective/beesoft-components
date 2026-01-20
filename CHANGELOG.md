@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-01-20
+
 ## Changed
 
 - Attempting to get the avatar component to work with non-local Uri's.
@@ -217,7 +219,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.0...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.1...develop
+[0.12.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.1
 [0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0-0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0-0
