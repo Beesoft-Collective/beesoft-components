@@ -70,6 +70,7 @@ const AvatarEditor = ({
 
   const loadImage = (imageData: string) => {
     const image = new Image();
+    image.crossOrigin = 'Anonymous';
     image.onload = () => {
       processImage(image);
     };
