@@ -62,12 +62,6 @@ const AvatarEditor = ({
     }
   }, [source]);
 
-  useEffect(() => {
-    if (!showFileLoader && showPreviewOnFileLoad) {
-      onEdit?.(createPreviewImage());
-    }
-  }, [showFileLoader]);
-
   const loadImage = (imageData: string) => {
     const image = new Image();
     image.crossOrigin = 'Anonymous';
@@ -132,6 +126,10 @@ const AvatarEditor = ({
     setImageWidth(finalWidth);
     setImageHeight(finalHeight);
     setLoadedImage(image);
+
+    if (showPreviewOnFileLoad) {
+      onEdit?.(createPreviewImage());
+    }
   };
 
   const scaledRadius = (scale = 0) => {
