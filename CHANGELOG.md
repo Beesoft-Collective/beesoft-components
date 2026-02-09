@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-02-09
+
 ## Changed
 
 - Moved the code that generates the preview on file load into the loading function to try and fix a minor issue.
@@ -223,7 +225,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.1...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.2...develop
+[0.12.2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.2
 [0.12.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.1
 [0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
 [0.12.0]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.0
