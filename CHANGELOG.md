@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Moved the code that generates the preview on file load into the loading function to try and fix a minor issue.
+
 ## [0.12.1] - 2026-01-20
 
 ## Changed
