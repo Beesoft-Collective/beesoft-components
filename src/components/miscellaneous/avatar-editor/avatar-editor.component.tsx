@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useId, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { fileToBase64 } from "@beesoft/common";
 import Vector2d = Konva.Vector2d;
+import { delayCallback } from "common/functions/common-functions.ts";
 
 const AvatarEditor = ({
   width,
@@ -120,6 +121,14 @@ const AvatarEditor = ({
     halfImageHeight.current = finalHeight / 2;
     lastFillPatternOffset.current = { x: halfImageWidth.current / finalScale, y: halfImageWidth.current / finalScale };
 
+    if (cropRef.current && cropStrokeRef.current) {
+      moveResizer(halfImageWidth.current, halfImageHeight.current);
+      cropRef.current.x(halfImageWidth.current);
+      cropStrokeRef.current.x(halfImageWidth.current);
+      cropRef.current.y(halfImageHeight.current);
+      cropStrokeRef.current.y(halfImageHeight.current);
+    }
+
     setShowFileLoader(false);
     setImageCropRadius(finalCropRadius);
     setImageScale(finalScale);
@@ -128,7 +137,7 @@ const AvatarEditor = ({
     setLoadedImage(image);
 
     if (showPreviewOnFileLoad) {
-      onEdit?.(createPreviewImage());
+      delayCallback(() => onEdit?.(createPreviewImage()));
     }
   };
 
