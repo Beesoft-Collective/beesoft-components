@@ -14,6 +14,7 @@ import {
   parseISO,
   parse,
 } from 'date-fns';
+import { TimeFormatType } from "./date-time-types.ts";
 
 export type DayType = { dayValue: Date | null; isCurrent: boolean };
 
@@ -221,6 +222,20 @@ export function parseDate(dateValue: string, locale?: Locale) {
     localDate = parse(dateValue, 'p', new Date(), { locale });
     if (!isNaN(localDate.valueOf())) return localDate;
 
+    if (!locale) {
+      localDate = parse(dateValue, 'HH:mm', new Date());
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'hh:mm a..aaa', new Date());
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'HH:mm:ss', new Date());
+      if (!isNaN(localDate.valueOf())) return localDate;
+
+      localDate = parse(dateValue, 'hh:mm:ss a..aaa', new Date());
+      if (!isNaN(localDate.valueOf())) return localDate;
+    }
+
     return undefined;
   }
 
@@ -238,4 +253,35 @@ export function parseDateRange(dateRangeValue: string, locale?: Locale) {
   if (!dateValue2) return undefined;
 
   return [dateValue1, dateValue2];
+}
+
+export function getHoursByFormat(format: TimeFormatType) {
+  return format === TimeFormatType.TwelveHour
+    ? ['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']
+    : [
+      '00',
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '06',
+      '07',
+      '08',
+      '09',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+    ];
 }

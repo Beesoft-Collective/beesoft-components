@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { BeeSoftProvider } from 'common/contexts/beesoft.context.tsx';
 import { forceAssert } from '../../common-functions.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
-import { CalendarIconPosition, DateFormatType, DateSelectionType } from './date-time-types.ts';
+import { CalendarIconPosition, DateFormatType, DateSelectionType, TimeFormatType } from './date-time-types.ts';
 import { DateTime } from './date-time.component.tsx';
 import { DateTimeInputTemplateProps, DateTimeProps, DateTimeWrapperTemplate } from './date-time.props.ts';
 
@@ -299,6 +299,17 @@ export const FormattedTimeInput: Story = {
   args: {
     label: 'Time',
     dateSelection: DateSelectionType.TimeOnly,
+    useFormattedInput: true,
+    onChange: action('onChange'),
+  },
+  render: (args) => <Template {...args} />,
+};
+
+export const FormattedForced24TimeInput: Story = {
+  args: {
+    label: 'Time',
+    dateSelection: DateSelectionType.TimeOnly,
+    timeFormat: TimeFormatType.TwentyFourHour,
     useFormattedInput: true,
     onChange: action('onChange'),
   },
