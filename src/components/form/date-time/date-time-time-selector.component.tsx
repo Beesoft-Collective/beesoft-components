@@ -8,6 +8,7 @@ import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
 import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateSelectorType, TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
+import { getHoursByFormat } from "./date-time-functions.ts";
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
@@ -29,36 +30,7 @@ const DateTimeTimeSelector = ({
   dispatcher,
 }: DateTimeTimeSelectorProps) => {
   const maximumHour = useRef(timeFormat === TimeFormatType.TwelveHour ? 11 : 23);
-  const hours = useRef<string[]>(
-    timeFormat === TimeFormatType.TwelveHour
-      ? ['12', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']
-      : [
-          '00',
-          '01',
-          '02',
-          '03',
-          '04',
-          '05',
-          '06',
-          '07',
-          '08',
-          '09',
-          '10',
-          '11',
-          '12',
-          '13',
-          '14',
-          '15',
-          '16',
-          '17',
-          '18',
-          '19',
-          '20',
-          '21',
-          '22',
-          '23',
-        ]
-  );
+  const hours = useRef<string[]>(getHoursByFormat(timeFormat));
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => value.toString().padStart(2, '0')));
   const ampm = useRef<string[]>(['AM', 'PM']);
   const savedViewDate = useRef(cloneDeep(viewDate));
@@ -89,6 +61,10 @@ const DateTimeTimeSelector = ({
       }
     }
   }, [viewDate]);
+
+  useEffect(() => {
+    hours.current = getHoursByFormat(timeFormat);
+  }, [timeFormat]);
 
   const increaseHour = () => {
     const incrementAmount = timeConstraints?.hours?.step || 1;

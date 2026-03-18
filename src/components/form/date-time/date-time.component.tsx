@@ -52,6 +52,7 @@ const DateTime = ({
   className,
   dateSelection = DateSelectionType.DateTime,
   dateFormat,
+  timeFormat,
   timeConstraints,
   icon,
   iconPosition = CalendarIconPosition.Right,
@@ -80,7 +81,7 @@ const DateTime = ({
   const inputRef = useRef<ContentEditableInputRef>(null);
   const formattedInputRef = useRef<FormattedInputRef>(null);
 
-  const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode);
+  const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode, timeFormat);
   const dateLocale = useDateLocale(language.current);
 
   const contextProps = useRef<DateTimeContextProps>({
@@ -122,7 +123,7 @@ const DateTime = ({
   }, [value, loadedLocale.current]);
 
   useEffect(() => {
-    if (use24HourTime) {
+    if (use24HourTime !== undefined) {
       dispatcher({
         type: DateTimeActionType.SetTimeFormat,
         timeFormat: use24HourTime ? TimeFormatType.TwentyFourHour : TimeFormatType.TwelveHour,
@@ -168,7 +169,7 @@ const DateTime = ({
   const initialState: DateTimeState = {
     currentSelector: getDateSelector(),
     currentViewDate: new Date(),
-    timeFormat: TimeFormatType.TwelveHour,
+    timeFormat: timeFormat === undefined ? TimeFormatType.TwelveHour : timeFormat,
     dateInitialized: false,
   };
 
@@ -204,8 +205,11 @@ const DateTime = ({
     if (value) {
       const dateValue =
         dateSelectionRef.current !== DateSelectionType.DateRange
-          ? parseDate(value, loadedLocale.current)
+          ? !(dateSelectionRef.current === DateSelectionType.TimeOnly && timeFormat !== undefined)
+            ? parseDate(value, loadedLocale.current)
+            : parseDate(value)
           : parseDateRange(value, loadedLocale.current);
+
       if (dateValue) {
         if (isValidDate) {
           const isValid = !Array.isArray(dateValue)
@@ -234,7 +238,9 @@ const DateTime = ({
   const onDateStringChange = (dateString: string) => {
     const inputDate =
       dateSelectionRef.current !== DateSelectionType.DateRange
-        ? parseDate(dateString, loadedLocale.current)
+        ? !(dateSelectionRef.current === DateSelectionType.TimeOnly && timeFormat !== undefined)
+          ? parseDate(dateString, loadedLocale.current)
+          : parseDate(dateString)
         : parseDateRange(dateString, loadedLocale.current);
 
     if (inputDate) {

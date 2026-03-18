@@ -7,7 +7,7 @@ import {
   DateFormatType,
   DateScrollerType,
   DateSelectionType,
-  TimeConstraints,
+  TimeConstraints, TimeFormatType,
 } from './date-time-types.ts';
 import { Locale } from 'date-fns';
 import { DayType } from './date-time-functions.ts';
@@ -60,6 +60,7 @@ export interface DateTimeProps extends FormInputControl<string | TypeOrArray<Dat
   locale?: string;
   dateSelection?: DateSelectionType;
   dateFormat?: DateFormatType;
+  timeFormat?: TimeFormatType;
   timeConstraints?: TimeConstraints;
   icon?: React.JSX.Element;
   iconPosition?: CalendarIconPosition;

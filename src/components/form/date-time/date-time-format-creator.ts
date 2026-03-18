@@ -1,5 +1,5 @@
 import { FormatPart, FormatValueType, InputFormat } from '../inputs/formatted-input/input-format.interfaces';
-import { DateSelectionType } from './date-time-types';
+import { DateSelectionType, TimeFormatType } from './date-time-types';
 
 export class DateTimeFormatCreator {
   private readonly dateFormat: string;
@@ -20,7 +20,8 @@ export class DateTimeFormatCreator {
 
   constructor(
     private dateSelection: DateSelectionType,
-    localeCode: string
+    localeCode: string,
+    timeFormat?: TimeFormatType
   ) {
     const year = 2023;
     const month = 12;
@@ -41,9 +42,12 @@ export class DateTimeFormatCreator {
     time.setHours(hour, minute, second, milliseconds);
 
     const testTimeFormat = time.toLocaleTimeString(localeCode);
-    this.use24HourTime = testTimeFormat.startsWith('18');
+    const isLocale24HourTime = testTimeFormat.startsWith('18');
+    this.use24HourTime = timeFormat === undefined
+      ? isLocale24HourTime
+      : timeFormat === TimeFormatType.TwentyFourHour;
     this.timeFormat = testTimeFormat
-      .replace(`${this.use24HourTime ? hour : '6'}`, 'HH')
+      .replace(`${isLocale24HourTime ? hour : '6'}`, 'HH')
       .replace(`${minute}`, 'MM')
       .replace(`${second}`, 'SS')
       .replace(`${milliseconds}`, 'LLL');
