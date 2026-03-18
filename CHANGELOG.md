@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.4] - 2026-03-18
+
 ## Changed
 
 - Added a `timeFormat` property to allow the user to manually set 12 or 24 hour time formats.
@@ -235,7 +237,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added advanced features to the button component.
 
 
-[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.3...develop
+[unreleased]: https://github.com/Beesoft-Collective/beesoft-components/compare/v0.12.4...develop
+[0.12.4]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.4
 [0.12.3]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.3
 [0.12.2]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.2
 [0.12.1]: https://github.com/Beesoft-Collective/beesoft-components/releases/tag/v0.12.1
