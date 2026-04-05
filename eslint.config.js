@@ -7,15 +7,8 @@ import { defineConfig } from "eslint/config";
 import stylistic from '@stylistic/eslint-plugin';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import wrap from '@seahax/eslint-plugin-wrap';
 
 export default defineConfig([
-  wrap.config({
-    maxLen: 120,
-    tabWidth: 2,
-    autoFix: true,
-    severity: 'warn',
-  }),
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     plugins: {

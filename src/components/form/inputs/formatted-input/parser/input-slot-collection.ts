@@ -40,7 +40,7 @@ export class InputSlotCollection {
     return this.inputSlots.filter((slot) => partIndices.includes(slot.partIndex));
   }
 
-  public getSlotsFromCursorPosition(cursorPosition: number) {
+  public getSlotPosition(cursorPosition: number) {
     let slotPosition = -1;
 
     // TODO: This logic has a flaw where it possibly wouldn't return a value when it should...in the case where a format
@@ -54,7 +54,27 @@ export class InputSlotCollection {
       }
     }
 
+    return slotPosition;
+  }
+
+  /**
+   * Gets all slots starting from the cursor position.
+   * @param {number} cursorPosition - The current position of the cursor.
+   * @returns {Array<FormatPartSlot>} - All slots starting at the current cursor position.
+   */
+  public getSlotsFromCursorPosition(cursorPosition: number) {
+    const slotPosition = this.getSlotPosition(cursorPosition);
     return slotPosition > -1 ? this.inputSlots.filter((slot) => slot.partIndex >= slotPosition) : undefined;
+  }
+
+  /**
+   * Gets the slot from the current cursor position.
+   * @param {number} cursorPosition - The current position of the cursor.
+   * @returns {Array<FormatPartSlot>} - The slot from the current cursor position.
+   */
+  public getSlotFromCursorPosition(cursorPosition: number) {
+    const slotPosition = this.getSlotPosition(cursorPosition);
+    return slotPosition > -1 ? this.inputSlots.find((slot) => slot.partIndex === slotPosition) : undefined;
   }
 
   /**

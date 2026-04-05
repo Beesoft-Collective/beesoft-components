@@ -5,6 +5,10 @@ export enum FormatValueType {
 
 export interface FormatPart {
   /**
+   * Can be used to identify a particular format part.
+   */
+  name?: string;
+  /**
    * The number of characters available for this part of the format.
    */
   characterCount: number;

@@ -6,10 +6,13 @@ import ContentEditableInput, {
 } from '../content-editable-input/content-editable-input.component';
 import { InputFormat } from './input-format.interfaces';
 import { FormatParser } from './parser/format-parser';
+import { useEvent } from '@beesoft/common';
+import { FormatPartSlot } from './parser/parser.interfaces.ts';
 
 export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
   isInputValid?: (value?: string) => boolean;
+  onSlotKeyDown?: (event: KeyboardEvent, value: FormatPartSlot) => void;
 }
 
 export interface FormattedInputRef {
@@ -31,6 +34,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
     isSingleLine = false,
     allowSingleLineScroll = false,
     isInputValid,
+    onSlotKeyDown,
     onChange,
     onFocus,
     onBlur,
@@ -44,6 +48,7 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   const inputRef = useRef<ContentEditableInputRef>(undefined);
   const inputElementRef = useRef<HTMLElement>(undefined);
   const formatParser = useRef<FormatParser>(undefined);
+  const currentSlot = useRef<FormatPartSlot>(undefined);
   const isMouseDown = useRef(false);
 
   useEffect(() => {
@@ -70,24 +75,27 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
       }
 
       formatParser.current?.registerFormatChangeEvent(onFormatChange);
+      formatParser.current?.registerSlotChangeEvent(onSlotChangeHandler);
     }
   }, [format]);
 
-  const onFormatChange = useCallback(
-    (value?: string) => {
-      if (isInputValid) {
-        if (isInputValid(value)) {
-          setIsValidInput(true);
-          onChange?.(value);
-        } else {
-          setIsValidInput(false);
-        }
-      } else {
+  const onFormatChange = useEvent((value?: string) => {
+    if (isInputValid) {
+      if (isInputValid(value)) {
+        setIsValidInput(true);
         onChange?.(value);
+      } else {
+        setIsValidInput(false);
       }
-    },
-    [onChange]
-  );
+    } else {
+      onChange?.(value);
+    }
+  });
+
+  const onSlotChangeHandler = useEvent((value: FormatPartSlot) => {
+    console.log('slot changed filed', value);
+    currentSlot.current = value;
+  });
 
   const onFocusHandler = useCallback(
     (event: FocusEvent) => {
@@ -128,6 +136,10 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   }, []);
 
   const onKeyDownHandler = useCallback((event: KeyboardEvent) => {
+    if (currentSlot.current && onSlotKeyDown) {
+      onSlotKeyDown(event, currentSlot.current);
+    }
+
     formatParser.current?.keyDownHandler(event);
   }, []);
 
@@ -169,7 +181,9 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
 
   return (
     <ContentEditableInput
-      ref={(refElement) => { if (refElement) onInputRefCreated(refElement) }}
+      ref={(refElement) => {
+        if (refElement) onInputRefCreated(refElement);
+      }}
       readOnly={readOnly}
       debounceTime={debounceTime}
       fillContainer={fillContainer}

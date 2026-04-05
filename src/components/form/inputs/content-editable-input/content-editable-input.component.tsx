@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { debounce } from 'lodash-es';
 import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
-import { FormInputControl } from '@beesoft/common';
+import { FormInputControl, useEvent } from '@beesoft/common';
 
 export interface ContentEditableInputProps extends FormInputControl<string> {
   debounceTime?: number;
@@ -13,6 +13,7 @@ export interface ContentEditableInputProps extends FormInputControl<string> {
   isSingleLine?: boolean;
   allowSingleLineScroll?: boolean;
   inputMode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
+  onKeyDown?: (event: KeyboardEvent) => void;
   onInnerTextChange?: (value: string) => void;
   onInnerHTMLChange?: (value: string) => void;
   onElementCreate?: (element: HTMLElement) => void;
@@ -45,6 +46,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
     onFocus,
     onBlur,
     onInput,
+    onKeyDown,
     onInnerTextChange,
     onInnerHTMLChange,
     onElementCreate,
@@ -56,35 +58,29 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   const placeHolderStyles = useRef('bsc:text-gray-4');
   const inputRef = useRef<HTMLElement>(undefined);
 
-  const focusListener = useCallback(
-    (event: FocusEvent) => {
+  const focusListener = useEvent((event: FocusEvent) => {
+    const element = event.target as HTMLElement;
+    const value = element.innerHTML;
+
+    element.className = `${textStyles.current}`;
+
+    if (placeholder && value === placeholder) {
+      element.innerHTML = '';
+    }
+
+    onFocus?.(event);
+  });
+
+  const blurListener = useEvent((event: FocusEvent) => {
+    const value = (event.target as HTMLElement).innerHTML;
+    if (placeholder && value === '') {
       const element = event.target as HTMLElement;
-      const value = element.innerHTML;
+      element.innerHTML = placeholder;
+      element.className = `${textStyles.current} ${placeHolderStyles.current}`;
+    }
 
-      element.className = `${textStyles.current}`;
-
-      if (placeholder && value === placeholder) {
-        element.innerHTML = '';
-      }
-
-      onFocus?.(event);
-    },
-    [placeholder, onFocus]
-  );
-
-  const blurListener = useCallback(
-    (event: FocusEvent) => {
-      const value = (event.target as HTMLElement).innerHTML;
-      if (placeholder && value === '') {
-        const element = event.target as HTMLElement;
-        element.innerHTML = placeholder;
-        element.className = `${textStyles.current} ${placeHolderStyles.current}`;
-      }
-
-      onBlur?.(event);
-    },
-    [placeholder, onBlur]
-  );
+    onBlur?.(event);
+  });
 
   const onInputElementCreated = useCallback(
     (element: HTMLElement) => {
@@ -125,11 +121,13 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
     onInnerHTMLChange?.((event.target as HTMLElement).innerHTML);
   }, debounceTime);
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const onKeyDownListener = useEvent((event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event.nativeEvent);
+
     if (event.key === 'Enter') {
       event.preventDefault();
     }
-  };
+  });
 
   const setInnerText = useCallback((innerText: string) => {
     if (inputRef.current) {
@@ -157,7 +155,7 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   const dynamicProps: Record<string, unknown> = {};
 
   if (isSingleLine) {
-    dynamicProps['onKeyDown'] = onKeyDown;
+    dynamicProps['onKeyDown'] = onKeyDownListener;
   }
 
   const classNames = cx(
@@ -173,19 +171,27 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   const rightElementClasses = cx('bsc:shrink', { 'bsc:ml-2': rightElement }, rightElementClassName);
 
   return (
-    <div className={classNames} ref={(element) => { if (element) onElementCreated(element) }}>
+    <div
+      className={classNames}
+      ref={(element) => {
+        if (element) onElementCreated(element);
+      }}
+    >
       {leftElement && (
         <div className={leftElementClasses} onClick={onLeftElementClicked}>
           {leftElement}
         </div>
       )}
       <div
-        ref={(element) => { if (element) onInputElementCreated(element) }}
+        ref={(element) => {
+          if (element) onInputElementCreated(element);
+        }}
         className={textStyles.current}
         contentEditable={!readOnly}
         suppressContentEditableWarning={true}
         inputMode={inputMode}
         onInput={onInputChanged}
+        {...dynamicProps}
       >
         {value}
       </div>

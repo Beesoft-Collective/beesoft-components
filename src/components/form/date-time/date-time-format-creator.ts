@@ -280,6 +280,7 @@ export class DateTimeFormatCreator {
 
   private createDateParts() {
     this.monthPart = {
+      name: 'month',
       characterCount: 2,
       placeholder: 'M',
       inputText: '_',
@@ -293,6 +294,7 @@ export class DateTimeFormatCreator {
     };
 
     this.dayPart = {
+      name: 'day',
       characterCount: 2,
       placeholder: 'D',
       inputText: '_',
@@ -306,6 +308,7 @@ export class DateTimeFormatCreator {
     };
 
     this.yearPart = {
+      name: 'year',
       characterCount: 4,
       placeholder: 'Y',
       inputText: '_',
@@ -315,6 +318,7 @@ export class DateTimeFormatCreator {
     };
 
     this.twelveHourPart = {
+      name: 'hour',
       characterCount: 2,
       placeholder: 'H',
       inputText: '_',
@@ -328,6 +332,7 @@ export class DateTimeFormatCreator {
     };
 
     this.twentyFourHourPart = {
+      name: 'hour',
       characterCount: 2,
       placeholder: 'H',
       inputText: '_',
@@ -341,6 +346,7 @@ export class DateTimeFormatCreator {
     };
 
     this.minutePart = {
+      name: 'minute',
       characterCount: 2,
       placeholder: 'M',
       inputText: '_',
@@ -354,6 +360,7 @@ export class DateTimeFormatCreator {
     };
 
     this.meridianPart = {
+      name: 'meridian',
       characterCount: 2,
       inputText: '_',
       isSeparator: false,
