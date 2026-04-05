@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+-Added the ability to change the time using the up and down arrows. The time part that changes will be determined by where the cursor is in the field.
+
 ## [0.12.5] - 2026-03-18
 
 ## Changed

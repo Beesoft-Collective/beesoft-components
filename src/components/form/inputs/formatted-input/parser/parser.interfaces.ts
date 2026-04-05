@@ -28,3 +28,5 @@ export interface MovementKeyboardEvent extends Omit<KeyboardEvent, 'key'> {
 }
 
 export type FormatChangeEvent = (value?: string) => void;
+
+export type SlotChangeEvent = (value: FormatPartSlot) => void;

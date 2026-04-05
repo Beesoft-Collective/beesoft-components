@@ -77,7 +77,7 @@ export class KeyProcessor {
         break;
       case 'a':
         if (metaKey || ctrlKey) {
-          // mac command or windows control key + a is used to select all text
+          // Mac command or windows control key + a is used to select all text
           this.formatNavigator.highlightAll();
         }
         break;

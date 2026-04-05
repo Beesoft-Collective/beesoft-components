@@ -7,7 +7,7 @@ import { FormatRenderer } from './format-renderer';
 import { InputRuleProcessor } from './input-rule-processor';
 import { InputSlotCollection } from './input-slot-collection';
 import { KeyProcessor } from './key-processor';
-import { FormatChangeEvent } from './parser.interfaces';
+import { FormatChangeEvent, SlotChangeEvent } from './parser.interfaces';
 
 /**
  * This is the entry point for the format module.
@@ -24,8 +24,10 @@ export class FormatParser implements IDisposable {
   private previousOutputValue? = '';
   private inputElementSet = false;
   private isInputFocused = false;
+  private currentSlotPosition = -1;
   private inputElement?: HTMLElement;
   private onFormatChange?: FormatChangeEvent;
+  private onSlotChange?: SlotChangeEvent;
 
   constructor(
     format: InputFormat,
@@ -64,7 +66,9 @@ export class FormatParser implements IDisposable {
   public inputFocused(): void {
     this.isInputFocused = true;
     this.formatRenderer.render();
-    setTimeout(() => this.formatNavigator.findCursorPosition());
+    setTimeout(() => {
+      this.fireOnSlotChange();
+    });
   }
 
   public inputBlurred(): void {
@@ -113,12 +117,21 @@ export class FormatParser implements IDisposable {
    * Registers the "event" that is triggered when all inputs slots are completed.
    * @param {FormatChangeEvent} onFormatChange - The event to call when all inputs slots are completed.
    */
-  public registerFormatChangeEvent(onFormatChange: FormatChangeEvent): void {
+  public registerFormatChangeEvent(onFormatChange: FormatChangeEvent) {
     this.onFormatChange = onFormatChange;
+  }
+
+  /**
+   * Registers the "event" that is triggered when the cursor has moved to a new slot.
+   * @param onSlotChange
+   */
+  public registerSlotChangeEvent(onSlotChange: SlotChangeEvent) {
+    this.onSlotChange = onSlotChange;
   }
 
   public mouseUpHandler(): void {
     this.formatNavigator.findCursorPosition();
+    this.fireOnSlotChange();
   }
 
   /**
@@ -156,11 +169,26 @@ export class FormatParser implements IDisposable {
         }
       }
     }
+
+    this.fireOnSlotChange();
   }
 
   public dispose(): void {
     // dispose of static class instances
     this.instanceCollection.removeInstances(this.instanceId);
+  }
+
+  private fireOnSlotChange() {
+    const cursorPosition = this.formatNavigator.getCursorPosition();
+    const newSlotPosition = this.inputSlotCollection.getSlotPosition(cursorPosition);
+    console.log('cursor', cursorPosition, 'slot', newSlotPosition, 'current', this.currentSlotPosition);
+    if (newSlotPosition !== this.currentSlotPosition) {
+      this.currentSlotPosition = newSlotPosition;
+      const currentSlot = this.inputSlotCollection.getSlotFromCursorPosition(cursorPosition);
+      if (currentSlot && this.onSlotChange) {
+        this.onSlotChange(currentSlot);
+      }
+    }
   }
 
   private renderFormat(fireOnChange = false) {
@@ -179,6 +207,8 @@ export class FormatParser implements IDisposable {
       if (fireOnChange && this.inputElement?.innerHTML && this.onFormatChange) {
         this.onFormatChange(this.inputElement.innerHTML);
       }
+
+      this.fireOnSlotChange();
     });
   }
 }

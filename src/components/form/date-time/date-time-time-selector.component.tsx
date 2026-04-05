@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { Locale } from 'date-fns';
 import { cloneDeep } from 'lodash-es';
-import { Dispatch, useEffect, useRef, useState } from 'react';
+import { Dispatch, forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { generateNumberArray } from '../../common-functions';
 import { BeeSoftIcon } from '../../common/beesoft-icon/beesoft-icon.component.tsx';
 import { IconSize } from '../../common/beesoft-icon/beesoft-icon.props.ts';
@@ -9,6 +9,7 @@ import { Button } from '../../navigation/buttons/button/button.component.tsx';
 import { DateSelectorType, TimeConstraints, TimeFormatType } from './date-time-types';
 import { DateTimeActionType, DateTimeReducerAction } from './date-time.reducer';
 import { getHoursByFormat } from "./date-time-functions.ts";
+import { TypeOrArray } from '@beesoft/common';
 
 export interface DateTimeTimeSelectorProps {
   viewDate: Date;
@@ -16,8 +17,16 @@ export interface DateTimeTimeSelectorProps {
   locale: Locale;
   timeFormat?: TimeFormatType;
   timeConstraints?: TimeConstraints;
-  onChange?: (value?: Date | Array<Date>) => void;
+  onChange?: (value?: TypeOrArray<Date>) => void;
   dispatcher: Dispatch<DateTimeReducerAction>;
+}
+
+export interface DateTimeTimeSelectorRef {
+  increaseHour: () => void;
+  decreaseHour: () => void;
+  increaseMinute: () => void;
+  decreaseMinute: () => void;
+  changeMeridian: () => void;
 }
 
 const DateTimeTimeSelector = ({
@@ -28,7 +37,7 @@ const DateTimeTimeSelector = ({
   timeConstraints,
   onChange,
   dispatcher,
-}: DateTimeTimeSelectorProps) => {
+}: DateTimeTimeSelectorProps, ref: Ref<DateTimeTimeSelectorRef>) => {
   const maximumHour = useRef(timeFormat === TimeFormatType.TwelveHour ? 11 : 23);
   const hours = useRef<string[]>(getHoursByFormat(timeFormat));
   const minutes = useRef<string[]>(generateNumberArray(0, 59, (value) => value.toString().padStart(2, '0')));
@@ -125,6 +134,14 @@ const DateTimeTimeSelector = ({
     });
   };
 
+  useImperativeHandle(ref, () => ({
+    increaseHour,
+    decreaseHour,
+    increaseMinute,
+    decreaseMinute,
+    changeMeridian,
+  }));
+
   const gridWrapperStyle = cx('bsc:w-full bsc:grid bsc:grid-rows-3 bsc:gap-4 bsc:items-center bc-dt-time-grid', {
     'bsc:grid-cols-4': timeFormat === TimeFormatType.TwelveHour,
     'bsc:grid-cols-3': timeFormat === TimeFormatType.TwentyFourHour,
@@ -198,4 +215,4 @@ const DateTimeTimeSelector = ({
   );
 };
 
-export default DateTimeTimeSelector;
+export default forwardRef(DateTimeTimeSelector);

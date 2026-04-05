@@ -21,7 +21,7 @@ import DateTimeDaySelector from './date-time-day-selector.component';
 import { isDateBetween, parseDate, parseDateRange } from './date-time-functions';
 import DateTimeMonthSelector from './date-time-month-selector.component';
 import DateTimeRangeSelector from './date-time-range-selector.component';
-import DateTimeTimeSelector from './date-time-time-selector.component';
+import DateTimeTimeSelector, { DateTimeTimeSelectorRef } from './date-time-time-selector.component';
 import {
   CalendarIconPosition,
   DateFormatType,
@@ -39,6 +39,7 @@ import {
 import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer';
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
+import { FormatPartSlot } from '../inputs/formatted-input/parser/parser.interfaces.ts';
 
 const DateTime = ({
   value,
@@ -80,6 +81,7 @@ const DateTime = ({
   const dropDownTargetRef = useRef<HTMLElement>(undefined);
   const inputRef = useRef<ContentEditableInputRef>(null);
   const formattedInputRef = useRef<FormattedInputRef>(null);
+  const timeSelectorRef = useRef<DateTimeTimeSelectorRef>(null);
 
   const [inputFormat, use24HourTime] = useGetDateTimeFormat(dateSelection, localeCode, timeFormat);
   const dateLocale = useDateLocale(language.current);
@@ -282,12 +284,33 @@ const DateTime = ({
   };
 
   const onDateSelectorChange = (value?: TypeOrArray<Date>) => {
-    if (dateSelectionRef.current === DateSelectionType.DateOnly && closeSelector === true) {
+    if (dateSelectionRef.current === DateSelectionType.DateOnly && closeSelector) {
       setSelectorOpen(false);
     }
 
     onChange?.(value);
   };
+
+  const onSlotKeyDown = useCallback((event: KeyboardEvent, value: FormatPartSlot) => {
+    console.log('onSlotKeyDown', event, value);
+    if (event.key === 'ArrowUp') {
+      if (value.name === 'hour') {
+        timeSelectorRef.current?.increaseHour();
+      } else if (value.name === 'minute') {
+        timeSelectorRef.current?.increaseMinute();
+      } else if (value.name === 'meridian') {
+        timeSelectorRef.current?.changeMeridian();
+      }
+    } else if (event.key === 'ArrowDown') {
+      if (value.name === 'hour') {
+        timeSelectorRef.current?.decreaseHour();
+      } else if (value.name === 'minute') {
+        timeSelectorRef.current?.decreaseMinute();
+      } else if (value.name === 'meridian') {
+        timeSelectorRef.current?.changeMeridian();
+      }
+    }
+  }, []);
 
   const onCalendarIconClick = () => {
     setDropDownElement();
@@ -521,6 +544,7 @@ const DateTime = ({
           state.dateInitialized &&
           loadedLocale.current && (
             <DateTimeTimeSelector
+              ref={timeSelectorRef}
               viewDate={state.currentViewDate}
               showDateSelector={dateSelectionRef.current === DateSelectionType.DateTime}
               locale={loadedLocale.current}
@@ -610,7 +634,7 @@ const DateTime = ({
           aboveMobileMarkup={
             <>
               <TemplateOutlet props={inputTemplateProps} template={finalInputTemplate}>
-                {useFormattedInput === false ? (
+                {!useFormattedInput ? (
                   <ContentEditableInput
                     ref={inputRef}
                     value={getValue()}
@@ -630,6 +654,7 @@ const DateTime = ({
                     className={inputStyles}
                     format={inputFormat}
                     isInputValid={isValidFormatString}
+                    onSlotKeyDown={onSlotKeyDown}
                     onFocus={onFocus}
                     onBlur={onBlur}
                     onChange={onFormatStringChange}
