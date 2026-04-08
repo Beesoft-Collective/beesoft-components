@@ -12,10 +12,8 @@ import TemplateOutlet from '../../common/template-outlet/template-outlet.compone
 import { MediaQuery } from '../../mobile/media-query/media-query.component.tsx';
 import { MobileOverlayPanel } from '../../mobile/overlay/mobile-overlay-panel.component.tsx';
 import OverlayPanel from '../../overlay/overlay-panel/overlay-panel.component';
-import ContentEditableInput, {
-  ContentEditableInputRef,
-} from '../inputs/content-editable-input/content-editable-input.component';
-import FormattedInput, { FormattedInputRef } from '../inputs/formatted-input/formatted-input.component';
+import { ContentEditableInput } from '../inputs/content-editable-input/content-editable-input.component';
+import { FormattedInput, FormattedInputRef } from '../inputs/formatted-input/formatted-input.component';
 import { DateTimeContext, DateTimeContextProps } from './date-time-context';
 import DateTimeDaySelector from './date-time-day-selector.component';
 import { isDateBetween, parseDate, parseDateRange } from './date-time-functions';
@@ -40,6 +38,7 @@ import reducer, { DateTimeActionType, DateTimeState } from './date-time.reducer'
 import useGetDateTimeFormat from './hooks/get-date-time-format.hook';
 import { useAddDateTimeBaseTemplateProps } from './hooks/add-date-time-base-template-props.hook.ts';
 import { FormatPartSlot } from '../inputs/formatted-input/parser/parser.interfaces.ts';
+import { ContentEditableInputRef } from '../inputs/content-editable-input/content-editable-input.props.ts';
 
 const DateTime = ({
   value,
@@ -292,7 +291,6 @@ const DateTime = ({
   };
 
   const onSlotKeyDown = useCallback((event: KeyboardEvent, value: FormatPartSlot) => {
-    console.log('onSlotKeyDown', event, value);
     if (event.key === 'ArrowUp') {
       if (value.name === 'hour') {
         timeSelectorRef.current?.increaseHour();

@@ -1,34 +1,10 @@
 import cx from 'classnames';
 import { debounce } from 'lodash-es';
 import React, { forwardRef, Ref, useCallback, useImperativeHandle, useRef } from 'react';
-import { FormInputControl, useEvent } from '@beesoft/common';
+import { useEvent } from '@beesoft/common';
+import { ContentEditableInputProps, ContentEditableInputRef } from './content-editable-input.props.ts';
 
-export interface ContentEditableInputProps extends FormInputControl<string> {
-  debounceTime?: number;
-  fillContainer?: boolean;
-  leftElement?: React.JSX.Element;
-  rightElement?: React.JSX.Element;
-  leftElementClassName?: string;
-  rightElementClassName?: string;
-  isSingleLine?: boolean;
-  allowSingleLineScroll?: boolean;
-  inputMode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
-  onKeyDown?: (event: KeyboardEvent) => void;
-  onInnerTextChange?: (value: string) => void;
-  onInnerHTMLChange?: (value: string) => void;
-  onElementCreate?: (element: HTMLElement) => void;
-  onLeftElementClick?: (event: React.MouseEvent) => void;
-  onRightElementClick?: (event: React.MouseEvent) => void;
-}
-
-export interface ContentEditableInputRef {
-  inputElement?: HTMLElement;
-  setInnerText: (innerText: string) => void;
-  setInnerHTML: (innerHTML: string) => void;
-  focus: () => void;
-}
-
-const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<ContentEditableInputRef>) => {
+const ContentEditableInputComponent = (props: ContentEditableInputProps, ref: Ref<ContentEditableInputRef>) => {
   const {
     value,
     readOnly = false,
@@ -204,4 +180,5 @@ const ContentEditableInput = (props: ContentEditableInputProps, ref: Ref<Content
   );
 };
 
-export default forwardRef(ContentEditableInput);
+const ContentEditableInput = forwardRef(ContentEditableInputComponent);
+export { ContentEditableInput };

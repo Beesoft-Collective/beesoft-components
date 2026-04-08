@@ -44,7 +44,7 @@ const DateTimeScroller = ({
     dispatcher
   );
 
-  const buttonStyles = 'bsc:bg-transparent bsc:cursor-pointer bsc:focus:outline-hidden bsc:hover:bg-primary-1! bsc:hover:text-white! bsc:dark:hover:bg-mono-light-3!';
+  const buttonStyles = 'bsc:bg-transparent bsc:cursor-pointer bsc:focus:outline-hidden bsc:hover:bg-primary-1 bsc:hover:text-white bsc:dark:hover:bg-mono-light-3';
 
   const defaultTemplate = (_props: DateTimeScrollerTemplateProps, children: TypeOrArray<ReactNode>) => (
     <div className="bc-dt-scroller bsc:flex bsc:w-full bsc:flex-row bsc:items-center bsc:px-2 bsc:py-1">{children}</div>

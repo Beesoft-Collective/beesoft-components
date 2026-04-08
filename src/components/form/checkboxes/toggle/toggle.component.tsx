@@ -4,13 +4,15 @@ import { FocusRingStyle, useFocusRingStyle } from 'common/hooks/style/use-focus-
 import { useShouldAnimate } from 'common/hooks/use-animation.ts';
 import { Label } from '../../../common/label/label.component.tsx';
 import { ToggleProps } from './toggle.props.ts';
-import { Field, Toggle as HeadlessToggle } from "@beesoft/headless-ui";
+import { Field, Toggle as HeadlessToggle } from '@beesoft/headless-ui';
 
 const ToggleComponent = ({
   name,
   label,
   value,
   checked = false,
+  onElement,
+  offElement,
   readOnly = false,
   useAnimation,
   className,
@@ -33,7 +35,7 @@ const ToggleComponent = ({
   );
 
   const switchStyles = cx(
-    'bc-toggle-switch bsc:absolute bsc:rounded-full bsc:dark:border bsc:dark:border-solid bsc:dark:border-mono-dark-1 bsc:group-data-toggled:translate-x-[35px] bsc:w-[18px] bsc:h-[18px] bsc:top-[4px] bsc:left-[4px]',
+    'bc-toggle-switch bsc:absolute bsc:rounded-full bsc:dark:border bsc:dark:border-solid bsc:dark:border-mono-dark-1 bsc:group-data-toggled:translate-x-[35px] bsc:w-[18px] bsc:h-[18px] bsc:top-[4px] bsc:left-[4px] bsc:z-10',
     {
       'bsc:bg-white bsc:cursor-pointer': !readOnly,
       'bc-read-only bsc:bg-gray-5 bsc:pointer-events-none': readOnly,
@@ -41,11 +43,19 @@ const ToggleComponent = ({
     }
   );
 
+  const onElementStyles =
+    'bsc:absolute bsc:left-[4px] bsc:opacity-0 bsc:transition-opacity bsc:duration-800 bsc:group-data-toggled:opacity-100 bsc:top-[50%] bsc:[transform:translateY(-50%)]';
+
+  const offElementStyles =
+    'bsc:absolute bsc:right-[4px] bsc:opacity-0 bsc:transition-opacity bsc:duration-800 bsc:group-not-data-toggled:opacity-100 bsc:top-[50%] bsc:[transform:translateY(-50%)]';
+
   return (
     <Field className={wrapperStyles}>
       {label && <Label label={label} readOnly={readOnly} />}
       <HeadlessToggle name={name} value={value} toggled={checked} onChange={onChange} className={switchContainerStyles}>
+        {onElement && <div className={onElementStyles}>{onElement}</div>}
         <div className={switchStyles} />
+        {offElement && <div className={offElementStyles}>{offElement}</div>}
       </HeadlessToggle>
     </Field>
   );

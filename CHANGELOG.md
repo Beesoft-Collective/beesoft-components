@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- In the toggle component added the ability to set elements, usually icons, that will display when the toggle is on or off.
+- In the date component made all selections rounded, so they are consistent throughout the component.  
+
 ## [0.12.6] - 2026-04-05
 
 ## Changed

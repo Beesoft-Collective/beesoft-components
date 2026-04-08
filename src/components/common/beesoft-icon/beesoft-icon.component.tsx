@@ -7,6 +7,8 @@ import { ChevronLeftIcon } from './icons/chevron-left-icon.tsx';
 import { ChevronRightIcon } from './icons/chevron-right-icon.tsx';
 import { ChevronUpIcon } from './icons/chevron-up-icon.tsx';
 import { CloseIcon } from './icons/close-icon.tsx';
+import { MoonIcon } from './icons/moon-icon.tsx';
+import { SunIcon } from './icons/sun-icon.tsx';
 
 const BeeSoftIcon = ({ icon, size = IconSize.Regular, onClick, className }: BeeSoftIconProps) => {
   const iconList = useRef<BeeSoftIconList>({
@@ -16,6 +18,8 @@ const BeeSoftIcon = ({ icon, size = IconSize.Regular, onClick, className }: BeeS
     chevronRight: ChevronRightIcon,
     chevronUp: ChevronUpIcon,
     close: CloseIcon,
+    moon: MoonIcon,
+    sun: SunIcon,
   });
   const Icon = useMemo(() => iconList.current[icon] || CalendarIcon, [icon]);
 
