@@ -2,6 +2,8 @@ import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Toggle } from './toggle.component.tsx';
 import { ToggleProps } from './toggle.props.ts';
+import { BeeSoftIcon } from '../../../common/beesoft-icon/beesoft-icon.component.tsx';
+import { IconSize } from '../../../common/beesoft-icon/beesoft-icon.props.ts';
 
 const meta: Meta<typeof Toggle> = {
   title: 'Form/Toggle',
@@ -39,6 +41,16 @@ export const SetChecked: Story = {
     label: 'Test Switch',
     value: 'test',
     checked: true,
+  },
+};
+
+export const OnOffElement: Story = {
+  args: {
+    name: 'testSwitch',
+    label: 'Test Switch',
+    value: 'test',
+    onElement: <BeeSoftIcon icon="moon" size={IconSize.Small} className="bsc:text-white" />,
+    offElement: <BeeSoftIcon icon="sun" size={IconSize.Small} className="bsc:text-white" />,
   },
 };
 

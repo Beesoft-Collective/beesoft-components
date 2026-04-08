@@ -188,7 +188,7 @@ const DateTimeCalendar = ({
             const isSelectable =
               column.dayValue !== null && (selectableDate === undefined || selectableDate(column.dayValue));
             const dayStyles = cx(
-              'bsc:text-center bsc:py-1 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1',
+              'bsc:text-center bsc:rounded-md bsc:py-1 bsc:hover:bg-primary-2 bsc:hover:text-white bsc:dark:hover:bg-mono-light-2 bsc:dark:hover:text-mono-dark-1',
               {
                 'bsc:text-gray-3': !column.isCurrent,
                 'bsc:bg-primary-1 bsc:text-white bsc:dark:bg-mono-light-1 bsc:dark:text-mono-dark-1':

@@ -181,7 +181,6 @@ export class FormatParser implements IDisposable {
   private fireOnSlotChange() {
     const cursorPosition = this.formatNavigator.getCursorPosition();
     const newSlotPosition = this.inputSlotCollection.getSlotPosition(cursorPosition);
-    console.log('cursor', cursorPosition, 'slot', newSlotPosition, 'current', this.currentSlotPosition);
     if (newSlotPosition !== this.currentSlotPosition) {
       this.currentSlotPosition = newSlotPosition;
       const currentSlot = this.inputSlotCollection.getSlotFromCursorPosition(cursorPosition);

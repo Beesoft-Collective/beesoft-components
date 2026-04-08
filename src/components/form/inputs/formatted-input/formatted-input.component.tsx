@@ -1,13 +1,14 @@
 import cx from 'classnames';
 import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import ContentEditableInput, {
-  ContentEditableInputProps,
-  ContentEditableInputRef,
-} from '../content-editable-input/content-editable-input.component';
+import { ContentEditableInput } from '../content-editable-input/content-editable-input.component';
 import { InputFormat } from './input-format.interfaces';
 import { FormatParser } from './parser/format-parser';
 import { useEvent } from '@beesoft/common';
 import { FormatPartSlot } from './parser/parser.interfaces.ts';
+import {
+  ContentEditableInputProps,
+  ContentEditableInputRef,
+} from '../content-editable-input/content-editable-input.props.ts';
 
 export interface FormattedInputProps extends Omit<ContentEditableInputProps, 'placeholder'> {
   format?: InputFormat;
@@ -19,7 +20,7 @@ export interface FormattedInputRef {
   focus: () => void;
 }
 
-const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>) => {
+const FormattedInputComponent = (props: FormattedInputProps, ref: Ref<FormattedInputRef>) => {
   const {
     value = '',
     format,
@@ -93,7 +94,6 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   });
 
   const onSlotChangeHandler = useEvent((value: FormatPartSlot) => {
-    console.log('slot changed filed', value);
     currentSlot.current = value;
   });
 
@@ -203,4 +203,5 @@ const FormattedInput = (props: FormattedInputProps, ref: Ref<FormattedInputRef>)
   );
 };
 
-export default forwardRef(FormattedInput);
+const FormattedInput = forwardRef(FormattedInputComponent);
+export { FormattedInput };
