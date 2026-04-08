@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ContentEditableInput from './content-editable-input.component';
+import { ContentEditableInput } from './content-editable-input.component';
 import { ContentEditableInputProps } from './content-editable-input.props.ts';
 
 const meta: Meta<typeof ContentEditableInput> = {

@@ -2,7 +2,7 @@ import { action } from 'storybook/actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { DateTimeFormatCreator } from '../../date-time/date-time-format-creator';
 import { DateSelectionType } from '../../date-time/date-time-types';
-import FormattedInput from './formatted-input.component';
+import { FormattedInput } from './formatted-input.component';
 
 const meta: Meta<typeof FormattedInput> = {
   title: 'Form/Formatted Input',
